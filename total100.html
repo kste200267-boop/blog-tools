@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>통합사회 1단원 | 4관점 마스터 퀴즈 🎯</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --primary:#1e40af;
+      --primary-light:#3b82f6; --secondary:#10b981;
+      --accent:#f59e0b;
+      --bg:linear-gradient(135deg, #dbeafe 0%, #f0f9ff 50%, #ecfdf5 100%);
+      --card:#ffffff;
+      --line:#e5e7eb;
+      --muted:#64748b;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family:'Noto Sans KR', sans-serif;
+      background:var(--bg);
+      color:#0f172a;
+    }
+
+    /* ✅ PC에서는 넓게, 모바일에서는 꽉 차게 */
+    .shell{
+      width:100%;
+      padding:18px;
+    }
+    .container{
+      width:100%;
+      max-width:1100px; /* ✅ 넓게 */
+      margin:0 auto;
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow:0 10px 30px rgba(0,0,0,.08);
+      overflow:hidden;
+      min-height:calc(100vh - 36px);
+    }
+
+    .screen{
+      display:none;
+      padding:28px;
+      min-height:calc(100vh - 36px);
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+    }
+    .screen.active{ display:flex; }
+
+    /* ✅ 레이아웃: PC는 2컬럼, 모바일은 1컬럼 */
+    .grid{
+      width:100%;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    @media (min-width: 900px){
+      .grid{
+        grid-template-columns: 1.05fr 0.95fr;
+      }
+      .screen{
+        padding:34px 44px;
+      }
+    }
+
+    .card{
+      width:100%;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:18px;
+      text-align:left;
+    }
+
+    .badge{
+      display:inline-block;
+      background:#eef2ff;
+      border:1px solid #c7d2fe;
+      color:#3730a3;
+      padding:6px 12px;
+      border-radius:999px;
+      font-weight:900;
+      font-size:.82rem;
+      margin-bottom:12px;
+    }
+    .title{
+      font-family:'Jua';
+      font-size:2.2rem;
+      margin:0 0 10px;
+      color:var(--primary);
+      line-height:1.05;
+    }
+    .desc{
+      margin:0 0 14px;
+      color:#475569;
+      line-height:1.6;
+      font-size:.98rem;
+    }
+    .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+    .chip{
+      border:1px solid var(--line);
+      background:#f8fafc;
+      color:#334155;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:.8rem;
+      font-weight:800;
+    }
+
+    .label{
+      font-weight:900;
+      color:var(--muted);
+      font-size:.92rem;
+      margin:10px 0 6px;
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      align-items:center;
+    }
+    .hint-mini{ font-weight:700; color:#94a3b8; font-size:.78rem; }
+    .input{
+      width:100%;
+      padding:12px 12px;
+      border:2px solid #e2e8f0;
+      border-radius:12px;
+      background:#fff;
+      outline:none;
+      transition:.15s;
+      font-size:1rem;
+    }
+    .input:focus{ border-color:var(--secondary); }
+    select.input{ appearance:auto; }
+
+    .row{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      width:100%;
+    }
+    .row > div{ flex:1; min-width:160px; }
+
+    .btn{
+      width:100%;
+      padding:18px 20px;
+      border:none;
+      border-radius:14px;
+      cursor:pointer;
+      font-family:'Jua';
+      font-size:1.15rem;
+      transition:.12s;
+    }
+    .btn-primary{ background:var(--primary); color:#fff; }
+    .btn-primary:hover{ background:#2c3e50; transform:translateY(-1px); }
+    .btn-ghost{ background:#f1f5f9; color:#0f172a; }
+    .btn-ghost:hover{ background:#e9eff7; }
+    .btn-danger{ background:#ffe4e6; color:#9f1239; }
+    .btn-danger:hover{ background:#fecdd3; }
+
+    .tiny{
+      font-size:.9rem;
+      color:#64748b;
+      line-height:1.65;
+      margin-top:10px;
+    }
+
+    /* quiz */
+    #quiz-screen{
+      justify-content:flex-start;
+    }
+    .quiz-wrap{
+      width:100%;
+      max-width: 980px;
+      margin:0 auto;
+      text-align:left;
+    }
+    @media (min-width: 900px){
+      .quiz-wrap{
+        max-width: 1020px;
+      }
+    }
+
+    .quiz-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      margin-bottom:10px;
+      color:var(--secondary);
+      font-weight:900;
+    }
+    .progress{
+      width:100%;
+      height:12px;
+      background:#e2e8f0;
+      border-radius:999px;
+      overflow:hidden;
+      margin-bottom:14px;
+    }
+    .fill{
+      height:100%;
+      width:0%;
+      background:var(--secondary);
+      transition:.2s;
+    }
+
+    .q-badge{
+      display:inline-block;
+      background:#fff7ed;
+      border:1px solid #fed7aa;
+      color:#9a3412;
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:.82rem;
+      font-weight:900;
+      margin-bottom:12px;
+    }
+    .q-text{
+      font-size:1.15rem;
+      font-weight:900;
+      line-height:1.55;
+      margin:0 0 14px;
+      word-break:keep-all;
+    }
+    .options{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+    }
+    @media (min-width: 900px){
+      .options{
+        grid-template-columns: 1fr 1fr; /* ✅ PC에서는 보기 2열 */
+      }
+    }
+    .opt{
+      background:#fff;
+      border:2px solid #e2e8f0;
+      padding:18px 20px;
+      border-radius:14px;
+      cursor:pointer;
+      transition:.12s;
+      font-size:1rem;
+      line-height:1.45;
+      min-height:60px;
+      display:flex;
+      align-items:center;
+    }
+    .opt:hover{ border-color:var(--secondary); background:#f8fafc; }
+    .opt.correct{ background:#dcfce7; border-color:#22c55e; color:#166534; }
+    .opt.wrong{ background:#ffe4e6; border-color:#fb7185; color:#9f1239; }
+
+    .explain{
+      margin-top:14px;
+      border:2px solid #e2e8f0;
+      border-radius:14px;
+      padding:18px 20px;
+      background:#fff;
+      display:none;
+    }
+    .ex-title{ font-weight:900; margin-bottom:6px; }
+    .ex-body{ color:#334155; line-height:1.65; font-size:.95rem; }
+    .nav{
+      display:flex;
+      gap:14px;
+      margin-top:12px;
+      flex-wrap:wrap;
+    }
+    .nav .btn{ flex:1; min-width:180px; padding:12px; font-size:1.05rem; }
+
+    /* result */
+    #result-screen{ justify-content:flex-start; }
+    .result-wrap{
+      width:100%;
+      max-width: 980px;
+      margin:0 auto;
+      text-align:left;
+    }
+    .score-card{
+      background:#f8fafc;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:16px;
+      margin-bottom:12px;
+    }
+    .score-title{ color:#64748b; font-weight:900; }
+    .score{
+      font-family:'Jua';
+      font-size:3rem;
+      color:var(--primary);
+      line-height:1;
+      margin-top:4px;
+    }
+    .subline{ margin-top:8px; color:#64748b; font-size:.92rem; }
+    .stat-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+      margin-bottom:12px;
+    }
+    @media (min-width: 900px){
+      .stat-grid{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+    .stat{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+      background:#fff;
+      text-align:left;
+    }
+    .stat-label{ font-weight:900; color:#475569; font-size:.9rem; margin-bottom:6px; }
+    .bar-bg{ height:8px; background:#e2e8f0; border-radius:999px; overflow:hidden; }
+    .bar{ height:100%; width:0%; border-radius:999px; }
+    .stat-txt{ font-size:.85rem; color:#64748b; margin-top:6px; font-weight:800; }
+
+    .analysis{
+      border:2px solid var(--primary);
+      border-radius:14px;
+      padding:14px;
+      background:#fff;
+      margin-bottom:12px;
+    }
+    .analysis h3{
+      font-family:'Jua';
+      margin:0 0 10px;
+      color:var(--primary);
+      font-size:1.25rem;
+    }
+    .analysis p{ margin:0; line-height:1.65; color:#334155; font-size:.95rem; }
+    .mini{
+      margin-top:10px;
+      background:#f8fafc;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:12px;
+      color:#0f172a;
+      font-size:.95rem;
+      line-height:1.6;
+    }
+
+    .wrong-wrap h3{
+      font-family:'Jua';
+      margin:14px 0 10px;
+      border-bottom:2px solid #e2e8f0;
+      padding-bottom:8px;
+    }
+    .wrong{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+      margin-bottom:10px;
+      background:#fff;
+    }
+    .wrong-q{ font-weight:900; color:var(--accent); margin-bottom:6px; line-height:1.4; }
+    .pill{
+      display:inline-block;
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#f8fafc;
+      color:#334155;
+      font-size:.78rem;
+      font-weight:900;
+      margin-left:6px;
+    }
+    .blog-footer{
+      margin-top:14px;
+      border:1px solid var(--line);
+      background:#f8fafc;
+      border-radius:14px;
+      padding:12px 14px;
+      text-align:center;
+      font-size:.95rem;
+      color:#334155;
+    }
+    .blog-footer a{ color:#2563eb; font-weight:900; text-decoration:underline; }
+
+    /* admin */
+    .admin-head{
+      width:100%;
+      max-width: 1100px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      margin:0 auto;
+    }
+    .admin-title{ font-family:'Jua'; font-size:1.9rem; color:var(--primary); margin:10px 0; }
+    .admin-card{ width:100%; max-width:1100px; margin:0 auto 12px; }
+    .table-wrap{ width:100%; overflow:auto; border:1px solid var(--line); border-radius:14px; }
+    table{ width:100%; border-collapse:collapse; font-size:.9rem; }
+    th,td{ padding:10px; border-bottom:1px solid #eef2f7; vertical-align:top; text-align:left; }
+    th{ background:#f8fafc; position:sticky; top:0; z-index:1; }
+    textarea{ width:100%; min-height:120px; padding:12px; border:2px solid #e2e8f0; border-radius:12px; font-family:inherit; resize:vertical; }
+    .kbtn{
+      padding:8px 10px;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:900;
+      margin-right:6px;
+    }
+    .kbtn-edit{ background:#e0f2fe; color:#075985; }
+    .kbtn-del{ background:#ffe4e6; color:#9f1239; }
+    .warn{ font-size:.9rem; color:#9f1239; font-weight:900; margin-top:8px; display:none; }
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+    <div class="container">
+
+      <!-- INTRO -->
+      <div id="intro-screen" class="screen active">
+        <div class="grid">
+          <div class="card">
+            <div class="badge">🎮 통합사회 1단원</div>
+            <h1 class="title">4관점 마스터<br>퀴즈 챌린지 💪</h1>
+            <p class="desc">
+              시간·공간·사회·윤리 4가지 안경으로<br>
+              세상을 해킹하는 연습! 몇 점 나올까? 🎯
+            </p>
+            <div class="chips">
+              <span class="chip">⏰ 시간</span>
+              <span class="chip">📍 공간</span>
+              <span class="chip">🏛 사회</span>
+              <span class="chip">⚖️ 윤리</span>
+              <span class="chip">🧩 통합</span>
+            </div>
+
+            <div class="tiny" style="margin-top:14px;">
+              💡 <b>게임 규칙</b><br>
+              - 5가지 관점이 골고루 나와요<br>
+              - 쉬운 문제 많고, 어려운 건 조금!<br>
+              - 틀려도 OK~ 오답노트로 다시 도전!
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="label">📚 반 번호</div>
+            <input id="classNo" class="input" placeholder="예: 1-3" />
+
+            <div class="label">✏️ 이름</div>
+            <input id="username" class="input" placeholder="이름을 입력하세요" />
+
+            <div class="label">🎚️ 문항 수 선택</div>
+            <select id="quizCount" class="input">
+              <option value="20" selected>⚡ 20문항 (가볍게 도전)</option>
+              <option value="40">💪 40문항 (본격 연습)</option>
+              <option value="60">🔥 60문항 (완전 정복)</option>
+            </select>
+
+            <button class="btn btn-primary" style="margin-top:14px;" onclick="startQuiz()">🚀 도전 시작!</button>
+
+            <div style="display:flex; gap:8px; margin-top:12px;">
+              <button class="btn btn-ghost" style="flex:1; font-size:0.9rem;" onclick="openAdminLogin()">🔒 관리자</button>
+              <button class="btn btn-ghost" style="flex:1; font-size:0.9rem;" onclick="resetToDefaultConfirm()">🔄 초기화</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUIZ -->
+      <div id="quiz-screen" class="screen">
+        <div class="quiz-wrap">
+          <div class="quiz-top">
+            <div><span id="q-progress">1 / 20</span></div>
+            <div><span id="timer">00:00</span></div>
+          </div>
+          <div class="progress"><div id="p-bar" class="fill"></div></div>
+
+          <!-- ✅ 관점/난이도/힌트 표시 제거: 정답이 들키지 않게 -->
+          <div id="q-area"></div>
+
+          <div class="explain" id="explain-box">
+            <div class="ex-title" id="explain-title">해설</div>
+            <div class="ex-body" id="explain-sub"></div>
+            <div class="nav">
+              <button class="btn btn-ghost" onclick="retryThis()">이 문제 다시</button>
+              <button class="btn btn-primary" id="nextBtn" onclick="goNext()">다음</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULT -->
+      <div id="result-screen" class="screen">
+        <div class="result-wrap">
+          <h2 style="font-family:'Jua'; margin: 18px 0 12px;">진단 결과 보고서</h2>
+
+          <div class="score-card">
+            <div class="score-title">
+              <span id="res-class"></span> <span id="res-name"></span>님의 최종 점수
+            </div>
+            <div class="score"><span id="res-score">0</span>점</div>
+            <div class="subline">소요 시간: <b id="res-time">00:00</b></div>
+            <div class="subline">맞힌 개수: <b id="res-correct">0</b> / <b id="res-total">0</b> (100점 환산)</div>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat">
+              <div class="stat-label">⏳ 시간적 관점</div>
+              <div class="bar-bg"><div id="bar-time" class="bar" style="background:#ef4444;"></div></div>
+              <div id="txt-time" class="stat-txt">-</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">🌍 공간적 관점</div>
+              <div class="bar-bg"><div id="bar-space" class="bar" style="background:#22c55e;"></div></div>
+              <div id="txt-space" class="stat-txt">-</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">⚖️ 사회적 관점</div>
+              <div class="bar-bg"><div id="bar-social" class="bar" style="background:#f59e0b;"></div></div>
+              <div id="txt-social" class="stat-txt">-</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">🤝 윤리적 관점</div>
+              <div class="bar-bg"><div id="bar-ethics" class="bar" style="background:#a855f7;"></div></div>
+              <div id="txt-ethics" class="stat-txt">-</div>
+            </div>
+            <div class="stat" style="grid-column: 1 / -1;">
+              <div class="stat-label">🧩 통합적 관점(전체)</div>
+              <div class="bar-bg"><div id="bar-integrated" class="bar" style="background:#3b82f6;"></div></div>
+              <div id="txt-integrated" class="stat-txt">-</div>
+            </div>
+          </div>
+
+          <div class="analysis">
+            <h3>👨‍🏫 AI 학습 처방</h3>
+            <p id="analysis-text">분석 중...</p>
+            <div id="mini-lesson" class="mini" style="display:none;"></div>
+          </div>
+
+          <div class="wrong-wrap">
+            <h3>📝 오답 노트</h3>
+            <div id="wrong-list"></div>
+            <button class="btn btn-ghost" style="margin-top:10px;" onclick="retryWrongOnly()">오답만 다시 풀기</button>
+          </div>
+
+          <!-- ✅ 블로그 하단: 기본 고정 표시 -->
+          <div id="blog-footer" class="blog-footer"></div>
+
+          <button class="btn btn-primary" onclick="location.reload()" style="margin: 14px 0 22px;">다시 도전하기</button>
+        </div>
+      </div>
+
+      <!-- ADMIN LOGIN -->
+      <div id="admin-login-screen" class="screen">
+        <div class="badge">관리자 모드</div>
+        <h1 class="title" style="font-size:2rem;">문제은행 관리</h1>
+        <p class="desc">비밀번호를 입력하면 문제 추가/수정/삭제가 가능합니다.</p>
+
+        <div class="card" style="max-width:560px;">
+          <div class="label">관리자 비밀번호 <span class="hint-mini">(기본: edu123)</span></div>
+          <input type="password" id="adminPass" class="input" placeholder="비밀번호 입력">
+
+          <div class="row" style="margin-top:12px;">
+            <button class="btn btn-primary" onclick="adminLogin()">로그인</button>
+            <button class="btn btn-ghost" onclick="goIntro()">돌아가기</button>
+          </div>
+
+          <div class="tiny" style="margin-top:10px;">
+            - 수정한 문제은행은 이 브라우저에 자동 저장(LocalStorage)<br>
+            - 다른 PC로 옮기려면 JSON 내보내기/가져오기 사용
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMIN -->
+      <div id="admin-screen" class="screen" style="justify-content:flex-start;">
+        <div class="admin-head">
+          <div class="admin-title">🔧 문제은행 관리자</div>
+          <button class="btn btn-ghost" style="width:auto; padding:10px 12px; font-family:'Noto Sans KR'; font-weight:900;" onclick="goIntro()">나가기</button>
+        </div>
+
+        <div class="card admin-card">
+          <div class="label">현재 문제 수 <span class="hint-mini" id="bankCount">-</span></div>
+          <div class="row">
+            <button class="btn btn-ghost" onclick="renderAdminTable()">목록 새로고침</button>
+            <button class="btn btn-danger" onclick="clearCustomBankConfirm()">커스텀 삭제(기본으로)</button>
+          </div>
+          <div class="tiny" style="margin-top:8px;">
+            - 권장: 관점별 20문항(총 100문항) 유지<br>
+            - 부족하면 출제 시 자동 보충(해당 관점 내에서 랜덤)
+          </div>
+        </div>
+
+        <div class="card admin-card">
+          <div class="label">문항 추가/수정</div>
+
+          <div class="row">
+            <div>
+              <div class="label">관점(t)</div>
+              <select id="ed_t" class="input">
+                <option value="T">T(시간)</option>
+                <option value="S">S(공간)</option>
+                <option value="SO">SO(사회)</option>
+                <option value="E">E(윤리)</option>
+                <option value="I">I(통합)</option>
+              </select>
+            </div>
+            <div>
+              <div class="label">난이도(d)</div>
+              <select id="ed_d" class="input">
+                <option value="하">하</option>
+                <option value="중">중</option>
+                <option value="상">상</option>
+              </select>
+            </div>
+            <div>
+              <div class="label">정답 번호(c)</div>
+              <select id="ed_c" class="input">
+                <option value="0">1번</option>
+                <option value="1">2번</option>
+                <option value="2">3번</option>
+                <option value="3">4번</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="label">문제(q)</div>
+          <input id="ed_q" class="input" placeholder="문제 문장">
+
+          <div class="row">
+            <div>
+              <div class="label">보기 1</div>
+              <input id="ed_a0" class="input" placeholder="보기 1">
+            </div>
+            <div>
+              <div class="label">보기 2</div>
+              <input id="ed_a1" class="input" placeholder="보기 2">
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <div class="label">보기 3</div>
+              <input id="ed_a2" class="input" placeholder="보기 3">
+            </div>
+            <div>
+              <div class="label">보기 4</div>
+              <input id="ed_a3" class="input" placeholder="보기 4">
+            </div>
+          </div>
+
+          <div class="label">해설(exp) <span class="hint-mini">정답 공개는 해설에서만</span></div>
+          <textarea id="ed_exp" placeholder="해설(짧고 쉽게)"></textarea>
+
+          <div class="row" style="margin-top:10px;">
+            <button class="btn btn-primary" onclick="saveEditor()">저장(추가/수정)</button>
+            <button class="btn btn-ghost" onclick="clearEditor()">입력칸 비우기</button>
+          </div>
+
+          <div class="warn" id="adminWarn"></div>
+        </div>
+
+        <div class="card admin-card">
+          <div class="label">JSON 내보내기 / 가져오기</div>
+          <div class="row">
+            <button class="btn btn-ghost" onclick="exportJSON()">JSON 내보내기(복사)</button>
+            <button class="btn btn-ghost" onclick="toggleImport()">JSON 가져오기</button>
+          </div>
+
+          <div id="importArea" style="display:none; margin-top:12px;">
+            <div class="label">여기에 JSON 붙여넣기</div>
+            <textarea id="importBox" placeholder='예: [{"t":"T","d":"하","q":"...","a":["...","...","...","..."],"c":0,"exp":"..."}]'></textarea>
+            <div class="row" style="margin-top:10px;">
+              <button class="btn btn-primary" onclick="applyImport()">가져오기 적용</button>
+              <button class="btn btn-ghost" onclick="toggleImport()">닫기</button>
+            </div>
+            <div class="tiny">- 적용하면 현재 문제은행이 통째로 교체됩니다.</div>
+          </div>
+        </div>
+
+        <div class="card admin-card">
+          <div class="label">문항 목록</div>
+          <div class="table-wrap" style="max-height:460px;">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:85px;">관점</th>
+                  <th style="width:70px;">난이도</th>
+                  <th>문제</th>
+                  <th style="width:190px;">관리</th>
+                </tr>
+              </thead>
+              <tbody id="adminTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+/* ===========================
+   블로그 기본값(항상 표시)
+   =========================== */
+const BLOG_NAME = "풀어쓰는 사회학";
+const BLOG_URL  = "https://www.kstephullab.com";
+
+/* ===========================
+   설정
+   =========================== */
+const ADMIN_PASSWORD = "edu123";
+const LS_BANK_KEY = "IS1_PERSPECTIVE_BANK_V5";
+
+/* ===========================
+   기본 문제은행
+   (v3에 있던 기본 BANK를 그대로 가져옴)
+   =========================== */
+const DEFAULT_BANK = [
+  /* ===== 시간 T (20) ===== */
+  { t:'T', d:'하', q:"현재 문제를 이해하려고 ‘과거→현재’ 변화 과정을 살펴보는 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"과거와 현재의 흐름(변화)을 연결하면 시간적 관점입니다." },
+  { t:'T', d:'하', q:"옛날 사진과 지금 사진을 비교해서 ‘도시가 어떻게 변했는지’ 보는 관점은?", a:["윤리적 관점","사회적 관점","시간적 관점","공간적 관점"], c:2, exp:"옛날→지금의 변화 비교는 시간적 관점입니다." },
+  { t:'T', d:'하', q:"‘예전에는 현금, 지금은 모바일 결제’처럼 생활 방식 변화 과정을 보는 관점은?", a:["시간적 관점","공간적 관점","윤리적 관점","사회적 관점"], c:0, exp:"생활 방식의 변화 과정은 시간적 관점입니다." },
+  { t:'T', d:'하', q:"‘미세먼지 문제가 언제부터 커졌는지’ 연도별 자료를 보는 관점은?", a:["공간적 관점","윤리적 관점","시간적 관점","사회적 관점"], c:2, exp:"연도별 변화(추세)는 시간적 관점입니다." },
+  { t:'T', d:'하', q:"‘인구가 해마다 줄었다’처럼 ‘추세(증가/감소)’를 보는 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"시간 흐름에 따른 추세는 시간적 관점입니다." },
+  { t:'T', d:'하', q:"‘옛날에는 대가족, 지금은 핵가족’ 변화 과정을 보는 관점은?", a:["시간적 관점","윤리적 관점","공간적 관점","사회적 관점"], c:0, exp:"가족 형태의 변화 과정은 시간적 관점입니다." },
+  { t:'T', d:'하', q:"‘과거 정책이 지금 문제에 어떤 영향을 줬는지’ 따져보는 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"과거 원인이 현재에 미친 영향 분석은 시간적 관점입니다." },
+  { t:'T', d:'하', q:"‘옛날 교통수단과 지금 교통수단’ 변화를 보는 관점은?", a:["윤리적 관점","시간적 관점","공간적 관점","사회적 관점"], c:1, exp:"교통수단의 변화 과정은 시간적 관점입니다." },
+  { t:'T', d:'하', q:"‘과거의 사건을 통해 현재를 설명’하는 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"과거 사건과 현재 연결은 시간적 관점입니다." },
+  { t:'T', d:'하', q:"‘미래 세대’를 위해 지금 자원을 아껴야 한다는 생각과 관련 깊은 관점은?", a:["공간적 관점","시간적 관점","사회적 관점","윤리적 관점"], c:1, exp:"현재-미래를 연결하는 시각은 시간적 관점과 연결됩니다." },
+  { t:'T', d:'중', q:"청년 실업을 설명하며 ‘외환위기 이후 산업 구조 변화’와 연결했다. 어떤 관점?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"과거 사건/구조 변화가 현재에 미친 영향은 시간적 관점입니다." },
+  { t:'T', d:'중', q:"‘출산율’이 2000년대부터 계속 내려간 이유를 시기별로 비교했다. 어떤 관점?", a:["시간적 관점","공간적 관점","윤리적 관점","사회적 관점"], c:0, exp:"시기별 비교(변화 원인 추적)는 시간적 관점입니다." },
+  { t:'T', d:'중', q:"‘기후 위기’를 설명하려고 산업혁명 이후 온도 변화 그래프를 해석했다. 어떤 관점?", a:["윤리적 관점","공간적 관점","시간적 관점","사회적 관점"], c:2, exp:"산업혁명 이후의 변화 흐름을 보는 것은 시간적 관점입니다." },
+  { t:'T', d:'중', q:"‘스마트폰 사용’이 늘어난 과정을 2010년대~현재로 나눠 분석했다. 관점은?", a:["공간적 관점","시간적 관점","사회적 관점","윤리적 관점"], c:1, exp:"시기별 변화 분석은 시간적 관점입니다." },
+  { t:'T', d:'중', q:"‘전통시장 이용’이 줄어든 이유를 대형마트 등장 시기와 연결했다. 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"등장 시기와 변화 과정을 연결하면 시간적 관점입니다." },
+  { t:'T', d:'중', q:"‘학교폭력’이 과거와 달리 온라인으로 바뀐 점을 시기별로 비교했다. 관점은?", a:["시간적 관점","공간적 관점","윤리적 관점","사회적 관점"], c:0, exp:"유형 변화의 과정(시간 흐름)은 시간적 관점입니다." },
+  { t:'T', d:'중', q:"‘지역 인구 감소’의 시작 시점을 찾기 위해 10년 단위 인구표를 봤다. 관점은?", a:["윤리적 관점","시간적 관점","공간적 관점","사회적 관점"], c:1, exp:"시점과 추세 확인은 시간적 관점입니다." },
+  { t:'T', d:'상', q:"‘고령화’ 원인을 출산 정책·의료 발달·가치관 변화를 ‘시기 흐름’으로 정리했다. 관점은?", a:["공간적 관점","시간적 관점","사회적 관점","윤리적 관점"], c:1, exp:"원인을 시간 흐름(변화 과정)으로 정리하면 시간적 관점입니다." },
+  { t:'T', d:'상', q:"‘주거 문제’에서 개발 정책→집값 변화→현재 전세/월세 문제로 이어짐을 설명했다. 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"정책-결과의 ‘시간적 연결’이 핵심입니다." },
+  { t:'T', d:'상', q:"한 현상을 ‘원인(과거)→결과(현재)→대안(미래)’로 구성해 발표했다. 가장 핵심 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"과거-현재-미래의 연속성을 잡는 것이 시간적 관점입니다." },
+
+  /* ===== 공간 S (20) ===== */
+  { t:'S', d:'하', q:"현상이 일어나는 ‘장소/위치/분포’를 살펴보는 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:1, exp:"지도, 위치, 분포를 보면 공간적 관점입니다." },
+  { t:'S', d:'하', q:"버스 노선도에서 ‘사람이 많이 타는 구간’을 찾아보는 관점은?", a:["윤리적 관점","사회적 관점","공간적 관점","시간적 관점"], c:2, exp:"이동 경로/분포는 공간적 관점입니다." },
+  { t:'S', d:'하', q:"지도에 ‘편의점이 많은 동네’를 표시해 보는 관점은?", a:["공간적 관점","시간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"어디에 많이 모였는지(분포)는 공간적 관점입니다." },
+  { t:'S', d:'하', q:"‘수도권에 인구가 몰림’을 지역별로 비교하는 관점은?", a:["공간적 관점","시간적 관점","윤리적 관점","사회적 관점"], c:0, exp:"지역 간 차이/분포는 공간적 관점입니다." },
+  { t:'S', d:'하', q:"‘학교 주변 위험구역’을 지도에 표시하고 동선을 바꾸는 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:1, exp:"장소와 동선 분석은 공간적 관점입니다." },
+  { t:'S', d:'하', q:"‘전염병이 어디서 어디로 퍼졌는지’ 이동 경로를 보는 관점은?", a:["공간적 관점","시간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"확산 경로(이동) 파악은 공간적 관점입니다." },
+  { t:'S', d:'하', q:"‘미세먼지가 심한 지역’을 지도 색으로 표시해 비교하는 관점은?", a:["윤리적 관점","공간적 관점","사회적 관점","시간적 관점"], c:1, exp:"지역별 차이를 지도화하면 공간적 관점입니다." },
+  { t:'S', d:'하', q:"‘아파트 단지’가 어디에 많이 생기는지(역세권/도심)를 보는 관점은?", a:["공간적 관점","시간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"입지(어디에 위치) 분석은 공간적 관점입니다." },
+  { t:'S', d:'하', q:"‘관광객이 많이 가는 곳’을 지도에 표시해 동선을 짜는 관점은?", a:["사회적 관점","윤리적 관점","시간적 관점","공간적 관점"], c:3, exp:"동선/네트워크 분석은 공간적 관점입니다." },
+  { t:'S', d:'하', q:"‘급식 재료가 어디서 오는지(산지)’를 지도에서 확인하는 관점은?", a:["공간적 관점","시간적 관점","윤리적 관점","사회적 관점"], c:0, exp:"산지-이동을 보는 것은 공간적 관점입니다." },
+  { t:'S', d:'중', q:"‘쓰레기 매립장’ 위치 때문에 주민 갈등이 생겼다. 여기서 핵심 관점은?", a:["공간적 관점","시간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"시설 위치(장소)와 주변 영향은 공간적 관점입니다." },
+  { t:'S', d:'중', q:"‘도서관이 있는 동네’와 ‘없는 동네’의 생활 차이를 비교했다. 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:1, exp:"지역별 시설 접근 차이는 공간적 관점입니다." },
+  { t:'S', d:'중', q:"‘배달이 잘 되는 지역’과 ‘배달이 어려운 지역(산간)’을 비교했다. 관점은?", a:["공간적 관점","시간적 관점","윤리적 관점","사회적 관점"], c:0, exp:"지형/거리/접근성은 공간적 관점입니다." },
+  { t:'S', d:'중', q:"‘침수 위험 지역’을 지도로 확인하고 대피소 위치를 정했다. 관점은?", a:["윤리적 관점","사회적 관점","공간적 관점","시간적 관점"], c:2, exp:"위험 분포와 대피 동선은 공간적 관점입니다." },
+  { t:'S', d:'중', q:"‘세계화’로 국경이 약해지고 물류가 빨라진 현상을 네트워크로 설명했다. 관점은?", a:["공간적 관점","시간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"영역/네트워크 변화는 공간적 관점입니다." },
+  { t:'S', d:'중', q:"‘직장이 도심에 몰려 출퇴근 혼잡’이 생긴 이유를 도시 구조로 설명했다. 관점은?", a:["시간적 관점","공간적 관점","윤리적 관점","사회적 관점"], c:1, exp:"도시 구조(공간 배치) 분석은 공간적 관점입니다." },
+  { t:'S', d:'중', q:"‘상권(가게)이 역 주변에 몰림’을 유동 인구와 연결했다. 관점은?", a:["공간적 관점","시간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"입지와 유동 인구는 공간적 관점입니다." },
+  { t:'S', d:'상', q:"‘지역 소멸’ 해결을 위해 인구 분포·교통망·일자리 위치를 한 지도에 겹쳐 분석했다. 관점은?", a:["공간적 관점","시간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"여러 요소를 지도에서 겹쳐보면 공간적 관점의 심화입니다." },
+  { t:'S', d:'상', q:"‘기후 난민’이 생길 지역을 해수면 상승 지도와 인구 밀도 지도로 함께 판단했다. 핵심 관점은?", a:["시간적 관점","사회적 관점","윤리적 관점","공간적 관점"], c:3, exp:"피해 지역과 인구 분포를 공간적으로 판단합니다." },
+  { t:'S', d:'상', q:"도시의 ‘주거지-산업단지-학교-교통’ 배치를 바꿔 문제를 해결하려 한다. 가장 핵심 관점은?", a:["공간적 관점","시간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"배치(공간 구조)를 바꾸는 해법은 공간적 관점입니다." },
+
+  /* ===== 사회 SO (20) ===== */
+  { t:'SO', d:'하', q:"개인 행동에 영향을 주는 ‘법/제도/규칙’을 보는 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:2, exp:"법·제도·규칙은 사회적 관점의 핵심입니다." },
+  { t:'SO', d:'하', q:"‘학교 규칙(교칙)’이 학생 생활에 미치는 영향을 보는 관점은?", a:["윤리적 관점","사회적 관점","공간적 관점","시간적 관점"], c:1, exp:"규칙/제도 영향 분석은 사회적 관점입니다." },
+  { t:'SO', d:'하', q:"‘알바 최저임금’처럼 노동 관련 법이 필요한 이유를 보는 관점은?", a:["사회적 관점","시간적 관점","공간적 관점","윤리적 관점"], c:0, exp:"노동 법/제도는 사회적 관점입니다." },
+  { t:'SO', d:'하', q:"‘소비자 보호법’ 같은 제도를 배우는 관점은?", a:["사회적 관점","윤리적 관점","공간적 관점","시간적 관점"], c:0, exp:"법과 제도는 사회적 관점입니다." },
+  { t:'SO', d:'하', q:"‘선거 제도’가 투표 참여에 어떤 영향을 주는지 보는 관점은?", a:["공간적 관점","사회적 관점","시간적 관점","윤리적 관점"], c:1, exp:"정치 제도 분석은 사회적 관점입니다." },
+  { t:'SO', d:'하', q:"‘학교폭력 처벌 기준’처럼 규정(규칙)을 살피는 관점은?", a:["사회적 관점","윤리적 관점","시간적 관점","공간적 관점"], c:0, exp:"처벌 기준/규정은 사회적 관점입니다." },
+  { t:'SO', d:'하', q:"‘복지 제도(기초생활보장)’가 필요한 이유를 보는 관점은?", a:["사회적 관점","윤리적 관점","공간적 관점","시간적 관점"], c:0, exp:"복지 제도는 사회적 관점에서 다룹니다." },
+  { t:'SO', d:'하', q:"‘교통 법규(안전벨트)’가 사고를 줄이는지 보는 관점은?", a:["윤리적 관점","사회적 관점","시간적 관점","공간적 관점"], c:1, exp:"법규와 효과는 사회적 관점입니다." },
+  { t:'SO', d:'하', q:"‘청소년 보호법’ 같은 규범이 필요한지 판단하는 관점은?", a:["사회적 관점","윤리적 관점","시간적 관점","공간적 관점"], c:0, exp:"법과 정책 판단은 사회적 관점입니다." },
+  { t:'SO', d:'하', q:"‘학교 급식 제도’가 어떻게 운영되는지(예산/규정)를 보는 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:2, exp:"제도 운영 구조를 보면 사회적 관점입니다." },
+  { t:'SO', d:'중', q:"딥페이크 범죄를 줄이기 위해 ‘처벌 강화’가 필요하다고 주장했다. 관점은?", a:["사회적 관점","윤리적 관점","공간적 관점","시간적 관점"], c:0, exp:"처벌/법 개정은 사회적 관점입니다." },
+  { t:'SO', d:'중', q:"비정규직 차별 해결을 위해 ‘노동 관련 법안’과 정책을 비교했다. 관점은?", a:["시간적 관점","사회적 관점","공간적 관점","윤리적 관점"], c:1, exp:"법안/정책 비교는 사회적 관점입니다." },
+  { t:'SO', d:'중', q:"교통 혼잡을 줄이기 위해 ‘대중교통 요금 정책’을 바꾸자고 했다. 관점은?", a:["공간적 관점","윤리적 관점","사회적 관점","시간적 관점"], c:2, exp:"요금 정책은 제도이므로 사회적 관점입니다." },
+  { t:'SO', d:'중', q:"학교폭력 예방을 위해 ‘학교 규정과 신고 절차’를 정비했다. 관점은?", a:["사회적 관점","윤리적 관점","시간적 관점","공간적 관점"], c:0, exp:"규정/절차 정비는 사회적 관점입니다." },
+  { t:'SO', d:'중', q:"주거 문제 해결을 위해 ‘공공임대 확대 정책’을 검토했다. 관점은?", a:["사회적 관점","공간적 관점","윤리적 관점","시간적 관점"], c:0, exp:"정책(제도) 접근은 사회적 관점입니다." },
+  { t:'SO', d:'중', q:"다문화 갈등을 줄이려 ‘지원 센터’ 같은 공공기관을 만들자고 했다. 관점은?", a:["사회적 관점","윤리적 관점","공간적 관점","시간적 관점"], c:0, exp:"기관/제도 마련은 사회적 관점입니다." },
+  { t:'SO', d:'중', q:"플라스틱 쓰레기를 줄이기 위해 ‘일회용품 규제’ 법안을 논의했다. 관점은?", a:["윤리적 관점","공간적 관점","사회적 관점","시간적 관점"], c:2, exp:"규제 법안은 사회적 관점입니다." },
+  { t:'SO', d:'상', q:"‘가짜뉴스 확산’을 막기 위해 플랫폼 책임, 처벌 규정, 교육 정책을 함께 제안했다. 핵심 관점은?", a:["공간적 관점","시간적 관점","사회적 관점","윤리적 관점"], c:2, exp:"규제/책임/정책은 사회적 관점의 심화입니다." },
+  { t:'SO', d:'상', q:"‘청소년 노동’ 문제에서 계약서·최저임금·신고 기관 제도를 근거로 해결책을 말했다. 관점은?", a:["윤리적 관점","사회적 관점","공간적 관점","시간적 관점"], c:1, exp:"제도적 장치(계약/임금/신고기관)는 사회적 관점입니다." },
+  { t:'SO', d:'상', q:"한 문제를 해결하기 위해 ‘법(규제)+예산(정책)+기관(운영)’을 설계했다. 관점은?", a:["사회적 관점","윤리적 관점","공간적 관점","시간적 관점"], c:0, exp:"정책 설계는 사회적 관점입니다." },
+
+  /* ===== 윤리 E (20) ===== */
+  { t:'E', d:'하', q:"행동이 ‘옳은지/그른지’, ‘바람직한지’를 판단하는 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:3, exp:"도덕 판단과 가치(옳고 그름)는 윤리적 관점입니다." },
+  { t:'E', d:'하', q:"친구를 놀리는 말이 ‘나쁘다’고 판단하는 관점은?", a:["윤리적 관점","사회적 관점","공간적 관점","시간적 관점"], c:0, exp:"옳고 그름 판단은 윤리적 관점입니다." },
+  { t:'E', d:'하', q:"공정무역 제품을 사는 이유를 ‘생산자 인권’으로 설명했다. 관점은?", a:["윤리적 관점","사회적 관점","시간적 관점","공간적 관점"], c:0, exp:"인권·배려의 가치는 윤리적 관점입니다." },
+  { t:'E', d:'하', q:"“쓰레기를 함부로 버리면 안 된다”처럼 ‘도덕’을 말하는 관점은?", a:["윤리적 관점","시간적 관점","공간적 관점","사회적 관점"], c:0, exp:"도덕적 규범 강조는 윤리적 관점입니다." },
+  { t:'E', d:'하', q:"온라인에서 남의 사진을 허락 없이 올리는 건 ‘잘못’이라고 비판했다. 관점은?", a:["사회적 관점","윤리적 관점","공간적 관점","시간적 관점"], c:1, exp:"인격권·예의·도덕 판단은 윤리적 관점입니다." },
+  { t:'E', d:'하', q:"“약자를 배려해야 한다”는 말과 가장 가까운 관점은?", a:["시간적 관점","공간적 관점","윤리적 관점","사회적 관점"], c:2, exp:"배려·존중·인권은 윤리적 관점입니다." },
+  { t:'E', d:'하', q:"“거짓말은 하면 안 된다”처럼 ‘정직’의 가치를 말하는 관점은?", a:["윤리적 관점","사회적 관점","시간적 관점","공간적 관점"], c:0, exp:"정직 같은 덕목은 윤리적 관점입니다." },
+  { t:'E', d:'하', q:"환경을 보호해야 하는 이유를 ‘생명 존중’으로 설명했다. 관점은?", a:["공간적 관점","윤리적 관점","사회적 관점","시간적 관점"], c:1, exp:"생명 존중 가치 강조는 윤리적 관점입니다." },
+  { t:'E', d:'하', q:"“차별은 나쁘다”라고 말하며 인권을 강조했다. 관점은?", a:["윤리적 관점","사회적 관점","공간적 관점","시간적 관점"], c:0, exp:"차별 반대·인권은 윤리적 관점입니다." },
+  { t:'E', d:'하', q:"“약속을 지키는 사람이 좋은 사람이다”처럼 바람직한 삶을 말하는 관점은?", a:["사회적 관점","윤리적 관점","시간적 관점","공간적 관점"], c:1, exp:"바람직한 삶·덕목은 윤리적 관점입니다." },
+  { t:'E', d:'중', q:"딥페이크 유포를 ‘인격을 훼손하는 비도덕’이라고 비판했다. 관점은?", a:["사회적 관점","윤리적 관점","공간적 관점","시간적 관점"], c:1, exp:"도덕적 비판과 인격권 가치는 윤리적 관점입니다." },
+  { t:'E', d:'중', q:"난민 수용 논의에서 ‘보편적 인권’과 ‘인류애’를 근거로 말했다. 관점은?", a:["윤리적 관점","사회적 관점","공간적 관점","시간적 관점"], c:0, exp:"보편적 인권은 윤리적 관점입니다." },
+  { t:'E', d:'중', q:"빈곤 해결을 ‘자선’이 아니라 ‘정의’의 문제라고 보았다. 관점은?", a:["윤리적 관점","사회적 관점","시간적 관점","공간적 관점"], c:0, exp:"정의(공정) 같은 가치는 윤리적 관점입니다." },
+  { t:'E', d:'중', q:"동물 실험에 대해 ‘고통을 줄여야 한다’고 주장했다. 관점은?", a:["윤리적 관점","사회적 관점","공간적 관점","시간적 관점"], c:0, exp:"고통 최소화·생명 존중은 윤리적 관점입니다." },
+  { t:'E', d:'중', q:"AI 기술은 ‘사람을 해치지 않게 책임 있게’ 써야 한다고 했다. 관점은?", a:["사회적 관점","윤리적 관점","공간적 관점","시간적 관점"], c:1, exp:"책임·해악 방지 같은 기준은 윤리적 관점입니다." },
+  { t:'E', d:'중', q:"학교폭력 문제를 ‘가해자/피해자 인권’ 관점에서 판단했다. 관점은?", a:["윤리적 관점","사회적 관점","공간적 관점","시간적 관점"], c:0, exp:"인권 판단은 윤리적 관점입니다." },
+  { t:'E', d:'중', q:"환경 문제를 ‘인간 중심’이 아니라 ‘생태 중심’으로 보자고 했다. 관점은?", a:["윤리적 관점","사회적 관점","공간적 관점","시간적 관점"], c:0, exp:"가치관(관점) 전환 요구는 윤리적 관점입니다." },
+  { t:'E', d:'상', q:"“개인의 자유”와 “공동체 안전”이 충돌할 때, ‘가치 기준’으로 판단했다. 관점은?", a:["공간적 관점","시간적 관점","사회적 관점","윤리적 관점"], c:3, exp:"가치 충돌을 판단하고 기준을 세우는 것은 윤리적 관점입니다." },
+  { t:'E', d:'상', q:"‘개인정보 보호’와 ‘범죄 예방’을 놓고 ‘정당한 범위’를 따졌다. 관점은?", a:["윤리적 관점","사회적 관점","시간적 관점","공간적 관점"], c:0, exp:"정당성/가치 균형 판단은 윤리적 관점입니다." },
+  { t:'E', d:'상', q:"환경 정책을 평가할 때 ‘약자가 더 피해 보지 않는지’까지 따졌다. 관점은?", a:["사회적 관점","윤리적 관점","공간적 관점","시간적 관점"], c:1, exp:"정의·약자 배려 같은 가치 판단은 윤리적 관점입니다." },
+
+  /* ===== 통합 I (20) ===== */
+  { t:'I', d:'하', q:"시간·공간·사회·윤리 관점을 ‘함께’ 써서 문제를 보는 태도는?", a:["통합적 관점","단편적 관점","한 가지 관점","감정적 관점"], c:0, exp:"여러 관점을 함께 쓰면 통합적 관점입니다." },
+  { t:'I', d:'하', q:"통합적 관점이 필요한 이유로 가장 알맞은 것은?", a:["한 가지 원인만 찾기 위해","복잡한 문제를 제대로 이해하려고","빨리 결론 내리려고","내 주장만 밀기 위해"], c:1, exp:"복잡한 문제는 여러 관점으로 봐야 이해가 깊어집니다." },
+  { t:'I', d:'하', q:"다음 중 ‘통합적 관점’에 가장 가까운 태도는?", a:["지도만 본다","법만 고친다","옳고 그름만 따진다","여러 관점을 같이 본다"], c:3, exp:"여러 관점을 함께 보는 태도가 통합적 관점입니다." },
+  { t:'I', d:'하', q:"‘인간-사회-환경’이 서로 영향을 준다고 보는 관점은?", a:["통합적 관점","개별적 관점","무관심 관점","단편적 관점"], c:0, exp:"서로의 관계를 보는 것이 통합적 관점입니다." },
+  { t:'I', d:'하', q:"통합적 관점이 부족하면 생길 수 있는 문제는?", a:["해결이 왜곡될 수 있다","문제가 갑자기 사라진다","정보가 너무 늘어난다","공부가 쉬워진다"], c:0, exp:"한쪽만 보면 해결책이 단편적이 됩니다." },
+  { t:'I', d:'하', q:"‘교통 문제’를 해결할 때 도로(공간)+법(사회)+안전(윤리)+변화(시간)를 함께 고려했다. 관점은?", a:["통합적 관점","기술적 관점","단편적 관점","감정적 관점"], c:0, exp:"여러 관점을 함께 고려했으므로 통합적 관점입니다." },
+  { t:'I', d:'하', q:"다음 중 통합적 관점이 ‘아닌’ 것은?", a:["과거와 현재 비교","지역 차이 분석","제도 개선 제안","그냥 내 기분대로 판단"], c:3, exp:"근거 없이 감정만으로 판단하면 통합적 관점이 아닙니다." },
+  { t:'I', d:'하', q:"‘학교폭력’ 해결을 위해 규정·상담·피해자 보호·예방 교육을 함께 말했다. 관점은?", a:["통합적 관점","윤리적 관점","사회적 관점","시간적 관점"], c:0, exp:"한 가지가 아니라 여러 요소를 함께 묶었습니다." },
+  { t:'I', d:'중', q:"‘기후 위기’ 탐구에서 (시간)변화 (공간)피해 지역 (사회)규제 정책 (윤리)세대 책임을 모두 썼다. 관점은?", a:["통합적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"네 가지 관점을 모두 사용했습니다." },
+  { t:'I', d:'중', q:"다음 중 통합적 관점으로 가장 잘 분석한 것은?", a:["미세먼지는 짜증난다","우리 동네만 문제다","법만 만들면 끝","원인·지역·제도·가치를 함께 봄"], c:3, exp:"원인(시간), 지역(공간), 제도(사회), 가치(윤리)를 함께 봅니다." },
+  { t:'I', d:'중', q:"‘청소년 알바 문제’ 해결로 적절한 조합은?", a:["(시간) 옛날도 그랬다로 끝","(공간) 가게 위치만 바꿈","(사회) 근로계약/최저임금/신고절차 + (윤리) 존중","(윤리) 마음가짐만 강조"], c:2, exp:"제도(사회)+존중(윤리)을 함께 접근하면 통합에 가깝습니다." },
+  { t:'I', d:'중', q:"‘지역 인구 감소’ 해결을 ①왜(시간) ②어디(공간) ③정책(사회) ④공정(윤리)로 조사했다. 관점은?", a:["통합적 관점","시간적 관점","공간적 관점","사회적 관점"], c:0, exp:"관점별 질문을 모두 활용한 통합적 접근입니다." },
+  { t:'I', d:'중', q:"다음 설명에서 통합적 관점으로 빠진 요소는? “변화(시간), 피해 지역(공간), 규제(사회)를 봤다.”", a:["시간","공간","사회","윤리"], c:3, exp:"가치 판단(책임/정의/인권) 같은 윤리 요소가 빠졌습니다." },
+  { t:'I', d:'중', q:"‘학교 주변 안전’ 해결로 가장 통합적인 것은?", a:["CCTV만 늘린다","학생 탓만 한다","위험(공간)+규칙(사회)+존중(윤리)+사례(시간)","그냥 주의하라고 말한다"], c:2, exp:"여러 관점을 함께 고려한 선택이 통합적입니다." },
+  { t:'I', d:'중', q:"‘주거 문제’에서 집값 변화(시간)+지역 격차(공간)+임대 제도(사회)+주거권(윤리)을 함께 봤다. 관점은?", a:["통합적 관점","사회적 관점","공간적 관점","윤리적 관점"], c:0, exp:"시간·공간·사회·윤리를 함께 사용했습니다." },
+  { t:'I', d:'중', q:"다음 중 통합적 해결책에 가장 가까운 것은?", a:["가난은 게으름","법만 세게","지도만 만들기","원인 분석+지역 맞춤+제도 개선+약자 배려"], c:3, exp:"복합 해결책이 통합적 관점입니다." },
+  { t:'I', d:'상', q:"‘온라인 혐오 표현’ 문제를 가장 통합적으로 설명한 것은?", a:["개인 인성이 문제(윤리만)","인터넷이 문제(공간만)","법 강화만(사회만)","변화+네트워크+정책+인권"], c:3, exp:"여러 관점을 결합한 설명이 통합적입니다." },
+  { t:'I', d:'상', q:"‘교통 혼잡’ 대안으로 도로/정책/통근 분산/약자 배려까지 함께 설계했다. 평가는?", a:["공간만 고려","사회만 고려","통합적 접근","윤리만 고려"], c:2, exp:"여러 영역을 함께 고려했으니 통합적 접근입니다." },
+  { t:'I', d:'상', q:"다음 중 통합적 관점의 핵심을 가장 정확히 말한 것은?", a:["한 관점만 깊게","느낌으로 판단","서로 연결(원인-결과-대안)을 종합","정답만 외우기"], c:2, exp:"관점들을 연결해 종합(관계/연결)하는 것이 핵심입니다." },
+  { t:'I', d:'상', q:"‘화성 이주 도시’ 설계에서 배치/이동망/규칙/가치/세대 책임까지 고려했다. 관점은?", a:["기술적 관점","통합적 관점","단편적 관점","감정적 관점"], c:1, exp:"공간·사회·윤리·시간 요소를 묶어 설계하면 통합적 관점입니다." },
+
+  /* ===== 추가 문제: 다양한 유형 (OX, 빈칸, 상황형, 뉴스형) ===== */
+  
+  /* 시간 - 추가 */
+  { t:'T', d:'하', q:"⭕❌ '과거 정책이 현재에 미친 영향을 분석하는 것'은 시간적 관점이다.", a:["⭕ 맞다","❌ 틀리다","공간적 관점이다","사회적 관점이다"], c:0, exp:"과거→현재 영향 분석은 시간적 관점입니다." },
+  { t:'T', d:'하', q:"다음 중 '시간적 관점'의 핵심 질문은?", a:["어디서 발생해?","법이 뭐야?","🕐 언제부터 시작됐어?","옳은 일이야?"], c:2, exp:"'언제부터'는 시간적 관점의 핵심 질문입니다." },
+  { t:'T', d:'중', q:"📰 뉴스: '10년 전과 비교해 1인 가구가 2배 증가' — 이 기사의 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"'10년 전과 비교'는 시간적 변화 분석입니다." },
+  { t:'T', d:'중', q:"빈칸: '임진왜란 때 버린 플라스틱이 아직 안 썩었다'는 비유는 (    ) 관점을 강조한다.", a:["⏰ 시간적","📍 공간적","🏛 사회적","⚖️ 윤리적"], c:0, exp:"500년이라는 시간 흐름을 강조하므로 시간적 관점입니다." },
+  { t:'T', d:'상', q:"🎯 상황: 선생님이 '이 문제의 뿌리(기원)를 찾아보자'라고 했다. 어떤 관점?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:0, exp:"'뿌리/기원'은 과거를 추적하는 시간적 관점입니다." },
+
+  /* 공간 - 추가 */
+  { t:'S', d:'하', q:"⭕❌ '서울과 지방의 의료 시설 차이를 비교'하는 것은 공간적 관점이다.", a:["⭕ 맞다","❌ 틀리다","시간적 관점이다","윤리적 관점이다"], c:0, exp:"지역 간 비교는 공간적 관점입니다." },
+  { t:'S', d:'하', q:"다음 중 '공간적 관점'의 핵심 질문은?", a:["언제부터야?","법이 뭐야?","📍 왜 하필 여기서 발생해?","옳은 일이야?"], c:2, exp:"'왜 하필 여기서'는 공간적 관점의 핵심 질문입니다." },
+  { t:'S', d:'중', q:"📰 뉴스: '태평양에 한국 면적 16배 쓰레기 섬' — 이 기사가 강조하는 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:1, exp:"쓰레기가 '어디에' 모였는지를 보여주는 공간적 관점입니다." },
+  { t:'S', d:'중', q:"빈칸: '쓰레기 식민주의'란 선진국 쓰레기가 개발도상국으로 (    )하는 현상이다.", a:["이동","축적","분해","증가"], c:0, exp:"공간적 이동(흐름)을 다루는 개념입니다." },
+  { t:'S', d:'상', q:"🎯 상황: '왜 이 지역에만 노인이 많을까?'라는 질문. 어떤 관점?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:1, exp:"'이 지역에만'은 공간적 분포를 묻는 질문입니다." },
+
+  /* 사회 - 추가 */
+  { t:'SO', d:'하', q:"⭕❌ 'EPR(생산자 책임 재활용 제도)'은 사회적 관점의 해결책이다.", a:["⭕ 맞다","❌ 틀리다","공간적 관점이다","시간적 관점이다"], c:0, exp:"제도/정책은 사회적 관점의 핵심입니다." },
+  { t:'SO', d:'하', q:"다음 중 '사회적 관점'의 핵심 질문은?", a:["언제부터야?","어디서 발생해?","🏛 이 판의 규칙(법)이 뭐야?","옳은 일이야?"], c:2, exp:"'규칙/법'을 묻는 것이 사회적 관점의 핵심입니다." },
+  { t:'SO', d:'중', q:"📰 뉴스: '플라스틱 규제법 국회 통과' — 이 기사가 다루는 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:2, exp:"법/규제는 사회적 관점입니다." },
+  { t:'SO', d:'중', q:"빈칸: 개인의 텀블러 사용보다 (    )을 바꾸는 게 더 효과적이다.", a:["마음가짐","제도/시스템","위치","시간"], c:1, exp:"시스템/제도 변화가 사회적 관점의 핵심입니다." },
+  { t:'SO', d:'상', q:"🎯 상황: '개인 노력만으로는 안 돼, 시스템을 바꿔야 해'라는 주장. 어떤 관점?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:2, exp:"시스템/제도 변화 주장은 사회적 관점입니다." },
+
+  /* 윤리 - 추가 */
+  { t:'E', d:'하', q:"⭕❌ '이건 쪽팔리는 일이야?'라고 묻는 것은 윤리적 관점이다.", a:["⭕ 맞다","❌ 틀리다","사회적 관점이다","공간적 관점이다"], c:0, exp:"양심/도덕 판단은 윤리적 관점입니다." },
+  { t:'E', d:'하', q:"다음 중 '윤리적 관점'의 핵심 질문은?", a:["언제부터야?","어디서 발생해?","법이 뭐야?","⚖️ 이건 옳은 일이야?"], c:3, exp:"'옳은 일인가'는 윤리적 관점의 핵심 질문입니다." },
+  { t:'E', d:'중', q:"📰 뉴스: '동물 실험 반대 시위, 생명 존중 외쳐' — 이 기사가 강조하는 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:3, exp:"생명 존중은 윤리적 관점입니다." },
+  { t:'E', d:'중', q:"빈칸: 인간 중심주의의 반대 개념으로, 자연의 가치를 인정하는 것은 (    ) 중심주의이다.", a:["사회","공간","생태","시간"], c:2, exp:"생태 중심주의는 윤리적 관점의 핵심 개념입니다." },
+  { t:'E', d:'상', q:"🎯 상황: '그건 법적으로 괜찮지만, 도덕적으로 문제야'라는 발언. 어떤 관점?", a:["시간적 관점","공간적 관점","사회적 관점","윤리적 관점"], c:3, exp:"법(사회)과 도덕(윤리)을 구분하는 윤리적 관점입니다." },
+
+  /* 통합 - 추가 */
+  { t:'I', d:'하', q:"⭕❌ '한 가지 관점만으로 복잡한 문제를 해결할 수 있다'는 맞는 말이다.", a:["❌ 틀리다","⭕ 맞다","상황에 따라 다르다","모르겠다"], c:0, exp:"복잡한 문제는 여러 관점(통합적 관점)이 필요합니다." },
+  { t:'I', d:'중', q:"📰 뉴스 분석: 플라스틱 문제를 ①역사 ②분포 ③규제 ④환경윤리로 다뤘다. 이 기사의 관점은?", a:["시간적 관점","공간적 관점","사회적 관점","통합적 관점"], c:3, exp:"4가지 관점을 모두 사용했으므로 통합적 관점입니다." },
+  { t:'I', d:'중', q:"빈칸: 통합적 관점의 핵심은 여러 관점 사이의 (    )을 찾는 것이다.", a:["차이점","연결/관계","순서","정답"], c:1, exp:"관점들 사이의 연결/관계를 찾는 것이 통합적 관점입니다." },
+  { t:'I', d:'상', q:"🎯 상황: 모둠 발표에서 시간팀/공간팀/사회팀/윤리팀의 분석을 종합했다. 이 활동의 목적은?", a:["각자 전문성 강화","통합적 관점 훈련","시험 대비","시간 절약"], c:1, exp:"여러 관점을 종합하는 것이 통합적 관점 훈련입니다." },
+];
+
+/* ===========================
+   런타임 문제은행
+   =========================== */
+let BANK = loadBank();
+
+/* ===========================
+   출제/상태
+   =========================== */
+const TYPES = ['T','S','SO','E','I'];
+const DIFFS = ['하','중','상'];
+
+let TOTAL_Q = 20;
+let PLAN_PER_TYPE = { '하':2, '중':1, '상':1 };
+
+let currentQuestions = [];
+let currentIdx = 0;
+let userAnswers = [];
+let correctCount = 0;
+
+let timerInterval;
+let seconds = 0;
+
+let stats = { T:0, S:0, SO:0, E:0, I:0 };
+let totalStats = { T:0, S:0, SO:0, E:0, I:0 };
+
+let locked = false;
+
+let studentInfo = { classNo:"", name:"" };
+
+let editorMode = "new";
+let editingIndex = -1;
+
+/* ===========================
+   화면 전환
+   =========================== */
+function showScreen(id){
+  const screens = ['intro-screen','quiz-screen','result-screen','admin-login-screen','admin-screen'];
+  screens.forEach(s=>{
+    const el = document.getElementById(s);
+    if(!el) return;
+    el.classList.toggle('active', s===id);
+  });
+}
+function goIntro(){ showScreen('intro-screen'); }
+function openAdminLogin(){
+  document.getElementById('adminPass').value = "";
+  showScreen('admin-login-screen');
+}
+function adminLogin(){
+  const p = document.getElementById('adminPass').value;
+  if(p !== ADMIN_PASSWORD) return alert("비밀번호가 틀렸습니다.");
+  showScreen('admin-screen');
+  renderAdminTable();
+  clearEditor();
+}
+
+/* ===========================
+   저장/로드
+   =========================== */
+function loadBank(){
+  try{
+    const raw = localStorage.getItem(LS_BANK_KEY);
+    if(!raw) return JSON.parse(JSON.stringify(DEFAULT_BANK));
+    const data = JSON.parse(raw);
+    if(!Array.isArray(data)) return JSON.parse(JSON.stringify(DEFAULT_BANK));
+    return sanitizeBank(data);
+  }catch(e){
+    return JSON.parse(JSON.stringify(DEFAULT_BANK));
+  }
+}
+function saveBank(){
+  localStorage.setItem(LS_BANK_KEY, JSON.stringify(BANK));
+}
+function sanitizeBank(arr){
+  const ok = [];
+  arr.forEach(q=>{
+    if(!q) return;
+    const t = String(q.t||"").trim();
+    const d = String(q.d||"").trim();
+    const qq = String(q.q||"").trim();
+    const a = Array.isArray(q.a) ? q.a.map(x=>String(x||"")) : [];
+    const c = Number.isFinite(q.c) ? q.c : parseInt(q.c,10);
+    const exp = String(q.exp||"").trim();
+    if(!['T','S','SO','E','I'].includes(t)) return;
+    if(!['하','중','상'].includes(d)) return;
+    if(!qq) return;
+    if(a.length!==4) return;
+    if(!(c===0||c===1||c===2||c===3)) return;
+    ok.push({ t, d, q:qq, a:[a[0],a[1],a[2],a[3]], c, exp: exp || "핵심 단서를 먼저 찾고, 관점을 결정하세요." });
+  });
+  return ok;
+}
+
+/* ===========================
+   유틸
+   =========================== */
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function pickN(pool, n){
+  return shuffle(pool).slice(0, Math.min(n, pool.length));
+}
+function escapeHtml(str){
+  return String(str)
+    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+
+/* ===========================
+   계획 설정(문항수)
+   =========================== */
+function setPlanByCount(n){
+  TOTAL_Q = n;
+  const perType = n / 5;
+  const unit = perType / 4;
+  PLAN_PER_TYPE = {
+    '하': Math.round(unit*2),
+    '중': Math.round(unit*1),
+    '상': Math.round(unit*1)
+  };
+  let sum = PLAN_PER_TYPE['하']+PLAN_PER_TYPE['중']+PLAN_PER_TYPE['상'];
+  while(sum < perType){ PLAN_PER_TYPE['하']++; sum++; }
+  while(sum > perType){
+    if(PLAN_PER_TYPE['하']>0){ PLAN_PER_TYPE['하']--; sum--; }
+    else if(PLAN_PER_TYPE['중']>0){ PLAN_PER_TYPE['중']--; sum--; }
+    else { PLAN_PER_TYPE['상']--; sum--; }
+  }
+}
+
+/* ===========================
+   균등 출제
+   =========================== */
+function pickBalancedQuestions(){
+  const selected = [];
+  const perType = TOTAL_Q / 5;
+
+  TYPES.forEach(type=>{
+    const poolByDiff = {
+      '하': BANK.filter(q=>q.t===type && q.d==='하'),
+      '중': BANK.filter(q=>q.t===type && q.d==='중'),
+      '상': BANK.filter(q=>q.t===type && q.d==='상'),
+    };
+
+    let chosen = [];
+    DIFFS.forEach(d=>{
+      chosen.push(...pickN(poolByDiff[d], PLAN_PER_TYPE[d]));
+    });
+
+    if(chosen.length < perType){
+      const fallback = BANK.filter(q=>q.t===type && !chosen.includes(q));
+      chosen.push(...pickN(fallback, perType - chosen.length));
+    }
+    selected.push(...chosen.slice(0, perType));
+  });
+
+  return shuffle(selected).slice(0, TOTAL_Q);
+}
+
+/* ===========================
+   시작
+   =========================== */
+function startQuiz(){
+  const classNo = document.getElementById('classNo').value.trim();
+  const name = document.getElementById('username').value.trim();
+  if(!classNo) return alert("반 번호를 입력해주세요!");
+  if(!name) return alert("이름을 입력해주세요!");
+
+  studentInfo.classNo = classNo;
+  studentInfo.name = name;
+
+  const count = parseInt(document.getElementById('quizCount').value, 10);
+  setPlanByCount(count);
+
+  currentQuestions = pickBalancedQuestions();
+
+  currentIdx = 0;
+  userAnswers = [];
+  correctCount = 0;
+  seconds = 0;
+  locked = false;
+
+  stats = { T:0, S:0, SO:0, E:0, I:0 };
+  totalStats = { T:0, S:0, SO:0, E:0, I:0 };
+  currentQuestions.forEach(q=>totalStats[q.t]++);
+
+  document.getElementById('timer').innerText = "00:00";
+
+  showScreen('quiz-screen');
+  renderQuestion();
+
+  if(timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(updateTimer, 1000);
+}
+
+/* ===========================
+   타이머
+   =========================== */
+function updateTimer(){
+  seconds++;
+  const m = String(Math.floor(seconds/60)).padStart(2,'0');
+  const s = String(seconds%60).padStart(2,'0');
+  document.getElementById('timer').innerText = `${m}:${s}`;
+}
+
+/* ===========================
+   ✅ 문제 렌더(관점/난이도/힌트 숨김)
+   =========================== */
+function renderQuestion(){
+  const q = currentQuestions[currentIdx];
+  document.getElementById('q-progress').innerText = `${currentIdx+1} / ${TOTAL_Q}`;
+  document.getElementById('p-bar').style.width = `${(currentIdx/TOTAL_Q)*100}%`;
+
+  // 보기 섞기(정답 인덱스는 원래 a 기준이므로 data-idx로 유지)
+  const opts = shuffle(q.a.map((txt, idx)=>({txt, idx})));
+
+  const qArea = document.getElementById('q-area');
+  qArea.innerHTML = `
+    <div class="q-badge">문제 ${currentIdx+1}</div>
+    <div class="q-text">${escapeHtml(q.q)}</div>
+    <div class="options">
+      ${opts.map(o=>`
+        <div class="opt" data-idx="${o.idx}" onclick="checkAnswer(${o.idx}, this)">
+          ${escapeHtml(o.txt)}
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  document.getElementById('explain-box').style.display = 'none';
+  document.getElementById('explain-title').innerText = "해설";
+  document.getElementById('explain-sub').innerText = "";
+  locked = false;
+}
+
+/* ===========================
+   정답 체크
+   =========================== */
+function checkAnswer(selectedIdx, btnElement){
+  if(locked) return;
+  locked = true;
+
+  const q = currentQuestions[currentIdx];
+  const isCorrect = (selectedIdx === q.c);
+
+  const allBtns = document.querySelectorAll('.opt');
+  allBtns.forEach(b=>{
+    b.onclick = null;
+    const idx = parseInt(b.getAttribute('data-idx'), 10);
+    if(idx === q.c) b.classList.add('correct');
+  });
+  if(!isCorrect) btnElement.classList.add('wrong');
+
+  if(isCorrect){
+    correctCount++;
+    stats[q.t]++;
+  }
+
+  userAnswers.push({
+    t:q.t, d:q.d, q:q.q,
+    isCorrect,
+    myAns: q.a[selectedIdx],
+    correctAns: q.a[q.c],
+    exp: q.exp || "핵심 단서를 먼저 찾고, 관점을 결정하세요."
+  });
+
+  // ✅ 관점 공개는 해설에서만(문제 풀이 중 정답 힌트 방지)
+  const box = document.getElementById('explain-box');
+  const title = document.getElementById('explain-title');
+  const sub = document.getElementById('explain-sub');
+
+  title.innerHTML = isCorrect ? "✅ 정답! (해설)" : "❌ 오답! (해설)";
+  sub.innerHTML =
+    `<b>정답:</b> ${escapeHtml(q.a[q.c])}<br>` +
+    `<b>이 문항의 관점:</b> <span style="font-weight:900; color:#0f172a;">${escapeHtml(getGubun(q.t))}</span> <span class="pill">${escapeHtml(q.d)}</span><br>` +
+    `<b>해설:</b> ${escapeHtml(q.exp || "핵심 단서를 먼저 찾고, 관점을 결정하세요.")}<br>` +
+    `<span style="color:#64748b;"><b>빠른 체크:</b> ${escapeHtml(quickCheck(q.t))}</span>`;
+
+  box.style.display = 'block';
+
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.innerText = (currentIdx === TOTAL_Q-1) ? "결과 보기" : "다음";
+}
+
+/* ===========================
+   같은 문제 다시
+   =========================== */
+function retryThis(){
+  if(!locked) return;
+  const last = userAnswers.pop();
+  if(last && last.isCorrect){
+    correctCount = Math.max(0, correctCount-1);
+    stats[last.t] = Math.max(0, stats[last.t]-1);
+  }
+  renderQuestion();
+}
+
+/* ===========================
+   다음 이동
+   =========================== */
+function goNext(){
+  if(!locked) return;
+  currentIdx++;
+  if(currentIdx < TOTAL_Q) renderQuestion();
+  else finishQuiz();
+}
+
+/* ===========================
+   종료 + 결과
+   =========================== */
+function finishQuiz(){
+  if(timerInterval) clearInterval(timerInterval);
+
+  const scaledScore = Math.round((correctCount / TOTAL_Q) * 100);
+
+  showScreen('result-screen');
+
+  document.getElementById('res-class').innerText = studentInfo.classNo;
+  document.getElementById('res-name').innerText = studentInfo.name;
+
+  document.getElementById('res-score').innerText = scaledScore;
+  document.getElementById('res-correct').innerText = correctCount;
+  document.getElementById('res-total').innerText = TOTAL_Q;
+
+  const m = String(Math.floor(seconds/60)).padStart(2,'0');
+  const s = String(seconds%60).padStart(2,'0');
+  document.getElementById('res-time').innerText = `${m}:${s}`;
+
+  updateStatBar('time','T','시간적 관점');
+  updateStatBar('space','S','공간적 관점');
+  updateStatBar('social','SO','사회적 관점');
+  updateStatBar('ethics','E','윤리적 관점');
+  updateStatBar('integrated','I','통합적 관점(전체)');
+
+  generateAnalysisAndMiniLesson(scaledScore);
+  renderWrongNote();
+  renderBlogFooter(); // ✅ 항상 표시
+}
+
+/* ===========================
+   관점별 막대
+   =========================== */
+function updateStatBar(id, key, label){
+  const total = totalStats[key];
+  const correct = stats[key];
+  const percent = total===0 ? 0 : Math.round((correct/total)*100);
+
+  const bar = document.getElementById(`bar-${id}`);
+  const txt = document.getElementById(`txt-${id}`);
+
+  if(bar) bar.style.width = `${percent}%`;
+  if(txt) txt.innerText = `${label}: ${correct}/${total} (${percent}%)`;
+  return percent;
+}
+
+/* ===========================
+   분석 + 미니강의
+   =========================== */
+function generateAnalysisAndMiniLesson(scaledScore){
+  const pool = [
+    {k:'T', p:getPercent('T'), n:'시간적'},
+    {k:'S', p:getPercent('S'), n:'공간적'},
+    {k:'SO', p:getPercent('SO'), n:'사회적'},
+    {k:'E', p:getPercent('E'), n:'윤리적'},
+    {k:'I', p:getPercent('I'), n:'통합적'}
+  ].sort((a,b)=>a.p-b.p);
+
+  const worst = pool[0];
+  const best  = pool[pool.length-1];
+
+  let msg="";
+  if(scaledScore>=90){
+    msg="🏆 <b>마스터급!</b> 관점 구분이 매우 안정적입니다. 이제는 ‘다른 관점으로 연결하기(원인/지역/제도/가치)’까지 연습하면 완성입니다.";
+  }else if(scaledScore>=70){
+    msg=`👍 <b>좋은 흐름!</b> <b>${best.n} 관점</b>이 강점입니다. 다음 목표는 <b>${worst.n} 관점</b>에서 ‘단서 한 단어’로 관점을 빠르게 잡는 연습입니다.`;
+  }else{
+    msg=`💪 <b>지금부터가 핵심!</b> 헷갈리는 건 정상입니다. 특히 <b>${worst.n} 관점</b>에서 실수가 많았으니 오답노트의 ‘관점’만 먼저 확인하고 다시 도전하세요.`;
+  }
+  document.getElementById('analysis-text').innerHTML = msg;
+
+  const mini = document.getElementById('mini-lesson');
+  const lesson = getMiniLesson(worst.k);
+  mini.style.display = 'block';
+  mini.innerHTML = `
+    <b>📌 ${worst.n} 관점 3줄 보충</b><br>
+    1) ${escapeHtml(lesson[0])}<br>
+    2) ${escapeHtml(lesson[1])}<br>
+    3) ${escapeHtml(lesson[2])}
+  `;
+}
+function getPercent(key){
+  return totalStats[key]===0 ? 0 : (stats[key]/totalStats[key])*100;
+}
+
+/* ===========================
+   오답노트 + 오답만 다시
+   =========================== */
+function renderWrongNote(){
+  const wrong = userAnswers.filter(x=>!x.isCorrect);
+  const box = document.getElementById('wrong-list');
+
+  if(wrong.length===0){
+    box.innerHTML = "<div style='text-align:center; padding:16px; font-weight:900;'>🎉 전부 정답! 완벽합니다!</div>";
+    return;
+  }
+
+  box.innerHTML = wrong.map(w=>`
+    <div class="wrong">
+      <div class="wrong-q">Q. ${escapeHtml(w.q)} <span class="pill">${escapeHtml(getGubun(w.t))} · ${escapeHtml(w.d)}</span></div>
+      <div style="color:#e11d48; font-weight:900;">❌ 내가 고른 답: ${escapeHtml(w.myAns)}</div>
+      <div style="color:#16a34a; font-weight:900; margin-top:4px;">⭕ 정답: ${escapeHtml(w.correctAns)}</div>
+      <div style="color:#334155; margin-top:8px; line-height:1.6;">💡 해설: ${escapeHtml(w.exp)}</div>
+    </div>
+  `).join('');
+}
+
+function retryWrongOnly(){
+  const wrong = userAnswers.filter(x=>!x.isCorrect);
+  if(wrong.length===0) return alert("오답이 없어요! 🎉");
+
+  currentQuestions = shuffle(wrong.map(w=>{
+    return BANK.find(q=>q.q===w.q) || null;
+  }).filter(Boolean));
+
+  if(currentQuestions.length===0) return alert("오답 문항을 다시 구성하지 못했어요(매칭 실패).");
+
+  TOTAL_Q = currentQuestions.length;
+  currentIdx = 0;
+  userAnswers = [];
+  correctCount = 0;
+  seconds = 0;
+  locked = false;
+
+  stats = { T:0, S:0, SO:0, E:0, I:0 };
+  totalStats = { T:0, S:0, SO:0, E:0, I:0 };
+  currentQuestions.forEach(q=>totalStats[q.t]++);
+
+  showScreen('quiz-screen');
+  document.getElementById('timer').innerText = "00:00";
+  if(timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(updateTimer, 1000);
+  renderQuestion();
+}
+
+/* ===========================
+   블로그 하단(항상 표시)
+   =========================== */
+function renderBlogFooter(){
+  const footer = document.getElementById('blog-footer');
+  footer.innerHTML = `🔗 <b>${escapeHtml(BLOG_NAME)}</b> 바로가기: <a href="${escapeHtml(BLOG_URL)}" target="_blank" rel="noopener noreferrer">${escapeHtml(BLOG_URL)}</a>`;
+}
+
+/* ===========================
+   관점 라벨/빠른 체크(해설에서만 노출)
+   =========================== */
+function getGubun(t){
+  if(t==='T') return '시간적 관점';
+  if(t==='S') return '공간적 관점';
+  if(t==='SO') return '사회적 관점';
+  if(t==='E') return '윤리적 관점';
+  return '통합적 관점';
+}
+function quickCheck(t){
+  if(t==='T') return "연도/변화/과거→현재 흐름 단서";
+  if(t==='S') return "지도/분포/이동/위치 단서";
+  if(t==='SO') return "법/제도/정책/규칙 단서";
+  if(t==='E') return "옳고그름/인권/정의/책임 단서";
+  return "시간+공간+사회+윤리를 ‘연결’해서 보기";
+}
+function getMiniLesson(key){
+  if(key==='T') return ["‘언제부터/어떻게 변했지?’로 질문 바꾸기","연도·추세·변화 과정 단서 찾기","지도=공간, 제도=사회, 가치=윤리와 구분"];
+  if(key==='S') return ["‘어디에/어디가 많지/어디로 이동?’로 질문 바꾸기","지도·분포·동선·입지 단서 찾기","변화=시간, 제도=사회, 가치=윤리와 구분"];
+  if(key==='SO') return ["‘법/정책으로 어떻게 바꾸지?’로 질문 바꾸기","규정·처벌·기관·예산 단서 찾기","옳고그름=윤리와 구분"];
+  if(key==='E') return ["‘이게 옳은가? 누구의 권리?’로 질문 바꾸기","인권·정의·배려·책임 단서 찾기","처벌/규정=사회와 구분"];
+  return ["핵심 관점 1개 먼저 잡기","나머지 관점도 연결하기","원인-지역-제도-가치가 이어지는지 확인"];
+}
+
+/* ===========================
+   관리자 기능
+   =========================== */
+function renderAdminTable(){
+  BANK = loadBank();
+  document.getElementById('bankCount').innerText = `${BANK.length}문항`;
+
+  const tb = document.getElementById('adminTbody');
+  tb.innerHTML = "";
+
+  const orderT = {T:1,S:2,SO:3,E:4,I:5};
+  const orderD = {'하':1,'중':2,'상':3};
+  const sorted = BANK.map((q,idx)=>({q,idx}))
+    .sort((a,b)=>{
+      const dt = orderT[a.q.t]-orderT[b.q.t];
+      if(dt!==0) return dt;
+      const dd = orderD[a.q.d]-orderD[b.q.d];
+      if(dd!==0) return dd;
+      return a.idx-b.idx;
+    });
+
+  sorted.forEach(({q,idx})=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><b>${escapeHtml(q.t)}</b><br><span class="pill">${escapeHtml(getGubun(q.t))}</span></td>
+      <td><b>${escapeHtml(q.d)}</b></td>
+      <td>${escapeHtml(q.q)}</td>
+      <td>
+        <button class="kbtn kbtn-edit" onclick="loadToEditor(${idx})">수정</button>
+        <button class="kbtn kbtn-del" onclick="deleteQuestion(${idx})">삭제</button>
+      </td>
+    `;
+    tb.appendChild(tr);
+  });
+}
+
+function clearEditor(){
+  editorMode = "new";
+  editingIndex = -1;
+  document.getElementById('ed_t').value = "T";
+  document.getElementById('ed_d').value = "하";
+  document.getElementById('ed_c').value = "0";
+  document.getElementById('ed_q').value = "";
+  document.getElementById('ed_a0').value = "";
+  document.getElementById('ed_a1').value = "";
+  document.getElementById('ed_a2').value = "";
+  document.getElementById('ed_a3').value = "";
+  document.getElementById('ed_exp').value = "";
+  hideAdminWarn();
+}
+
+function loadToEditor(idx){
+  const q = BANK[idx];
+  if(!q) return;
+  editorMode = "edit";
+  editingIndex = idx;
+
+  document.getElementById('ed_t').value = q.t;
+  document.getElementById('ed_d').value = q.d;
+  document.getElementById('ed_c').value = String(q.c);
+  document.getElementById('ed_q').value = q.q;
+  document.getElementById('ed_a0').value = q.a[0];
+  document.getElementById('ed_a1').value = q.a[1];
+  document.getElementById('ed_a2').value = q.a[2];
+  document.getElementById('ed_a3').value = q.a[3];
+  document.getElementById('ed_exp').value = q.exp || "";
+
+  showAdminWarn(`현재 <b>${idx}</b>번 문항을 수정 중입니다. (수정 후 ‘저장’)`);
+}
+
+function saveEditor(){
+  const t = document.getElementById('ed_t').value;
+  const d = document.getElementById('ed_d').value;
+  const c = parseInt(document.getElementById('ed_c').value, 10);
+  const qq = document.getElementById('ed_q').value.trim();
+  const a0 = document.getElementById('ed_a0').value.trim();
+  const a1 = document.getElementById('ed_a1').value.trim();
+  const a2 = document.getElementById('ed_a2').value.trim();
+  const a3 = document.getElementById('ed_a3').value.trim();
+  const exp = document.getElementById('ed_exp').value.trim();
+
+  if(!qq) return showAdminWarn("문제(q)가 비었습니다.");
+  if(!a0||!a1||!a2||!a3) return showAdminWarn("보기가 4개 모두 필요합니다.");
+  if(!(c===0||c===1||c===2||c===3)) return showAdminWarn("정답 번호(c)가 올바르지 않습니다.");
+
+  const item = { t, d, q:qq, a:[a0,a1,a2,a3], c, exp: exp || "핵심 단서를 먼저 찾고, 관점을 결정하세요." };
+
+  if(editorMode==="edit" && editingIndex>=0 && BANK[editingIndex]){
+    BANK[editingIndex] = item;
+    saveBank();
+    renderAdminTable();
+    showAdminWarn(`✅ ${editingIndex}번 문항이 수정되었습니다.`);
+  }else{
+    BANK.push(item);
+    saveBank();
+    renderAdminTable();
+    showAdminWarn(`✅ 새 문항이 추가되었습니다. (총 ${BANK.length}문항)`);
+  }
+}
+
+function deleteQuestion(idx){
+  if(!BANK[idx]) return;
+  const ok = confirm(`정말 ${idx}번 문항을 삭제할까요?\n(삭제하면 되돌리기 어렵습니다)`);
+  if(!ok) return;
+  BANK.splice(idx,1);
+  saveBank();
+  renderAdminTable();
+  clearEditor();
+}
+
+function showAdminWarn(html){
+  const w = document.getElementById('adminWarn');
+  w.style.display = "block";
+  w.innerHTML = html;
+}
+function hideAdminWarn(){
+  const w = document.getElementById('adminWarn');
+  w.style.display = "none";
+  w.innerHTML = "";
+}
+
+function exportJSON(){
+  try{
+    const txt = JSON.stringify(BANK, null, 2);
+    navigator.clipboard.writeText(txt).then(()=>{
+      alert("JSON이 클립보드에 복사되었습니다.");
+    }).catch(()=>{
+      prompt("아래를 복사하세요:", txt);
+    });
+  }catch(e){
+    alert("내보내기 실패: " + e.message);
+  }
+}
+
+function toggleImport(){
+  const box = document.getElementById('importArea');
+  box.style.display = (box.style.display==="none" || !box.style.display) ? "block" : "none";
+}
+
+function applyImport(){
+  try{
+    const raw = document.getElementById('importBox').value;
+    const data = JSON.parse(raw);
+    if(!Array.isArray(data)) return alert("JSON 형식이 배열이 아닙니다.");
+    const cleaned = sanitizeBank(data);
+    if(cleaned.length===0) return alert("유효한 문항이 없습니다. (형식을 확인)");
+    const ok = confirm(`가져오기를 적용하면 현재 문제은행이 교체됩니다.\n적용할 문항 수: ${cleaned.length}\n진행할까요?`);
+    if(!ok) return;
+
+    BANK = cleaned;
+    saveBank();
+    renderAdminTable();
+    clearEditor();
+    alert("가져오기 완료!");
+  }catch(e){
+    alert("가져오기 실패: " + e.message);
+  }
+}
+
+function clearCustomBankConfirm(){
+  const ok = confirm("커스텀 문제은행을 삭제하고 기본문항으로 돌아갈까요?");
+  if(!ok) return;
+  localStorage.removeItem(LS_BANK_KEY);
+  BANK = loadBank();
+  renderAdminTable();
+  clearEditor();
+  alert("기본문항으로 복원했습니다.");
+}
+
+function resetToDefaultConfirm(){
+  const ok = confirm("기본문항으로 복원할까요?\n(현재 커스텀 문항은 이 브라우저에서 삭제됩니다)");
+  if(!ok) return;
+  localStorage.removeItem(LS_BANK_KEY);
+  BANK = loadBank();
+  alert("기본문항으로 복원했습니다.");
+}
+</script>
+</body>
+</html>
