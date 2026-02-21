@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>통합사회 — 교사 실무 자동화 센터</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="site-title"><span class="logo-icon">T</span>교사 실무 자동화 센터</a>
+      <button class="btn" onclick="App.goFullscreen()">🖥️</button>
+    </div>
+  </header>
+  <div class="container" style="padding-top:4px;padding-bottom:60px;">
+    <nav class="breadcrumb" id="breadcrumb"></nav>
+    <div class="page-hero">
+      <h1>🌍 통합사회</h1>
+      <p class="hero-desc">2022 개정 교육과정 기반 · 교과서 단원명 그대로 정리된 수업자료 허브</p>
+    </div>
+    <div class="search-bar"><span style="font-size:1.2rem;color:var(--muted)">🔍</span><input type="text" id="search" placeholder="단원명 또는 태그로 검색 (예: 행복, 통사1, 심화)"></div>
+    <div class="tag-filters" id="tags">
+      <button class="tag-btn" data-tag="통사1">통사1</button>
+      <button class="tag-btn" data-tag="통사2">통사2</button>
+      <button class="tag-btn" data-tag="기초">기초</button>
+      <button class="tag-btn" data-tag="심화">심화</button>
+    </div>
+    <div class="card-grid" id="grid"><div class="empty-state"><p>로딩 중...</p></div></div>
+  </div>
+  <footer class="site-footer"><div class="container">교사 실무 자동화 센터 · 통합사회</div></footer>
+  <script src="app.js"></script>
+  <script>
+    (async()=>{
+      App.renderBreadcrumb([{label:'통합사회'}]);
+      const d = await App.loadJSON('units.json');
+      if(d){ App.renderUnitCards(d.units, App.$('#grid')); App.initSearch('#search','#grid'); App.initTagFilter('#tags','#grid'); }
+    })();
+  </script>
+</body>
+</html>

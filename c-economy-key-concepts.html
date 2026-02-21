@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>핵심 개념 정리 — 자산 관리와 금융 생활</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header"><div class="container"><a href="index.html" class="site-title"><span class="logo-icon">T</span>교사 실무 자동화 센터</a><button class="btn" onclick="App.goFullscreen()">🖥️</button></div></header>
+  <div class="container" style="padding-top:4px;padding-bottom:60px;">
+    <nav class="breadcrumb" id="breadcrumb"></nav>
+    <div class="content-page">
+      <div class="action-bar">
+        <button class="btn btn-primary" onclick="App.printPage()">🖨️ 인쇄 (A4)</button>
+        <button class="btn" onclick="App.copyLink()">🔗 링크 복사</button>
+        <a href="hub-unit-economy.html" class="btn">← 단원 목록</a>
+      </div>
+      <div class="summary-box"><h3>📌 핵심 요약</h3><ul>
+        <li>자산 관리 3원칙을 쉬운 문장으로 정리</li>
+        <li>각 원칙별 대표 금융 상품과 상충 관계 설명</li>
+        <li>포트폴리오와 분산 투자의 핵심 아이디어 포함</li>
+      </ul></div>
+      <div class="content-body">
+        <h2>1. 자산 관리란?</h2>
+        <p>자산 관리는 내가 가진 돈(자산)을 잘 지키면서 불리는 활동입니다.</p>
+        <h2>2. 자산 관리의 3원칙</h2>
+        <h3>① 수익성</h3>
+        <p><strong>투자한 돈이 얼마나 커질 수 있는가.</strong> 주식이나 펀드는 수익성이 높지만 위험도 함께 높습니다.</p>
+        <h3>② 안전성</h3>
+        <p><strong>내 원금이 줄어들지 않고 보장되는 정도.</strong> 은행 예금, 적금, 국채는 안전성이 높습니다.</p>
+        <h3>③ 유동성</h3>
+        <p><strong>필요할 때 바로 현금으로 바꿀 수 있는 정도.</strong> 부동산은 팔려면 몇 달이 걸려 유동성이 낮습니다.</p>
+        <h2>3. 상충 관계 (Trade-off)</h2>
+        <div class="highlight-box"><strong>핵심:</strong> 세 가지를 모두 만족하는 완벽한 금융 상품은 없습니다.</div>
+        <table>
+          <thead><tr><th>금융 상품</th><th>수익성</th><th>안전성</th><th>유동성</th></tr></thead>
+          <tbody>
+            <tr><td>예금·적금</td><td>★☆☆</td><td>★★★</td><td>★★☆</td></tr>
+            <tr><td>주식</td><td>★★★</td><td>★☆☆</td><td>★★☆</td></tr>
+            <tr><td>채권(국채)</td><td>★★☆</td><td>★★★</td><td>★★☆</td></tr>
+            <tr><td>부동산</td><td>★★☆</td><td>★★☆</td><td>★☆☆</td></tr>
+            <tr><td>현금</td><td>☆☆☆</td><td>★★★</td><td>★★★</td></tr>
+          </tbody>
+        </table>
+        <h2>4. 포트폴리오와 분산 투자</h2>
+        <p><strong>포트폴리오</strong>는 여러 금융 상품에 돈을 나누어 담은 조합입니다.</p>
+        <p><strong>분산 투자</strong>는 "계란을 한 바구니에 담지 마라"처럼, 위험을 줄이기 위해 여러 곳에 나누어 투자하는 것입니다.</p>
+        <h2>5. 100-나이 법칙</h2>
+        <p>100에서 자기 나이를 뺀 만큼 공격적 투자를, 나이만큼 안전한 투자를 하라는 기준입니다.</p>
+        <p>예) 20세 → 주식 80% : 예금 20% / 60세 → 주식 40% : 예금 60%</p>
+      </div>
+      <div class="basecamp"><h3>🏕️ 베이스캠프 정보</h3><div class="basecamp-grid">
+        <div class="basecamp-item"><h4>📍 필요한 상황</h4><p>수업 전 예습 또는 수업 후 복습 학습지로 배포할 때.</p></div>
+        <div class="basecamp-item"><h4>📋 사용 순서</h4><p>수업 흐름(1차시) → 이 학습지 → 활동지</p></div>
+        <div class="basecamp-item"><h4>🎯 수업 적용 위치</h4><p>IV-3 (1차시 정리 또는 2차시 도입)</p></div>
+        <div class="basecamp-item"><h4>⚠️ 주의사항</h4><p>별(★) 개수는 절대적 수치가 아닌 상대적 비교임을 안내.</p></div>
+      </div></div>
+      <div class="action-bar" style="margin-top:28px;"><button class="btn btn-primary" onclick="App.printPage()">🖨️ 인쇄 (A4)</button><button class="btn" onclick="App.copyLink()">🔗 링크 복사</button></div>
+    </div>
+  </div>
+  <footer class="site-footer"><div class="container">교사 실무 자동화 센터</div></footer>
+  <script src="app.js"></script>
+  <script>App.renderBreadcrumb([{label:'통합사회',href:'hub-social.html'},{label:'자산 관리와 금융 생활',href:'hub-unit-economy.html'},{label:'핵심 개념 정리'}]);</script>
+</body>
+</html>

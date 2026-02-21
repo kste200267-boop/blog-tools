@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>형성평가 5문항 — 자산 관리와 금융 생활</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header"><div class="container"><a href="index.html" class="site-title"><span class="logo-icon">T</span>교사 실무 자동화 센터</a><button class="btn" onclick="App.goFullscreen()">🖥️</button></div></header>
+  <div class="container" style="padding-top:4px;padding-bottom:60px;">
+    <nav class="breadcrumb" id="breadcrumb"></nav>
+    <div class="content-page">
+      <div class="action-bar">
+        <button class="btn btn-primary" onclick="App.printPage()">🖨️ 인쇄 (A4)</button>
+        <button class="btn" onclick="App.copyLink()">🔗 링크 복사</button>
+        <a href="hub-unit-economy.html" class="btn">← 단원 목록</a>
+      </div>
+      <div class="summary-box"><h3>📌 핵심 요약</h3><ul>
+        <li>자산 관리 3원칙 확인용 매우 쉬운 5지선다 5문항</li>
+        <li>웹에서 바로 풀고 정답 확인 가능 (인쇄도 가능)</li>
+        <li>오답 시 해설 즉시 표시</li>
+      </ul></div>
+      <div class="content-body">
+        <h2>형성평가 — 자산 관리의 원칙</h2>
+        <p style="color:var(--sub);margin-bottom:18px;">보기를 클릭하면 정답 여부가 표시됩니다.</p>
+        <div id="quiz-container"></div>
+        <div style="text-align:center;margin:18px 0;">
+          <button class="btn btn-primary" onclick="checkAll()" style="font-size:.98rem;padding:11px 28px;">✅ 전체 채점</button>
+          <button class="btn" onclick="resetAll()" style="font-size:.98rem;padding:11px 28px;">🔄 다시 풀기</button>
+        </div>
+        <div class="quiz-result" id="quiz-result"></div>
+      </div>
+      <div class="basecamp"><h3>🏕️ 베이스캠프 정보</h3><div class="basecamp-grid">
+        <div class="basecamp-item"><h4>📍 필요한 상황</h4><p>1차시 정리 단계 또는 2차시 시작 전 복습 점검.</p></div>
+        <div class="basecamp-item"><h4>📋 사용 순서</h4><p>수업 흐름 → 개념 정리 → 활동지 → 이 형성평가</p></div>
+        <div class="basecamp-item"><h4>🎯 수업 적용 위치</h4><p>IV-3 (1차시 정리 10분)</p></div>
+        <div class="basecamp-item"><h4>⚠️ 주의사항</h4><p>매우 쉬운 난이도. 상위권에게는 추가 사고 질문 병행.</p></div>
+      </div></div>
+      <div class="action-bar" style="margin-top:28px;"><button class="btn btn-primary" onclick="App.printPage()">🖨️ 인쇄 (A4)</button><button class="btn" onclick="App.copyLink()">🔗 링크 복사</button></div>
+    </div>
+  </div>
+  <footer class="site-footer"><div class="container">교사 실무 자동화 센터</div></footer>
+  <script src="app.js"></script>
+  <script>
+    App.renderBreadcrumb([{label:'통합사회',href:'hub-social.html'},{label:'자산 관리와 금융 생활',href:'hub-unit-economy.html'},{label:'형성평가 5문항'}]);
+
+    const Q=[
+      {q:'1. 다음 중 "수익성"의 의미로 가장 적절한 것은?',o:['① 원금이 보장되는 정도','② 현금으로 빠르게 바꿀 수 있는 정도','③ 투자한 돈이 불어날 수 있는 정도','④ 물가가 오르는 정도','⑤ 세금을 적게 내는 정도'],a:2,e:'수익성은 투자한 자산이 얼마나 큰 이익을 가져다줄 수 있는지를 나타냅니다.'},
+      {q:'2. 다음 금융 상품 중 "안전성"이 가장 높은 것은?',o:['① 주식','② 비트코인','③ 은행 예금','④ 해외 펀드','⑤ 선물 옵션'],a:2,e:'은행 예금은 예금자 보호법에 의해 1인당 5,000만 원까지 원금이 보장됩니다.'},
+      {q:'3. "유동성"이 가장 낮은 자산은?',o:['① 현금','② 수시입출금 통장','③ 주식','④ 부동산','⑤ CMA 계좌'],a:3,e:'부동산은 매매에 수개월이 걸려 현금화가 어렵습니다.'},
+      {q:'4. "계란을 한 바구니에 담지 마라"는 어떤 투자 원칙?',o:['① 장기 투자','② 분산 투자','③ 집중 투자','④ 단기 매매','⑤ 레버리지 투자'],a:1,e:'여러 자산에 나누어 투자(분산 투자)하면 전체 위험을 줄일 수 있습니다.'},
+      {q:'5. 100-나이 법칙에 따르면 20세의 공격형 투자 비중은?',o:['① 20%','② 40%','③ 60%','④ 80%','⑤ 100%'],a:3,e:'100 - 20 = 80이므로 80%를 공격형에 투자하라는 뜻입니다.'}
+    ];
+    const ct=document.getElementById('quiz-container');
+    Q.forEach((item,qi)=>{
+      const d=document.createElement('div');d.className='quiz-item';
+      d.innerHTML=`<div class="quiz-q">${item.q}</div><ul class="quiz-options" data-a="${item.a}" data-qi="${qi}">${item.o.map((o,oi)=>`<li data-i="${oi}" onclick="sel(this)">${o}</li>`).join('')}</ul><div class="quiz-explain" id="ex-${qi}">${item.e}</div>`;
+      ct.appendChild(d);
+    });
+    function sel(li){li.parentElement.querySelectorAll('li').forEach(l=>l.classList.remove('selected'));li.classList.add('selected');}
+    function checkAll(){
+      let s=0;
+      document.querySelectorAll('.quiz-options').forEach((ul,qi)=>{
+        const a=+ul.dataset.a,picked=ul.querySelector('.selected');
+        ul.querySelectorAll('li').forEach(l=>{l.classList.remove('correct','wrong');l.style.pointerEvents='none';});
+        if(picked){if(+picked.dataset.i===a){picked.classList.add('correct');s++;}else{picked.classList.add('wrong');ul.querySelector(`li[data-i="${a}"]`).classList.add('correct');}}
+        else{ul.querySelector(`li[data-i="${a}"]`).classList.add('correct');}
+        document.getElementById(`ex-${qi}`).classList.add('show');
+      });
+      const r=document.getElementById('quiz-result');r.textContent=`🎯 ${s} / ${Q.length}점 ${s===Q.length?'— 만점! 🎉':''}`;r.classList.add('show');
+    }
+    function resetAll(){
+      document.querySelectorAll('.quiz-options').forEach(ul=>{ul.querySelectorAll('li').forEach(l=>{l.classList.remove('selected','correct','wrong');l.style.pointerEvents='';});});
+      document.querySelectorAll('.quiz-explain').forEach(el=>el.classList.remove('show'));
+      document.getElementById('quiz-result').classList.remove('show');
+    }
+  </script>
+</body>
+</html>

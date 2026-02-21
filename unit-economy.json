@@ -1,0 +1,12 @@
+{
+  "unit": "시장 경제와 지속가능발전 — 자산 관리와 금융 생활",
+  "unitSlug": "economy",
+  "achievementStandard": "[10통사2-03-03] 금융 자산의 특징과 자산 관리의 원칙을 토대로 금융 생활을 설계하고, 경제적·사회적 환경의 변화가 금융과 관련한 의사 결정에 미치는 영향을 탐구한다.",
+  "contents": [
+    { "slug": "lesson-flow", "title": "1차시 수업 흐름 (도입–전개–정리)", "type": "수업자료", "difficulty": "보통", "duration": "50분", "tags": ["수업흐름", "1차시", "통사2"], "desc": "자산 관리 3원칙을 중심으로 한 1차시 수업 설계", "file": "c-economy-lesson-flow.html" },
+    { "slug": "key-concepts", "title": "핵심 개념 정리 (쉬운 문장)", "type": "학습지", "difficulty": "쉬움", "duration": "10분", "tags": ["개념정리", "기초", "통사2"], "desc": "수익성·안전성·유동성·포트폴리오를 쉬운 문장으로 정리", "file": "c-economy-key-concepts.html" },
+    { "slug": "life-activity", "title": "생활 사례 활동지 (A4 1장)", "type": "활동지", "difficulty": "보통", "duration": "20분", "tags": ["활동지", "사례", "통사2"], "desc": "실생활 금융 상황에서 3원칙을 적용해보는 활동지", "file": "c-economy-life-activity.html" },
+    { "slug": "quiz-5", "title": "형성평가 5지선다 5문항 (매우 쉬움)", "type": "문항", "difficulty": "매우 쉬움", "duration": "10분", "tags": ["형성평가", "기초", "통사2"], "desc": "수업 후 바로 풀 수 있는 기초 확인 문항 5개", "file": "c-economy-quiz-5.html" },
+    { "slug": "teacher-guide", "title": "교사용 지도 포인트 (오개념·질문 리스트)", "type": "교사용", "difficulty": "-", "duration": "참고", "tags": ["교사용", "오개념", "통사2"], "desc": "학생 오개념 TOP5, 예상 질문, 수업 중 강조 포인트", "file": "c-economy-teacher-guide.html" }
+  ]
+}

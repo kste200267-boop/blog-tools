@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1차시 수업 흐름 — 자산 관리와 금융 생활</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header"><div class="container"><a href="index.html" class="site-title"><span class="logo-icon">T</span>교사 실무 자동화 센터</a><button class="btn" onclick="App.goFullscreen()">🖥️</button></div></header>
+  <div class="container" style="padding-top:4px;padding-bottom:60px;">
+    <nav class="breadcrumb" id="breadcrumb"></nav>
+    <div class="content-page">
+      <div class="action-bar">
+        <button class="btn btn-primary" onclick="App.printPage()">🖨️ 인쇄 (A4)</button>
+        <button class="btn" onclick="App.copyLink()">🔗 링크 복사</button>
+        <a href="hub-unit-economy.html" class="btn">← 단원 목록</a>
+      </div>
+      <div class="summary-box"><h3>📌 핵심 요약</h3><ul>
+        <li>자산 관리 3원칙(수익성·안전성·유동성)을 일상 사례로 도입</li>
+        <li>금융 상품별 특징을 그래프 활동으로 직관적 이해</li>
+        <li>포트폴리오 설계 실습으로 의사결정 역량 함양</li>
+      </ul></div>
+      <div class="content-body">
+        <h2>🚀 도입 (10분)</h2>
+        <h3>발문</h3>
+        <p>"여러분이 100만 원을 받았다면, 어디에 넣겠어요? 은행? 주식? 금? 그 이유는?"</p>
+        <div class="highlight-box"><strong>💡 교사 팁:</strong> 칠판에 "은행 / 주식 / 금 / 부동산 / 기타"를 미리 적어두면 학생 선택이 빨라집니다.</div>
+        <p>학생 응답을 칠판에 분류한 뒤, "왜 다들 같은 곳에 넣지 않을까?" → 자산마다 특성이 다르다는 점을 자연스럽게 연결합니다.</p>
+        <h2>📖 전개 (30분)</h2>
+        <h3>활동 1: 자산 관리 3원칙 카드 정리 (10분)</h3>
+        <table>
+          <thead><tr><th>원칙</th><th>뜻 (쉬운 문장)</th><th>높은 상품</th><th>낮은 상품</th></tr></thead>
+          <tbody>
+            <tr><td><strong>수익성</strong></td><td>돈이 얼마나 불어날 수 있나</td><td>주식, 펀드</td><td>예금</td></tr>
+            <tr><td><strong>안전성</strong></td><td>원금이 줄어들지 않나</td><td>예금, 국채</td><td>주식</td></tr>
+            <tr><td><strong>유동성</strong></td><td>필요할 때 바로 현금화 가능한가</td><td>현금, CMA</td><td>부동산</td></tr>
+          </tbody>
+        </table>
+        <h3>활동 2: 수익성-안전성 그래프 배치 게임 (10분)</h3>
+        <p>칠판에 X축(안전성), Y축(수익성) 그래프를 그리고, 학생들이 "주식 / 예금 / 채권 / 부동산" 카드를 올바른 위치에 붙입니다.</p>
+        <h3>활동 3: 100-나이 법칙 & 포트폴리오 설계 (10분)</h3>
+        <p>100-나이 법칙을 설명하고, "40세 가장의 포트폴리오"를 모둠별로 설계하게 합니다.</p>
+        <h2>📝 정리 (10분)</h2>
+        <p>형성평가 5문항으로 핵심 개념을 점검합니다.</p>
+        <p>마무리 발문: "자산 관리에 '정답'이 있을까요? 왜 사람마다 다른 선택을 할까요?"</p>
+      </div>
+      <div class="basecamp"><h3>🏕️ 베이스캠프 정보</h3><div class="basecamp-grid">
+        <div class="basecamp-item"><h4>📍 필요한 상황</h4><p>IV-3 자산 관리 단원 1차시. 금융 상품 사전 지식이 거의 없는 학생 대상.</p></div>
+        <div class="basecamp-item"><h4>📋 사용 순서</h4><p>이 수업흐름 → 핵심 개념 정리 → 생활 사례 활동지 → 형성평가</p></div>
+        <div class="basecamp-item"><h4>🎯 수업 적용 위치</h4><p>IV. 시장 경제와 지속가능발전 > 3. 자산 관리와 금융 생활 (1/2차시)</p></div>
+        <div class="basecamp-item"><h4>⚠️ 주의사항</h4><p>"투자 권유"가 아닌 "원칙 이해"에 초점. 특정 상품 추천 금지 안내 필수.</p></div>
+      </div></div>
+      <div class="action-bar" style="margin-top:28px;">
+        <button class="btn btn-primary" onclick="App.printPage()">🖨️ 인쇄 (A4)</button>
+        <button class="btn" onclick="App.copyLink()">🔗 링크 복사</button>
+      </div>
+    </div>
+  </div>
+  <footer class="site-footer"><div class="container">교사 실무 자동화 센터</div></footer>
+  <script src="app.js"></script>
+  <script>App.renderBreadcrumb([{label:'통합사회',href:'hub-social.html'},{label:'자산 관리와 금융 생활',href:'hub-unit-economy.html'},{label:'1차시 수업 흐름'}]);</script>
+</body>
+</html>

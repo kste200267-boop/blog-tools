@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>자산 관리와 금융 생활 — 교사 실무 자동화 센터</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="site-title"><span class="logo-icon">T</span>교사 실무 자동화 센터</a>
+      <button class="btn" onclick="App.goFullscreen()">🖥️</button>
+    </div>
+  </header>
+  <div class="container" style="padding-top:4px;padding-bottom:60px;">
+    <nav class="breadcrumb" id="breadcrumb"></nav>
+    <div class="page-hero">
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:7px;">
+        <span class="tag code">IV-3</span><span class="tag">통사2</span><span class="tag">심화</span>
+      </div>
+      <h1>시장 경제와 지속가능발전 — 자산 관리와 금융 생활</h1>
+      <p class="hero-desc" id="std" style="margin-top:8px;font-size:.88rem;color:var(--muted)"></p>
+    </div>
+    <div class="search-bar"><span style="font-size:1.2rem;color:var(--muted)">🔍</span><input type="text" id="search" placeholder="콘텐츠 제목, 유형, 태그로 검색"></div>
+    <div class="tag-filters" id="tags">
+      <button class="tag-btn" data-tag="수업자료">📐 수업자료</button>
+      <button class="tag-btn" data-tag="학습지">📝 학습지</button>
+      <button class="tag-btn" data-tag="활동지">✏️ 활동지</button>
+      <button class="tag-btn" data-tag="문항">❓ 문항</button>
+      <button class="tag-btn" data-tag="교사용">👩‍🏫 교사용</button>
+    </div>
+    <div class="card-grid" id="grid"><div class="empty-state"><p>로딩 중...</p></div></div>
+  </div>
+  <footer class="site-footer"><div class="container">교사 실무 자동화 센터 · 통합사회 · 자산 관리와 금융 생활</div></footer>
+  <script src="app.js"></script>
+  <script>
+    (async()=>{
+      App.renderBreadcrumb([{label:'통합사회',href:'hub-social.html'},{label:'자산 관리와 금융 생활'}]);
+      const d = await App.loadJSON('unit-economy.json');
+      if(d){
+        const s=App.$('#std'); if(s) s.textContent=d.achievementStandard;
+        App.renderContentCards(d.contents, App.$('#grid'));
+        App.initSearch('#search','#grid'); App.initTagFilter('#tags','#grid');
+      }
+    })();
+  </script>
+</body>
+</html>
