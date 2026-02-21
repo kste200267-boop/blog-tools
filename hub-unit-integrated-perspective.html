@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>통합적 관점으로 바라보는 사회 — 교사 실무 자동화 센터</title>
+  <meta name="description" content="통합사회 I단원 통합적 관점으로 바라보는 사회 — 시간·공간·사회·윤리적 관점의 수업자료, 웹교구, 활동지를 모아놓은 허브입니다.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="site-title"><span class="logo-icon">T</span>교사 실무 자동화 센터</a>
+      <div class="header-actions"><button class="btn" onclick="App.goFullscreen()">🖥️</button></div>
+    </div>
+  </header>
+
+  <div class="container" style="padding-top:4px; padding-bottom:60px;">
+    <nav class="breadcrumb" id="breadcrumb"></nav>
+
+    <div class="page-hero">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+        <span class="tag code">I</span>
+        <span class="tag">통사1</span>
+        <span class="tag">기초</span>
+      </div>
+      <h1>통합적 관점으로 바라보는 사회</h1>
+      <p class="hero-desc" id="achievement-std" style="margin-top:10px;font-size:0.9rem;color:var(--text-sub);"></p>
+    </div>
+
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search-input" placeholder="콘텐츠 제목, 유형, 태그로 검색 (예: 퀴즈, 시뮬레이션)">
+    </div>
+
+    <div class="tag-filters" id="tag-filters">
+      <button class="tag-btn" data-tag="웹교구">🎮 웹교구</button>
+      <button class="tag-btn" data-tag="수업자료">📐 수업자료</button>
+      <button class="tag-btn" data-tag="활동지">✏️ 활동지</button>
+      <button class="tag-btn" data-tag="문항">❓ 문항</button>
+    </div>
+
+    <div class="card-grid" id="content-grid">
+      <div class="empty-state"><p>로딩 중...</p></div>
+    </div>
+  </div>
+
+  <footer class="site-footer"><div class="container">교사 실무 자동화 센터 · 통합사회 · 통합적 관점으로 바라보는 사회</div></footer>
+
+  <script src="app.js"></script>
+  <script>
+    (async () => {
+      App.renderBreadcrumb([
+        { label: '통합사회', href: 'hub-social.html' },
+        { label: '통합적 관점으로 바라보는 사회' }
+      ]);
+
+      const data = await App.loadJSON('unit-integrated-perspective.json');
+      if (data) {
+        const stdEl = App.$('#achievement-std');
+        if (stdEl) stdEl.textContent = data.achievementStandard;
+        App.renderContentCards(data.contents, App.$('#content-grid'));
+        App.initSearch('#search-input', '#content-grid');
+        App.initTagFilter('#tag-filters', '#content-grid');
+      }
+    })();
+  </script>
+</body>
+</html>
