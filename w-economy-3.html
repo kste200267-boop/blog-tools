@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AIEP | AI 6대 자산 정밀 진단 (최종 완성본)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background: #f1f5f9; color: #1e293b; -webkit-tap-highlight-color: transparent; }
+        .jua { font-family: 'Jua', sans-serif; }
+        .card { background: white; border-radius: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border: 1px solid #e2e8f0; }
+        
+        /* 점수 원형 스타일 */
+        .score-circle { 
+            width: 140px; height: 140px; 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            border: 10px solid; transition: all 0.5s; background: white; 
+        }
+        @media (min-width: 768px) {
+            .score-circle { width: 160px; height: 160px; border-width: 12px; }
+        }
+        
+        /* 애니메이션 */
+        .animate-slide-up { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* 자산 카드 스타일 */
+        .asset-card { transition: transform 0.2s; cursor: pointer; height: 100%; display: flex; flex-direction: column; }
+        .asset-card:active { transform: scale(0.98); }
+        @media (hover: hover) { .asset-card:hover { transform: translateY(-5px); border-color: #3b82f6; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); } }
+        .asset-content { flex: 1; display: flex; flex-direction: column; }
+
+        /* 명언 카드 스타일 */
+        .quote-card { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: white; }
+
+        /* 워터마크 */
+        .watermark {
+            position: fixed; bottom: 10px; right: 10px; 
+            font-size: 10px; color: rgba(0,0,0,0.3); 
+            font-weight: bold; pointer-events: none; z-index: 9999;
+            font-family: 'Noto Sans KR', sans-serif;
+            background: rgba(255,255,255,0.9);
+            padding: 4px 10px; border-radius: 15px; border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        /* 교육과정 배지 */
+        .curriculum-badge {
+            display: inline-block; padding: 2px 8px; border-radius: 999px;
+            font-size: 0.7rem; font-weight: 700; margin-bottom: 0.25rem;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: #94a3b8; letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body class="p-3 md:p-10 min-h-screen pb-20 select-none" oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+
+    <div class="watermark">Designed by 경북교육청 교사 김스데반</div>
+
+    <div class="max-w-7xl mx-auto">
+        <div class="bg-slate-900 p-6 md:p-10 rounded-[2rem] text-white text-center mb-6 shadow-2xl relative overflow-hidden border-t-4 border-blue-500">
+            <div class="absolute top-0 left-0 w-full h-full opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+            <div class="relative z-10 mb-6 pb-6 border-b border-slate-700/50">
+                <div class="flex flex-wrap justify-center gap-1.5 mb-3">
+                    <span class="curriculum-badge">통합사회</span>
+                    <span class="curriculum-badge text-blue-300 border-blue-500/30">IV. 시장 경제</span>
+                    <span class="curriculum-badge text-emerald-300 border-emerald-500/30">3. 자산 관리</span>
+                </div>
+                <div class="max-w-4xl mx-auto bg-slate-800/50 rounded-xl p-3 border border-slate-700">
+                    <span class="text-blue-400 font-bold text-xs md:text-base">[10통사2-03-03]</span>
+                    <span class="text-slate-300 text-xs md:text-sm font-light">금융 자산의 특징과 자산 관리 원칙을 토대로 금융 생활을 설계한다.</span>
+                </div>
+            </div>
+            <div class="relative z-10">
+                <h1 class="jua text-3xl md:text-6xl mb-2 bg-gradient-to-r from-blue-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent">
+                    🤖 AI 자산 정밀 진단
+                </h1>
+                <p class="text-sm md:text-lg font-light opacity-80">"이론부터 실전까지, AI와 함께 배우는 금융 시뮬레이션"</p>
+            </div>
+        </div>
+
+        <div id="step-intro" class="animate-slide-up">
+            <div class="text-center mb-8">
+                <h2 class="jua text-2xl md:text-3xl text-slate-800 mb-2">Step 1. 6대 자산 핵심 개념 학습</h2>
+                <p class="text-sm md:text-base text-slate-500">투자에 앞서 각 자산의 성격을 정확히 이해해야 합니다.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 mb-10">
+                <div class="card p-5 asset-card border-l-[6px] border-l-blue-500">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="text-4xl">🏦</div>
+                        <h3 class="jua text-2xl text-slate-800">예금/적금</h3>
+                    </div>
+                    <div class="asset-content text-sm text-slate-600 space-y-3">
+                        <p class="font-bold text-blue-600 bg-blue-50 inline-block px-2 py-1 rounded">#안전성 #원금보장</p>
+                        <p class="leading-relaxed"><strong class="text-slate-800">은행에 돈을 빌려주는 것.</strong><br>만기 시 원금과 이자를 받습니다. 가장 안전하지만, 물가가 오르면 실질 가치는 떨어질 수 있습니다.</p>
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <span class="block font-bold text-xs text-slate-500 mb-1">🔍 예시</span>
+                            <ul class="list-disc list-inside text-xs space-y-1"><li>정기예금, 적금, 파킹통장</li></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-5 asset-card border-l-[6px] border-l-red-500">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="text-4xl">📈</div>
+                        <h3 class="jua text-2xl text-slate-800">주식</h3>
+                    </div>
+                    <div class="asset-content text-sm text-slate-600 space-y-3">
+                        <p class="font-bold text-red-600 bg-red-50 inline-block px-2 py-1 rounded">#수익성 #고위험</p>
+                        <p class="leading-relaxed"><strong class="text-slate-800">회사의 주인(지분)이 되는 것.</strong><br>회사가 성장하면 큰 돈을 벌지만, 망하면 원금을 모두 잃을 수도 있습니다.</p>
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <span class="block font-bold text-xs text-slate-500 mb-1">🔍 예시</span>
+                            <ul class="list-disc list-inside text-xs space-y-1"><li>삼성전자, 애플, 테슬라</li></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-5 asset-card border-l-[6px] border-l-amber-500">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="text-4xl">🏢</div>
+                        <h3 class="jua text-2xl text-slate-800">부동산</h3>
+                    </div>
+                    <div class="asset-content text-sm text-slate-600 space-y-3">
+                        <p class="font-bold text-amber-600 bg-amber-50 inline-block px-2 py-1 rounded">#실물자산 #인플레이션방어</p>
+                        <p class="leading-relaxed"><strong class="text-slate-800">땅이나 건물을 소유하는 것.</strong><br>물가 상승 방어에 좋지만, 현금으로 바꾸는 데 시간이 오래 걸립니다(유동성 낮음).</p>
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <span class="block font-bold text-xs text-slate-500 mb-1">🔍 예시</span>
+                            <ul class="list-disc list-inside text-xs space-y-1"><li>아파트, 상가, 토지</li></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-5 asset-card border-l-[6px] border-l-purple-500">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="text-4xl">📊</div>
+                        <h3 class="jua text-2xl text-slate-800">펀드 (ETF)</h3>
+                    </div>
+                    <div class="asset-content text-sm text-slate-600 space-y-3">
+                        <p class="font-bold text-purple-600 bg-purple-50 inline-block px-2 py-1 rounded">#간접투자 #분산투자</p>
+                        <p class="leading-relaxed"><strong class="text-slate-800">전문가에게 돈을 맡기는 것.</strong><br>전문가가 여러 주식에 대신 투자해주므로 '계란을 한 바구니에 담지 않는' 효과가 있습니다.</p>
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <span class="block font-bold text-xs text-slate-500 mb-1">🔍 예시</span>
+                            <ul class="list-disc list-inside text-xs space-y-1"><li>KODEX 200, 미국 S&P500 ETF</li></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-5 asset-card border-l-[6px] border-l-emerald-500">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="text-4xl">🛡️</div>
+                        <h3 class="jua text-2xl text-slate-800">보험</h3>
+                    </div>
+                    <div class="asset-content text-sm text-slate-600 space-y-3">
+                        <p class="font-bold text-emerald-600 bg-emerald-50 inline-block px-2 py-1 rounded">#위험관리 #안전망</p>
+                        <p class="leading-relaxed"><strong class="text-slate-800">예상치 못한 불행을 대비하는 비용.</strong><br>투자가 아니라, 사고나 질병으로부터 내 자산을 지키는 '방패'입니다.</p>
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <span class="block font-bold text-xs text-slate-500 mb-1">🔍 예시</span>
+                            <ul class="list-disc list-inside text-xs space-y-1"><li>실손의료비보험, 암보험, 자동차보험</li></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-5 asset-card border-l-[6px] border-l-gray-500">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="text-4xl">💵</div>
+                        <h3 class="jua text-2xl text-slate-800">현금</h3>
+                    </div>
+                    <div class="asset-content text-sm text-slate-600 space-y-3">
+                        <p class="font-bold text-gray-600 bg-gray-50 inline-block px-2 py-1 rounded">#유동성 #가치하락</p>
+                        <p class="leading-relaxed"><strong class="text-slate-800">당장 쓸 수 있는 돈.</strong><br>쓰기 편하지만, 은행 이자조차 받지 못하므로 물가가 오르면 앉아서 돈을 잃게 됩니다.</p>
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <span class="block font-bold text-xs text-slate-500 mb-1">🔍 예시</span>
+                            <ul class="list-disc list-inside text-xs space-y-1"><li>지폐, 금고 보관 현금</li></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="goToStep2()" class="w-full py-6 bg-slate-800 text-white jua text-2xl md:text-3xl rounded-2xl hover:bg-slate-700 shadow-xl transition-all transform hover:scale-[1.01]">
+                학습 완료! 포트폴리오 설계하기 👉
+            </button>
+        </div>
+
+        <div id="step-simulation" class="hidden grid grid-cols-1 xl:grid-cols-12 gap-6 animate-slide-up">
+            <div class="xl:col-span-5 space-y-4">
+                <div class="card p-5 md:p-8 border-t-[6px] border-blue-600">
+                    <h2 class="jua text-2xl md:text-3xl mb-6 text-slate-800"><span class="text-blue-600">Step 2.</span> 나의 투자 전략</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="col-span-1 md:col-span-2 bg-blue-50 p-3 rounded-xl border border-blue-100">
+                            <label class="block font-bold mb-1 text-sm">🏦 예금/대출 <span class="text-xs text-slate-500">(-입력시 대출)</span></label>
+                            <input type="number" inputmode="numeric" id="in-savings" value="10000" class="w-full p-3 bg-white border-2 border-blue-200 rounded-lg text-lg font-bold text-right outline-none focus:border-blue-500" oninput="updateAll()">
+                        </div>
+                        <div><label class="block font-bold mb-1 text-xs text-slate-600">📈 주식</label><input type="number" inputmode="numeric" id="in-stocks" value="0" class="w-full p-3 border-2 rounded-lg text-right font-bold outline-none" oninput="updateAll()"></div>
+                        <div><label class="block font-bold mb-1 text-xs text-slate-600">🏢 부동산</label><input type="number" inputmode="numeric" id="in-land" value="0" class="w-full p-3 border-2 rounded-lg text-right font-bold outline-none" oninput="updateAll()"></div>
+                        <div><label class="block font-bold mb-1 text-xs text-slate-600">📊 펀드</label><input type="number" inputmode="numeric" id="in-fund" value="0" class="w-full p-3 border-2 rounded-lg text-right font-bold outline-none" oninput="updateAll()"></div>
+                        <div><label class="block font-bold mb-1 text-xs text-slate-600">🛡️ 보험</label><input type="number" inputmode="numeric" id="in-insurance" value="0" class="w-full p-3 border-2 rounded-lg text-right font-bold outline-none" oninput="updateAll()"></div>
+                        <div class="col-span-1 md:col-span-2"><label class="block font-bold mb-1 text-xs text-slate-600">💵 현금</label><input type="number" inputmode="numeric" id="in-cash" value="0" class="w-full p-3 border-2 rounded-lg text-right font-bold outline-none" oninput="updateAll()"></div>
+                    </div>
+                    <div class="mt-6 p-4 bg-slate-800 rounded-xl text-white shadow-lg flex justify-between items-center">
+                        <span class="text-xs md:text-sm opacity-70">남은 예산 (1억)</span>
+                        <span id="remain-val" class="jua text-xl md:text-2xl text-emerald-400">0 만원</span>
+                    </div>
+                    <button id="btn-run" onclick="analyze()" class="w-full mt-4 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white jua text-xl md:text-2xl rounded-xl shadow-lg transition-all disabled:opacity-30" disabled>AI 시뮬레이션 실행 🚀</button>
+                </div>
+            </div>
+            <div class="xl:col-span-7">
+                <div class="card p-6 flex flex-col items-center justify-center text-center border-4 border-dashed border-slate-200 bg-white min-h-[300px] h-full">
+                    <div class="text-6xl md:text-8xl mb-4 animate-bounce">🎲</div>
+                    <h3 class="jua text-2xl md:text-3xl text-slate-700">미래는 예측 불가!</h3>
+                    <p class="text-slate-500 text-sm md:text-lg">AI가 <span class="font-bold text-blue-600">랜덤 경제 시나리오</span>를 생성합니다.<br>어떤 경제 상황이 닥칠지 모릅니다.<br>예산 1억을 신중하게 배분하세요.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="step-result" class="hidden space-y-6 animate-slide-up">
+            <div id="scenario-banner" class="bg-slate-800 text-white p-5 rounded-2xl text-center shadow-xl border-4 border-slate-700">
+                <span class="text-[10px] md:text-xs font-bold opacity-70 tracking-widest uppercase">Scenario</span>
+                <h2 id="scenario-title" class="jua text-3xl md:text-5xl mt-1 text-yellow-400">로딩중...</h2>
+                <p id="scenario-desc" class="text-sm md:text-base text-slate-300">...</p>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+                <div class="xl:col-span-12 card p-6 md:p-8 border-t-[6px] border-emerald-500">
+                    <div class="flex flex-col lg:flex-row gap-6 md:gap-10 items-center justify-around">
+                        <div class="text-center relative shrink-0">
+                            <div id="score-circle" class="score-circle mx-auto mb-2 border-slate-200 shadow-2xl relative z-10">
+                                <span id="score-text" class="jua text-5xl md:text-6xl text-slate-800">0</span>
+                            </div>
+                            <span class="jua text-xl text-slate-500">AI 투자 점수</span>
+                        </div>
+                        <div class="w-full space-y-4">
+                            <div class="grid grid-cols-2 gap-3 md:gap-4">
+                                <div class="bg-red-50 p-3 rounded-xl border border-red-100 text-center">
+                                    <div class="text-[10px] text-red-500 font-bold">물가상승률(10년)</div>
+                                    <div id="res-inf" class="jua text-xl text-red-900">0%</div>
+                                </div>
+                                <div class="bg-blue-50 p-3 rounded-xl border border-blue-100 text-center">
+                                    <div class="text-[10px] text-blue-500 font-bold">10년 뒤 자산(명목)</div>
+                                    <div id="res-nom" class="jua text-xl text-blue-900">0</div>
+                                </div>
+                                <div class="col-span-2 bg-emerald-50 p-4 rounded-xl border-2 border-emerald-200 text-center">
+                                    <div class="text-xs text-emerald-600 font-bold">💰 실제 구매력 (실질 가치)</div>
+                                    <div id="res-real" class="jua text-3xl md:text-4xl text-emerald-900">0</div>
+                                    <div id="real-change-badge" class="inline-block mt-2 px-3 py-1 bg-white rounded-full text-xs font-bold border">변동 없음</div>
+                                </div>
+                            </div>
+                            <div class="bg-slate-100 p-4 rounded-xl border-2 border-dashed border-slate-300 flex items-center gap-3">
+                                <div class="text-3xl shrink-0" id="tangible-icon">🤔</div>
+                                <div>
+                                    <div class="text-xs text-slate-500 font-bold" id="tangible-title">분석 중...</div>
+                                    <div class="text-sm md:text-lg font-bold text-slate-800 leading-tight" id="tangible-desc">결과 대기 중</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 p-5 bg-slate-900 text-white rounded-xl shadow-inner">
+                        <h4 class="jua text-lg text-yellow-400 mb-2">📢 AI 투자 분석관 코멘트</h4>
+                        <p id="feedback-main" class="text-sm md:text-lg font-light text-slate-200">...</p>
+                    </div>
+                </div>
+
+                <div class="xl:col-span-6 quote-card p-6 md:p-8 rounded-2xl shadow-lg relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-20 text-5xl">🥚</div>
+                    <h4 class="jua text-xl text-yellow-400 mb-2">투자 명언 #1</h4>
+                    <p class="text-xl md:text-2xl font-bold leading-snug mb-3">"계란을 한 바구니에 <br>담지 마라."</p>
+                    <p class="text-xs opacity-70">- 제임스 토빈 (노벨 경제학상) -</p>
+                    <div class="mt-3 pt-3 border-t border-white/20 text-xs md:text-sm opacity-90">
+                        💡 <strong>교훈:</strong> 몰빵 투자는 위험해요. 분산 투자로 위험을 나누세요.
+                    </div>
+                </div>
+
+                <div class="xl:col-span-6 quote-card p-6 md:p-8 rounded-2xl shadow-lg relative overflow-hidden bg-gradient-to-br from-indigo-900 to-purple-900">
+                    <div class="absolute top-0 right-0 p-4 opacity-20 text-5xl">🌊</div>
+                    <h4 class="jua text-xl text-emerald-400 mb-2">투자 명언 #2</h4>
+                    <p class="text-xl md:text-2xl font-bold leading-snug mb-3">"위험은 자신이 무엇을 하는지 <br>모르는 데서 온다."</p>
+                    <p class="text-xs opacity-70">- 워런 버핏 (투자자) -</p>
+                    <div class="mt-3 pt-3 border-t border-white/20 text-xs md:text-sm opacity-90">
+                        💡 <strong>교훈:</strong> 남들 따라 투자하지 말고, 내가 투자하는 자산을 공부해야 합니다.
+                    </div>
+                </div>
+
+                <div class="xl:col-span-12 card p-6 md:p-10 border-l-[10px] md:border-l-[16px] border-indigo-600 bg-white">
+                    <h3 class="jua text-2xl md:text-3xl text-slate-800 mb-1">📝 최종 보고서 제출</h3>
+                    <p class="text-xs md:text-sm text-slate-500 mb-4">학번과 이름을 입력하고 제출하면 자동 전송됩니다.</p>
+                    
+                    <div class="bg-indigo-50 p-4 rounded-xl mb-4 border border-indigo-100">
+                        <label class="block font-bold text-indigo-900 mb-1 text-sm">작성 가이드</label>
+                        <ul class="list-disc list-inside text-xs md:text-sm text-indigo-800 space-y-1">
+                            <li>'체감 물가 계산서'를 보고 어떤 생각이 들었나요?</li>
+                            <li>'계란을 한 바구니에 담지 말라'는 명언을 어떻게 적용했나요?</li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1 text-sm">학번 / 이름</label>
+                            <input type="text" id="student-name" class="w-full p-4 bg-slate-50 border-2 border-slate-200 rounded-xl focus:border-indigo-500 outline-none transition-all text-lg font-bold" placeholder="예: 1101 홍길동">
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1 text-sm">투자 성찰 (느낀점)</label>
+                            <textarea id="reflection" rows="3" class="w-full p-4 bg-white border-2 border-slate-200 rounded-xl focus:border-indigo-500 outline-none transition-all text-base shadow-inner" placeholder="예: 몰빵 투자가 이렇게 위험한 줄 몰랐습니다..."></textarea>
+                        </div>
+                        
+                        <button onclick="submitToGoogle()" class="w-full py-4 bg-indigo-600 text-white jua text-xl rounded-xl hover:bg-indigo-700 shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2">
+                            <span>📤 제출하기 (구글 설문 자동 입력)</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-10 text-center text-slate-400 text-xs pb-10 font-light">
+            경상북도교육청 AIEP | Designed by 김스데반
+        </footer>
+    </div>
+
+    <script>
+        // --- 보안 및 저작권 보호 로직 ---
+        document.addEventListener('keydown', function(e) {
+            // F12, Ctrl+U, Ctrl+C, Ctrl+Shift+I 등 차단
+            if (e.key === 'F12' || 
+                (e.ctrlKey && (e.key === 'u' || e.key === 'c' || e.key === 's')) ||
+                (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+                e.preventDefault();
+                alert('🚫 경고: 이 자료는 경북교육청 김스데반 교사의 저작물입니다.\n무단 복제 및 소스 코드 열람이 금지되어 있습니다.');
+            }
+        });
+
+        const BUDGET = 10000;
+
+        function goToStep2() {
+            document.getElementById('step-intro').classList.add('hidden');
+            document.getElementById('step-simulation').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateAll() {
+            const vals = getValues();
+            const totalUsed = Object.values(vals).reduce((a, b) => a + b, 0);
+            const remain = BUDGET - totalUsed;
+            
+            const remainEl = document.getElementById('remain-val');
+            remainEl.innerText = remain.toLocaleString() + ' 만원';
+            
+            if(remain !== 0) {
+                remainEl.classList.remove('text-emerald-400');
+                remainEl.classList.add('text-slate-400');
+                document.getElementById('btn-run').disabled = true;
+            } else {
+                remainEl.classList.remove('text-slate-400');
+                remainEl.classList.add('text-emerald-400');
+                document.getElementById('btn-run').disabled = false;
+            }
+        }
+
+        function getValues() {
+            return {
+                savings: parseInt(document.getElementById('in-savings').value) || 0,
+                stocks: parseInt(document.getElementById('in-stocks').value) || 0,
+                land: parseInt(document.getElementById('in-land').value) || 0,
+                fund: parseInt(document.getElementById('in-fund').value) || 0,
+                insurance: parseInt(document.getElementById('in-insurance').value) || 0,
+                cash: parseInt(document.getElementById('in-cash').value) || 0
+            };
+        }
+
+        function analyze() {
+            document.getElementById('step-simulation').classList.add('hidden');
+            document.getElementById('step-result').classList.remove('hidden');
+            
+            const vals = getValues();
+            const scenarios = [
+                { name: "☀️ 경제 호황기", desc: "경제가 급성장하고 주식과 부동산이 폭등합니다!", inf: 2.0, loan: 4.0, yields: { stocks: 2.5, land: 1.8, fund: 1.5, insurance: 1.05, cash: 1.0 } },
+                { name: "🌧️ 스태그플레이션", desc: "불황인데 물가만 오릅니다. 현금 가치가 폭락합니다.", inf: 6.5, loan: 7.0, yields: { stocks: 0.7, land: 0.9, fund: 0.8, insurance: 1.05, cash: 1.0 } },
+                { name: "📉 금리 인상기", desc: "금리가 폭등했습니다. 빚낸 사람들은 울고 예금자는 웃습니다.", inf: 3.0, loan: 9.0, yields: { stocks: 0.8, land: 0.85, fund: 0.9, insurance: 1.05, cash: 1.0 } },
+                { name: "🏗️ 부동산 개발 붐", desc: "땅값이 폭등합니다. 하지만 주식 시장은 소외됩니다.", inf: 3.5, loan: 5.0, yields: { stocks: 1.1, land: 2.2, fund: 1.2, insurance: 1.05, cash: 1.0 } }
+            ];
+
+            const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+            
+            document.getElementById('scenario-title').innerText = scenario.name;
+            document.getElementById('scenario-desc').innerText = scenario.desc;
+
+            let savingsFinal = (vals.savings >= 0) ? vals.savings * Math.pow(1 + (Math.max(1.0, scenario.loan - 2.0)/100), 10) : vals.savings * Math.pow(1 + (scenario.loan/100), 10);
+            const nominalTotal = Math.round(savingsFinal + (vals.stocks * Math.pow(scenario.yields.stocks, 1)) + (vals.land * Math.pow(scenario.yields.land, 1)) + (vals.fund * Math.pow(scenario.yields.fund, 1)) + (vals.insurance * Math.pow(scenario.yields.insurance, 10)) + vals.cash);
+            const realTotal = Math.round(nominalTotal / Math.pow(1 + (scenario.inf/100), 10));
+
+            let score = 70;
+            let feedback = "";
+            if (realTotal > BUDGET * 1.1) { score += 20; feedback += "✅ 수익률 탁월! 인플레이션을 이겨냈습니다. "; }
+            else if (realTotal < BUDGET) { score -= 20; feedback += "⚠️ 물가 상승보다 수익이 적어 사실상 손해입니다. "; }
+            
+            if (Math.max(Math.abs(vals.savings), vals.stocks, vals.land, vals.fund) > 7000) { score -= 15; feedback += "<br>⚠️ '몰빵'은 위험합니다. 분산 투자가 필요해요. "; }
+            else { score += 10; feedback += "<br>✅ 분산 투자가 아주 잘 되었습니다. "; }
+
+            if (vals.savings < -2000 && scenario.loan > 6.0) { score -= 30; feedback += `<br>🚨 금리 폭등(${scenario.loan}%)으로 이자 갚다 파산할 뻔했습니다. `; }
+            if (vals.cash > 3000) { score -= 15; feedback += `<br>⚠️ 현금은 물가 상승(${scenario.inf}%)에 취약합니다. `; }
+
+            score = Math.max(0, Math.min(100, Math.round(score)));
+
+            document.getElementById('score-text').innerText = score;
+            const circle = document.getElementById('score-circle');
+            circle.style.borderColor = score >= 80 ? '#10b981' : (score >= 50 ? '#f59e0b' : '#ef4444');
+
+            document.getElementById('res-inf').innerText = scenario.inf + '%';
+            document.getElementById('res-nom').innerText = nominalTotal.toLocaleString() + '만';
+            document.getElementById('res-real').innerText = realTotal.toLocaleString() + '만';
+            
+            const badge = document.getElementById('real-change-badge');
+            const profit = realTotal - BUDGET;
+            const iconEl = document.getElementById('tangible-icon');
+            const titleEl = document.getElementById('tangible-title');
+            const descEl = document.getElementById('tangible-desc');
+            
+            if(profit > 0) {
+                badge.innerText = `▲ +${profit.toLocaleString()}만 이득`; badge.className = "inline-block mt-2 px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold border border-emerald-200";
+                if (profit < 50) { iconEl.innerText = "🍗"; titleEl.innerText = "소확행"; descEl.innerText = `치킨 ${Math.floor(profit/2)}마리 이득!`; }
+                else if (profit < 300) { iconEl.innerText = "👟"; titleEl.innerText = "짭짤함"; descEl.innerText = `운동화 ${Math.floor(profit/15)}켤레 이득!`; }
+                else { iconEl.innerText = "📱"; titleEl.innerText = "초대박"; descEl.innerText = `최신 폰 ${Math.floor(profit/150)}대 이득!`; }
+            } else {
+                badge.innerText = `▼ ${profit.toLocaleString()}만 손해`; badge.className = "inline-block mt-2 px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-bold border border-red-200";
+                const loss = Math.abs(profit);
+                if (loss < 50) { iconEl.innerText = "💸"; titleEl.innerText = "속쓰림"; descEl.innerText = `치킨 ${Math.floor(loss/2)}마리 증발...`; }
+                else if (loss < 300) { iconEl.innerText = "👟"; titleEl.innerText = "충격"; descEl.innerText = `운동화 ${Math.floor(loss/15)}켤레 분실 효과.`; }
+                else { iconEl.innerText = "📉"; titleEl.innerText = "파산 위기"; descEl.innerText = `최신 폰 ${Math.floor(loss/150)}대 강물에 던짐!`; }
+            }
+            document.getElementById('feedback-main').innerHTML = feedback;
+            setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
+        }
+
+        function submitToGoogle() {
+            const name = document.getElementById('student-name').value;
+            const reflection = document.getElementById('reflection').value;
+            
+            if (name.length < 2) { alert("학번과 이름을 정확히 입력해주세요!"); return; }
+            if (reflection.length < 5) { alert("느낀점을 조금 더 자세히 적어주세요!"); return; }
+
+            const score = document.getElementById('score-text').innerText;
+            const scenarioTitle = document.getElementById('scenario-title').innerText;
+            const profitBadge = document.getElementById('real-change-badge').innerText;
+            const finalAsset = document.getElementById('res-real').innerText; 
+
+            const s_save = document.getElementById('in-savings').value;
+            const s_stock = document.getElementById('in-stocks').value;
+            const s_land = document.getElementById('in-land').value;
+            const s_fund = document.getElementById('in-fund').value;
+            const s_ins = document.getElementById('in-insurance').value;
+            const s_cash = document.getElementById('in-cash').value;
+            const portfolioDetail = `[예금:${s_save}] [주식:${s_stock}] [부동산:${s_land}] [펀드:${s_fund}] [보험:${s_ins}] [현금:${s_cash}]`;
+
+            const resultSummary = `[${scenarioTitle}] 최종자산: ${finalAsset} (${profitBadge})`;
+
+            const formBaseURL = "https://docs.google.com/forms/d/e/1FAIpQLSdcRB1aKjQ60Y8VpQfURtXmf5XWEXUohBEFJkfv7uedWF9-GQ/viewform"; 
+            
+            const entry_Name = "349418711";
+            const entry_Score = "115998447";
+            const entry_Result = "456057638";
+            const entry_Portfolio = "711727718";
+            const entry_Report = "1702296957";
+
+            const finalURL = `${formBaseURL}?usp=pp_url` + 
+                `&entry.${entry_Name}=${encodeURIComponent(name)}` +
+                `&entry.${entry_Score}=${encodeURIComponent(score)}` +
+                `&entry.${entry_Result}=${encodeURIComponent(resultSummary)}` +
+                `&entry.${entry_Portfolio}=${encodeURIComponent(portfolioDetail)}` +
+                `&entry.${entry_Report}=${encodeURIComponent(reflection)}`;
+
+            alert("구글 설문지가 새 창으로 열립니다.\n내용이 자동 입력되었는지 확인 후 [제출] 버튼을 눌러주세요.");
+            window.open(finalURL, '_blank');
+        }
+
+        updateAll();
+    </script>
+</body>
+</html>

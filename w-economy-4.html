@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>10년 투자 서바이벌 : 도파민 에디션</title>
+    <!-- 폰트 및 스타일 -->
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* 기본 설정 */
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #111827; color: #f3f4f6; user-select: none; -webkit-tap-highlight-color: transparent; }
+        .font-game { font-family: 'Black Han Sans', sans-serif; }
+        .font-retro { font-family: 'Do Hyeon', sans-serif; }
+
+        /* 애니메이션 */
+        @keyframes pulse-red { 0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); } }
+        @keyframes slide-up { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes zoom-in { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); } 20%, 40%, 60%, 80% { transform: translateX(5px); } }
+
+        .animate-slide-up { animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-zoom { animation: zoom-in 0.3s ease-out forwards; }
+        .animate-shake { animation: shake 0.5s; }
+        
+        /* 커스텀 스크롤바 */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1f2937; }
+        ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 3px; }
+
+        /* 게임 UI 요소 */
+        .glass-panel { background: rgba(31, 41, 55, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .asset-slider { -webkit-appearance: none; width: 100%; height: 8px; border-radius: 5px; background: #374151; outline: none; }
+        .asset-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #3b82f6; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3); transition: transform .1s; }
+        .asset-slider::-webkit-slider-thumb:active { transform: scale(1.2); }
+        
+        /* 대출(음수) 슬라이더 스타일 */
+        .slider-debt::-webkit-slider-thumb { background: #ef4444 !important; }
+        .bg-debt { background-color: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); }
+
+        /* 뉴스 모달 배경 이미지용 */
+        .news-bg { background-size: cover; background-position: center; transition: all 0.5s; }
+        .news-overlay { background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.3) 100%); }
+
+        /* 워터마크 스타일 */
+        .watermark {
+            position: fixed; bottom: 10px; right: 10px; 
+            font-size: 10px; color: rgba(255,255,255,0.2); 
+            font-weight: bold; pointer-events: none; z-index: 9999;
+            background: rgba(0,0,0,0.3);
+            padding: 4px 10px; border-radius: 15px;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden min-h-screen flex flex-col select-none" oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+
+    <!-- 워터마크 -->
+    <div class="watermark">Designed by 경북교육청 교사 김스데반</div>
+
+    <!-- [Intro Screen] -->
+    <div id="screen-intro" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-900 p-6 text-center">
+        <div class="mb-2 text-yellow-400 font-retro text-xl animate-bounce">AIEP 경제 시뮬레이션</div>
+        <h1 class="font-game text-5xl md:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-yellow-500 to-orange-500 mb-6 drop-shadow-lg leading-tight">
+            자산의 신<br><span class="text-3xl md:text-5xl text-white">익스트림 에디션</span>
+        </h1>
+        <p class="text-slate-400 mb-8 max-w-md break-keep leading-relaxed text-sm md:text-base">
+            <b>1억 원</b>으로 시작해 <b>10년</b>을 버티세요.<br>
+            전쟁, 팬데믹, 기술 혁명 등 <b>거대한 사건</b>들이 당신의 자산을 요동치게 할 것입니다.<br>
+            <span class="text-red-400 font-bold">대출(레버리지)</span>은 양날의 검입니다. 준비되셨나요?
+        </p>
+        
+        <button onclick="startGame()" class="w-full max-w-xs py-4 bg-gradient-to-r from-red-600 to-orange-600 rounded-2xl font-game text-2xl shadow-lg hover:scale-105 transition-transform active:scale-95 border-2 border-red-400/50 text-white">
+            지옥의 투자 시작 🔥
+        </button>
+    </div>
+
+    <!-- [Main Game] -->
+    <div id="screen-game" class="hidden flex-1 flex flex-col max-w-3xl w-full mx-auto p-4 pb-28">
+        
+        <!-- 정보바 -->
+        <div class="flex justify-between items-end mb-4 border-b border-slate-700 pb-2">
+            <div>
+                <span class="text-xs text-slate-400 block mb-1">Current Year</span>
+                <span class="font-game text-3xl text-yellow-400"><span id="display-year">1</span>년차</span>
+            </div>
+            <div class="text-right">
+                <span class="text-xs text-slate-400 block mb-1">Net Equity (순자산)</span>
+                <span id="display-total" class="font-retro text-3xl text-emerald-400">10,000</span>
+                <span class="text-sm text-emerald-600">만원</span>
+            </div>
+        </div>
+
+        <!-- 차트 -->
+        <div class="glass-panel rounded-xl p-3 mb-4 h-56 relative shadow-inner bg-slate-900/50">
+            <canvas id="assetChart"></canvas>
+            <div id="bankruptcy-overlay" class="hidden absolute inset-0 bg-black/80 flex flex-col items-center justify-center z-10 animate-zoom">
+                <div class="text-6xl mb-2">☠️</div>
+                <div class="text-red-500 font-game text-5xl mb-2">파 산</div>
+                <div class="text-slate-400 text-sm">빚을 감당하지 못했습니다...</div>
+            </div>
+        </div>
+
+        <!-- 포트폴리오 조절 -->
+        <div class="space-y-4">
+            <div class="flex justify-between items-center px-1">
+                <h3 class="font-game text-xl text-white flex items-center gap-2">
+                    💼 포트폴리오 
+                    <span id="leverage-badge" class="hidden text-[10px] font-bold text-red-400 bg-red-900/30 px-2 py-0.5 rounded border border-red-500/50 animate-pulse">⚡ 레버리지 ON</span>
+                </h3>
+                <span class="text-xs text-slate-500">순자산 대비 비중</span>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4">
+                <!-- 예금/대출 슬라이더 -->
+                <div id="panel-savings" class="bg-slate-800 rounded-xl p-4 border border-slate-700 transition-colors duration-300">
+                    <div class="flex justify-between mb-3 items-center">
+                        <label class="font-bold text-blue-300 flex flex-col">
+                            <span class="flex items-center gap-2 text-lg">🏦 예금 / 대출</span>
+                            <span id="savings-status" class="text-xs text-slate-400 font-normal">안전 자산</span>
+                        </label>
+                        <span class="font-retro text-2xl text-white transition-colors" id="text-savings"><span id="val-savings">25</span>%</span>
+                    </div>
+                    <input type="range" min="-100" max="100" value="25" id="slider-savings" class="asset-slider bg-blue-900/50 w-full" oninput="updateAllocation('savings', this.value)">
+                    <div class="flex justify-between text-[10px] text-slate-500 mt-2 px-1 font-bold">
+                        <span class="text-red-400">◀ 대출 (이자 발생)</span>
+                        <span class="text-blue-400">저축 (이자 수익) ▶</span>
+                    </div>
+                </div>
+                
+                <!-- 다른 자산들 -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-slate-800 rounded-xl p-3 border border-slate-700">
+                        <div class="flex justify-between mb-2">
+                            <label class="font-bold text-red-300">📈 주식</label>
+                            <span class="font-retro text-white"><span id="val-stocks">25</span>%</span>
+                        </div>
+                        <input type="range" min="0" max="200" value="25" class="asset-slider bg-red-900/50" oninput="updateAllocation('stocks', this.value)">
+                    </div>
+                    <div class="bg-slate-800 rounded-xl p-3 border border-slate-700">
+                        <div class="flex justify-between mb-2">
+                            <label class="font-bold text-amber-300">🏢 부동산</label>
+                            <span class="font-retro text-white"><span id="val-realestate">25</span>%</span>
+                        </div>
+                        <input type="range" min="0" max="200" value="25" class="asset-slider bg-amber-900/50" style="--thumb-color: #f59e0b" oninput="updateAllocation('realestate', this.value)">
+                    </div>
+                    <div class="bg-slate-800 rounded-xl p-3 border border-slate-700">
+                        <div class="flex justify-between mb-2">
+                            <label class="font-bold text-purple-300">🚀 코인</label>
+                            <span class="font-retro text-white"><span id="val-crypto">15</span>%</span>
+                        </div>
+                        <input type="range" min="0" max="200" value="15" class="asset-slider" oninput="updateAllocation('crypto', this.value)">
+                    </div>
+                    <div class="bg-slate-800 rounded-xl p-3 border border-slate-700">
+                        <div class="flex justify-between mb-2">
+                            <label class="font-bold text-yellow-300">🥇 금</label>
+                            <span class="font-retro text-white"><span id="val-gold">10</span>%</span>
+                        </div>
+                        <input type="range" min="0" max="200" value="10" class="asset-slider" oninput="updateAllocation('gold', this.value)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 합계 검증 -->
+            <div class="text-center mt-4 p-3 rounded-xl bg-slate-900 border border-slate-800">
+                <div id="alloc-warning" class="hidden">
+                    <span class="text-sm font-bold text-red-400 animate-pulse block mb-1">⚠️ 합계가 100%가 아닙니다!</span>
+                    <span class="text-xs text-slate-400">현재 합계: <span id="total-alloc-warn" class="text-red-300 text-lg font-retro">100</span>%</span>
+                </div>
+                <div id="alloc-ok" class="block">
+                    <span class="text-sm font-bold text-emerald-400 block mb-1">✅ 투자 준비 완료</span>
+                    <span class="text-xs text-slate-500">총 투자 비중: <span id="leverage-ratio" class="text-slate-300 font-bold">100</span>%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 하단 버튼 -->
+    <div id="btn-area" class="fixed bottom-0 left-0 w-full p-4 bg-slate-900/90 backdrop-blur border-t border-slate-700 z-30 hidden">
+        <div class="max-w-3xl mx-auto">
+            <button id="btn-next" onclick="calculateTurn()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl font-game text-2xl text-white shadow-lg active:scale-95 transition-all">
+                투자 실행 (다음 해로) ⏩
+            </button>
+        </div>
+    </div>
+
+    <!-- [Breaking News Modal] - 사건 발생 시 뜨는 대형 모달 -->
+    <div id="modal-news" class="fixed inset-0 z-50 flex items-end md:items-center justify-center hidden">
+        <!-- 배경 이미지 (동적 변경) -->
+        <div id="modal-bg" class="absolute inset-0 news-bg bg-gray-900"></div>
+        <div class="absolute inset-0 news-overlay"></div>
+        
+        <!-- 콘텐츠 -->
+        <div class="relative w-full max-w-2xl bg-slate-900/80 backdrop-blur-xl md:rounded-3xl p-6 md:p-10 border-t-4 md:border-4 border-red-500 shadow-2xl animate-slide-up flex flex-col gap-4 mb-0 md:mb-10 mx-4 h-[80vh] md:h-auto overflow-y-auto">
+            
+            <div class="flex justify-between items-start">
+                <span class="bg-red-600 text-white px-3 py-1 text-xs font-bold tracking-widest uppercase rounded animate-pulse">Breaking News</span>
+                <span id="modal-year" class="text-slate-400 font-retro text-xl">2년차</span>
+            </div>
+
+            <h2 id="modal-title" class="font-game text-4xl md:text-6xl text-white leading-tight drop-shadow-lg">
+                전쟁 발발!
+            </h2>
+
+            <p id="modal-desc" class="text-lg md:text-xl text-slate-200 font-light leading-relaxed my-4">
+                중동 지역의 지정학적 리스크가 폭발했습니다.<br>
+                국제 유가가 급등하고 주식 시장이 패닉에 빠졌습니다.<br>
+                안전 자산인 금값이 치솟고 있습니다.
+            </p>
+
+            <div class="grid grid-cols-2 gap-3 mb-6 bg-black/30 p-4 rounded-xl border border-white/10">
+                <div class="text-center">
+                    <span class="text-xs text-slate-400 block mb-1">상승 자산 ▲</span>
+                    <span id="modal-up" class="text-emerald-400 font-bold text-lg">금, 달러</span>
+                </div>
+                <div class="text-center border-l border-white/10">
+                    <span class="text-xs text-slate-400 block mb-1">하락 자산 ▼</span>
+                    <span id="modal-down" class="text-red-400 font-bold text-lg">주식, 코인</span>
+                </div>
+            </div>
+
+            <button onclick="applyTurn()" class="w-full py-4 bg-red-600 hover:bg-red-700 text-white font-game text-2xl rounded-xl shadow-lg transition-all active:scale-95">
+                확인 (자산 변동 적용)
+            </button>
+        </div>
+    </div>
+
+    <!-- [Ending Screen] -->
+    <div id="screen-ending" class="hidden fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-900 p-4 overflow-y-auto">
+        <div class="w-full max-w-lg bg-slate-800 rounded-3xl p-6 border-4 border-slate-700 shadow-2xl animate-zoom text-center">
+            <div class="text-7xl mb-4 animate-bounce" id="end-emoji">🏆</div>
+            <h2 class="font-game text-4xl text-white mb-2">10년의 여정 종료</h2>
+            <div class="bg-slate-900 rounded-2xl p-6 mb-6 border border-slate-700">
+                <div class="text-sm text-slate-500 mb-1">최종 순자산</div>
+                <div class="font-retro text-5xl text-emerald-400 mb-2"><span id="final-score">0</span> <span class="text-2xl">만원</span></div>
+                <div class="text-sm" id="roi-text">수익률: +0%</div>
+            </div>
+            <div class="bg-white/5 rounded-xl p-4 mb-6 text-left">
+                <h3 class="font-bold text-yellow-400 mb-2">🎖️ 획득 칭호</h3>
+                <div id="end-title" class="text-2xl font-game text-white">...</div>
+                <p id="end-desc" class="text-sm text-slate-300 mt-2 leading-relaxed">...</p>
+            </div>
+            <button onclick="location.reload()" class="w-full py-4 bg-indigo-600 rounded-xl font-bold text-white shadow-lg hover:bg-indigo-700 transition-colors">
+                다시 도전하기 🔄
+            </button>
+        </div>
+    </div>
+
+    <!-- 알림 -->
+    <div id="toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl border border-slate-600 z-50 hidden transition-all opacity-0 pointer-events-none w-max max-w-[90%] text-center break-keep">
+        <span id="toast-msg">메시지</span>
+    </div>
+
+    <script>
+        // --- 보안 및 저작권 보호 로직 ---
+        document.addEventListener('keydown', function(e) {
+            // F12, Ctrl+U, Ctrl+C, Ctrl+S, Ctrl+Shift+I 등 차단
+            if (e.key === 'F12' || 
+                (e.ctrlKey && (e.key === 'u' || e.key === 'c' || e.key === 's')) ||
+                (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+                e.preventDefault();
+                alert('🚫 경고: 이 자료는 경북교육청 김스데반 교사의 저작물입니다.\n무단 복제 및 소스 코드 열람이 금지되어 있습니다.');
+            }
+        });
+
+        // --- 게임 데이터 ---
+        let currentYear = 1;
+        const maxYear = 10;
+        let netEquity = 10000;
+        let historyData = [10000];
+        let labels = ['시작'];
+        let allocation = { savings: 25, realestate: 25, stocks: 25, crypto: 15, gold: 10 };
+        let myChart = null;
+        let isBankrupt = false;
+        
+        // 턴 계산용 임시 변수
+        let tempNextEquity = 0;
+        let tempLoanCost = 0;
+        let tempProfit = 0;
+        let currentEvent = null;
+
+        // [이벤트 데이터베이스: 심화 & 극단적 변동성]
+        const events = [
+            { 
+                name: "평온한 성장", 
+                desc: "경제가 완만하게 성장합니다. 큰 이슈 없이 자산이 불어납니다.", 
+                type: "normal", 
+                imgKeyword: "nature,calm",
+                mult: { savings: 1.03, realestate: 1.05, stocks: 1.08, crypto: 1.05, gold: 1.02 }, 
+                loanAdd: 0.02,
+                up: "주식, 부동산", down: "없음"
+            },
+            { 
+                name: "🔥 금리 인상 빅스텝", 
+                desc: "물가를 잡기 위해 중앙은행이 금리를 대폭 인상했습니다! 빚을 낸 투자자들의 비명소리가 들립니다.", 
+                type: "bad", 
+                imgKeyword: "bank,money",
+                mult: { savings: 1.06, realestate: 0.90, stocks: 0.75, crypto: 0.50, gold: 0.95 }, 
+                loanAdd: 0.05, // 이자 폭탄
+                up: "예금", down: "부동산, 코인"
+            },
+            { 
+                name: "💰 유동성 파티", 
+                desc: "정부가 경기 부양을 위해 돈을 무제한으로 풉니다! 모든 자산 가격이 미친 듯이 오릅니다.", 
+                type: "good", 
+                imgKeyword: "party,money",
+                mult: { savings: 1.01, realestate: 1.20, stocks: 1.30, crypto: 1.80, gold: 1.10 }, 
+                loanAdd: 0.01,
+                up: "코인, 주식", down: "화폐가치"
+            },
+            { 
+                name: "🤖 AI 특이점 도래", 
+                desc: "인공지능이 모든 산업을 혁신합니다! 기술주와 관련 코인이 천정부지로 치솟습니다.", 
+                type: "good", 
+                imgKeyword: "robot,technology",
+                mult: { savings: 1.02, realestate: 1.05, stocks: 1.50, crypto: 2.00, gold: 1.0 }, 
+                loanAdd: 0.02,
+                up: "코인(2배!), 주식", down: "없음"
+            },
+            { 
+                name: "📉 대공황의 공포", 
+                desc: "실업률 급증, 소비 침체. 'R(Recession)의 공포'가 시장을 덮쳤습니다. 현금이 왕입니다.", 
+                type: "bad", 
+                imgKeyword: "rain,sad",
+                mult: { savings: 1.03, realestate: 0.85, stocks: 0.70, crypto: 0.40, gold: 1.10 }, 
+                loanAdd: 0.02,
+                up: "금, 예금", down: "주식, 코인"
+            },
+            { 
+                name: "💣 제3차 세계대전 위기", 
+                desc: "주요 강대국 간의 무력 충돌! 주식 시장이 붕괴하고 안전자산인 금과 달러가 폭등합니다.", 
+                type: "bad", 
+                imgKeyword: "tank,fire",
+                mult: { savings: 1.02, realestate: 0.90, stocks: 0.60, crypto: 0.30, gold: 1.50 }, 
+                loanAdd: 0.03,
+                up: "금(떡상)", down: "주식, 코인"
+            },
+            { 
+                name: "🦠 변종 바이러스 팬데믹", 
+                desc: "새로운 전염병으로 국경이 폐쇄되고 실물 경제가 마비됩니다.", 
+                type: "bad", 
+                imgKeyword: "virus,mask",
+                mult: { savings: 1.01, realestate: 0.95, stocks: 0.85, crypto: 1.20, gold: 1.15 }, 
+                loanAdd: 0.01,
+                up: "금, 코인(비대면)", down: "부동산"
+            },
+            { 
+                name: "🏗️ 신도시 개발 붐", 
+                desc: "정부의 대규모 부동산 부양책 발표! 아파트 가격이 하루가 다르게 오릅니다.", 
+                type: "good", 
+                imgKeyword: "city,building",
+                mult: { savings: 1.02, realestate: 1.30, stocks: 1.05, crypto: 1.0, gold: 1.0 }, 
+                loanAdd: 0.02,
+                up: "부동산", down: "없음"
+            },
+        ];
+
+        function startGame() {
+            document.getElementById('screen-intro').classList.add('hidden');
+            document.getElementById('screen-game').classList.remove('hidden');
+            document.getElementById('screen-game').classList.add('flex');
+            document.getElementById('btn-area').classList.remove('hidden');
+            initChart();
+            updateUI();
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('assetChart').getContext('2d');
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '순자산(만원)',
+                        data: historyData,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#fff',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { display: true, grid: { display: false }, ticks: { color: '#6b7280' } },
+                        y: { display: true, grid: { color: '#374151' }, ticks: { color: '#9ca3af' } }
+                    },
+                    animation: { duration: 1000 }
+                }
+            });
+        }
+
+        function updateAllocation(type, val) {
+            allocation[type] = parseInt(val);
+            document.getElementById(`val-${type}`).innerText = val;
+            
+            // 예금 슬라이더 처리 (대출 UI)
+            if (type === 'savings') {
+                const slider = document.getElementById('slider-savings');
+                const panel = document.getElementById('panel-savings');
+                const status = document.getElementById('savings-status');
+                const textVal = document.getElementById('text-savings');
+
+                if (parseInt(val) < 0) {
+                    slider.classList.add('slider-debt');
+                    panel.classList.add('bg-debt');
+                    status.innerText = "🚨 대출 실행 중 (고위험)";
+                    status.className = "text-xs text-red-400 font-bold animate-pulse";
+                    textVal.classList.add('text-red-400');
+                    textVal.classList.remove('text-white');
+                    document.getElementById('leverage-badge').classList.remove('hidden');
+                } else {
+                    slider.classList.remove('slider-debt');
+                    panel.classList.remove('bg-debt');
+                    status.innerText = "안전 자산";
+                    status.className = "text-xs text-slate-400 font-normal";
+                    textVal.classList.remove('text-red-400');
+                    textVal.classList.add('text-white');
+                    document.getElementById('leverage-badge').classList.add('hidden');
+                }
+            }
+            
+            // 합계 계산
+            const total = Object.values(allocation).reduce((a, b) => a + b, 0);
+            const nextBtn = document.getElementById('btn-next');
+            const warning = document.getElementById('alloc-warning');
+            const ok = document.getElementById('alloc-ok');
+            
+            document.getElementById('total-alloc-warn').innerText = total;
+
+            if (total === 100) {
+                nextBtn.disabled = false;
+                nextBtn.classList.remove('opacity-50', 'grayscale');
+                warning.classList.add('hidden');
+                ok.classList.remove('hidden');
+                
+                const grossAsset = Object.values(allocation).reduce((a, b) => b > 0 ? a + b : a, 0);
+                document.getElementById('leverage-ratio').innerText = grossAsset;
+            } else {
+                nextBtn.disabled = true;
+                nextBtn.classList.add('opacity-50', 'grayscale');
+                warning.classList.remove('hidden');
+                ok.classList.add('hidden');
+            }
+        }
+
+        function updateUI() {
+            document.getElementById('display-year').innerText = currentYear;
+            const target = Math.round(netEquity);
+            document.getElementById('display-total').innerText = target.toLocaleString();
+            
+            if (netEquity < 0) {
+                document.getElementById('display-total').classList.remove('text-emerald-400');
+                document.getElementById('display-total').classList.add('text-red-500');
+            } else {
+                document.getElementById('display-total').classList.add('text-emerald-400');
+                document.getElementById('display-total').classList.remove('text-red-500');
+            }
+        }
+
+        function calculateTurn() {
+            if (currentYear > maxYear || isBankrupt) return;
+
+            let event = events[0];
+            if (currentYear > 1) {
+                event = events[Math.floor(Math.random() * events.length)];
+            }
+            currentEvent = event;
+
+            let portions = {};
+            let prevNetEquity = netEquity;
+            
+            for (let key in allocation) {
+                portions[key] = netEquity * (allocation[key] / 100);
+            }
+
+            const noise = () => (Math.random() * 0.1) - 0.05 + 1; 
+
+            tempNextEquity = 0;
+            tempLoanCost = 0;
+
+            for (let key in portions) {
+                let amount = portions[key];
+                
+                if (key === 'savings' && amount < 0) {
+                    let loanRate = (event.mult.savings - 1) + event.loanAdd; 
+                    let debtMultiplier = 1 + loanRate; 
+                    amount = amount * debtMultiplier; 
+                    tempLoanCost += Math.abs(amount - portions[key]);
+                } else {
+                    let multiplier = event.mult[key];
+                    if (key !== 'savings') multiplier = multiplier * noise();
+                    if (key === 'crypto') multiplier = multiplier * ((Math.random() * 0.4) - 0.2 + 1);
+
+                    amount = amount * multiplier;
+                }
+                tempNextEquity += amount;
+            }
+            tempProfit = tempNextEquity - prevNetEquity;
+
+            showModal(event);
+        }
+
+        function showModal(event) {
+            const modal = document.getElementById('modal-news');
+            const bg = document.getElementById('modal-bg');
+            
+            bg.style.backgroundImage = `url('https://loremflickr.com/800/600/${event.imgKeyword}?random=${Date.now()}')`;
+            
+            document.getElementById('modal-year').innerText = (currentYear + 1) + "년차 속보";
+            document.getElementById('modal-title').innerText = event.name;
+            document.getElementById('modal-desc').innerText = event.desc;
+            document.getElementById('modal-up').innerText = event.up;
+            document.getElementById('modal-down').innerText = event.down;
+
+            modal.classList.remove('hidden');
+        }
+
+        function applyTurn() {
+            document.getElementById('modal-news').classList.add('hidden');
+
+            netEquity = tempNextEquity;
+            currentYear++;
+            
+            historyData.push(Math.round(netEquity));
+            labels.push(currentYear <= 10 ? currentYear + '년' : '종료');
+            myChart.update();
+
+            if (tempProfit > 0) showToast(`📈 자산 증가! (+${Math.round(tempProfit).toLocaleString()}만원)`, 'green');
+            else {
+                let msg = `📉 자산 감소 (${Math.round(tempProfit).toLocaleString()}만원)`;
+                if (tempLoanCost > 0) msg += `<br>💸 대출 이자: -${Math.round(tempLoanCost).toLocaleString()}만원`;
+                showToast(msg, 'red');
+            }
+
+            if (netEquity <= 0) {
+                isBankrupt = true;
+                document.getElementById('bankruptcy-overlay').classList.remove('hidden');
+                document.getElementById('bankruptcy-overlay').classList.add('flex');
+                setTimeout(showEnding, 2500);
+                return;
+            }
+
+            updateUI();
+
+            if (currentYear > maxYear) {
+                setTimeout(showEnding, 1500);
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function showToast(msg, color) {
+            const toast = document.getElementById('toast');
+            const txt = document.getElementById('toast-msg');
+            txt.innerHTML = msg;
+            
+            if(color === 'red') toast.className = "fixed top-24 left-1/2 transform -translate-x-1/2 bg-red-900/90 text-white px-6 py-3 rounded-2xl shadow-2xl border border-red-500 z-50 animate-bounce transition-all text-center";
+            else toast.className = "fixed top-24 left-1/2 transform -translate-x-1/2 bg-emerald-900/90 text-white px-6 py-3 rounded-2xl shadow-2xl border border-emerald-500 z-50 animate-bounce transition-all text-center";
+            
+            toast.classList.remove('hidden');
+            toast.style.opacity = 1;
+
+            setTimeout(() => {
+                toast.style.opacity = 0;
+                setTimeout(() => toast.classList.add('hidden'), 300);
+            }, 2500);
+        }
+
+        function showEnding() {
+            document.getElementById('screen-ending').classList.remove('hidden');
+            const finalVal = Math.round(netEquity);
+            document.getElementById('final-score').innerText = finalVal.toLocaleString();
+            
+            const roi = ((finalVal - 10000) / 10000) * 100;
+            const roiEl = document.getElementById('roi-text');
+            
+            let roiText = `총 수익률: ${roi > 0 ? '+' : ''}${roi.toFixed(1)}%`;
+            if (isBankrupt) roiText = "파산 (자산 소멸)";
+            
+            roiEl.innerText = roiText;
+            if (roi > 0) roiEl.classList.add('text-emerald-400');
+            else roiEl.classList.add('text-red-400');
+
+            const titleEl = document.getElementById('end-title');
+            const descEl = document.getElementById('end-desc');
+            const emojiEl = document.getElementById('end-emoji');
+
+            if (isBankrupt || finalVal <= 0) {
+                emojiEl.innerText = "💸";
+                titleEl.innerText = "개인회생 신청자";
+                titleEl.className = "text-3xl font-game text-red-600";
+                descEl.innerText = "무리한 빚투의 최후입니다. 욕심이 과하면 파멸을 부른다는 교훈을 얻으셨길 바랍니다.";
+            } else if (finalVal >= 50000) { 
+                emojiEl.innerText = "👑";
+                titleEl.innerText = "월스트리트의 늑대";
+                titleEl.className = "text-3xl font-game text-yellow-400";
+                descEl.innerText = "5배 이상의 수익! 당신은 전설입니다. 빚을 활용해 부를 창조하는 '신'의 경지에 도달했습니다.";
+            } else if (finalVal >= 30000) { 
+                emojiEl.innerText = "😎";
+                titleEl.innerText = "파이어족 달성";
+                titleEl.className = "text-2xl font-game text-emerald-400";
+                descEl.innerText = "축하합니다! 3배의 수익을 올렸습니다. 이제 은퇴하고 세계 여행이나 다니시죠.";
+            } else if (finalVal >= 10000) { 
+                emojiEl.innerText = "🛡️";
+                titleEl.innerText = "생존자";
+                titleEl.className = "text-2xl font-game text-blue-400";
+                descEl.innerText = "그 험난한 위기 속에서 원금을 지켰습니다. 대단한 방어력입니다. 하지만 부자는 못 되었군요.";
+            } else { 
+                emojiEl.innerText = "😭";
+                titleEl.innerText = "개미 투자자";
+                titleEl.className = "text-2xl font-game text-orange-400";
+                descEl.innerText = "원금을 잃었습니다. 수업료 냈다고 생각하세요. 다음엔 뉴스에 더 귀를 기울이세요.";
+            }
+        }
+    </script>
+</body>
+</html>

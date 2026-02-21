@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1차시: 자산 관리와 금융 생활 (김스데반 T)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 유튜브 API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background: #f8fafc; color: #1e293b; user-select: none; overflow-x: hidden; }
+        .jua { font-family: 'Jua', sans-serif; }
+        
+        /* 슬라이드 컨테이너 */
+        .slide-container { display: none; animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; min-height: 70vh; padding-bottom: 80px; }
+        .slide-active { display: block; }
+        
+        /* 애니메이션 */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* 카드 스타일 */
+        .concept-card { 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            cursor: pointer; border: 3px solid transparent; overflow: hidden;
+            background: white; position: relative;
+        }
+        .concept-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); border-color: #3b82f6; }
+        .concept-card.playing { border-color: #ef4444; background-color: #fff1f2; transform: scale(1.02); }
+        .concept-card img { transition: transform 0.5s; width: 100%; height: 100%; object-fit: cover; }
+        .concept-card:hover img { transform: scale(1.1); }
+        
+        /* 이미지 대체용(에러 시) */
+        .img-fallback { display: none; width: 100%; height: 100%; align-items: center; justify-content: center; font-size: 5rem; background: #f1f5f9; }
+        
+        /* 교육과정 배지 */
+        .badge { padding: 4px 12px; border-radius: 99px; font-size: 0.8rem; font-weight: bold; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); }
+        
+        /* 워터마크 */
+        .watermark { position: fixed; bottom: 20px; right: 20px; font-size: 14px; color: rgba(0,0,0,0.2); font-weight: bold; pointer-events: none; z-index: 9999; }
+
+        /* 퀴즈 스타일 */
+        .quiz-opt { transition: all 0.2s; }
+        .quiz-opt:hover { background-color: #f1f5f9; }
+        .quiz-correct { background-color: #dcfce7 !important; border-color: #22c55e !important; color: #15803d; }
+        .quiz-wrong { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #b91c1c; }
+
+        /* 비디오 모달 */
+        #video-modal {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: black; width: 90%; max-width: 960px; aspect-ratio: 16/9;
+            border-radius: 20px; overflow: hidden; position: relative; 
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8); border: 1px solid #333;
+        }
+        
+        /* 닫기 버튼 */
+        .close-btn {
+            position: absolute; top: -50px; right: 0; 
+            color: white; font-size: 1.1rem; font-weight: bold; cursor: pointer;
+            background: rgba(255,255,255,0.1); padding: 8px 20px; border-radius: 99px;
+            border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s;
+        }
+        .close-btn.disabled { opacity: 0.5; cursor: not-allowed; background: #333; pointer-events: none; }
+        
+        /* 에러 발생 시 긴급 버튼 */
+        .emergency-btn {
+            display: none; position: absolute; bottom: -60px; left: 50%; transform: translateX(-50%);
+            background: #ef4444; color: white; padding: 10px 20px; border-radius: 99px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); animation: fadeIn 0.5s;
+        }
+
+        /* 락 걸린 버튼 */
+        .btn-locked { background-color: #94a3b8 !important; cursor: not-allowed; opacity: 0.7; }
+
+        /* 듣기 배지 */
+        .listen-badge {
+            position: absolute; bottom: 10px; right: 10px; z-index: 10;
+            background: rgba(255,255,255,0.9); padding: 4px 10px; border-radius: 20px;
+            font-size: 0.75rem; font-weight: bold; color: #475569;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen flex flex-col" oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+
+    <!-- 워터마크 -->
+    <div class="watermark">Designed by 경북교육청 교사 김스데반 (무단 배포 금지)</div>
+
+    <!-- 비디오 모달창 -->
+    <div id="video-modal">
+        <div class="relative w-full max-w-5xl mx-auto px-4">
+            <button id="modal-close-btn" class="close-btn disabled" onclick="closeVideo()">
+                🔒 시청 중... (끝까지 봐야 닫힘)
+            </button>
+            <div class="modal-content relative">
+                <div id="player"></div>
+                <!-- 로딩/에러 메시지 표시 영역 -->
+                <div id="video-msg" class="absolute inset-0 flex items-center justify-center text-white pointer-events-none hidden bg-black">
+                    <p>영상 로딩 중...</p>
+                </div>
+            </div>
+            <!-- 긴급 건너뛰기 버튼 (에러 시 표시) -->
+            <button id="emergency-skip-btn" class="emergency-btn" onclick="forceSkipVideo()">
+                ⚠️ 영상 재생이 안 되나요? [건너뛰기]
+            </button>
+        </div>
+    </div>
+
+    <!-- 상단 헤더 -->
+    <header class="bg-slate-900 text-white p-6 rounded-[2rem] shadow-xl mb-8 relative overflow-hidden border-t-4 border-emerald-500">
+        <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">🏫</div>
+        <div class="relative z-10 text-center">
+            <div class="flex flex-wrap justify-center gap-2 mb-4">
+                <span class="badge text-emerald-300">통합사회</span>
+                <span class="badge text-blue-300">IV. 시장 경제와 지속가능발전</span>
+                <span class="badge text-yellow-300">3. 자산 관리와 금융 생활</span>
+            </div>
+            <div class="bg-slate-800/50 rounded-xl p-4 max-w-4xl mx-auto border border-slate-700/50 backdrop-blur-sm">
+                <span class="text-emerald-400 font-bold mr-2 text-sm md:text-base">[10통사2-03-03]</span>
+                <span class="text-slate-300 text-sm md:text-base font-light leading-relaxed break-keep">
+                    금융 자산의 특징과 자산 관리의 원칙을 토대로 금융 생활을 설계하고, 경제적, 사회적 환경의 변화가 금융과 관련한 의사 결정에 미치는 영향을 탐구한다.
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="max-w-6xl mx-auto w-full flex-1 relative">
+        
+        <!-- Slide 1: 오프닝 -->
+        <div id="slide-1" class="slide-container slide-active flex flex-col items-center justify-center text-center py-10 rounded-3xl bg-white border border-slate-200 shadow-sm relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10">
+                <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=1951&q=80" class="w-full h-full object-cover" onerror="this.style.display='none'">
+            </div>
+            <div class="relative z-10">
+                <div class="text-8xl mb-6 drop-shadow-md animate-bounce">💰</div>
+                <h1 class="jua text-5xl md:text-6xl text-slate-800 mb-6">자산 관리와 금융 생활</h1>
+                <p class="text-xl text-slate-500 mb-10 max-w-2xl leading-relaxed mx-auto">
+                    "돈을 모으는 것보다 지키고 불리는 것이 더 중요합니다."<br>
+                    <span class="text-emerald-600 font-bold">이미지</span>와 <span class="text-red-500 font-bold">영상</span>으로 쉽고 재미있게 배워봅시다.
+                </p>
+                <button onclick="nextSlide(2)" class="bg-emerald-600 hover:bg-emerald-700 text-white text-2xl jua py-4 px-12 rounded-2xl shadow-lg transition-transform hover:scale-105 flex items-center gap-3 mx-auto">
+                    <span>수업 시작하기 ▶</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Slide 2: 자산의 개념 -->
+        <div id="slide-2" class="slide-container">
+            <h2 class="jua text-3xl text-slate-800 mb-6 border-l-8 border-emerald-500 pl-4">01. 자산이란 무엇인가?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <!-- 금융 자산 -->
+                <div class="concept-card rounded-3xl shadow-md group" onclick="speakText(this, '금융 자산은 예금, 주식, 채권처럼 형체는 없지만 화폐로 쉽게 바꿀 수 있는 자산을 말합니다. 지금 보시는 디지털 숫자나 증서가 바로 금융 자산입니다.')">
+                    <div class="h-56 overflow-hidden relative bg-blue-50">
+                        <img src="https://images.unsplash.com/photo-1611974765270-ca12586343bb?auto=format&fit=crop&w=800&q=80" alt="금융 자산" onerror="handleImgError(this, '💳')">
+                        <div class="img-fallback">💳</div>
+                        <div class="listen-badge">🔊 클릭해서 듣기</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="jua text-3xl text-center text-blue-600 mb-4">💳 금융 자산</h3>
+                        <ul class="space-y-3 text-slate-600">
+                            <li><span class="font-bold text-blue-500">●</span> 형체가 없는 가치 (권리)</li>
+                            <li><span class="font-bold text-blue-500">●</span> 예금, 주식, 채권 등</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 실물 자산 -->
+                <div class="concept-card rounded-3xl shadow-md group" onclick="speakText(this, '실물 자산은 토지, 건물, 금처럼 눈에 보이는 형체가 있는 자산입니다. 물가 상승기에는 유리하지만, 급할 때 현금으로 바꾸기는 어렵습니다.')">
+                    <div class="h-56 overflow-hidden relative bg-amber-50">
+                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80" alt="실물 자산" onerror="handleImgError(this, '🏢')">
+                        <div class="img-fallback">🏢</div>
+                        <div class="listen-badge">🔊 클릭해서 듣기</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="jua text-3xl text-center text-amber-600 mb-4">🏢 실물 자산</h3>
+                        <ul class="space-y-3 text-slate-600">
+                            <li><span class="font-bold text-amber-500">●</span> 형체가 있는 물건 (부동산, 금)</li>
+                            <li><span class="font-bold text-amber-500">●</span> 인플레이션 방어 유리</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between mt-8">
+                <button onclick="prevSlide(1)" class="text-slate-400 hover:text-slate-600 font-bold">◀ 이전</button>
+                <button onclick="nextSlide(3)" class="bg-slate-800 text-white px-8 py-3 rounded-xl hover:bg-slate-700">다음: 주요 금융 상품 ▶</button>
+            </div>
+        </div>
+
+        <!-- Slide 3: 주요 금융 상품 및 영상 학습 -->
+        <div id="slide-3" class="slide-container">
+            <h2 class="jua text-3xl text-slate-800 mb-4 border-l-8 border-blue-500 pl-4">02. 주요 금융 상품 비교</h2>
+
+            <!-- 영상 학습관 (필수) -->
+            <div class="bg-white p-6 rounded-3xl border-2 border-slate-200 shadow-sm mb-8 relative overflow-hidden">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div>
+                        <span class="bg-red-600 text-white px-3 py-1 rounded-lg text-sm font-bold animate-pulse">필수 시청</span>
+                        <h3 class="jua text-2xl text-slate-800 mt-2">📺 영상 학습관</h3>
+                        <p class="text-sm text-slate-500">영상을 다 봐야 다음 버튼이 열립니다.</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <!-- ID 교체: TED-Ed 주식시장 (퍼가기 허용됨) -->
+                        <button onclick="playVideo('p7HKvqRI_Bo')" class="flex items-center gap-2 bg-slate-50 px-5 py-3 rounded-full border border-slate-300 hover:bg-red-50 hover:border-red-500 hover:text-red-600 transition font-bold">
+                            ▶ 주식 시장의 원리 (TED-Ed)
+                        </button>
+                    </div>
+                </div>
+                <!-- 완료 메시지 -->
+                <div id="watch-msg" class="hidden mt-4 bg-emerald-100 text-emerald-800 p-3 rounded-xl text-center font-bold">
+                    ✅ 시청 완료! 다음 단계로 넘어갈 수 있습니다.
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- 예금 -->
+                <div class="concept-card rounded-2xl shadow-sm border-t-4 border-blue-500" onclick="speakText(this, '예금은 은행에 돈을 맡기는 것입니다. 수익은 낮지만 가장 안전합니다.')">
+                    <div class="h-32 overflow-hidden relative bg-blue-50">
+                        <img src="https://images.unsplash.com/photo-1601597111158-2fceff292cdc?auto=format&fit=crop&w=500&q=60" alt="예금" onerror="handleImgError(this, '🏦')">
+                        <div class="img-fallback">🏦</div>
+                        <div class="listen-badge text-xs">🔊</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="jua text-2xl mb-1 text-slate-800">🏦 예금</h3>
+                        <div class="text-sm font-bold text-blue-600 mb-2">#안전성_최고 #저수익</div>
+                        <p class="text-sm text-slate-600">은행에 맡기고 이자 받음.<br><b>예금자 보호(5천만원)</b> 적용.</p>
+                    </div>
+                </div>
+                <!-- 채권 -->
+                <div class="concept-card rounded-2xl shadow-sm border-t-4 border-green-500" onclick="speakText(this, '채권은 돈을 빌려주고 받는 차용증입니다. 주식보다 안전하고 예금보다 이자가 높습니다.')">
+                    <div class="h-32 overflow-hidden relative bg-green-50">
+                        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=500&q=60" alt="채권" onerror="handleImgError(this, '📜')">
+                        <div class="img-fallback">📜</div>
+                        <div class="listen-badge text-xs">🔊</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="jua text-2xl mb-1 text-slate-800">📜 채권</h3>
+                        <div class="text-sm font-bold text-green-600 mb-2">#중위험 #중수익</div>
+                        <p class="text-sm text-slate-600">정부/기업의 <b>차용증</b>.<br>이자 수익 + 매매 차익 기대.</p>
+                    </div>
+                </div>
+                <!-- 주식 -->
+                <div class="concept-card rounded-2xl shadow-sm border-t-4 border-red-500" onclick="speakText(this, '주식은 회사의 지분입니다. 대박이 날 수도 있지만, 쪽박을 찰 수도 있는 고위험 상품입니다.')">
+                    <div class="h-32 overflow-hidden relative bg-red-50">
+                        <img src="https://images.unsplash.com/photo-1611974765270-ca12586343bb?auto=format&fit=crop&w=500&q=60" alt="주식" onerror="handleImgError(this, '📈')">
+                        <div class="img-fallback">📈</div>
+                        <div class="listen-badge text-xs">🔊</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="jua text-2xl mb-1 text-slate-800">📈 주식</h3>
+                        <div class="text-sm font-bold text-red-600 mb-2">#고위험 #고수익</div>
+                        <p class="text-sm text-slate-600">회사의 주인(주주)이 됨.<br><b>배당금</b> + <b>시세 차익</b>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between mt-8">
+                <button onclick="prevSlide(2)" class="text-slate-400 hover:text-slate-600 font-bold">◀ 이전</button>
+                <button id="btn-next-step3" onclick="checkVideoAndNext()" class="btn-locked bg-slate-800 text-white px-8 py-3 rounded-xl transition-all relative">
+                    <span id="btn-text-step3">🔒 영상 시청 필요</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Slide 4: 형성 평가 퀴즈 -->
+        <div id="slide-4" class="slide-container">
+            <h2 class="jua text-3xl text-slate-800 mb-6 border-l-8 border-yellow-400 pl-4">03. 배운 내용 확인하기</h2>
+            <div class="space-y-6 max-w-3xl mx-auto">
+                <!-- Q1 -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <div class="flex items-start gap-3 mb-4"><span class="bg-slate-800 text-white px-3 py-1 rounded-lg font-bold text-sm">Q1</span><h3 class="text-lg font-bold">다음 중 '금융 자산'이 아닌 것은?</h3></div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button class="quiz-opt border rounded-xl p-3 text-left" onclick="checkAnswer(this, false, '예금은 금융 자산입니다.')">1. 은행 예금</button>
+                        <button class="quiz-opt border rounded-xl p-3 text-left" onclick="checkAnswer(this, true, '정답! 아파트는 실물 자산입니다.')">2. 아파트</button>
+                        <button class="quiz-opt border rounded-xl p-3 text-left" onclick="checkAnswer(this, false, '주식은 금융 자산입니다.')">3. 삼성전자 주식</button>
+                        <button class="quiz-opt border rounded-xl p-3 text-left" onclick="checkAnswer(this, false, '채권은 금융 자산입니다.')">4. 국채</button>
+                    </div>
+                    <div class="feedback hidden"></div>
+                </div>
+                <!-- Q2 -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <div class="flex items-start gap-3 mb-4"><span class="bg-slate-800 text-white px-3 py-1 rounded-lg font-bold text-sm">Q2</span><h3 class="text-lg font-bold">예금자 보호 제도의 한도는?</h3></div>
+                    <div class="grid grid-cols-1 gap-3">
+                        <button class="quiz-opt border rounded-xl p-3 text-left" onclick="checkAnswer(this, false, '주식은 보호되지 않습니다.')">1. 주식 투자 손실 전액 보상</button>
+                        <button class="quiz-opt border rounded-xl p-3 text-left" onclick="checkAnswer(this, false, '채권은 보호 대상이 아닙니다.')">2. 채권 원금 보장</button>
+                        <button class="quiz-opt border rounded-xl p-3 text-left" onclick="checkAnswer(this, true, '정답! 1인당 5천만 원까지입니다.')">3. 1인당 5천만 원</button>
+                    </div>
+                    <div class="feedback hidden"></div>
+                </div>
+                <!-- Q3 -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <div class="flex items-start gap-3 mb-4"><span class="bg-slate-800 text-white px-3 py-1 rounded-lg font-bold text-sm">Q3</span><h3 class="text-lg font-bold">"계란을 한 바구니에 담지 마라"의 의미는?</h3></div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button class="quiz-opt border rounded-xl p-3 text-left" onclick="checkAnswer(this, false, '수익성은 이익을 내는 것입니다.')">1. 수익성 추구</button>
+                        <button class="quiz-opt border rounded-xl p-3 text-left" onclick="checkAnswer(this, false, '유동성은 현금화 속도입니다.')">2. 유동성 확보</button>
+                        <button class="quiz-opt border rounded-xl p-3 text-left" onclick="checkAnswer(this, true, '정답! 위험을 줄이는 분산 투자입니다.')">3. 분산 투자 (안전성)</button>
+                        <button class="quiz-opt border rounded-xl p-3 text-left" onclick="checkAnswer(this, false, '레버리지는 빚을 이용하는 것입니다.')">4. 레버리지 효과</button>
+                    </div>
+                    <div class="feedback hidden"></div>
+                </div>
+            </div>
+            <div class="flex justify-between mt-8">
+                <button onclick="prevSlide(3)" class="text-slate-400 hover:text-slate-600 font-bold">◀ 이전</button>
+                <button onclick="nextSlide(5)" class="bg-slate-800 text-white px-8 py-3 rounded-xl hover:bg-slate-700">다음: 활동 제출 ▶</button>
+            </div>
+        </div>
+
+        <!-- Slide 5: 제출 -->
+        <div id="slide-5" class="slide-container">
+            <h2 class="jua text-3xl text-slate-800 mb-6 border-l-8 border-indigo-500 pl-4">04. 학습 성찰 및 제출</h2>
+            <div class="bg-white p-8 rounded-3xl shadow-lg border border-slate-200">
+                <label class="block text-slate-700 font-bold mb-3 text-lg">오늘 배운 내용 중 가장 기억에 남는 개념은?</label>
+                <textarea id="reflection-text" class="w-full p-4 bg-slate-50 border-2 border-slate-200 rounded-2xl h-32 focus:border-indigo-500 outline-none resize-none mb-6 text-slate-700" placeholder="예: 예금자 보호 한도가 5천만 원이라는 점이 기억에 남습니다."></textarea>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-slate-400">수신: kstephul6@naver.com</span>
+                    <button onclick="submitReflection()" class="bg-indigo-600 hover:bg-indigo-700 text-white jua text-xl py-3 px-10 rounded-xl shadow-lg transition-transform hover:scale-105 flex items-center gap-2"><span>📤 과제 제출하기</span></button>
+                </div>
+            </div>
+            <div class="text-center mt-12"><button onclick="nextSlide(1)" class="text-slate-400 hover:text-slate-600 underline text-sm">처음으로 돌아가기</button></div>
+        </div>
+    </main>
+
+    <script>
+        // --- 1. 이미지 에러 처리 ---
+        function handleImgError(img, icon) {
+            img.style.display = 'none';
+            const fallback = img.parentElement.querySelector('.img-fallback');
+            if(fallback) {
+                fallback.innerHTML = icon;
+                fallback.style.display = 'flex';
+            }
+        }
+
+        // --- 2. 유튜브 API 및 에러 처리 (핵심) ---
+        var player;
+        var isVideoWatched = false;
+        var errorTimer;
+
+        function onYouTubeIframeAPIReady() {
+            // API 준비 완료
+        }
+
+        function playVideo(videoId) {
+            const modal = document.getElementById('video-modal');
+            const closeBtn = document.getElementById('modal-close-btn');
+            const emgBtn = document.getElementById('emergency-skip-btn');
+            
+            modal.style.display = 'flex';
+            emgBtn.style.display = 'none'; // 초기엔 긴급 버튼 숨김
+
+            if (!isVideoWatched) {
+                closeBtn.classList.add('disabled');
+                closeBtn.innerHTML = "🔒 시청 중... (끝까지 봐야 닫힘)";
+            } else {
+                closeBtn.classList.remove('disabled');
+                closeBtn.innerHTML = "✅ 닫기";
+            }
+
+            if (player) player.destroy();
+
+            player = new YT.Player('player', {
+                height: '100%', width: '100%', videoId: videoId,
+                playerVars: { 'autoplay': 1, 'controls': 1, 'rel': 0 },
+                events: {
+                    'onStateChange': onPlayerStateChange,
+                    'onError': onPlayerError // 에러 감지 추가
+                }
+            });
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                completeVideo();
+            }
+        }
+
+        // 영상 에러 발생 시 (153, 150, 100 등)
+        function onPlayerError(event) {
+            console.error("YouTube Error:", event.data);
+            const emgBtn = document.getElementById('emergency-skip-btn');
+            const msg = document.getElementById('video-msg');
+            
+            // 2초 뒤 긴급 버튼 표시
+            setTimeout(() => {
+                emgBtn.style.display = 'block';
+                // 에러 메시지는 모달 내부에 표시
+                // alert 쓰지 않음 (사용자 경험 저하)
+            }, 2000);
+        }
+
+        function forceSkipVideo() {
+            completeVideo();
+            closeVideo();
+            alert("⚠️ 영상 오류로 단계를 건너뛰었습니다.");
+        }
+
+        function completeVideo() {
+            isVideoWatched = true;
+            const closeBtn = document.getElementById('modal-close-btn');
+            closeBtn.classList.remove('disabled');
+            closeBtn.innerHTML = "✅ 닫기 (완료)";
+            
+            const nextBtn = document.getElementById('btn-next-step3');
+            const nextTxt = document.getElementById('btn-text-step3');
+            const msg = document.getElementById('watch-msg');
+            
+            nextBtn.classList.remove('btn-locked');
+            nextBtn.classList.add('hover:bg-slate-700');
+            nextTxt.innerText = "다음: 형성 평가 퀴즈 ▶";
+            msg.classList.remove('hidden');
+        }
+
+        function closeVideo() {
+            if (!isVideoWatched && player && player.getPlayerState && player.getPlayerState() !== 0) {
+                 // 강제 닫기 시도 시 에러가 났던 상황이면 허용해야 함
+                 // 여기서는 버튼 자체가 disabled라 클릭 안 됨
+                 return;
+            }
+            const modal = document.getElementById('video-modal');
+            if(player) player.stopVideo();
+            modal.style.display = 'none';
+        }
+
+        function checkVideoAndNext() {
+            if (!isVideoWatched) {
+                alert("🚫 영상을 끝까지 시청해야 합니다!");
+                return;
+            }
+            nextSlide(4);
+        }
+
+        // --- 3. 슬라이드 공통 ---
+        function nextSlide(n) {
+            document.querySelectorAll('.slide-container').forEach(el => el.classList.remove('slide-active'));
+            document.getElementById('slide-' + n).classList.add('slide-active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.speechSynthesis.cancel();
+        }
+        function prevSlide(n) { nextSlide(n); }
+        function speakText(el, txt) {
+            window.speechSynthesis.cancel();
+            document.querySelectorAll('.concept-card').forEach(e => e.classList.remove('playing'));
+            if(el.classList.contains('concept-card')) el.classList.add('playing');
+            const u = new SpeechSynthesisUtterance(txt);
+            u.lang = 'ko-KR'; u.rate = 1.0;
+            window.speechSynthesis.speak(u);
+            u.onend = function() { if(el.classList.contains('concept-card')) el.classList.remove('playing'); };
+        }
+
+        // --- 4. 퀴즈/제출/보안 ---
+        function checkAnswer(btn, isOk, txt) {
+            const p = btn.parentElement;
+            const fb = p.parentElement.querySelector('.feedback');
+            Array.from(p.children).forEach(c => { c.classList.remove('quiz-correct','quiz-wrong'); c.disabled = true; });
+            if(isOk) {
+                btn.classList.add('quiz-correct');
+                fb.innerHTML = "🎉 " + txt; fb.className = "feedback mt-3 text-sm font-bold text-emerald-600 block animate-bounce";
+                window.speechSynthesis.speak(new SpeechSynthesisUtterance("정답입니다!"));
+            } else {
+                btn.classList.add('quiz-wrong');
+                fb.innerHTML = "❌ " + txt; fb.className = "feedback mt-3 text-sm font-bold text-red-500 block";
+                window.speechSynthesis.speak(new SpeechSynthesisUtterance("오답입니다."));
+            }
+        }
+        function submitReflection() {
+            if(document.getElementById('reflection-text').value.length < 5) { alert("내용을 더 작성해주세요!"); return; }
+            const m = document.createElement('div');
+            m.className = "fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm";
+            m.innerHTML = `<div class="bg-white p-8 rounded-3xl text-center shadow-2xl max-w-sm m-4"><div class="text-6xl mb-4">📧</div><h3 class="jua text-2xl mb-2">전송 완료!</h3><p class="text-slate-600 mb-6">선생님께 전달되었습니다.</p><button onclick="this.parentElement.parentElement.remove()" class="w-full bg-slate-800 text-white py-3 rounded-xl font-bold">확인</button></div>`;
+            document.body.appendChild(m);
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || (e.ctrlKey && (e.key === 'u' || e.key === 'c'))) { e.preventDefault(); alert('🚫 경고: 이 자료는 경북교육청 김스데반 교사의 저작물입니다.'); }
+        });
+    </script>
+</body>
+</html>
