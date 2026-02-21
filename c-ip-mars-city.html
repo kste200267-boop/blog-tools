@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🚀 화성 이주 도시 설계 시뮬레이션 | 통합사회</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0a1a;
+            --bg-secondary: #12122a;
+            --bg-card: #1a1a3a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0c0;
+            --accent-time: #ff6b6b;
+            --accent-space: #4ecdc4;
+            --accent-social: #ffe66d;
+            --accent-ethics: #c44dff;
+            --mars-surface: #c1440e;
+            --mars-dark: #8b2500;
+            --neon-glow: 0 0 20px;
+            --border-radius: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(2px 2px at 40% 70%, white, transparent),
+                radial-gradient(1px 1px at 90% 40%, white, transparent),
+                radial-gradient(2px 2px at 60% 20%, white, transparent),
+                radial-gradient(1px 1px at 30% 80%, white, transparent);
+            animation: twinkle 5s ease-in-out infinite;
+        }
+
+        @keyframes twinkle { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ========== 헤더 ========== */
+        .header {
+            text-align: center;
+            padding: 30px 25px;
+            background: linear-gradient(135deg, rgba(78, 205, 196, 0.1), rgba(196, 77, 255, 0.1));
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h1 {
+            font-family: 'Jua', sans-serif;
+            font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, var(--accent-space), var(--accent-ethics));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .standards-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-top: 15px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .standards-title {
+            font-family: 'Jua', sans-serif;
+            font-size: 0.95rem;
+            color: var(--accent-space);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .standard-item {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            padding-left: 10px;
+            border-left: 3px solid var(--accent-ethics);
+            line-height: 1.5;
+        }
+
+        .standard-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .standard-code {
+            color: var(--accent-social);
+            font-weight: 700;
+        }
+
+        /* ========== 가이드 박스 ========== */
+        .guide-box {
+            background: linear-gradient(135deg, rgba(78, 205, 196, 0.1), rgba(196, 77, 255, 0.05));
+            border: 1px dashed rgba(78, 205, 196, 0.4);
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .guide-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .guide-content h3 {
+            font-family: 'Jua', sans-serif;
+            font-size: 1rem;
+            color: var(--accent-space);
+            margin-bottom: 5px;
+        }
+
+        .guide-content p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* ========== 사용자 정보 ========== */
+        .user-section {
+            margin-bottom: 20px;
+        }
+
+        .section-label {
+            font-family: 'Jua', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .input-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            padding-left: 5px;
+        }
+
+        .input-group input {
+            padding: 12px 15px;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--accent-space);
+            box-shadow: var(--neon-glow) var(--accent-space);
+        }
+
+        .input-group input::placeholder { color: rgba(255, 255, 255, 0.3); }
+
+        /* ========== 메인 레이아웃 ========== */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 950px) {
+            .main-layout { grid-template-columns: 1fr; }
+            .user-info-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* ========== 건물 패널 ========== */
+        .building-panel {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .panel-title {
+            font-family: 'Jua', sans-serif;
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+
+        /* 예산 바 */
+        .budget-bar-wrapper {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+        }
+
+        .budget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .budget-label { 
+            font-size: 0.9rem; 
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .budget-amount {
+            font-family: 'Jua', sans-serif;
+            font-size: 1.3rem;
+            color: var(--accent-space);
+            text-shadow: var(--neon-glow) var(--accent-space);
+        }
+
+        .budget-bar-bg {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            height: 12px;
+            overflow: hidden;
+        }
+
+        .budget-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-space), var(--accent-ethics));
+            border-radius: 8px;
+            transition: width 0.4s ease;
+        }
+
+        /* 관점 탭 */
+        .perspective-tabs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .tab-btn {
+            padding: 10px 6px;
+            background: rgba(0,0,0,0.3);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-family: 'Jua', sans-serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .tab-btn .tab-icon { font-size: 1.2rem; }
+        .tab-btn .tab-emoji { font-size: 1.1rem; }
+
+        .tab-btn.time.active { border-color: var(--accent-time); color: var(--accent-time); background: rgba(255, 107, 107, 0.15); }
+        .tab-btn.space.active { border-color: var(--accent-space); color: var(--accent-space); background: rgba(78, 205, 196, 0.15); }
+        .tab-btn.social.active { border-color: var(--accent-social); color: var(--accent-social); background: rgba(255, 230, 109, 0.15); }
+        .tab-btn.ethics.active { border-color: var(--accent-ethics); color: var(--accent-ethics); background: rgba(196, 77, 255, 0.15); }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* 건물 목록 */
+        .building-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .building-list::-webkit-scrollbar { width: 6px; }
+        .building-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 3px; }
+        .building-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+
+        .building-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .building-item:hover:not(.built):not(.disabled) { transform: translateX(5px); }
+
+        .building-item.time:hover:not(.built):not(.disabled) { border-color: var(--accent-time); }
+        .building-item.space:hover:not(.built):not(.disabled) { border-color: var(--accent-space); }
+        .building-item.social:hover:not(.built):not(.disabled) { border-color: var(--accent-social); }
+        .building-item.ethics:hover:not(.built):not(.disabled) { border-color: var(--accent-ethics); }
+
+        .building-item.built { opacity: 0.4; cursor: not-allowed; }
+        .building-item.disabled { opacity: 0.3; cursor: not-allowed; }
+
+        .building-icon-wrapper {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .building-item.time .building-icon-wrapper { background: rgba(255, 107, 107, 0.2); color: var(--accent-time); }
+        .building-item.space .building-icon-wrapper { background: rgba(78, 205, 196, 0.2); color: var(--accent-space); }
+        .building-item.social .building-icon-wrapper { background: rgba(255, 230, 109, 0.2); color: var(--accent-social); }
+        .building-item.ethics .building-icon-wrapper { background: rgba(196, 77, 255, 0.2); color: var(--accent-ethics); }
+
+        .building-info { flex: 1; min-width: 0; }
+        .building-name { font-family: 'Jua', sans-serif; font-size: 0.95rem; margin-bottom: 3px; }
+        .building-desc { font-size: 0.72rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .building-price {
+            font-family: 'Jua', sans-serif;
+            font-size: 0.95rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.1);
+            flex-shrink: 0;
+        }
+
+        .building-item.time .building-price { color: var(--accent-time); }
+        .building-item.space .building-price { color: var(--accent-space); }
+        .building-item.social .building-price { color: var(--accent-social); }
+        .building-item.ethics .building-price { color: var(--accent-ethics); }
+
+        /* ========== 지도 패널 ========== */
+        .map-panel {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .map-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .slot-info { 
+            font-size: 0.85rem; 
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .slot-info strong { 
+            color: var(--accent-space); 
+            font-family: 'Jua', sans-serif; 
+            font-size: 1.1rem; 
+        }
+
+        .map-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        .mars-map {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            background: 
+                radial-gradient(ellipse at 30% 20%, rgba(255, 150, 100, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(200, 100, 50, 0.2) 0%, transparent 40%),
+                linear-gradient(135deg, var(--mars-surface) 0%, var(--mars-dark) 100%);
+            border-radius: 50%;
+            border: 4px solid rgba(255, 200, 150, 0.3);
+            box-shadow: 0 0 60px rgba(193, 68, 14, 0.5), inset 0 0 60px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .city-grid {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            border: 2px solid rgba(78, 205, 196, 0.4);
+        }
+
+        .city-slot {
+            width: 58px;
+            height: 58px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.55rem;
+            color: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .city-slot.filled {
+            border-style: solid;
+            cursor: default;
+            animation: buildIn 0.4s ease;
+        }
+
+        @keyframes buildIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .city-slot.filled.time { border-color: var(--accent-time); background: rgba(255, 107, 107, 0.35); }
+        .city-slot.filled.space { border-color: var(--accent-space); background: rgba(78, 205, 196, 0.35); }
+        .city-slot.filled.social { border-color: var(--accent-social); background: rgba(255, 230, 109, 0.35); }
+        .city-slot.filled.ethics { border-color: var(--accent-ethics); background: rgba(196, 77, 255, 0.35); }
+
+        .city-slot .slot-icon { font-size: 1.25rem; margin-bottom: 2px; }
+
+        .city-slot.filled.time .slot-icon { color: var(--accent-time); }
+        .city-slot.filled.space .slot-icon { color: var(--accent-space); }
+        .city-slot.filled.social .slot-icon { color: var(--accent-social); }
+        .city-slot.filled.ethics .slot-icon { color: var(--accent-ethics); }
+
+        .city-slot .slot-name {
+            font-size: 0.5rem;
+            text-align: center;
+            line-height: 1.1;
+            color: var(--text-primary);
+            max-width: 90%;
+            overflow: hidden;
+        }
+
+        .city-slot .remove-slot {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 18px;
+            height: 18px;
+            background: var(--accent-time);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 0.6rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .city-slot.filled:hover .remove-slot { opacity: 1; }
+
+        /* 투자 현황 */
+        .invest-summary {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .invest-item {
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .invest-item.time { background: rgba(255, 107, 107, 0.15); border: 1px solid rgba(255, 107, 107, 0.3); }
+        .invest-item.space { background: rgba(78, 205, 196, 0.15); border: 1px solid rgba(78, 205, 196, 0.3); }
+        .invest-item.social { background: rgba(255, 230, 109, 0.15); border: 1px solid rgba(255, 230, 109, 0.3); }
+        .invest-item.ethics { background: rgba(196, 77, 255, 0.15); border: 1px solid rgba(196, 77, 255, 0.3); }
+
+        .invest-label { font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 3px; }
+        .invest-value { font-family: 'Jua', sans-serif; font-size: 1rem; }
+
+        .invest-item.time .invest-value { color: var(--accent-time); }
+        .invest-item.space .invest-value { color: var(--accent-space); }
+        .invest-item.social .invest-value { color: var(--accent-social); }
+        .invest-item.ethics .invest-value { color: var(--accent-ethics); }
+
+        /* ========== 액션 버튼 ========== */
+        .action-section {
+            margin-bottom: 25px;
+        }
+
+        .action-guide {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 14px 35px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Jua', sans-serif;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .generate-btn { background: linear-gradient(135deg, var(--accent-space), var(--accent-ethics)); color: white; }
+        .reset-btn { background: transparent; border: 2px solid var(--accent-time) !important; color: var(--accent-time); }
+        .action-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); }
+
+        /* 피드백 */
+        .feedback {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-family: 'Jua', sans-serif;
+            font-size: 1rem;
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        @keyframes slideUp {
+            0% { transform: translate(-50%, 50px); opacity: 0; }
+            100% { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        .feedback.success { background: linear-gradient(135deg, #00c853, #00e676); color: #000; }
+        .feedback.warning { background: linear-gradient(135deg, #ff9800, #ffb74d); color: #000; }
+        .feedback.error { background: linear-gradient(135deg, #f44336, #e57373); color: white; }
+
+        /* 푸터 */
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .footer a { color: var(--accent-space); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+
+        /* ========== 보고서 모달 ========== */
+        .report-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .report-modal.active { display: block; }
+
+        .report-wrapper {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .report-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .close-btn { background: none; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; }
+
+        .print-btn {
+            padding: 10px 25px;
+            background: linear-gradient(135deg, var(--accent-space), var(--accent-ethics));
+            border: none;
+            border-radius: 8px;
+            font-family: 'Jua', sans-serif;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .print-btn:hover { transform: scale(1.03); }
+
+        .report-page {
+            background: white;
+            color: #222;
+            padding: 40px 45px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .report-page::after {
+            content: attr(data-page);
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .report-header-section {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 3px solid #222;
+            margin-bottom: 25px;
+        }
+
+        .report-main-title {
+            font-family: 'Jua', sans-serif;
+            font-size: 1.7rem;
+            color: #111;
+            margin-bottom: 5px;
+        }
+
+        .report-sub-title {
+            font-size: 0.85rem;
+            color: #777;
+            margin-bottom: 18px;
+        }
+
+        .student-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            background: #f7f7f7;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .student-box { text-align: center; }
+        .student-label { font-size: 0.75rem; color: #999; margin-bottom: 3px; }
+        .student-value { font-family: 'Jua', sans-serif; font-size: 1.1rem; border-bottom: 2px solid #333; padding-bottom: 4px; }
+
+        .section-header {
+            font-family: 'Jua', sans-serif;
+            font-size: 1.1rem;
+            color: #333;
+            margin: 25px 0 15px;
+            padding: 10px 15px;
+            background: #f5f5f5;
+            border-left: 4px solid #333;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .report-map-wrap {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .report-mars {
+            width: 260px;
+            height: 260px;
+            background: linear-gradient(135deg, #d4a373, #bc6c25);
+            border-radius: 50%;
+            position: relative;
+            border: 4px solid #a67c52;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.3);
+        }
+
+        .report-grid {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+        }
+
+        .report-cell {
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .report-cell.time { background: #e74c3c; }
+        .report-cell.space { background: #1abc9c; }
+        .report-cell.social { background: #f1c40f; color: #333; }
+        .report-cell.ethics { background: #9b59b6; }
+
+        .report-cell-label { font-size: 0.42rem; margin-top: 2px; line-height: 1; }
+
+        .invest-chart { margin: 20px 0; }
+
+        .chart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .chart-name { width: 90px; font-size: 0.85rem; color: #555; }
+
+        .chart-bar-outer {
+            flex: 1;
+            height: 24px;
+            background: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 0 12px;
+        }
+
+        .chart-bar-inner {
+            height: 100%;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: white;
+            transition: width 0.5s ease;
+        }
+
+        .chart-bar-inner.time { background: #e74c3c; }
+        .chart-bar-inner.space { background: #1abc9c; }
+        .chart-bar-inner.social { background: #f1c40f; color: #333; }
+        .chart-bar-inner.ethics { background: #9b59b6; }
+
+        .chart-amount { width: 60px; text-align: right; font-family: 'Jua', sans-serif; font-size: 0.9rem; color: #333; }
+
+        .building-tags-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .b-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .b-tag.time { background: #fce4e4; color: #c0392b; border: 1px solid #e74c3c; }
+        .b-tag.space { background: #d5f5f0; color: #16a085; border: 1px solid #1abc9c; }
+        .b-tag.social { background: #fef9e7; color: #9a7b0a; border: 1px solid #f1c40f; }
+        .b-tag.ethics { background: #f4ecf7; color: #7d3c98; border: 1px solid #9b59b6; }
+
+        .balance-score-section {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .balance-title { font-family: 'Jua', sans-serif; font-size: 1.05rem; margin-bottom: 12px; color: #333; }
+
+        .balance-visual {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 18px;
+            height: 85px;
+            margin-bottom: 12px;
+        }
+
+        .balance-bar-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 55px;
+        }
+
+        .balance-bar {
+            width: 38px;
+            border-radius: 5px 5px 0 0;
+            transition: height 0.5s ease;
+        }
+
+        .balance-bar.time { background: #e74c3c; }
+        .balance-bar.space { background: #1abc9c; }
+        .balance-bar.social { background: #f1c40f; }
+        .balance-bar.ethics { background: #9b59b6; }
+
+        .balance-bar-label { font-size: 0.7rem; color: #777; margin-top: 5px; }
+
+        .balance-grade {
+            font-family: 'Jua', sans-serif;
+            font-size: 2rem;
+            margin: 12px 0 6px;
+        }
+
+        .balance-grade.A { color: #27ae60; }
+        .balance-grade.B { color: #3498db; }
+        .balance-grade.C { color: #f39c12; }
+        .balance-grade.D { color: #e74c3c; }
+
+        .balance-desc { font-size: 0.85rem; color: #666; }
+
+        .diagnosis-cards { margin: 12px 0; }
+
+        .d-card {
+            padding: 15px 18px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border-left: 5px solid;
+        }
+
+        .d-card.good { background: #eafaf1; border-color: #27ae60; }
+        .d-card.bad { background: #fdedec; border-color: #e74c3c; }
+
+        .d-card-title {
+            font-family: 'Jua', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .d-card.good .d-card-title { color: #1e8449; }
+        .d-card.bad .d-card-title { color: #c0392b; }
+
+        .d-card-text { font-size: 0.85rem; color: #555; line-height: 1.6; }
+
+        .reflection-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .reflection-section p {
+            font-size: 0.9rem;
+            color: #444;
+            line-height: 1.8;
+        }
+
+        .reflection-section strong.t { color: #c0392b; }
+        .reflection-section strong.s { color: #16a085; }
+        .reflection-section strong.c { color: #9a7b0a; }
+        .reflection-section strong.e { color: #7d3c98; }
+
+        .report-footer-section {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        @media print {
+            body { background: white; }
+            .stars, .report-controls { display: none !important; }
+            .report-modal { position: static; background: white; overflow: visible; }
+            .report-wrapper { max-width: 100%; padding: 0; margin: 0; }
+            .report-page { box-shadow: none; margin: 0; padding: 30px 35px; page-break-after: always; }
+            .report-page:last-child { page-break-after: avoid; }
+        }
+
+        @media (max-width: 600px) {
+            .student-grid { grid-template-columns: repeat(2, 1fr); }
+            .report-page { padding: 25px; }
+            .balance-visual { gap: 12px; }
+            .balance-bar-wrap { width: 45px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+
+    <div class="container">
+        <!-- ===== 헤더 ===== -->
+        <header class="header">
+            <h1>🚀 화성 이주 도시 설계 시뮬레이션</h1>
+            <p class="header-subtitle">인류의 새로운 보금자리, 당신이 총책임자입니다! 👨‍🚀👩‍🚀</p>
+            
+            <div class="standards-box">
+                <div class="standards-title">📚 2022 개정 교육과정 성취기준</div>
+                <div class="standard-item">
+                    <span class="standard-code">[10통사01-01]</span> 인간, 사회, 환경을 바라보는 <strong>시간적, 공간적, 사회적, 윤리적 관점</strong>의 의미와 특징을 사례를 통해 파악한다.
+                </div>
+                <div class="standard-item">
+                    <span class="standard-code">[10통사01-02]</span> 인간, 사회, 환경의 탐구에 <strong>통합적 관점</strong>이 요청되는 이유를 도출하고 이를 탐구에 적용한다.
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== 미션 가이드 ===== -->
+        <div class="guide-box">
+            <span class="guide-icon">🎯</span>
+            <div class="guide-content">
+                <h3>미션 안내</h3>
+                <p>여러분은 화성 이주 도시의 총책임자입니다! 💰 <strong>100억 원</strong>의 예산으로 <strong>16개 구역</strong>에 도시를 건설하세요. 시간·공간·사회·윤리 <strong>네 가지 관점</strong>을 균형 있게 고려해야 지속 가능한 도시가 완성됩니다!</p>
+            </div>
+        </div>
+
+        <!-- ===== 사용자 정보 ===== -->
+        <div class="user-section">
+            <div class="section-label">✏️ 내 정보 입력</div>
+            <div class="user-info-grid">
+                <div class="input-group">
+                    <span class="input-label">📌 학년을 입력하세요</span>
+                    <input type="text" id="userGrade" placeholder="예: 1" maxlength="1">
+                </div>
+                <div class="input-group">
+                    <span class="input-label">📌 반을 입력하세요</span>
+                    <input type="text" id="userClass" placeholder="예: 3" maxlength="2">
+                </div>
+                <div class="input-group">
+                    <span class="input-label">📌 번호를 입력하세요</span>
+                    <input type="text" id="userNumber" placeholder="예: 15" maxlength="2">
+                </div>
+                <div class="input-group">
+                    <span class="input-label">📌 이름을 입력하세요</span>
+                    <input type="text" id="userName" placeholder="예: 홍길동">
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 메인 레이아웃 ===== -->
+        <div class="main-layout">
+            <!-- 왼쪽: 건물 패널 -->
+            <div class="building-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">🏗️ 건설 가능 시설</h2>
+                </div>
+                
+                <div class="panel-desc">
+                    💡 <strong>각 관점별 10개씩 총 40개</strong>의 시설 중에서 선택하세요! 탭을 눌러 관점을 바꿀 수 있어요. 시설을 클릭하면 오른쪽 지도에 건설됩니다.
+                </div>
+
+                <!-- 예산 바 -->
+                <div class="budget-bar-wrapper">
+                    <div class="budget-header">
+                        <span class="budget-label">💰 잔여 예산</span>
+                        <span class="budget-amount" id="budgetDisplay">100억 원</span>
+                    </div>
+                    <div class="budget-bar-bg">
+                        <div class="budget-bar-fill" id="budgetBar" style="width: 100%"></div>
+                    </div>
+                </div>
+
+                <!-- 관점 탭 -->
+                <div class="perspective-tabs">
+                    <button class="tab-btn time active" data-perspective="time">
+                        <span class="tab-emoji">⏰</span>
+                        <span>시간적</span>
+                    </button>
+                    <button class="tab-btn space" data-perspective="space">
+                        <span class="tab-emoji">🌍</span>
+                        <span>공간적</span>
+                    </button>
+                    <button class="tab-btn social" data-perspective="social">
+                        <span class="tab-emoji">👥</span>
+                        <span>사회적</span>
+                    </button>
+                    <button class="tab-btn ethics" data-perspective="ethics">
+                        <span class="tab-emoji">⚖️</span>
+                        <span>윤리적</span>
+                    </button>
+                </div>
+
+                <!-- 건물 목록 -->
+                <div class="building-list" id="buildingList"></div>
+            </div>
+
+            <!-- 오른쪽: 지도 패널 -->
+            <div class="map-panel">
+                <div class="map-header">
+                    <h2 class="panel-title">🗺️ 나의 화성 도시</h2>
+                    <div class="slot-info">🏠 <strong id="slotCount">0</strong> / 16 구역</div>
+                </div>
+
+                <div class="map-desc">
+                    👆 건설된 시설 위에 마우스를 올리면 ❌ 버튼으로 철거할 수 있어요!
+                </div>
+
+                <div class="mars-map">
+                    <div class="city-grid" id="cityGrid"></div>
+                </div>
+
+                <div class="invest-summary">
+                    <div class="invest-item time">
+                        <div class="invest-label">⏰ 시간적</div>
+                        <div class="invest-value" id="timeInvest">0억</div>
+                    </div>
+                    <div class="invest-item space">
+                        <div class="invest-label">🌍 공간적</div>
+                        <div class="invest-value" id="spaceInvest">0억</div>
+                    </div>
+                    <div class="invest-item social">
+                        <div class="invest-label">👥 사회적</div>
+                        <div class="invest-value" id="socialInvest">0억</div>
+                    </div>
+                    <div class="invest-item ethics">
+                        <div class="invest-label">⚖️ 윤리적</div>
+                        <div class="invest-value" id="ethicsInvest">0억</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 액션 버튼 ===== -->
+        <div class="action-section">
+            <p class="action-guide">🎉 도시 건설이 완료되면 아래 버튼을 눌러 진단 보고서를 생성하세요!</p>
+            <div class="action-buttons">
+                <button class="action-btn generate-btn" id="generateReport">📊 CSI 보고서 생성</button>
+                <button class="action-btn reset-btn" id="resetCity">🔄 도시 초기화</button>
+            </div>
+        </div>
+
+        <!-- ===== 푸터 ===== -->
+        <footer class="footer">
+            <p>제작: <a href="https://kstephullab.com" target="_blank">풀어쓰는 사회학 (kstephullab.com)</a> 🌟</p>
+        </footer>
+    </div>
+
+    <div class="feedback" id="feedback" style="display: none;"></div>
+
+    <!-- ===== 보고서 모달 ===== -->
+    <div class="report-modal" id="reportModal">
+        <div class="report-wrapper">
+            <div class="report-controls">
+                <button class="close-btn" id="closeModal">✖️</button>
+                <button class="print-btn" onclick="window.print()">🖨️ PDF 저장 / 인쇄</button>
+            </div>
+            <div id="reportPages"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===================== 건물 데이터 (관점별 10개씩 총 40개) =====================
+        const buildings = {
+            time: [
+                { id: 't01', name: '🏛️ 화성 역사 박물관', icon: 'fa-landmark', price: 7, desc: '지구 문명의 기억을 보존하고 화성 개척 역사를 기록합니다.' },
+                { id: 't02', name: '⏳ 타임캡슐 센터', icon: 'fa-hourglass-half', price: 5, desc: '후손들에게 전할 메시지와 유산을 보관합니다.' },
+                { id: 't03', name: '💾 지구 복원 데이터 센터', icon: 'fa-database', price: 9, desc: '지구의 모든 생태계, 문화 데이터를 백업합니다.' },
+                { id: 't04', name: '🔮 미래 예측 연구소', icon: 'fa-crystal-ball', price: 8, desc: 'AI로 화성의 100년 후를 예측합니다.' },
+                { id: 't05', name: '🦴 고고학 연구소', icon: 'fa-bone', price: 6, desc: '화성의 지질학적 역사와 생명체 흔적을 탐구합니다.' },
+                { id: 't06', name: '📦 세대 기록 보관소', icon: 'fa-archive', price: 4, desc: '이주 1세대부터 모든 세대의 삶을 기록합니다.' },
+                { id: 't07', name: '🎬 문화유산 디지털 아카이브', icon: 'fa-photo-video', price: 6, desc: '지구의 예술, 음악, 문학을 디지털로 보존합니다.' },
+                { id: 't08', name: '📅 100년 계획 위원회', icon: 'fa-calendar-alt', price: 7, desc: '장기적 관점에서 도시 발전 로드맵을 수립합니다.' },
+                { id: 't09', name: '🌳 지구 기념 공원', icon: 'fa-tree', price: 5, desc: '고향 지구를 기억하는 추모와 교육의 공간입니다.' },
+                { id: 't10', name: '🔭 시간 연구 천문대', icon: 'fa-telescope', price: 8, desc: '우주의 시간과 화성의 시간 체계를 연구합니다.' }
+            ],
+            space: [
+                { id: 's01', name: '💨 산소 생성 돔', icon: 'fa-wind', price: 10, desc: '광합성과 전기분해로 숨 쉴 공기를 만듭니다.' },
+                { id: 's02', name: '💧 지하 수로 시스템', icon: 'fa-water', price: 8, desc: '화성 얼음층에서 물을 추출해 공급합니다.' },
+                { id: 's03', name: '🛡️ 자기장 방어막', icon: 'fa-shield-alt', price: 9, desc: '태양풍과 방사선으로부터 도시를 보호합니다.' },
+                { id: 's04', name: '🌱 테라포밍 연구소', icon: 'fa-seedling', price: 8, desc: '화성 대기를 지구처럼 바꾸는 연구를 합니다.' },
+                { id: 's05', name: '🌤️ 화성 기상 관측소', icon: 'fa-cloud-sun', price: 5, desc: '기상 변화를 실시간 모니터링합니다.' },
+                { id: 's06', name: '🏠 지하 주거 단지', icon: 'fa-home', price: 7, desc: '방사선을 피해 안전하게 거주할 수 있는 공간입니다.' },
+                { id: 's07', name: '🥬 수직 농장 온실', icon: 'fa-leaf', price: 6, desc: '식량 자급자족을 위한 실내 농업 시설입니다.' },
+                { id: 's08', name: '☀️ 태양광 발전소', icon: 'fa-solar-panel', price: 7, desc: '화성의 태양 에너지를 전기로 변환합니다.' },
+                { id: 's09', name: '🏚️ 먼지 폭풍 대피소', icon: 'fa-house-damage', price: 5, desc: '거대 먼지 폭풍 시 시민들이 대피하는 시설입니다.' },
+                { id: 's10', name: '👔 우주복 제작소', icon: 'fa-tshirt', price: 6, desc: '야외 활동에 필수적인 우주복을 생산합니다.' }
+            ],
+            social: [
+                { id: 'c01', name: '⚖️ 화성 헌법 재판소', icon: 'fa-gavel', price: 7, desc: '헌법을 수호하고 법적 분쟁을 해결합니다.' },
+                { id: 'c02', name: '🏛️ 자치 의회', icon: 'fa-university', price: 6, desc: '시민 의견을 모아 정책을 결정합니다.' },
+                { id: 'c03', name: '🎓 우주 학교', icon: 'fa-graduation-cap', price: 7, desc: '화성 아이들에게 교육 기회를 제공합니다.' },
+                { id: 'c04', name: '📡 화성 방송국', icon: 'fa-broadcast-tower', price: 4, desc: '뉴스와 정보로 시민 사회를 연결합니다.' },
+                { id: 'c05', name: '👮 화성 경찰서', icon: 'fa-shield-halved', price: 6, desc: '도시의 치안을 유지하고 시민을 보호합니다.' },
+                { id: 'c06', name: '🚒 화성 소방서', icon: 'fa-fire-extinguisher', price: 5, desc: '화재와 재난에 신속하게 대응합니다.' },
+                { id: 'c07', name: '🏥 종합 병원', icon: 'fa-hospital', price: 8, desc: '시민의 건강을 책임지는 의료 시설입니다.' },
+                { id: 'c08', name: '📚 화성 도서관', icon: 'fa-book-open', price: 5, desc: '지식과 정보에 자유롭게 접근할 수 있습니다.' },
+                { id: 'c09', name: '🎭 시민 문화센터', icon: 'fa-theater-masks', price: 6, desc: '예술과 문화 활동을 위한 커뮤니티 공간입니다.' },
+                { id: 'c10', name: '⚽ 체육 경기장', icon: 'fa-futbol', price: 7, desc: '건강한 여가와 스포츠 활동을 위한 시설입니다.' }
+            ],
+            ethics: [
+                { id: 'e01', name: '❤️ 이주민 복지 센터', icon: 'fa-heart', price: 5, desc: '이주민 적응을 돕고 심리 상담을 제공합니다.' },
+                { id: 'e02', name: '🐛 외계 생태계 보호소', icon: 'fa-bug', price: 8, desc: '화성 생명체 발견 시 보호합니다.' },
+                { id: 'e03', name: '⚖️ 공정 배분 센터', icon: 'fa-balance-scale-left', price: 4, desc: '식량, 물, 산소를 공정하게 배분합니다.' },
+                { id: 'e04', name: '💕 세대 간 정의 위원회', icon: 'fa-hand-holding-heart', price: 6, desc: '미래 세대의 권리를 대변합니다.' },
+                { id: 'e05', name: '🌎 다문화 교류관', icon: 'fa-globe-americas', price: 5, desc: '다양한 문화적 배경의 이주민 화합을 돕습니다.' },
+                { id: 'e06', name: '♿ 장애인 지원센터', icon: 'fa-wheelchair', price: 6, desc: '장애 시민들의 자립과 사회참여를 지원합니다.' },
+                { id: 'e07', name: '👁️ 환경 감시단', icon: 'fa-eye', price: 5, desc: '자원 남용과 환경 파괴를 감시합니다.' },
+                { id: 'e08', name: '🛡️ 인권 옴부즈맨', icon: 'fa-user-shield', price: 6, desc: '시민의 기본권 침해를 조사하고 구제합니다.' },
+                { id: 'e09', name: '🤝 노인 돌봄 센터', icon: 'fa-hands-helping', price: 5, desc: '어르신들의 건강과 복지를 책임집니다.' },
+                { id: 'e10', name: '🤲 분쟁 조정 센터', icon: 'fa-handshake', price: 7, desc: '시민 간 갈등을 평화적으로 해결합니다.' }
+            ]
+        };
+
+        const MAX_SLOTS = 16;
+        let budget = 100;
+        let citySlots = new Array(MAX_SLOTS).fill(null);
+        let currentPerspective = 'time';
+
+        const feedbackMessages = {
+            build: {
+                time: ["⏰ 역사를 기억하는 현명한 선택!", "📜 과거와 미래를 잇는 결정이에요!"],
+                space: ["🛡️ 생존 인프라 확보! 실용적이에요!", "🌱 환경 극복의 첫걸음!"],
+                social: ["🏛️ 사회 제도의 기반을 닦았어요!", "⚖️ 질서 있는 공동체를 만들어가네요!"],
+                ethics: ["💜 정의롭고 따뜻한 선택이에요!", "🤝 약자를 배려하는 포용적인 도시!"]
+            },
+            noMoney: ["💸 예산이 부족해요! 다른 건물을 철거해볼까요?", "🏦 돈이 없어요... 철거로 예산을 확보하세요!"],
+            noSlot: ["🚧 공간이 가득 찼어요! (16구역 완료)", "🗺️ 더 이상 건설할 곳이 없어요!"],
+            remove: ["🔨 철거 완료! 예산이 돌아왔어요!", "♻️ 자원 회수 완료!"],
+            reset: ["🌋 도시가 초기화되었어요! 새 출발!"]
+        };
+
+        const buildingListDiv = document.getElementById('buildingList');
+        const cityGridDiv = document.getElementById('cityGrid');
+        const budgetDisplay = document.getElementById('budgetDisplay');
+        const budgetBar = document.getElementById('budgetBar');
+        const feedbackDiv = document.getElementById('feedback');
+        const reportModal = document.getElementById('reportModal');
+        const reportPages = document.getElementById('reportPages');
+
+        function init() {
+            renderCityGrid();
+            renderBuildings();
+            updateStats();
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentPerspective = btn.dataset.perspective;
+                    renderBuildings();
+                });
+            });
+
+            document.getElementById('generateReport').addEventListener('click', generateReport);
+            document.getElementById('resetCity').addEventListener('click', resetCity);
+            document.getElementById('closeModal').addEventListener('click', () => reportModal.classList.remove('active'));
+        }
+
+        function renderCityGrid() {
+            cityGridDiv.innerHTML = '';
+            for (let i = 0; i < MAX_SLOTS; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'city-slot';
+                slot.dataset.index = i;
+
+                if (citySlots[i]) {
+                    const b = citySlots[i];
+                    slot.classList.add('filled', b.perspective);
+                    slot.innerHTML = `
+                        <i class="fas ${b.icon} slot-icon"></i>
+                        <span class="slot-name">${b.name.replace(/^.+\s/, '').slice(0, 5)}</span>
+                        <button class="remove-slot" onclick="removeBuilding(${i})"><i class="fas fa-times"></i></button>
+                    `;
+                } else {
+                    slot.classList.add('empty');
+                    slot.innerHTML = `<i class="fas fa-plus" style="opacity: 0.3;"></i>`;
+                }
+
+                cityGridDiv.appendChild(slot);
+            }
+        }
+
+        function renderBuildings() {
+            const list = buildings[currentPerspective];
+            buildingListDiv.innerHTML = list.map(b => {
+                const isBuilt = citySlots.some(s => s && s.id === b.id);
+                const canAfford = budget >= b.price;
+                const hasSlot = citySlots.some(s => s === null);
+                const disabled = !canAfford || !hasSlot;
+                const displayName = b.name.replace(/^(.+?)\s/, '$1 ');
+
+                return `
+                    <div class="building-item ${currentPerspective} ${isBuilt ? 'built' : ''} ${disabled && !isBuilt ? 'disabled' : ''}"
+                         onclick="${!isBuilt && !disabled ? `buildBuilding('${b.id}')` : ''}">
+                        <div class="building-icon-wrapper"><i class="fas ${b.icon}"></i></div>
+                        <div class="building-info">
+                            <div class="building-name">${displayName}</div>
+                            <div class="building-desc">${b.desc}</div>
+                        </div>
+                        <div class="building-price">${b.price}억</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function buildBuilding(buildingId) {
+            let building = null, perspective = null;
+            for (const [key, list] of Object.entries(buildings)) {
+                const found = list.find(b => b.id === buildingId);
+                if (found) { building = found; perspective = key; break; }
+            }
+            if (!building) return;
+
+            const emptyIndex = citySlots.findIndex(s => s === null);
+            if (emptyIndex === -1) {
+                showFeedback(feedbackMessages.noSlot[Math.floor(Math.random() * feedbackMessages.noSlot.length)], 'warning');
+                return;
+            }
+
+            if (budget < building.price) {
+                showFeedback(feedbackMessages.noMoney[Math.floor(Math.random() * feedbackMessages.noMoney.length)], 'warning');
+                return;
+            }
+
+            budget -= building.price;
+            citySlots[emptyIndex] = { ...building, perspective };
+
+            showFeedback(feedbackMessages.build[perspective][Math.floor(Math.random() * feedbackMessages.build[perspective].length)], 'success');
+            updateStats();
+            renderCityGrid();
+            renderBuildings();
+        }
+
+        function removeBuilding(index) {
+            if (citySlots[index]) {
+                budget += citySlots[index].price;
+                citySlots[index] = null;
+                showFeedback(feedbackMessages.remove[Math.floor(Math.random() * feedbackMessages.remove.length)], 'warning');
+                updateStats();
+                renderCityGrid();
+                renderBuildings();
+            }
+        }
+
+        function updateStats() {
+            budgetDisplay.textContent = `${budget}억 원`;
+            budgetBar.style.width = `${budget}%`;
+
+            const stats = { time: 0, space: 0, social: 0, ethics: 0 };
+            let count = 0;
+            citySlots.forEach(s => {
+                if (s) { stats[s.perspective] += s.price; count++; }
+            });
+
+            document.getElementById('slotCount').textContent = count;
+            document.getElementById('timeInvest').textContent = `${stats.time}억`;
+            document.getElementById('spaceInvest').textContent = `${stats.space}억`;
+            document.getElementById('socialInvest').textContent = `${stats.social}억`;
+            document.getElementById('ethicsInvest').textContent = `${stats.ethics}억`;
+        }
+
+        function showFeedback(message, type) {
+            feedbackDiv.textContent = message;
+            feedbackDiv.className = `feedback ${type}`;
+            feedbackDiv.style.display = 'block';
+            setTimeout(() => feedbackDiv.style.display = 'none', 2500);
+        }
+
+        function resetCity() {
+            if (citySlots.every(s => s === null)) return;
+            if (confirm('🔄 정말 도시를 초기화할까요? 모든 건물이 철거됩니다!')) {
+                budget = 100;
+                citySlots = new Array(MAX_SLOTS).fill(null);
+                showFeedback(feedbackMessages.reset[0], 'warning');
+                updateStats();
+                renderCityGrid();
+                renderBuildings();
+            }
+        }
+
+        function generateReport() {
+            const grade = document.getElementById('userGrade').value || '-';
+            const cls = document.getElementById('userClass').value || '-';
+            const num = document.getElementById('userNumber').value || '-';
+            const name = document.getElementById('userName').value || '익명';
+
+            const builtBuildings = citySlots.filter(s => s !== null);
+            if (builtBuildings.length === 0) {
+                showFeedback('🚫 건설된 건물이 없어요! 먼저 도시를 건설해주세요.', 'error');
+                return;
+            }
+
+            const stats = { time: 0, space: 0, social: 0, ethics: 0 };
+            const counts = { time: 0, space: 0, social: 0, ethics: 0 };
+            const names = { time: '시간적', space: '공간적', social: '사회적', ethics: '윤리적' };
+            const emojis = { time: '⏰', space: '🌍', social: '👥', ethics: '⚖️' };
+
+            builtBuildings.forEach(b => {
+                stats[b.perspective] += b.price;
+                counts[b.perspective]++;
+            });
+
+            const totalSpent = 100 - budget;
+            const maxStat = Math.max(...Object.values(stats), 1);
+
+            // 균형 점수 계산
+            const values = Object.values(stats);
+            const avg = totalSpent / 4;
+            const variance = values.reduce((sum, v) => sum + Math.pow(v - avg, 2), 0) / 4;
+            const stdDev = Math.sqrt(variance);
+            const maxStdDev = totalSpent / 2;
+            const balanceScore = Math.max(0, 100 - (stdDev / maxStdDev) * 100);
+
+            let balanceGrade, balanceDesc;
+            if (balanceScore >= 80) {
+                balanceGrade = 'A';
+                balanceDesc = '🎉 네 가지 관점을 균형 있게 고려한 통합적 도시입니다!';
+            } else if (balanceScore >= 60) {
+                balanceGrade = 'B';
+                balanceDesc = '👍 대체로 균형 잡혔지만, 일부 관점이 부족합니다.';
+            } else if (balanceScore >= 40) {
+                balanceGrade = 'C';
+                balanceDesc = '⚠️ 특정 관점에 편중되어 있어요. 다양성을 고려해보세요.';
+            } else {
+                balanceGrade = 'D';
+                balanceDesc = '😢 관점의 균형이 많이 부족해요. 다른 관점도 필요합니다!';
+            }
+
+            const sorted = Object.entries(stats).sort((a, b) => b[1] - a[1]);
+            const zeroList = sorted.filter(s => s[1] === 0);
+            const nonZeroList = sorted.filter(s => s[1] > 0);
+
+            // 장점 2개
+            const strengths = [];
+            if (nonZeroList.length > 0) {
+                const top = nonZeroList[0][0];
+                const topPct = Math.round((stats[top] / totalSpent) * 100);
+                const strengthTexts = {
+                    time: `⏰ 시간적 관점에 ${topPct}%를 투자했습니다. 역사를 기억하고 미래를 준비하는 지혜로운 도시입니다.`,
+                    space: `🌍 공간적 관점에 ${topPct}%를 투자했습니다. 화성 환경을 극복하고 시민의 생존을 최우선으로 고려했습니다.`,
+                    social: `👥 사회적 관점에 ${topPct}%를 투자했습니다. 법, 교육, 질서가 잘 갖춰진 안정적인 도시입니다.`,
+                    ethics: `⚖️ 윤리적 관점에 ${topPct}%를 투자했습니다. 공정한 분배와 약자 보호를 중시하는 정의로운 도시입니다.`
+                };
+                strengths.push({ title: `${emojis[top]} ${names[top]} 관점 우수 (${topPct}%)`, text: strengthTexts[top] });
+            }
+
+            if (nonZeroList.length >= 3) {
+                strengths.push({ title: `🎯 다양한 관점 고려 (${nonZeroList.length}개 영역)`, text: `${nonZeroList.length}개의 관점에 투자하여 한쪽에 치우치지 않은 통합적 사고를 보여주었습니다.` });
+            } else if (builtBuildings.length >= 12) {
+                strengths.push({ title: `🏙️ 풍부한 인프라 (${builtBuildings.length}개 시설)`, text: `${builtBuildings.length}개의 시설을 건설하여 도시 기능이 풍부합니다.` });
+            } else if (budget <= 10) {
+                strengths.push({ title: `💰 예산의 효율적 사용`, text: `주어진 예산을 최대한 활용하여 도시를 건설했습니다.` });
+            } else {
+                strengths.push({ title: `🎯 명확한 우선순위 설정`, text: `특정 가치에 집중 투자하여 도시의 정체성이 명확합니다.` });
+            }
+
+            // 약점 2개
+            const weaknesses = [];
+            if (zeroList.length > 0) {
+                const missing = zeroList[0][0];
+                const weakTexts = {
+                    time: '⏰ 시간적 관점에 전혀 투자하지 않았습니다. 역사를 잊으면 같은 실수를 반복할 수 있어요!',
+                    space: '🌍 공간적 관점에 전혀 투자하지 않았습니다. 산소, 물, 방사선 차폐 없이 화성에서 생존이 어렵습니다!',
+                    social: '👥 사회적 관점에 전혀 투자하지 않았습니다. 법과 질서 없이 사회는 혼란에 빠질 수 있어요!',
+                    ethics: '⚖️ 윤리적 관점에 전혀 투자하지 않았습니다. 공정한 분배 없이 사회적 불만이 폭발할 수 있어요!'
+                };
+                weaknesses.push({ title: `🚨 ${names[missing]} 관점 완전 부재`, text: weakTexts[missing] });
+            } else {
+                const lowest = sorted[sorted.length - 1][0];
+                const lowPct = Math.round((stats[lowest] / totalSpent) * 100);
+                weaknesses.push({ title: `📉 ${names[lowest]} 관점 부족 (${lowPct}%)`, text: `${emojis[lowest]} ${names[lowest]} 관점에 대한 투자가 상대적으로 부족합니다. 이 영역의 보완이 필요합니다.` });
+            }
+
+            if (nonZeroList.length > 0 && (stats[nonZeroList[0][0]] / totalSpent) > 0.5) {
+                const topP = nonZeroList[0][0];
+                const topPct = Math.round((stats[topP] / totalSpent) * 100);
+                weaknesses.push({ title: `⚠️ ${names[topP]} 관점 과잉 편중 (${topPct}%)`, text: `하나의 관점에 절반 이상의 예산이 집중되어 다른 관점이 상대적으로 소홀해졌습니다.` });
+            } else if (zeroList.length >= 2) {
+                const second = zeroList[1][0];
+                weaknesses.push({ title: `🚨 ${names[second]} 관점도 부재`, text: `${emojis[second]} ${names[second]} 관점에도 투자가 없습니다. 두 개 이상의 관점이 비어있어 도시의 지속가능성이 우려됩니다.` });
+            } else if (budget >= 20) {
+                weaknesses.push({ title: `💸 미사용 예산 ${budget}억 원`, text: `전체 예산의 ${budget}%가 사용되지 않았습니다. 더 많은 시설로 도시를 발전시킬 수 있었어요!` });
+            } else if (builtBuildings.length < 10) {
+                weaknesses.push({ title: `🏚️ 시설 수 부족 (${builtBuildings.length}개)`, text: `건설된 시설이 적어 도시 기능이 제한적입니다. 다양한 시설이 필요합니다.` });
+            } else {
+                weaknesses.push({ title: `🔗 통합적 시너지 부족`, text: `각 관점 간의 연계가 약합니다. 시간-공간-사회-윤리가 유기적으로 연결되어야 합니다.` });
+            }
+
+            const today = new Date();
+            const dateStr = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}`;
+
+            const minimap = citySlots.map(s => {
+                if (s) {
+                    const shortName = s.name.replace(/^.+\s/, '').slice(0, 3);
+                    return `<div class="report-cell ${s.perspective}"><i class="fas ${s.icon}"></i><span class="report-cell-label">${shortName}</span></div>`;
+                }
+                return `<div class="report-cell"></div>`;
+            }).join('');
+
+            const tags = builtBuildings.map(b => {
+                const displayName = b.name.replace(/^(.+?)\s/, '');
+                return `<span class="b-tag ${b.perspective}"><i class="fas ${b.icon}"></i> ${displayName}</span>`;
+            }).join('');
+
+            const maxHeight = 65;
+            const barHeights = {
+                time: totalSpent > 0 ? Math.max(5, (stats.time / totalSpent) * maxHeight) : 5,
+                space: totalSpent > 0 ? Math.max(5, (stats.space / totalSpent) * maxHeight) : 5,
+                social: totalSpent > 0 ? Math.max(5, (stats.social / totalSpent) * maxHeight) : 5,
+                ethics: totalSpent > 0 ? Math.max(5, (stats.ethics / totalSpent) * maxHeight) : 5
+            };
+
+            const page1 = `
+                <div class="report-page" data-page="1 / 2">
+                    <div class="report-header-section">
+                        <h1 class="report-main-title">🔬 CSI 화성 도시 진단 보고서</h1>
+                        <p class="report-sub-title">Comprehensive Social Integration Diagnosis</p>
+                        <div class="student-grid">
+                            <div class="student-box"><div class="student-label">📚 학년</div><div class="student-value">${grade}</div></div>
+                            <div class="student-box"><div class="student-label">🏫 반</div><div class="student-value">${cls}</div></div>
+                            <div class="student-box"><div class="student-label">🔢 번호</div><div class="student-value">${num}</div></div>
+                            <div class="student-box"><div class="student-label">✏️ 이름</div><div class="student-value">${name}</div></div>
+                        </div>
+                    </div>
+
+                    <div class="section-header">🗺️ 나의 화성 도시 (${builtBuildings.length}개 시설 / 16구역)</div>
+                    <div class="report-map-wrap">
+                        <div class="report-mars">
+                            <div class="report-grid">${minimap}</div>
+                        </div>
+                    </div>
+
+                    <div class="section-header">📊 관점별 투자 현황 (총 ${totalSpent}억 원 사용)</div>
+                    <div class="invest-chart">
+                        <div class="chart-item">
+                            <span class="chart-name">⏰ 시간적</span>
+                            <div class="chart-bar-outer"><div class="chart-bar-inner time" style="width: ${maxStat > 0 ? (stats.time / maxStat) * 100 : 0}%">${stats.time > 0 ? stats.time + '억' : ''}</div></div>
+                            <span class="chart-amount">${stats.time}억 원</span>
+                        </div>
+                        <div class="chart-item">
+                            <span class="chart-name">🌍 공간적</span>
+                            <div class="chart-bar-outer"><div class="chart-bar-inner space" style="width: ${maxStat > 0 ? (stats.space / maxStat) * 100 : 0}%">${stats.space > 0 ? stats.space + '억' : ''}</div></div>
+                            <span class="chart-amount">${stats.space}억 원</span>
+                        </div>
+                        <div class="chart-item">
+                            <span class="chart-name">👥 사회적</span>
+                            <div class="chart-bar-outer"><div class="chart-bar-inner social" style="width: ${maxStat > 0 ? (stats.social / maxStat) * 100 : 0}%">${stats.social > 0 ? stats.social + '억' : ''}</div></div>
+                            <span class="chart-amount">${stats.social}억 원</span>
+                        </div>
+                        <div class="chart-item">
+                            <span class="chart-name">⚖️ 윤리적</span>
+                            <div class="chart-bar-outer"><div class="chart-bar-inner ethics" style="width: ${maxStat > 0 ? (stats.ethics / maxStat) * 100 : 0}%">${stats.ethics > 0 ? stats.ethics + '억' : ''}</div></div>
+                            <span class="chart-amount">${stats.ethics}억 원</span>
+                        </div>
+                    </div>
+
+                    <div class="balance-score-section">
+                        <div class="balance-title">⚖️ 통합적 관점 균형 점수</div>
+                        <div class="balance-visual">
+                            <div class="balance-bar-wrap"><div class="balance-bar time" style="height: ${barHeights.time}px"></div><span class="balance-bar-label">시간</span></div>
+                            <div class="balance-bar-wrap"><div class="balance-bar space" style="height: ${barHeights.space}px"></div><span class="balance-bar-label">공간</span></div>
+                            <div class="balance-bar-wrap"><div class="balance-bar social" style="height: ${barHeights.social}px"></div><span class="balance-bar-label">사회</span></div>
+                            <div class="balance-bar-wrap"><div class="balance-bar ethics" style="height: ${barHeights.ethics}px"></div><span class="balance-bar-label">윤리</span></div>
+                        </div>
+                        <div class="balance-grade ${balanceGrade}">${balanceGrade}등급</div>
+                        <div class="balance-desc">${balanceDesc}</div>
+                    </div>
+
+                    <div class="section-header">🏗️ 건설 완료 시설</div>
+                    <div class="building-tags-wrap">${tags}</div>
+                </div>
+            `;
+
+            const page2 = `
+                <div class="report-page" data-page="2 / 2">
+                    <div class="section-header" style="border-color: #27ae60; background: #eafaf1;">✅ 도시의 장점 (2가지)</div>
+                    <div class="diagnosis-cards">
+                        ${strengths.map(s => `
+                            <div class="d-card good">
+                                <div class="d-card-title"><i class="fas fa-check-circle"></i> ${s.title}</div>
+                                <p class="d-card-text">${s.text}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="section-header" style="border-color: #e74c3c; background: #fdedec;">⚠️ 치명적 약점 (2가지)</div>
+                    <div class="diagnosis-cards">
+                        ${weaknesses.map(w => `
+                            <div class="d-card bad">
+                                <div class="d-card-title"><i class="fas fa-exclamation-triangle"></i> ${w.title}</div>
+                                <p class="d-card-text">${w.text}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="section-header" style="border-color: #9b59b6; background: #f5eef8;">💡 통합적 관점에서의 성찰</div>
+                    <div class="reflection-section">
+                        <p>
+                            화성 도시 설계는 단순히 건물을 짓는 것이 아닙니다. 
+                            <strong class="t">⏰ 시간적 관점</strong>에서 과거의 교훈을 기억하고 미래를 준비하며, 
+                            <strong class="s">🌍 공간적 관점</strong>에서 화성이라는 새로운 환경에 적응하고, 
+                            <strong class="c">👥 사회적 관점</strong>에서 질서 있는 공동체를 만들며, 
+                            <strong class="e">⚖️ 윤리적 관점</strong>에서 모든 구성원이 존엄하게 살 수 있는 정의로운 사회를 추구해야 합니다.
+                        </p>
+                        <p style="margin-top: 12px;">
+                            <strong>🤔 나의 도시에는 어떤 가치관이 담겨 있나요?</strong> 부족한 관점을 보완한다면 어떤 도시가 될까요? 🚀
+                        </p>
+                    </div>
+
+                    <div class="report-footer-section">
+                        <p>📅 작성일: ${dateStr}</p>
+                        <p>📚 2022 개정 교육과정 [10통사01-01], [10통사01-02]</p>
+                        <p style="margin-top: 5px;">🌟 제작: 풀어쓰는 사회학 (kstephullab.com)</p>
+                    </div>
+                </div>
+            `;
+
+            reportPages.innerHTML = page1 + page2;
+            reportModal.classList.add('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
