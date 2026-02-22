@@ -13,5 +13,6 @@
     { "slug": "web-2", "title": "2차시 웹교구: 자산 관리 원칙과 포트폴리오", "type": "수업자료", "difficulty": "보통", "duration": "50분", "tags": ["웹교구", "2차시", "통사2"], "desc": "3원칙 그래프 게임 & 포트폴리오 설계", "file": "w-economy-2.html" },
     { "slug": "web-3", "title": "3차시 웹교구: AI 6대 자산 정밀 진단", "type": "활동지", "difficulty": "심화", "duration": "50분", "tags": ["웹교구", "3차시", "통사2"], "desc": "AI 기반 자산 진단 시뮬레이션", "file": "w-economy-3.html" },
     { "slug": "web-4", "title": "4차시 웹교구: 10년 투자 서바이벌", "type": "활동지", "difficulty": "심화", "duration": "50분", "tags": ["웹교구", "4차시", "통사2"], "desc": "장기 투자 시뮬레이션 게임", "file": "w-economy-4.html" }
+  { "slug": "web-4", "title": "4차시 웹교구: 10년 투자 서바이벌", "type": "활동지", "difficulty": "심화", "duration": "50분", "tags": ["웹도구", "1차시", "통사2"], "desc": "학생회 임원 투표 용지 생성기", "file": "election.html" }
   ]
 }
