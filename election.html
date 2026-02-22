@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>학생 선거 용지 생성기</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ========== 전역 초기화 ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #1a56db;
+  --primary-light: #e8effc;
+  --sidebar-bg: #f8f9fb;
+  --sidebar-w: 400px;
+  --border: #d1d5db;
+  --text: #1f2937;
+  --text-light: #6b7280;
+  --danger: #dc2626;
+  --success: #16a34a;
+  --accent: #1a56db;
+  --radius: 8px;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #eef1f5;
+  color: var(--text);
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ========== 사이드바 ========== */
+.sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  padding: 16px 20px;
+  background: var(--primary);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.sidebar-header h1 {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.sidebar-header p {
+  font-size: 11px;
+  opacity: 0.8;
+  margin-top: 2px;
+}
+
+.sidebar-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+  padding-bottom: 80px;
+}
+
+.sidebar-scroll::-webkit-scrollbar { width: 5px; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+
+/* 섹션 */
+.section {
+  margin-bottom: 18px;
+}
+
+.section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.section-title::before {
+  content: '';
+  width: 3px;
+  height: 14px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+/* 탭 */
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.tab-btn {
+  padding: 8px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+  line-height: 1.3;
+  font-family: inherit;
+}
+
+.tab-btn.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.tab-btn:hover:not(.active) {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* 폼 요소 */
+label.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+input[type="text"], input[type="date"], input[type="number"], input[type="color"],
+select, textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  background: #fff;
+  transition: border-color 0.15s;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(26,86,219,0.1);
+}
+
+.field-row {
+  margin-bottom: 10px;
+}
+
+.field-row-inline {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.field-row-inline > div { flex: 1; }
+
+/* 버튼 */
+.btn {
+  padding: 7px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: #1347b8; }
+.btn-danger { background: #fee2e2; color: var(--danger); }
+.btn-danger:hover { background: #fecaca; }
+.btn-outline {
+  background: #fff;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+.btn-sm { padding: 5px 10px; font-size: 11px; }
+
+/* 후보자 카드 */
+.candidate-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.candidate-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.candidate-card .card-header span {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.candidate-card .remove-btn {
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: #fee2e2;
+  color: var(--danger);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.candidate-card .fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.candidate-card .fields-grid.three-col {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.candidate-card input, .candidate-card select {
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+.candidate-card .full-width {
+  grid-column: 1 / -1;
+}
+
+/* 사진 업로드 */
+.photo-upload-area {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.photo-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+}
+
+.photo-upload-btn {
+  padding: 4px 10px;
+  font-size: 11px;
+  background: #f3f4f6;
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--text-light);
+}
+
+.photo-upload-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.photo-remove-btn {
+  padding: 4px 8px;
+  font-size: 10px;
+  background: none;
+  border: none;
+  color: var(--danger);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* 직책 그룹 */
+.position-group {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius);
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.position-group .group-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.position-group .group-header input {
+  flex: 1;
+  font-weight: 600;
+}
+
+/* 디자인 선택 */
+.design-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.design-option {
+  text-align: center;
+  padding: 10px 4px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 500;
+  background: #fff;
+  transition: all 0.15s;
+}
+
+.design-option.active {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.design-option .icon { font-size: 20px; margin-bottom: 4px; }
+
+/* 색상 프리셋 */
+.color-presets {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.color-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.color-swatch.active { border-color: var(--text); transform: scale(1.15); }
+
+/* 라디오/체크박스 그룹 */
+.radio-group, .check-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.radio-group label, .check-group label {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+/* 배치 옵션 */
+.layout-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.layout-opt {
+  padding: 6px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #fff;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.layout-opt.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+/* 하단 고정 버튼 */
+.sidebar-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: var(--sidebar-w);
+  padding: 12px 20px;
+  background: var(--sidebar-bg);
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.sidebar-footer .btn { flex: 1; padding: 10px; font-size: 13px; }
+
+/* 안내 문구 */
+.info-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  font-size: 11px;
+  color: #1e40af;
+  margin-bottom: 10px;
+}
+
+/* ========== 미리보기 패널 ========== */
+.preview-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: auto;
+  background: #e5e7eb;
+}
+
+.a4-page {
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.a4-page.portrait {
+  width: 210mm;
+  min-height: 297mm;
+}
+
+.a4-page.landscape {
+  width: 297mm;
+  min-height: 210mm;
+}
+
+.ballot-grid {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  padding: 10mm 8mm;
+  position: relative;
+}
+
+/* ========== 투표 용지 단위 ========== */
+.ballot {
+  border: 1px solid #999;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  font-family: 'Noto Serif KR', serif;
+}
+
+/* --- 공식형 --- */
+.ballot.style-official {
+  border: 2px solid #000;
+  outline: 1px solid #000;
+  outline-offset: 2px;
+}
+
+.ballot.style-official .ballot-header {
+  text-align: center;
+  border-bottom: 2px solid #000;
+  padding: 3mm 2mm 2mm;
+}
+
+.ballot.style-official .ballot-title {
+  font-size: 11pt;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.ballot.style-official .ballot-sub {
+  font-size: 7pt;
+  margin-top: 1mm;
+  color: #333;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.ballot.style-official .ballot-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.ballot.style-official .candidate-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #000;
+  flex: 1;
+  min-height: 0;
+}
+
+.ballot.style-official .candidate-row:last-child {
+  border-bottom: none;
+}
+
+.ballot.style-official .cand-number {
+  width: 10mm;
+  text-align: center;
+  font-weight: 700;
+  font-size: 11pt;
+  border-right: 1px solid #000;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ballot.style-official .cand-photo {
+  border-right: 1px solid #000;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1mm;
+}
+
+.ballot.style-official .cand-photo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.ballot.style-official .cand-info {
+  flex: 1;
+  padding: 1mm 2mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.ballot.style-official .cand-name {
+  font-size: 10pt;
+  font-weight: 700;
+}
+
+.ballot.style-official .cand-detail {
+  font-size: 6.5pt;
+  color: #555;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.ballot.style-official .cand-pledge {
+  font-size: 6pt;
+  color: #666;
+  font-family: 'Noto Sans KR', sans-serif;
+  margin-top: 0.5mm;
+}
+
+.ballot.style-official .cand-check {
+  width: 12mm;
+  border-left: 1px solid #000;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ballot.style-official .check-box {
+  width: 6mm;
+  height: 6mm;
+  border: 1.5px solid #000;
+}
+
+.ballot.style-official .ballot-footer {
+  border-top: 2px solid #000;
+  padding: 1.5mm 2mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 6pt;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.ballot.style-official .stamp {
+  width: 10mm;
+  height: 10mm;
+}
+
+.ballot.style-official .stamp img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* --- 모던형 --- */
+.ballot.style-modern {
+  border: none;
+  border-radius: 2mm;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+.ballot.style-modern .ballot-header {
+  padding: 3mm 3mm 2mm;
+  text-align: center;
+}
+
+.ballot.style-modern .ballot-title {
+  font-size: 11pt;
+  font-weight: 700;
+  color: #fff;
+}
+
+.ballot.style-modern .ballot-sub {
+  font-size: 6.5pt;
+  color: rgba(255,255,255,0.85);
+  margin-top: 0.5mm;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.ballot.style-modern .ballot-body {
+  flex: 1;
+  padding: 2mm;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5mm;
+}
+
+.ballot.style-modern .candidate-row {
+  display: flex;
+  align-items: center;
+  border-radius: 1.5mm;
+  border: 1px solid #e5e7eb;
+  flex: 1;
+  min-height: 0;
+  padding: 1mm;
+  gap: 1.5mm;
+}
+
+.ballot.style-modern .cand-number {
+  width: 7mm;
+  height: 7mm;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 9pt;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.ballot.style-modern .cand-photo img {
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.ballot.style-modern .cand-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.ballot.style-modern .cand-name {
+  font-size: 9pt;
+  font-weight: 700;
+}
+
+.ballot.style-modern .cand-detail {
+  font-size: 6pt;
+  color: #888;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.ballot.style-modern .cand-pledge {
+  font-size: 5.5pt;
+  color: #999;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.ballot.style-modern .cand-check {
+  flex-shrink: 0;
+}
+
+.ballot.style-modern .check-box {
+  width: 6mm;
+  height: 6mm;
+  border: 1.5px solid #ccc;
+  border-radius: 1mm;
+}
+
+.ballot.style-modern .ballot-footer {
+  padding: 1.5mm 3mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 6pt;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #999;
+  border-top: 1px solid #eee;
+}
+
+.ballot.style-modern .stamp { width: 9mm; height: 9mm; }
+.ballot.style-modern .stamp img { width: 100%; height: 100%; object-fit: contain; }
+
+/* --- 클래식형 --- */
+.ballot.style-classic {
+  border: 3px double #333;
+}
+
+.ballot.style-classic .ballot-header {
+  text-align: center;
+  padding: 3mm 2mm 2mm;
+  border-bottom: 2px double #333;
+}
+
+.ballot.style-classic .ballot-title {
+  font-size: 11pt;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.ballot.style-classic .ballot-sub {
+  font-size: 7pt;
+  color: #555;
+  margin-top: 1mm;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.ballot.style-classic .ballot-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.ballot.style-classic .candidate-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #999;
+  flex: 1;
+  min-height: 0;
+}
+
+.ballot.style-classic .candidate-row:last-child { border-bottom: none; }
+
+.ballot.style-classic .cand-number {
+  width: 10mm;
+  text-align: center;
+  font-weight: 700;
+  font-size: 12pt;
+  border-right: 1px solid #999;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Noto Serif KR', serif;
+}
+
+.ballot.style-classic .cand-photo {
+  border-right: 1px solid #999;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1mm;
+}
+
+.ballot.style-classic .cand-photo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.ballot.style-classic .cand-info {
+  flex: 1;
+  padding: 1mm 2mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ballot.style-classic .cand-name { font-size: 10pt; font-weight: 700; }
+.ballot.style-classic .cand-detail { font-size: 6.5pt; color: #555; font-family: 'Noto Sans KR', sans-serif; }
+.ballot.style-classic .cand-pledge { font-size: 6pt; color: #777; font-family: 'Noto Sans KR', sans-serif; margin-top: 0.5mm; }
+
+.ballot.style-classic .cand-check {
+  width: 12mm;
+  border-left: 1px solid #999;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ballot.style-classic .check-box {
+  width: 6mm;
+  height: 6mm;
+  border: 1.5px solid #333;
+}
+
+.ballot.style-classic .ballot-footer {
+  border-top: 2px double #333;
+  padding: 1.5mm 2mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 6pt;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.ballot.style-classic .stamp { width: 10mm; height: 10mm; }
+.ballot.style-classic .stamp img { width: 100%; height: 100%; object-fit: contain; }
+
+/* --- 컬러형 --- */
+.ballot.style-colorful {
+  border: none;
+  overflow: hidden;
+}
+
+.ballot.style-colorful .ballot-header {
+  text-align: center;
+  padding: 3mm 2mm 2mm;
+  color: #fff;
+  position: relative;
+}
+
+.ballot.style-colorful .ballot-title {
+  font-size: 11pt;
+  font-weight: 700;
+}
+
+.ballot.style-colorful .ballot-sub {
+  font-size: 6.5pt;
+  color: rgba(255,255,255,0.8);
+  margin-top: 0.5mm;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.ballot.style-colorful .ballot-body {
+  flex: 1;
+  padding: 1.5mm 2mm;
+  display: flex;
+  flex-direction: column;
+  gap: 1mm;
+}
+
+.ballot.style-colorful .candidate-row {
+  display: flex;
+  align-items: center;
+  padding: 1mm;
+  border-radius: 1.5mm;
+  flex: 1;
+  min-height: 0;
+  gap: 1.5mm;
+}
+
+.ballot.style-colorful .cand-number {
+  width: 7mm;
+  height: 7mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 9pt;
+  color: #fff;
+  border-radius: 1.5mm;
+  flex-shrink: 0;
+}
+
+.ballot.style-colorful .cand-photo img {
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.ballot.style-colorful .cand-info { flex: 1; min-width: 0; }
+.ballot.style-colorful .cand-name { font-size: 9pt; font-weight: 700; }
+.ballot.style-colorful .cand-detail { font-size: 6pt; color: #666; font-family: 'Noto Sans KR', sans-serif; }
+.ballot.style-colorful .cand-pledge { font-size: 5.5pt; color: #888; font-family: 'Noto Sans KR', sans-serif; }
+
+.ballot.style-colorful .cand-check { flex-shrink: 0; }
+.ballot.style-colorful .check-box {
+  width: 6mm;
+  height: 6mm;
+  border: 2px solid;
+  border-radius: 1mm;
+}
+
+.ballot.style-colorful .ballot-footer {
+  padding: 1.5mm 2mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 6pt;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #888;
+  border-top: 1px solid #eee;
+}
+
+.ballot.style-colorful .stamp { width: 9mm; height: 9mm; }
+.ballot.style-colorful .stamp img { width: 100%; height: 100%; object-fit: contain; }
+
+/* ========== 절취선 ========== */
+.cut-line-h, .cut-line-v {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 8pt;
+  position: relative;
+}
+
+.cut-line-h {
+  width: 100%;
+  height: 4mm;
+}
+
+.cut-line-v {
+  height: 100%;
+  width: 4mm;
+  flex-direction: column;
+}
+
+.cut-line-h::before, .cut-line-h::after {
+  content: '';
+  flex: 1;
+  border-top: 1px dashed #aaa;
+}
+
+.cut-line-v::before, .cut-line-v::after {
+  content: '';
+  flex: 1;
+  border-left: 1px dashed #aaa;
+}
+
+.cut-line-h .scissors, .cut-line-v .scissors {
+  margin: 0 2mm;
+  font-size: 8pt;
+}
+
+.cut-line-v .scissors {
+  margin: 2mm 0;
+  transform: rotate(90deg);
+}
+
+/* 도장 텍스트 */
+.text-stamp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #cc0000;
+  border: 2px solid #cc0000;
+  font-family: 'Noto Serif KR', serif;
+}
+
+.text-stamp.stamp-circle { border-radius: 50%; }
+.text-stamp.stamp-rect { border-radius: 1px; }
+.text-stamp.stamp-oval { border-radius: 50%; }
+
+/* 사진 형태 */
+.photo-circle img { border-radius: 50% !important; }
+.photo-rect img { border-radius: 0 !important; }
+
+/* 찬반 투표 특수 */
+.vote-option-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  flex: 1;
+}
+
+.vote-option-row:last-child { border-bottom: none; }
+
+.vote-label {
+  flex: 1;
+  text-align: center;
+  font-size: 11pt;
+  font-weight: 700;
+  font-family: 'Noto Serif KR', serif;
+}
+
+.vote-check {
+  width: 14mm;
+  border-left: 1px solid #ccc;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ========== 인쇄 스타일 ========== */
+@media print {
+  body { background: #fff; }
+  .sidebar, .sidebar-footer { display: none !important; }
+  .preview-panel {
+    padding: 0;
+    overflow: visible;
+    display: block;
+  }
+  .a4-page {
+    box-shadow: none;
+    margin: 0;
+    width: 100% !important;
+    min-height: auto !important;
+    page-break-after: always;
+  }
+  .ballot-grid {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* ========== 반응 크기 조절 (미리보기) ========== */
+.preview-panel .a4-page {
+  transform-origin: top center;
+}
+
+/* 토글 스위치 */
+.toggle-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.toggle-wrap label {
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* 구분선 */
+.divider {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 14px 0;
+}
+</style>
+</head>
+<body>
+
+<!-- ========== 사이드바 ========== -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h1>🗳️ 학생 선거 용지 생성기</h1>
+    <p>학교 선거 투표 용지를 간편하게 제작하세요</p>
+  </div>
+
+  <div class="sidebar-scroll" id="sidebarScroll">
+
+    <!-- 1. 선거 유형 탭 -->
+    <div class="section">
+      <div class="section-title">선거 유형</div>
+      <div class="tabs">
+        <button class="tab-btn active" onclick="setElectionType('president')">전교<br>학생회장</button>
+        <button class="tab-btn" onclick="setElectionType('council')">학생회<br>임원</button>
+        <button class="tab-btn" onclick="setElectionType('classRep')">학급<br>반장</button>
+        <button class="tab-btn" onclick="setElectionType('yesno')">찬반<br>투표</button>
+      </div>
+    </div>
+
+    <!-- 2. 기본 정보 -->
+    <div class="section">
+      <div class="section-title">기본 정보</div>
+      <div class="field-row">
+        <label class="field-label">학교명</label>
+        <input type="text" id="schoolName" value="한빛고등학교" oninput="updatePreview()">
+      </div>
+      <div class="field-row-inline">
+        <div>
+          <label class="field-label">학년</label>
+          <input type="text" id="gradeNum" value="" placeholder="예: 1 또는 전교" oninput="updatePreview()">
+        </div>
+        <div>
+          <label class="field-label">반</label>
+          <input type="text" id="classNum" value="" placeholder="예: 3 (없으면 비우기)" oninput="updatePreview()">
+        </div>
+        <div>
+          <label class="field-label">번호</label>
+          <input type="text" id="studentNum" value="" placeholder="비우면 미표시" oninput="updatePreview()">
+        </div>
+      </div>
+      <div class="field-row-inline">
+        <div>
+          <label class="field-label">선거일</label>
+          <input type="date" id="electionDate" oninput="updatePreview()">
+        </div>
+        <div>
+          <label class="field-label">선거명</label>
+          <input type="text" id="electionName" value="2025학년도 전교 학생회장 선거" oninput="updatePreview()">
+        </div>
+      </div>
+      <!-- 찬반 투표 안건 (조건부 표시) -->
+      <div class="field-row" id="yesnoAgendaRow" style="display:none">
+        <label class="field-label">투표 안건</label>
+        <textarea id="yesnoAgenda" rows="2" placeholder="예: 교복 자율화 시행에 대한 찬반 투표" oninput="updatePreview()"></textarea>
+      </div>
+    </div>
+
+    <!-- 3. 후보자 입력 -->
+    <div class="section" id="candidateSection">
+      <div class="section-title">후보자 정보</div>
+      <div id="candidateList"></div>
+      <button class="btn btn-outline btn-sm" onclick="addCandidate()" id="addCandBtn" style="width:100%;margin-top:6px">
+        + 후보자 추가
+      </button>
+    </div>
+
+    <!-- 3-1. 임원 선거 직책 그룹 (조건부) -->
+    <div class="section" id="councilSection" style="display:none">
+      <div class="section-title">직책별 후보자</div>
+      <div id="positionGroups"></div>
+      <button class="btn btn-outline btn-sm" onclick="addPosition()" style="width:100%;margin-top:6px">
+        + 직책 추가
+      </button>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 4. 도장 설정 -->
+    <div class="section">
+      <div class="section-title">도장 설정</div>
+      <div class="field-row">
+        <label class="field-label">도장 이미지 업로드</label>
+        <input type="file" id="stampFile" accept="image/*" onchange="handleStampUpload(event)" style="font-size:12px">
+      </div>
+      <div id="stampPreviewWrap" style="display:none;margin-bottom:8px">
+        <img id="stampPreviewImg" style="width:40px;height:40px;object-fit:contain;border:1px solid #ddd;border-radius:4px">
+        <button class="btn btn-danger btn-sm" onclick="removeStamp()" style="margin-left:6px">삭제</button>
+      </div>
+      <div class="field-row">
+        <label class="field-label">이미지 없을 시 텍스트 도장</label>
+        <div class="radio-group">
+          <label><input type="radio" name="stampStyle" value="circle" checked onchange="updatePreview()"> 원형</label>
+          <label><input type="radio" name="stampStyle" value="rect" onchange="updatePreview()"> 사각</label>
+          <label><input type="radio" name="stampStyle" value="oval" onchange="updatePreview()"> 타원</label>
+          <label><input type="radio" name="stampStyle" value="none" onchange="updatePreview()"> 없음</label>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 5. 용지 배치 설정 -->
+    <div class="section">
+      <div class="section-title">용지 배치</div>
+      <div class="field-row">
+        <label class="field-label">용지 방향</label>
+        <div class="radio-group">
+          <label><input type="radio" name="orientation" value="portrait" checked onchange="onOrientationChange()"> 세로 (Portrait)</label>
+          <label><input type="radio" name="orientation" value="landscape" onchange="onOrientationChange()"> 가로 (Landscape)</label>
+        </div>
+      </div>
+      <div class="field-row">
+        <label class="field-label">A4 1장당 용지 수</label>
+        <div class="layout-options" id="layoutOptions"></div>
+      </div>
+      <div class="info-badge" id="paperInfo">현재 설정: 세로, 2개/장</div>
+
+      <hr class="divider">
+
+      <div class="field-row">
+        <label class="field-label">절취선</label>
+        <div class="toggle-wrap">
+          <input type="checkbox" id="cutLineToggle" checked onchange="updatePreview()">
+          <label for="cutLineToggle">절취선 표시</label>
+        </div>
+      </div>
+      <div class="field-row">
+        <label class="field-label">절취선 스타일</label>
+        <div class="radio-group">
+          <label><input type="radio" name="cutStyle" value="scissors" checked onchange="updatePreview()"> ✂ 점선</label>
+          <label><input type="radio" name="cutStyle" value="line" onchange="updatePreview()"> 실선+✂</label>
+          <label><input type="radio" name="cutStyle" value="dashed" onchange="updatePreview()"> 점선만</label>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 6. 디자인 설정 -->
+    <div class="section">
+      <div class="section-title">디자인</div>
+      <div class="design-grid">
+        <div class="design-option active" onclick="setDesign('official')">
+          <div class="icon">📄</div>공식형
+        </div>
+        <div class="design-option" onclick="setDesign('modern')">
+          <div class="icon">🎨</div>모던형
+        </div>
+        <div class="design-option" onclick="setDesign('classic')">
+          <div class="icon">📜</div>클래식형
+        </div>
+        <div class="design-option" onclick="setDesign('colorful')">
+          <div class="icon">🌈</div>컬러형
+        </div>
+      </div>
+
+      <div class="field-row" style="margin-top:12px">
+        <label class="field-label">포인트 색상</label>
+        <div class="color-presets" id="colorPresets"></div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <input type="color" id="customColor" value="#1a56db" onchange="setCustomColor(this.value)" style="width:32px;height:28px;padding:0;border:1px solid #ddd;cursor:pointer">
+          <span style="font-size:11px;color:#999">커스텀</span>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="field-row">
+        <label class="field-label">후보자 사진 표시</label>
+        <div class="radio-group">
+          <label><input type="radio" name="photoShape" value="square" checked onchange="updatePreview()"> 정사각형</label>
+          <label><input type="radio" name="photoShape" value="portrait" onchange="updatePreview()"> 세로형(3:4)</label>
+        </div>
+      </div>
+      <div class="field-row">
+        <label class="field-label">사진 테두리</label>
+        <div class="radio-group">
+          <label><input type="radio" name="photoBorder" value="none" checked onchange="updatePreview()"> 없음</label>
+          <label><input type="radio" name="photoBorder" value="line" onchange="updatePreview()"> 직선</label>
+          <label><input type="radio" name="photoBorder" value="circle" onchange="updatePreview()"> 원형</label>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- sidebar-scroll -->
+
+  <div class="sidebar-footer">
+    <button class="btn btn-primary" onclick="doPrint()">🖨️ 인쇄</button>
+  </div>
+</div>
+
+<!-- ========== 미리보기 ========== -->
+<div class="preview-panel" id="previewPanel">
+  <div class="a4-page portrait" id="a4Page">
+    <div class="ballot-grid" id="ballotGrid"></div>
+  </div>
+</div>
+
+<script>
+/* ================================================================
+   상태 관리
+   ================================================================ */
+const state = {
+  electionType: 'president', // president, council, classRep, yesno
+  schoolName: '한빛고등학교',
+  gradeNum: '',
+  classNum: '',
+  studentNum: '',
+  electionDate: '',
+  electionName: '2025학년도 전교 학생회장 선거',
+  yesnoAgenda: '',
+
+  // 후보자 (president, classRep용)
+  candidates: [
+    { name: '홍길동', grade: '2', classN: '3', number: '', pledge: '소통하는 학생회', photo: null },
+    { name: '김영희', grade: '2', classN: '5', number: '', pledge: '행복한 학교', photo: null },
+  ],
+
+  // 임원 선거 직책별 그룹
+  positions: [
+    {
+      title: '부회장',
+      candidates: [
+        { name: '이철수', grade: '2', classN: '1', number: '', pledge: '실천하는 부회장', photo: null },
+      ]
+    },
+    {
+      title: '총무부장',
+      candidates: [
+        { name: '박지민', grade: '1', classN: '4', number: '', pledge: '투명한 재정', photo: null },
+      ]
+    },
+  ],
+
+  // 도장
+  stampImage: null, // base64
+  stampStyle: 'circle', // circle, rect, oval, none
+
+  // 용지 배치
+  orientation: 'portrait',
+  perPage: 2,
+  cutLine: true,
+  cutStyle: 'scissors', // scissors, line, dashed
+
+  // 디자인
+  design: 'official',
+  accentColor: '#1a56db',
+  photoShape: 'square', // square, portrait
+  photoBorder: 'none', // none, line, circle
+};
+
+/* 배치 옵션 정의 */
+const layoutMap = {
+  portrait: {
+    1: { cols: 1, rows: 1, w: 190, h: 277 },
+    2: { cols: 1, rows: 2, w: 190, h: 135 },
+    3: { cols: 1, rows: 3, w: 190, h: 89 },
+    4: { cols: 2, rows: 2, w: 93, h: 135 },
+    6: { cols: 2, rows: 3, w: 93, h: 89 },
+    8: { cols: 2, rows: 4, w: 93, h: 65 },
+  },
+  landscape: {
+    1: { cols: 1, rows: 1, w: 277, h: 190 },
+    2: { cols: 2, rows: 1, w: 135, h: 190 },
+    3: { cols: 3, rows: 1, w: 89, h: 190 },
+    4: { cols: 2, rows: 2, w: 135, h: 93 },
+  }
+};
+
+const colorPresets = [
+  '#1a56db', '#dc2626', '#16a34a', '#9333ea', '#ea580c', '#0891b2'
+];
+
+/* ================================================================
+   초기화
+   ================================================================ */
+window.addEventListener('DOMContentLoaded', () => {
+  // 오늘 날짜
+  const today = new Date();
+  document.getElementById('electionDate').value = today.toISOString().split('T')[0];
+  state.electionDate = document.getElementById('electionDate').value;
+
+  renderColorPresets();
+  renderLayoutOptions();
+  renderCandidateInputs();
+  updatePreview();
+  fitPreview();
+});
+
+window.addEventListener('resize', fitPreview);
+
+/* ================================================================
+   선거 유형 전환
+   ================================================================ */
+function setElectionType(type) {
+  state.electionType = type;
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', ['president','council','classRep','yesno'][i] === type);
+  });
+
+  // 찬반 안건
+  document.getElementById('yesnoAgendaRow').style.display = type === 'yesno' ? '' : 'none';
+  // 일반 후보자 섹션
+  document.getElementById('candidateSection').style.display = (type === 'council' || type === 'yesno') ? 'none' : '';
+  document.getElementById('addCandBtn').style.display = (type === 'council' || type === 'yesno') ? 'none' : '';
+  // 임원 직책 섹션
+  document.getElementById('councilSection').style.display = type === 'council' ? '' : 'none';
+
+  if (type === 'council') renderPositionInputs();
+  else renderCandidateInputs();
+
+  updatePreview();
+}
+
+/* ================================================================
+   후보자 입력 렌더링 (president, classRep)
+   ================================================================ */
+function renderCandidateInputs() {
+  const wrap = document.getElementById('candidateList');
+  wrap.innerHTML = '';
+  state.candidates.forEach((c, i) => {
+    wrap.appendChild(createCandidateCard(c, i, state.candidates, 'candidates'));
+  });
+}
+
+function createCandidateCard(c, idx, arr, arrPath) {
+  const card = document.createElement('div');
+  card.className = 'candidate-card';
+  const photoPreview = c.photo
+    ? `<img src="${c.photo}" class="photo-thumb"><button class="photo-remove-btn" onclick="removeCandPhoto('${arrPath}',${idx})">삭제</button>`
+    : '';
+  card.innerHTML = `
+    <div class="card-header">
+      <span>기호 ${idx + 1}번</span>
+      <button class="remove-btn" onclick="removeCandidate('${arrPath}',${idx})" title="삭제">×</button>
+    </div>
+    <div class="fields-grid three-col">
+      <input type="text" placeholder="이름" value="${c.name}" oninput="updateCandField('${arrPath}',${idx},'name',this.value)">
+      <input type="text" placeholder="학년" value="${c.grade}" oninput="updateCandField('${arrPath}',${idx},'grade',this.value)">
+      <input type="text" placeholder="반" value="${c.classN}" oninput="updateCandField('${arrPath}',${idx},'classN',this.value)">
+      <input type="text" placeholder="번호" value="${c.number}" oninput="updateCandField('${arrPath}',${idx},'number',this.value)">
+      <input type="text" class="full-width" placeholder="공약 (짧게)" value="${c.pledge}" oninput="updateCandField('${arrPath}',${idx},'pledge',this.value)" style="grid-column: 2/-1;">
+    </div>
+    <div class="photo-upload-area">
+      ${photoPreview}
+      <label class="photo-upload-btn">
+        📷 사진 업로드
+        <input type="file" accept="image/*" hidden onchange="handleCandPhoto(event,'${arrPath}',${idx})">
+      </label>
+    </div>
+  `;
+  return card;
+}
+
+function addCandidate() {
+  state.candidates.push({ name: '', grade: '', classN: '', number: '', pledge: '', photo: null });
+  renderCandidateInputs();
+  updatePreview();
+}
+
+function removeCandidate(arrPath, idx) {
+  if (arrPath === 'candidates') {
+    if (state.candidates.length <= 1) return;
+    state.candidates.splice(idx, 1);
+    renderCandidateInputs();
+  } else {
+    const pi = parseInt(arrPath.split('_')[1]);
+    if (state.positions[pi].candidates.length <= 1) return;
+    state.positions[pi].candidates.splice(idx, 1);
+    renderPositionInputs();
+  }
+  updatePreview();
+}
+
+function updateCandField(arrPath, idx, field, val) {
+  if (arrPath === 'candidates') {
+    state.candidates[idx][field] = val;
+  } else {
+    // position group: "pos_0", "pos_1", ...
+    const pi = parseInt(arrPath.split('_')[1]);
+    state.positions[pi].candidates[idx][field] = val;
+  }
+  updatePreview();
+}
+
+function handleCandPhoto(e, arrPath, idx) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    if (arrPath === 'candidates') {
+      state.candidates[idx].photo = ev.target.result;
+      renderCandidateInputs();
+    } else {
+      const pi = parseInt(arrPath.split('_')[1]);
+      state.positions[pi].candidates[idx].photo = ev.target.result;
+      renderPositionInputs();
+    }
+    updatePreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeCandPhoto(arrPath, idx) {
+  if (arrPath === 'candidates') {
+    state.candidates[idx].photo = null;
+    renderCandidateInputs();
+  } else {
+    const pi = parseInt(arrPath.split('_')[1]);
+    state.positions[pi].candidates[idx].photo = null;
+    renderPositionInputs();
+  }
+  updatePreview();
+}
+
+/* ================================================================
+   임원 선거 직책 그룹
+   ================================================================ */
+function renderPositionInputs() {
+  const wrap = document.getElementById('positionGroups');
+  wrap.innerHTML = '';
+  state.positions.forEach((pos, pi) => {
+    const group = document.createElement('div');
+    group.className = 'position-group';
+    let candsHTML = '';
+    pos.candidates.forEach((c, ci) => {
+      const card = createCandidateCard(c, ci, pos.candidates, `pos_${pi}`);
+      candsHTML += card.outerHTML;
+    });
+    group.innerHTML = `
+      <div class="group-header">
+        <input type="text" value="${pos.title}" placeholder="직책명" oninput="state.positions[${pi}].title=this.value;updatePreview()">
+        <button class="btn btn-danger btn-sm" onclick="removePosition(${pi})">직책 삭제</button>
+      </div>
+      ${candsHTML}
+      <button class="btn btn-outline btn-sm" onclick="addPositionCandidate(${pi})" style="width:100%;margin-top:4px">+ 후보 추가</button>
+    `;
+    wrap.appendChild(group);
+  });
+  // 재바인딩
+  rebindPositionEvents();
+}
+
+function rebindPositionEvents() {
+  // 이벤트는 inline으로 처리하므로 별도 바인딩 불필요
+}
+
+function addPosition() {
+  state.positions.push({ title: '', candidates: [{ name: '', grade: '', classN: '', number: '', pledge: '', photo: null }] });
+  renderPositionInputs();
+  updatePreview();
+}
+
+function removePosition(pi) {
+  if (state.positions.length <= 1) return;
+  state.positions.splice(pi, 1);
+  renderPositionInputs();
+  updatePreview();
+}
+
+function addPositionCandidate(pi) {
+  state.positions[pi].candidates.push({ name: '', grade: '', classN: '', number: '', pledge: '', photo: null });
+  renderPositionInputs();
+  updatePreview();
+}
+
+/* ================================================================
+   도장
+   ================================================================ */
+function handleStampUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    state.stampImage = ev.target.result;
+    document.getElementById('stampPreviewImg').src = ev.target.result;
+    document.getElementById('stampPreviewWrap').style.display = 'flex';
+    updatePreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeStamp() {
+  state.stampImage = null;
+  document.getElementById('stampPreviewWrap').style.display = 'none';
+  document.getElementById('stampFile').value = '';
+  updatePreview();
+}
+
+/* ================================================================
+   색상
+   ================================================================ */
+function renderColorPresets() {
+  const wrap = document.getElementById('colorPresets');
+  wrap.innerHTML = '';
+  colorPresets.forEach(c => {
+    const s = document.createElement('div');
+    s.className = 'color-swatch' + (c === state.accentColor ? ' active' : '');
+    s.style.background = c;
+    s.onclick = () => setAccentColor(c);
+    wrap.appendChild(s);
+  });
+}
+
+function setAccentColor(c) {
+  state.accentColor = c;
+  document.getElementById('customColor').value = c;
+  renderColorPresets();
+  updatePreview();
+}
+
+function setCustomColor(c) {
+  state.accentColor = c;
+  renderColorPresets();
+  updatePreview();
+}
+
+/* ================================================================
+   디자인
+   ================================================================ */
+function setDesign(d) {
+  state.design = d;
+  document.querySelectorAll('.design-option').forEach(el => {
+    el.classList.toggle('active', el.getAttribute('onclick').includes(`'${d}'`));
+  });
+  updatePreview();
+}
+
+/* ================================================================
+   용지 배치
+   ================================================================ */
+function renderLayoutOptions() {
+  const wrap = document.getElementById('layoutOptions');
+  const opts = Object.keys(layoutMap[state.orientation]).map(Number);
+  wrap.innerHTML = '';
+  opts.forEach(n => {
+    const btn = document.createElement('button');
+    btn.className = 'layout-opt' + (n === state.perPage ? ' active' : '');
+    btn.textContent = `${n}개`;
+    btn.onclick = () => {
+      state.perPage = n;
+      renderLayoutOptions();
+      updatePreview();
+    };
+    wrap.appendChild(btn);
+  });
+  updatePaperInfo();
+}
+
+function onOrientationChange() {
+  state.orientation = document.querySelector('input[name="orientation"]:checked').value;
+  // 현재 perPage가 새 방향에서 유효한지 확인
+  const valid = Object.keys(layoutMap[state.orientation]).map(Number);
+  if (!valid.includes(state.perPage)) state.perPage = valid[0];
+  renderLayoutOptions();
+  updatePreview();
+}
+
+function updatePaperInfo() {
+  const layout = layoutMap[state.orientation][state.perPage];
+  const dirText = state.orientation === 'portrait' ? '세로' : '가로';
+  const info = document.getElementById('paperInfo');
+  info.textContent = `현재 설정: ${dirText}, ${state.perPage}개/장 (${layout.w}×${layout.h}mm)`;
+}
+
+/* ================================================================
+   상태 동기화
+   ================================================================ */
+function syncState() {
+  state.schoolName = document.getElementById('schoolName').value;
+  state.gradeNum = document.getElementById('gradeNum').value;
+  state.classNum = document.getElementById('classNum').value;
+  state.studentNum = document.getElementById('studentNum').value;
+  state.electionDate = document.getElementById('electionDate').value;
+  state.electionName = document.getElementById('electionName').value;
+  state.yesnoAgenda = document.getElementById('yesnoAgenda').value;
+  state.stampStyle = document.querySelector('input[name="stampStyle"]:checked').value;
+  state.cutLine = document.getElementById('cutLineToggle').checked;
+  state.cutStyle = document.querySelector('input[name="cutStyle"]:checked').value;
+  state.photoShape = document.querySelector('input[name="photoShape"]:checked').value;
+  state.photoBorder = document.querySelector('input[name="photoBorder"]:checked').value;
+}
+
+/* ================================================================
+   투표 용지 HTML 생성
+   ================================================================ */
+function buildBallotHTML(candidates, title, subtitle, layout) {
+  const ds = state.design;
+  const ac = state.accentColor;
+
+  // 사진 크기 계산
+  const photoW = state.photoShape === 'square' ? '8mm' : '7mm';
+  const photoH = state.photoShape === 'square' ? '8mm' : '10mm';
+
+  // 도장
+  let stampHTML = '';
+  if (state.stampImage) {
+    stampHTML = `<div class="stamp"><img src="${state.stampImage}"></div>`;
+  } else if (state.stampStyle !== 'none') {
+    const shortName = state.schoolName.length > 4 ? state.schoolName.substring(0,4) : state.schoolName;
+    const stampCls = state.stampStyle === 'circle' ? 'stamp-circle' : state.stampStyle === 'rect' ? 'stamp-rect' : 'stamp-oval';
+    const stampSize = state.stampStyle === 'oval' ? 'width:12mm;height:8mm;' : 'width:9mm;height:9mm;';
+    const fontSize = shortName.length > 3 ? '5pt' : '6pt';
+    stampHTML = `<div class="text-stamp ${stampCls}" style="${stampSize}font-size:${fontSize};flex-shrink:0">${shortName}</div>`;
+  }
+
+  // 헤더 스타일
+  let headerStyle = '';
+  if (ds === 'modern' || ds === 'colorful') {
+    headerStyle = `background:${ac};`;
+  }
+
+  // 학반번호 정보
+  let gradeClassInfo = '';
+  if (state.gradeNum) gradeClassInfo += `${state.gradeNum}학년 `;
+  if (state.classNum) gradeClassInfo += `${state.classNum}반 `;
+  if (state.studentNum) gradeClassInfo += `${state.studentNum}번 `;
+
+  // 날짜 포맷
+  let dateStr = '';
+  if (state.electionDate) {
+    const d = new Date(state.electionDate);
+    dateStr = `${d.getFullYear()}. ${d.getMonth()+1}. ${d.getDate()}.`;
+  }
+
+  // 찬반 투표
+  if (state.electionType === 'yesno') {
+    let subLine = `${state.schoolName}`;
+    if (gradeClassInfo) subLine += ` ${gradeClassInfo}`;
+    if (dateStr) subLine += ` | ${dateStr}`;
+
+    const options = ['찬성', '반대', '기권'];
+    const agendaText = state.yesnoAgenda || '(안건을 입력하세요)';
+
+    let bodyHTML = '';
+    options.forEach(opt => {
+      const bgColor = ds === 'colorful'
+        ? (opt === '찬성' ? `${ac}15` : opt === '반대' ? '#fee2e215' : '#f3f4f6')
+        : 'transparent';
+      bodyHTML += `
+        <div class="vote-option-row" style="background:${bgColor}">
+          <div class="vote-label">${opt}</div>
+          <div class="vote-check">
+            <div class="check-box" style="${ds === 'colorful' ? `border-color:${ac}` : ''}"></div>
+          </div>
+        </div>`;
+    });
+
+    return `
+      <div class="ballot style-${ds}">
+        <div class="ballot-header" style="${headerStyle}">
+          <div class="ballot-title">${title}</div>
+          <div class="ballot-sub">${subLine}</div>
+          <div style="font-size:6pt;margin-top:1mm;${ds==='modern'||ds==='colorful'?'color:rgba(255,255,255,0.9)':'color:#555'};font-family:'Noto Sans KR',sans-serif">${agendaText}</div>
+        </div>
+        <div class="ballot-body" style="padding:0">
+          ${bodyHTML}
+        </div>
+        <div class="ballot-footer">
+          <span>${state.schoolName} 선거관리위원회</span>
+          ${stampHTML}
+        </div>
+      </div>`;
+  }
+
+  // 일반 선거 (후보자 목록)
+  let bodyHTML = '';
+  candidates.forEach((c, i) => {
+    // 사진
+    let photoHTML = '';
+    if (c.photo) {
+      const borderStyle = state.photoBorder === 'line' ? 'border:1px solid #ccc;' :
+                          state.photoBorder === 'circle' ? 'border-radius:50%;border:1px solid #ccc;' : '';
+      photoHTML = `
+        <div class="cand-photo" style="width:${photoW};min-width:${photoW};">
+          <img src="${c.photo}" style="width:100%;height:${photoH};object-fit:cover;${borderStyle}">
+        </div>`;
+    }
+
+    // 학번 정보
+    let detailParts = [];
+    if (c.grade) detailParts.push(`${c.grade}학년`);
+    if (c.classN) detailParts.push(`${c.classN}반`);
+    if (c.number) detailParts.push(`${c.number}번`);
+    const detailText = detailParts.join(' ');
+
+    const pledgeHTML = c.pledge ? `<div class="cand-pledge">${c.pledge}</div>` : '';
+
+    // 배경색 (컬러형)
+    const rowBg = ds === 'colorful' ? `background:${ac}08;` : '';
+
+    // 번호 배경색
+    const numBg = (ds === 'modern' || ds === 'colorful') ? `background:${ac};` : '';
+
+    bodyHTML += `
+      <div class="candidate-row" style="${rowBg}">
+        <div class="cand-number" style="${numBg}">${i + 1}</div>
+        ${photoHTML}
+        <div class="cand-info">
+          <div class="cand-name">${c.name || '(이름)'}</div>
+          ${detailText ? `<div class="cand-detail">${detailText}</div>` : ''}
+          ${pledgeHTML}
+        </div>
+        <div class="cand-check">
+          <div class="check-box" style="${ds === 'colorful' ? `border-color:${ac}` : ''}"></div>
+        </div>
+      </div>`;
+  });
+
+  let subLine = `${state.schoolName}`;
+  if (gradeClassInfo) subLine += ` ${gradeClassInfo}`;
+  if (dateStr) subLine += ` | ${dateStr}`;
+
+  if (subtitle) {
+    subLine = subtitle + ' | ' + subLine;
+  }
+
+  return `
+    <div class="ballot style-${ds}">
+      <div class="ballot-header" style="${headerStyle}">
+        <div class="ballot-title">${title}</div>
+        <div class="ballot-sub">${subLine}</div>
+      </div>
+      <div class="ballot-body">
+        ${bodyHTML}
+      </div>
+      <div class="ballot-footer">
+        <span>${state.schoolName} 선거관리위원회</span>
+        ${stampHTML}
+      </div>
+    </div>`;
+}
+
+/* ================================================================
+   절취선 HTML
+   ================================================================ */
+function buildCutLineH() {
+  if (!state.cutLine) return '';
+  const style = state.cutStyle;
+  if (style === 'scissors') {
+    return `<div class="cut-line-h"><span class="scissors">✂</span></div>`;
+  } else if (style === 'line') {
+    return `<div class="cut-line-h" style="border-style:solid"><span class="scissors">✂</span></div>`;
+  } else {
+    return `<div class="cut-line-h"></div>`;
+  }
+}
+
+function buildCutLineV() {
+  if (!state.cutLine) return '';
+  const style = state.cutStyle;
+  if (style === 'scissors') {
+    return `<div class="cut-line-v"><span class="scissors">✂</span></div>`;
+  } else if (style === 'line') {
+    return `<div class="cut-line-v" style="border-style:solid"><span class="scissors">✂</span></div>`;
+  } else {
+    return `<div class="cut-line-v"></div>`;
+  }
+}
+
+/* ================================================================
+   미리보기 업데이트 (핵심)
+   ================================================================ */
+function updatePreview() {
+  syncState();
+  updatePaperInfo();
+
+  const a4 = document.getElementById('a4Page');
+  const grid = document.getElementById('ballotGrid');
+
+  // A4 방향
+  a4.className = 'a4-page ' + state.orientation;
+
+  const layout = layoutMap[state.orientation][state.perPage];
+  const { cols, rows } = layout;
+
+  // 어떤 용지들을 렌더할지 결정
+  let ballots = [];
+
+  if (state.electionType === 'council') {
+    // 임원 선거: 직책별로 별도 용지 생성
+    state.positions.forEach(pos => {
+      ballots.push({
+        candidates: pos.candidates,
+        title: state.electionName || '학생회 임원 선거',
+        subtitle: pos.title
+      });
+    });
+  } else {
+    // 나머지: 동일한 용지 반복
+    const title = state.electionName ||
+      (state.electionType === 'president' ? '전교 학생회장 선거' :
+       state.electionType === 'classRep' ? '학급 반장 선거' : '찬반 투표');
+
+    ballots.push({
+      candidates: state.candidates,
+      title: title,
+      subtitle: ''
+    });
+  }
+
+  // 그리드 구성
+  // cols, rows에 절취선 사이의 갭 포함
+  const gapSize = state.cutLine ? '4mm' : '0mm';
+
+  // grid-template 생성 (절취선 포함)
+  let colTemplate = [];
+  for (let c = 0; c < cols; c++) {
+    colTemplate.push('1fr');
+    if (c < cols - 1 && state.cutLine) colTemplate.push('4mm');
+  }
+
+  let rowTemplate = [];
+  for (let r = 0; r < rows; r++) {
+    rowTemplate.push('1fr');
+    if (r < rows - 1 && state.cutLine) rowTemplate.push('4mm');
+  }
+
+  grid.style.gridTemplateColumns = colTemplate.join(' ');
+  grid.style.gridTemplateRows = rowTemplate.join(' ');
+  grid.style.gap = '0';
+
+  let html = '';
+  let ballotIdx = 0;
+  const totalSlots = cols * rows;
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      // 투표 용지
+      const bData = ballots[ballotIdx % ballots.length];
+      html += buildBallotHTML(bData.candidates, bData.title, bData.subtitle, layout);
+      ballotIdx++;
+
+      // 세로 절취선 (같은 행, 열 사이)
+      if (c < cols - 1 && state.cutLine) {
+        html += buildCutLineV();
+      }
+    }
+
+    // 가로 절취선 (행 사이)
+    if (r < rows - 1 && state.cutLine) {
+      for (let c = 0; c < cols; c++) {
+        html += buildCutLineH();
+        if (c < cols - 1 && state.cutLine) {
+          // 교차점 빈칸
+          html += `<div style="width:4mm;height:4mm;"></div>`;
+        }
+      }
+    }
+  }
+
+  grid.innerHTML = html;
+  fitPreview();
+}
+
+/* ================================================================
+   미리보기 크기 조절
+   ================================================================ */
+function fitPreview() {
+  const panel = document.getElementById('previewPanel');
+  const a4 = document.getElementById('a4Page');
+
+  const pw = panel.clientWidth - 48;
+  const ph = panel.clientHeight - 48;
+
+  let a4w, a4h;
+  if (state.orientation === 'portrait') {
+    a4w = 210 * 3.7795; // mm to px (약 96dpi)
+    a4h = 297 * 3.7795;
+  } else {
+    a4w = 297 * 3.7795;
+    a4h = 210 * 3.7795;
+  }
+
+  const scaleW = pw / a4w;
+  const scaleH = ph / a4h;
+  const scale = Math.min(scaleW, scaleH, 1);
+
+  a4.style.transform = `scale(${scale})`;
+  a4.style.transformOrigin = 'top center';
+}
+
+/* ================================================================
+   인쇄
+   ================================================================ */
+function doPrint() {
+  const orient = state.orientation === 'portrait' ? '세로' : '가로';
+  const cutText = state.cutLine ? '있음' : '없음';
+  const msg = `현재 설정: ${orient}, ${state.perPage}개/장, 절취선 ${cutText}\n\n인쇄하시겠습니까?`;
+  if (!confirm(msg)) return;
+
+  // 인쇄용 @page 동적 삽입
+  let printStyle = document.getElementById('printOrientStyle');
+  if (!printStyle) {
+    printStyle = document.createElement('style');
+    printStyle.id = 'printOrientStyle';
+    document.head.appendChild(printStyle);
+  }
+  printStyle.textContent = `@media print { @page { size: A4 ${state.orientation}; margin: 5mm 8mm; } }`;
+
+  // 미리보기 스케일 리셋
+  const a4 = document.getElementById('a4Page');
+  const origTransform = a4.style.transform;
+  a4.style.transform = 'none';
+
+  window.print();
+
+  // 복원
+  setTimeout(() => {
+    a4.style.transform = origTransform;
+  }, 500);
+}
+
+</script>
+</body>
+</html>
