@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🗺️ 문화 충돌 외교관</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Noto Sans KR',sans-serif;background:#1a1a2e;color:#e2e8f0;min-height:100vh;overflow-x:hidden}.jua{font-family:'Jua',sans-serif}
+.screen{display:none;animation:fadeUp .5s ease-out forwards;min-height:100vh}.screen.active{display:flex;flex-direction:column}
+@keyframes fadeUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(16,185,129,0.3)}50%{box-shadow:0 0 40px rgba(16,185,129,0.6)}}
+.start-bg{background:linear-gradient(135deg,#064e3b 0%,#1a1a2e 50%,#312e81 100%)}
+.side-card{border-radius:1rem;padding:1rem;border:2px solid #334155;transition:all .3s}
+.side-pro{background:rgba(16,185,129,0.08);border-color:#065f46}.side-con{background:rgba(239,68,68,0.08);border-color:#7f1d1d}
+.verdict-btn{flex:1;padding:1.2rem;border-radius:1rem;cursor:pointer;transition:all .3s;text-align:center;font-weight:700;border:3px solid transparent}
+.verdict-btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,0.3)}
+.v-respect{background:rgba(16,185,129,0.15);border-color:#10b981;color:#6ee7b7}.v-respect:hover{background:rgba(16,185,129,0.25)}
+.v-criticize{background:rgba(239,68,68,0.15);border-color:#ef4444;color:#fca5a5}.v-criticize:hover{background:rgba(239,68,68,0.25)}
+.v-conditional{background:rgba(245,158,11,0.15);border-color:#f59e0b;color:#fcd34d}.v-conditional:hover{background:rgba(245,158,11,0.25)}
+.progress-bar{height:6px;background:#1e293b;border-radius:99px;overflow:hidden}.progress-fill{height:100%;background:linear-gradient(90deg,#10b981,#3b82f6,#8b5cf6);border-radius:99px;transition:width .5s}
+.result-card{background:white;color:#1e293b;border-radius:1.5rem;max-width:580px;margin:0 auto;overflow:hidden}
+.know-box{background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.3);border-radius:1rem;padding:1rem;margin-top:1rem}
+@media(max-width:640px){.verdict-btn{padding:.8rem;font-size:.85rem}}
+
+/* 전체화면 이탈 경고 오버레이 */
+.fs-warning-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.92);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;animation:fadeIn .3s}
+.fs-warning-overlay .warn-icon{font-size:4rem;animation:shake .5s}
+.fs-warning-overlay .warn-title{font-size:1.5rem;font-weight:900;color:#fbbf24}
+.fs-warning-overlay .warn-msg{font-size:1rem;color:#94a3b8;text-align:center;max-width:320px;line-height:1.6}
+.fs-warning-overlay .warn-btn{padding:14px 40px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);border:none;border-radius:12px;color:#fff;font-size:1.1rem;font-weight:700;cursor:pointer;transition:transform .2s}
+.fs-warning-overlay .warn-btn:hover{transform:scale(1.05)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+/* 블로그 링크 배지 */
+.blog-badge{position:fixed;bottom:12px;right:12px;z-index:100;background:rgba(15,23,42,0.85);border:1px solid #334155;border-radius:10px;padding:6px 14px;font-size:0.75rem;color:#94a3b8;text-decoration:none;backdrop-filter:blur(8px);transition:all .3s;display:flex;align-items:center;gap:6px}
+.blog-badge:hover{background:rgba(59,130,246,0.2);border-color:#3b82f6;color:#60a5fa}
+</style>
+</head>
+<body>
+<div class="screen active start-bg" id="s-start">
+  <div class="flex-1 flex flex-col items-center justify-center p-6 text-center">
+    <div style="font-size:6rem;animation:float 3s ease-in-out infinite">🗺️</div>
+    <h1 class="jua text-4xl md:text-5xl text-white mb-3 mt-4">문화 충돌 외교관</h1>
+    <p class="text-emerald-200 text-lg mb-1">존중할 것인가, 비판할 것인가</p>
+    <p class="text-slate-400 text-sm mb-6 max-w-sm">8개의 문화 딜레마에 외교관으로서 판단을 내리세요.</p>
+    <div class="w-full max-w-xs space-y-3 mb-6">
+      <div class="flex gap-2">
+        <input type="text" id="input-grade" placeholder="학년" maxlength="1" class="flex-1 text-center py-3 rounded-xl bg-white/10 text-white placeholder-slate-500 border border-white/20 font-bold outline-none focus:border-emerald-400">
+        <input type="text" id="input-class" placeholder="반" maxlength="2" class="flex-1 text-center py-3 rounded-xl bg-white/10 text-white placeholder-slate-500 border border-white/20 font-bold outline-none focus:border-emerald-400">
+        <input type="text" id="input-number" placeholder="번호" maxlength="2" class="flex-1 text-center py-3 rounded-xl bg-white/10 text-white placeholder-slate-500 border border-white/20 font-bold outline-none focus:border-emerald-400">
+      </div>
+      <input type="text" id="input-name" placeholder="이름을 입력하세요" maxlength="10" class="w-full text-center py-3 rounded-xl bg-white/10 text-white placeholder-slate-500 border border-white/20 font-bold text-lg outline-none focus:border-emerald-400">
+    </div>
+    <button onclick="startGame()" class="py-4 px-12 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-bold text-lg transition-all hover:scale-105 shadow-lg" style="animation:glow 2s infinite">🌍 외교관 임명</button>
+    <p class="text-slate-600 text-xs mt-4">⏱ 약 10~12분 · 8개 딜레마</p>
+  </div>
+  <div class="text-center pb-4 text-slate-600 text-xs">통합사회 VI. 문화와 다양성 · [10통사2-03-01]</div>
+</div>
+<div class="screen" id="s-dilemma">
+  <div class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-700 px-4 py-3">
+    <div class="max-w-2xl mx-auto"><div class="flex justify-between items-center mb-2 text-sm"><span class="text-emerald-400 font-bold">🌍 딜레마 <span id="d-num">1</span>/8</span><span class="text-slate-500" id="d-region"></span></div><div class="progress-bar"><div class="progress-fill" id="d-progress" style="width:0%"></div></div></div>
+  </div>
+  <div class="flex-1 p-4 pb-24" id="d-content"></div>
+</div>
+<div class="screen" id="s-result">
+  <div class="flex-1 p-4 py-8">
+    <div class="result-card" id="result-card"><div class="p-6 text-center" id="res-header" style="background:linear-gradient(135deg,#059669,#0d9488)"><div class="text-5xl mb-2" id="res-icon">🌍</div><h1 class="jua text-2xl text-white">외교관 성향 분석</h1><p class="text-emerald-200 text-sm" id="res-subtitle"></p></div><div class="p-5" id="res-body"></div></div>
+    <div class="flex flex-wrap justify-center gap-3 mt-6 max-w-lg mx-auto">
+      <button onclick="saveImg()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all hover:scale-105">📄 결과 저장</button>
+      <button onclick="location.reload()" class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-bold transition-all hover:scale-105">🔄 다시 하기</button>
+      <button onclick="exitToBlog()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all hover:scale-105">📝 블로그로 돌아가기</button>
+    </div>
+  </div>
+</div>
+<script>
+let stu={name:'',grade:'',cls:'',num:''};
+let dIdx=0,choices=[];
+let sc={respect:0,criticize:0,conditional:0};
+const D=[
+{emoji:'🇫🇷',region:'프랑스',title:'부르카 금지법',desc:'프랑스는 공공장소에서 부르카·니캅 착용을 금지했습니다. 이슬람 여성들은 "종교 자유 침해"라며 항의합니다.',pro:{t:'금지 찬성',a:['세속주의(라이시테)는 프랑스의 핵심 가치','공공장소 얼굴 확인은 안전과 소통의 기본']},con:{t:'금지 반대',a:['종교 복장은 개인의 신앙 표현이자 기본권','벗으라는 강요도 입으라는 강요와 같은 억압']},reality:'유럽인권재판소는 합헌 판결, UN 인권이사회는 "종교 자유 침해 우려"를 표명했습니다.',concept:'문화 상대주의',know:'<b>문화 상대주의</b>는 각 문화를 그 사회의 맥락 안에서 이해해야 한다는 관점입니다. 프랑스의 세속주의도, 이슬람의 히잡 문화도 각각의 역사적 맥락이 있습니다.'},
+{emoji:'🇮🇳',region:'인도',title:'카스트 제도의 잔존',desc:'인도 헌법은 카스트 차별을 금지하지만, 농촌에서는 "불가촉천민(달리트)"에 대한 차별이 계속됩니다.',pro:{t:'전통 존중론',a:['수천 년 이어진 사회 체계를 외부가 판단할 수 없다','인도 내부 개혁 노력을 존중해야 한다']},con:{t:'인권 우선론',a:['인간 존엄성에 대한 명백한 침해','전통이라는 이름으로 차별을 정당화할 수 없다']},reality:'인도 정부는 달리트 적극적 우대 조치를 시행 중이지만, 사회적 차별은 여전합니다.',concept:'보편 윤리',know:'<b>보편 윤리</b>는 문화를 넘어 모든 인간에게 적용되는 가치입니다. 세계인권선언 제1조 "모든 인간은 자유롭고 존엄하며 평등하다"가 대표적입니다.'},
+{emoji:'🇪🇸',region:'스페인',title:'투우 축제 금지 논란',desc:'카탈루냐는 투우를 금지했지만, 안달루시아에서는 "무형문화유산"으로 보호합니다. 동물권 단체가 강하게 반대합니다.',pro:{t:'투우 존속론',a:['수백 년 전통이자 스페인 정체성의 핵심','투우사와 소의 결투는 예술적 의미가 있다']},con:{t:'투우 폐지론',a:['동물을 고통 속에 죽이는 행위는 잔인하다','시대가 변하면 전통도 변해야 한다']},reality:'스페인 내부도 갈림. 카탈루냐는 금지, 중앙정부는 문화유산 보호. 국민 43% 반대, 37% 찬성.',concept:'문화 변동',know:'<b>문화 변동</b>은 문화가 시간에 따라 변화하는 현상입니다. 투우처럼 한때 당연했던 관습이 시대 변화에 따라 재평가되는 것도 문화 변동 사례입니다.'},
+{emoji:'🇯🇵',region:'일본',title:'상업적 고래잡이 재개',desc:'일본은 2019년 IWC를 탈퇴하고 상업적 고래잡이를 재개했습니다. "식문화 전통"이라 주장하지만 국제 비판이 거셉니다.',pro:{t:'고래잡이 찬성',a:['수백 년 식문화이자 지역 경제 기반','과학적 관리 하에 지속가능한 포경 가능']},con:{t:'고래잡이 반대',a:['고래는 지능 높은 보호종이자 생태계 핵심','대부분 일본인도 고래 고기를 먹지 않음']},reality:'고래 고기 소비량은 1960년대 대비 1/10로 줄었습니다. 젊은 세대 관심이 매우 낮습니다.',concept:'문화 상대주의의 한계',know:'식문화는 대표적 문화 상대주의 영역이지만, <b>생태계 보호</b>라는 보편 가치와 충돌할 때 어떻게 판단할까요? 실제 수요가 거의 없는 "전통"은 진정한 문화인지 생각해볼 필요가 있습니다.'},
+{emoji:'🇺🇸',region:'미국',title:'원주민 문화 도용 논란',desc:'패션 브랜드가 원주민 깃털 장식을 "트렌디 액세서리"로 판매. 원주민 단체는 "신성한 문화를 상업화했다"며 항의합니다.',pro:{t:'표현 자유론',a:['패션은 다양한 문화에서 영감받는 것이 자연스럽다','문화는 원래 서로 섞이며 발전한다']},con:{t:'문화 도용 비판',a:['지배 문화가 소수 문화를 맥락 없이 쓰는 것은 착취','깃털 장식은 원주민에게 영적·의례적 의미']},reality:'구찌, 빅토리아 시크릿 등 여러 브랜드가 비판받고 사과했습니다. "문화 교류"와 "문화 도용"의 경계 논의가 활발합니다.',concept:'문화 전파와 공존',know:'<b>문화 전파</b>는 한 사회의 문화가 다른 사회로 전달되는 현상입니다. 문화 교류는 자연스럽지만, <b>권력 불균형</b> 속에서 소수 문화가 맥락 없이 소비되는 것은 다른 문제입니다.'},
+{emoji:'🇰🇷',region:'한국',title:'개고기 금지법 논란',desc:'한국 국회는 2024년 개고기 식용 금지법을 통과시켰습니다. 일부 축산 농가는 "전통 식문화 탄압"이라며 반발합니다.',pro:{t:'금지 찬성',a:['개는 반려동물로서 특별한 지위','국제 기준에 맞추는 것이 국가 이미지에 도움']},con:{t:'금지 반대',a:['식문화는 개인 선택 영역','외부 시선 때문에 전통을 버리면 문화 사대주의']},reality:'2024년 금지법 통과, 3년 유예 후 시행. 농가 보상 대책 포함.',concept:'문화 사대주의',know:'<b>문화 사대주의</b>는 다른 문화(특히 강대국)가 자기 문화보다 우월하다고 여기는 태도입니다. 자신의 문화를 스스로 반성하는 것과 외부 압력에 굴복하는 것의 차이를 생각해보세요.'},
+{emoji:'🌍',region:'아프리카',title:'조혼(아동 결혼) 관습',desc:'일부 국가에서 15세 미만 소녀의 결혼이 행해집니다. 가족들은 "전통이자 경제적 생존 전략"이라고 합니다.',pro:{t:'전통 존중론',a:['해당 사회의 경제·문화적 맥락을 이해해야','외부 일방적 개입은 문화 제국주의가 될 수 있다']},con:{t:'아동 인권론',a:['UN 아동권리협약은 교육권·건강권을 보장','조혼은 소녀의 건강에 심각한 피해']},reality:'UN은 조혼을 "아동 인권 침해"로 규정. 빈곤·교육 부족이 근본 원인이므로 법 금지만으로는 해결 어려움.',concept:'보편 윤리 vs 문화 상대주의',know:'이 사례는 <b>문화 상대주의의 한계</b>를 극명하게 보여줍니다. "모든 문화를 존중해야 한다"는 원칙이 <b>아동 기본권 침해</b> 앞에서도 유지될 수 있을까요?'},
+{emoji:'🇸🇦',region:'사우디아라비아',title:'여성 운전 허용의 의미',desc:'사우디는 2018년 여성 운전을 허용했습니다. 이 변화는 자체 개혁인가요, 외부 압력인가요?',pro:{t:'내부 개혁론',a:['비전 2030을 통해 스스로 근대화 추진','문화 변동은 내부에서 자발적으로 일어나야']},con:{t:'외부 압력론',a:['국제 비판과 경제적 필요가 변화를 강제','여성 운전은 허용했지만 남성 후견인 제도는 잔존']},reality:'왕세자의 개혁 정책 일환이지만, 여성 운동가들의 수십 년 투쟁 결과이기도 합니다.',concept:'문화 변동과 세계화',know:'<b>문화 변동</b>의 원인에는 내부 요인(발명, 발견)과 외부 요인(전파, 접촉)이 있습니다. <b>세계화</b> 시대에 어떤 문화도 고립될 수 없으며, 핵심은 "누가, 어떻게 변화를 이끄느냐"입니다.'}
+];
+let order;
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function startGame(){
+  stu.name=document.getElementById('input-name').value.trim()||'익명';stu.grade=document.getElementById('input-grade').value.trim();stu.cls=document.getElementById('input-class').value.trim();stu.num=document.getElementById('input-number').value.trim();
+  document.documentElement.requestFullscreen().catch(()=>{});
+  order=[0,1,2,3,4,5,6,7];for(let i=7;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+  nextD();
+}
+function nextD(){
+  if(dIdx>=8){showResult();return;}
+  const di=order[dIdx],d=D[di];
+  document.getElementById('d-num').textContent=dIdx+1;document.getElementById('d-region').textContent=d.region;document.getElementById('d-progress').style.width=(dIdx/8*100)+'%';
+  document.getElementById('d-content').innerHTML=`
+    <div class="max-w-2xl mx-auto">
+      <div class="text-center mb-5 mt-4"><div class="text-5xl mb-2">${d.emoji}</div><h2 class="jua text-xl text-white mb-1">${d.title}</h2><div class="flex justify-center gap-2"><span class="text-xs px-3 py-1 rounded-full bg-slate-800 text-slate-400">${d.region}</span><span class="text-xs px-3 py-1 rounded-full bg-emerald-900/50 text-emerald-400">${d.concept}</span></div></div>
+      <div class="bg-slate-800/50 rounded-xl p-4 mb-4 border border-slate-700"><p class="text-sm text-slate-300 leading-relaxed">${d.desc}</p></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
+        <div class="side-card side-pro"><div class="text-xs text-emerald-400 font-bold mb-2">🟢 ${d.pro.t}</div>${d.pro.a.map(a=>'<p class="text-xs text-slate-300 mb-1">▸ '+a+'</p>').join('')}</div>
+        <div class="side-card side-con"><div class="text-xs text-red-400 font-bold mb-2">🔴 ${d.con.t}</div>${d.con.a.map(a=>'<p class="text-xs text-slate-300 mb-1">▸ '+a+'</p>').join('')}</div>
+      </div>
+      <div class="text-center text-sm text-slate-400 mb-3">외교관으로서 판단하세요</div>
+      <div class="flex gap-3 mb-4" id="varea">
+        <div class="verdict-btn v-respect" onclick="pick(${di},'respect')"><div class="text-2xl mb-1">🟢</div><div class="text-sm">존중</div><div class="text-xs opacity-60">그 문화를 이해한다</div></div>
+        <div class="verdict-btn v-conditional" onclick="pick(${di},'conditional')"><div class="text-2xl mb-1">🟡</div><div class="text-sm">조건부 존중</div><div class="text-xs opacity-60">대화로 개선 추구</div></div>
+        <div class="verdict-btn v-criticize" onclick="pick(${di},'criticize')"><div class="text-2xl mb-1">🔴</div><div class="text-sm">비판</div><div class="text-xs opacity-60">보편 가치 우선</div></div>
+      </div>
+    </div>`;
+  show('s-dilemma');
+}
+function pick(di,v){
+  const d=D[di];sc[v]++;choices.push({emoji:d.emoji,title:d.title,v,region:d.region});
+  document.querySelectorAll('.verdict-btn').forEach(b=>{b.style.pointerEvents='none';b.style.opacity='.3';});
+  const vm={respect:0,conditional:1,criticize:2};document.querySelectorAll('.verdict-btn')[vm[v]].style.opacity='1';
+  setTimeout(()=>{
+    const af=document.createElement('div');af.className='max-w-2xl mx-auto';af.style.animation='fadeUp .5s ease-out forwards';
+    af.innerHTML=`
+      <div class="bg-slate-800/50 rounded-xl p-4 mb-4 border border-slate-700"><div class="text-xs text-amber-400 font-bold mb-2">📌 현실에서는?</div><p class="text-xs text-slate-300 leading-relaxed">${d.reality}</p></div>
+      <div class="know-box"><div class="text-xs text-blue-400 font-bold mb-2">📚 ${d.concept}</div><p class="text-xs text-slate-300 leading-relaxed">${d.know}</p></div>
+      <div class="text-center mt-5"><button onclick="dIdx++;nextD()" class="py-3 px-8 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all hover:scale-105">${dIdx<7?'다음 딜레마 →':'최종 분석 →'}</button></div>`;
+    document.getElementById('d-content').appendChild(af);af.scrollIntoView({behavior:'smooth'});
+  },400);
+}
+function showResult(){
+  const tot=sc.respect+sc.criticize+sc.conditional||1;
+  let type,icon,desc,advice,bg;
+  if(sc.respect>=sc.criticize&&sc.respect>=sc.conditional){
+    type='🕊️ 관용 외교관';icon='🕊️';desc='다양한 문화를 그 자체로 존중하는 유형입니다. 문화 상대주의적 시각이 강하며, 다름을 이해하려는 열린 마음이 있습니다.';advice='관용은 아름답지만, 인간 존엄성을 침해하는 관습까지 "존중"이라는 이름으로 방관하지 않도록 주의하세요. 때로는 비판도 연대의 표현입니다.';bg='linear-gradient(135deg,#059669,#0d9488)';
+  }else if(sc.criticize>=sc.respect&&sc.criticize>=sc.conditional){
+    type='⚔️ 원칙 외교관';icon='⚔️';desc='보편적 인권과 윤리를 기준으로 판단하는 유형입니다. 옳고 그름에 대한 확고한 기준이 있습니다.';advice='원칙은 중요하지만, 다른 문화의 맥락을 충분히 이해한 뒤 비판하는 것이 더 설득력 있습니다. "왜 그런 관습이 생겼는지"를 먼저 물어보세요.';bg='linear-gradient(135deg,#dc2626,#7c3aed)';
+  }else{
+    type='⚖️ 절충 외교관';icon='⚖️';desc='양쪽 입장을 모두 경청하고 대화를 통한 변화를 추구하는 유형입니다. 현실적이고 외교적인 접근을 선호합니다.';advice='균형 감각은 외교관의 가장 중요한 자질입니다. 다만, 타협할 수 없는 핵심 가치(인간 존엄성)가 있다는 것도 기억하세요.';bg='linear-gradient(135deg,#f59e0b,#059669)';
+  }
+  document.getElementById('res-header').style.background=bg;document.getElementById('res-icon').textContent=icon;
+  document.getElementById('res-subtitle').textContent=`${stu.grade?stu.grade+'학년 ':''}${stu.cls?stu.cls+'반 ':''}${stu.name} 외교관`;
+  const rP=Math.round(sc.respect/tot*100),cP=Math.round(sc.criticize/tot*100),coP=Math.round(sc.conditional/tot*100);
+  document.getElementById('res-body').innerHTML=`
+    <div class="text-center mb-5"><div class="jua text-xl mb-1">${type}</div><p class="text-sm text-slate-500">${desc}</p></div>
+    <div class="grid grid-cols-3 gap-3 mb-5 text-center">
+      <div class="bg-green-50 rounded-xl p-3"><div class="text-2xl">🟢</div><div class="font-black text-green-600">${rP}%</div><div class="text-xs text-green-500">존중</div></div>
+      <div class="bg-amber-50 rounded-xl p-3"><div class="text-2xl">🟡</div><div class="font-black text-amber-600">${coP}%</div><div class="text-xs text-amber-500">조건부</div></div>
+      <div class="bg-red-50 rounded-xl p-3"><div class="text-2xl">🔴</div><div class="font-black text-red-600">${cP}%</div><div class="text-xs text-red-500">비판</div></div>
+    </div>
+    <div class="bg-green-50 rounded-xl p-4 mb-4"><h3 class="font-bold text-sm text-green-800 mb-2">💡 외교관을 위한 조언</h3><p class="text-xs text-green-900 leading-relaxed">${advice}</p></div>
+    <h3 class="font-bold text-sm mb-2">📜 나의 판단 기록</h3>
+    <div class="space-y-1 mb-5">${choices.map(c=>{const vl=c.v==='respect'?'🟢 존중':c.v==='criticize'?'🔴 비판':'🟡 조건부';return`<div class="text-xs bg-slate-50 p-2 rounded-lg flex items-center gap-2"><span class="text-lg">${c.emoji}</span><div class="flex-1"><b>${c.title}</b> (${c.region}) → ${vl}</div></div>`;}).join('')}</div>
+    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
+      <h3 class="font-bold text-sm text-blue-800 mb-2">📚 교과서 연결</h3>
+      <div class="text-xs text-blue-700 space-y-1">
+        <p><b>단원:</b> 통합사회 VI. 문화와 다양성</p>
+        <p><b>성취기준:</b> [10통사2-03-01] 문화의 의미와 특징을 이해하고, 문화를 바라보는 여러 관점을 비교한다.</p>
+        <p><b>핵심 개념 정리:</b></p>
+        <p>• <b>문화 상대주의</b> — 각 문화를 그 사회의 맥락에서 이해 (프랑스 부르카, 일본 고래잡이)</p>
+        <p>• <b>보편 윤리</b> — 인간 존엄성은 문화를 넘어 보편적 (카스트, 조혼)</p>
+        <p>• <b>자문화 중심주의</b> — 자기 문화를 기준으로 타 문화 판단</p>
+        <p>• <b>문화 사대주의</b> — 외래 문화가 더 우월하다는 태도 (개고기 논란)</p>
+        <p>• <b>문화 변동</b> — 발명, 발견, 전파에 의한 문화 변화 (투우, 사우디)</p>
+        <p>• <b>문화 전파</b> — 문화 요소가 다른 사회로 전달 (원주민 문화 도용)</p>
+        <p><b>확장:</b> 다문화 사회에서 갈등은 피할 수 없지만, 대화와 상호 이해를 통해 공존할 수 있습니다. 중요한 것은 "정답"이 아니라 "왜 그렇게 생각하는지" 근거를 가지는 것입니다.</p>
+      </div>
+    </div>
+    <div class="text-center text-xs text-slate-400 mt-3"><p>문화 충돌 외교관 · 통합사회 · 김스데반 T</p><p>${new Date().toLocaleDateString('ko-KR')}</p></div>`;
+  missionComplete=true;
+  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+  show('s-result');
+}
+function saveImg(){html2canvas(document.getElementById('result-card'),{scale:2,backgroundColor:'#fff'}).then(c=>{const a=document.createElement('a');a.download=`문화외교관_${stu.name}_${new Date().toISOString().slice(0,10)}.png`;a.href=c.toDataURL('image/png');a.click();}).catch(()=>alert('저장 실패'));}
+function exitToBlog(){
+  missionComplete = true;
+  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+  if(document.referrer&&document.referrer.includes('blogspot'))window.location.href=document.referrer;
+  else window.history.back();
+}
+// ===== 전체화면 가드 =====
+let missionComplete = false;
+let isReEntering = false;
+
+function reEnterFullscreen(){
+  isReEntering = true;
+  document.getElementById('fs-warning').style.display = 'none';
+  document.documentElement.requestFullscreen().catch(()=>{isReEntering=false;});
+}
+
+document.addEventListener('fullscreenchange', () => {
+  if(!document.fullscreenElement && !missionComplete && !isReEntering){
+    const cur = document.querySelector('.screen.active');
+    if(cur && cur.id !== 's-start' && cur.id !== 's-intro'){
+      document.getElementById('fs-warning').style.display = 'flex';
+    }
+  }
+  if(document.fullscreenElement){
+    isReEntering = false;
+    document.getElementById('fs-warning').style.display = 'none';
+  }
+});
+
+</script>
+<!-- 전체화면 이탈 경고 오버레이 -->
+<div class="fs-warning-overlay" id="fs-warning" style="display:none">
+  <div class="warn-icon">⚠️</div>
+  <div class="warn-title">미션 진행 중입니다!</div>
+  <div class="warn-msg">전체화면을 유지해야 미션을 계속할 수 있습니다.<br>다시 전체화면으로 돌아가세요.</div>
+  <button class="warn-btn" onclick="reEnterFullscreen()">🔒 전체화면으로 돌아가기</button>
+</div>
+<!-- 블로그 링크 배지 -->
+<a href="https://ssam-ssong.blogspot.com" target="_blank" class="blog-badge">✏️ 풀어쓰는 사회학</a>
+</body>
+</html>

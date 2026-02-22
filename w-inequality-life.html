@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🎲 출발선이 다른 인생게임</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;overflow-x:hidden}
+.jua{font-family:'Jua',sans-serif}
+.screen{display:none;animation:fadeUp .5s ease-out forwards;min-height:100vh}
+.screen.active{display:flex;flex-direction:column}
+@keyframes fadeUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(234,179,8,0.3)}50%{box-shadow:0 0 40px rgba(234,179,8,0.6)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.start-bg{background:linear-gradient(135deg,#1e1b4b 0%,#312e81 50%,#1e3a5f 100%)}
+.char-card{background:rgba(30,41,59,0.8);border:2px solid #334155;border-radius:1rem;padding:1rem;transition:all .3s;text-align:center}
+.char-card.mine{border-color:#eab308;background:rgba(234,179,8,0.1);box-shadow:0 0 20px rgba(234,179,8,0.15)}
+.choice-btn{background:rgba(30,41,59,0.8);border:2px solid #334155;border-radius:1rem;padding:1.2rem;cursor:pointer;transition:all .3s;text-align:left;width:100%}
+.choice-btn:hover{border-color:#8b5cf6;transform:translateY(-2px);background:rgba(139,92,246,0.1)}
+.choice-btn.selected{border-color:#eab308;background:rgba(234,179,8,0.1)}
+.insight-box{background:rgba(234,179,8,0.1);border:1px solid rgba(234,179,8,0.3);border-radius:1rem;padding:1rem}
+.stat-mini{display:inline-block;padding:2px 8px;border-radius:99px;font-size:.7rem;font-weight:700}
+.result-card{background:white;color:#1e293b;border-radius:1.5rem;max-width:600px;margin:0 auto;overflow:hidden}
+.progress-bar{height:6px;background:#1e293b;border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#eab308,#ef4444);border-radius:99px;transition:width .5s}
+@media(max-width:640px){.char-card{padding:.8rem}}
+
+/* 전체화면 이탈 경고 오버레이 */
+.fs-warning-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.92);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;animation:fadeIn .3s}
+.fs-warning-overlay .warn-icon{font-size:4rem;animation:shake .5s}
+.fs-warning-overlay .warn-title{font-size:1.5rem;font-weight:900;color:#fbbf24}
+.fs-warning-overlay .warn-msg{font-size:1rem;color:#94a3b8;text-align:center;max-width:320px;line-height:1.6}
+.fs-warning-overlay .warn-btn{padding:14px 40px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);border:none;border-radius:12px;color:#fff;font-size:1.1rem;font-weight:700;cursor:pointer;transition:transform .2s}
+.fs-warning-overlay .warn-btn:hover{transform:scale(1.05)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+/* 블로그 링크 배지 */
+.blog-badge{position:fixed;bottom:12px;right:12px;z-index:100;background:rgba(15,23,42,0.85);border:1px solid #334155;border-radius:10px;padding:6px 14px;font-size:0.75rem;color:#94a3b8;text-decoration:none;backdrop-filter:blur(8px);transition:all .3s;display:flex;align-items:center;gap:6px}
+.blog-badge:hover{background:rgba(59,130,246,0.2);border-color:#3b82f6;color:#60a5fa}
+</style>
+</head>
+<body>
+
+<!-- START -->
+<div class="screen active start-bg" id="s-start">
+  <div class="flex-1 flex flex-col items-center justify-center p-6 text-center">
+    <div style="font-size:6rem;animation:float 3s ease-in-out infinite">🎲</div>
+    <h1 class="jua text-4xl md:text-5xl text-white mb-3 mt-4">출발선이 다른 인생게임</h1>
+    <p class="text-yellow-200 text-lg mb-1">같은 선택, 다른 결과</p>
+    <p class="text-slate-400 text-sm mb-6 max-w-sm">4명이 같은 선택을 합니다. 그런데 왜 결과가 다를까요? 당신에게 랜덤으로 배정된 캐릭터의 인생을 살아보세요.</p>
+    <div class="w-full max-w-xs space-y-3 mb-6">
+      <div class="flex gap-2">
+        <input type="text" id="input-grade" placeholder="학년" maxlength="1" class="flex-1 text-center py-3 rounded-xl bg-white/10 text-white placeholder-slate-500 border border-white/20 font-bold outline-none focus:border-yellow-400">
+        <input type="text" id="input-class" placeholder="반" maxlength="2" class="flex-1 text-center py-3 rounded-xl bg-white/10 text-white placeholder-slate-500 border border-white/20 font-bold outline-none focus:border-yellow-400">
+        <input type="text" id="input-number" placeholder="번호" maxlength="2" class="flex-1 text-center py-3 rounded-xl bg-white/10 text-white placeholder-slate-500 border border-white/20 font-bold outline-none focus:border-yellow-400">
+      </div>
+      <input type="text" id="input-name" placeholder="이름을 입력하세요" maxlength="10" class="w-full text-center py-3 rounded-xl bg-white/10 text-white placeholder-slate-500 border border-white/20 font-bold text-lg outline-none focus:border-yellow-400">
+    </div>
+    <button onclick="startGame()" class="py-4 px-12 bg-yellow-600 hover:bg-yellow-500 text-white rounded-2xl font-bold text-lg transition-all hover:scale-105 shadow-lg" style="animation:glow 2s infinite">🎲 인생 시작</button>
+    <p class="text-slate-600 text-xs mt-4">⏱ 약 10~12분 · 6라운드(인생 6단계)</p>
+  </div>
+  <div class="text-center pb-4 text-slate-600 text-xs">통합사회 V. 사회정의와 불평등 · [10통사2-02-01]</div>
+</div>
+
+<!-- ASSIGN -->
+<div class="screen" id="s-assign">
+  <div class="flex-1 p-4 flex items-center justify-center">
+    <div class="max-w-2xl w-full text-center" id="assign-content"></div>
+  </div>
+</div>
+
+<!-- ROUND -->
+<div class="screen" id="s-round">
+  <div class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-700 px-4 py-3">
+    <div class="max-w-2xl mx-auto">
+      <div class="flex justify-between items-center mb-2 text-sm">
+        <span class="text-yellow-400 font-bold">ROUND <span id="r-num">1</span>/6</span>
+        <span class="text-slate-400" id="r-stage"></span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="r-progress" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="flex-1 p-4 pb-24" id="r-content"></div>
+</div>
+
+<!-- RESULT -->
+<div class="screen" id="s-result">
+  <div class="flex-1 p-4 py-8">
+    <div class="result-card" id="result-card">
+      <div class="p-6 text-center" id="res-header" style="background:linear-gradient(135deg,#b45309,#92400e)">
+        <div class="text-5xl mb-2">🎲</div>
+        <h1 class="jua text-2xl text-white">인생게임 결과</h1>
+        <p class="text-yellow-200 text-sm" id="res-subtitle"></p>
+      </div>
+      <div class="p-5" id="res-body"></div>
+    </div>
+    <div class="flex flex-wrap justify-center gap-3 mt-6 max-w-lg mx-auto">
+      <button onclick="saveImg()" class="px-6 py-3 bg-yellow-600 hover:bg-yellow-500 text-white rounded-xl font-bold transition-all hover:scale-105">📄 결과 저장</button>
+      <button onclick="location.reload()" class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-bold transition-all hover:scale-105">🔄 다시 하기</button>
+      <button onclick="exitToBlog()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all hover:scale-105">📝 블로그로 돌아가기</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let stu={name:'',grade:'',cls:'',num:''};
+let myChar=0, round=0;
+
+const CHARS=[
+  {id:'A',name:'수아',emoji:'👩‍💼',bg:'서울 강남',family:'부모 고소득 맞벌이',extra:'사교육 풍부, 해외 경험 다수',color:'#3b82f6',
+   multipliers:[1.5,1.4,1.3,1.3,1.4,1.5],startPt:80,desc:'풍부한 자원 속에서 자란 수아'},
+  {id:'B',name:'준호',emoji:'👨‍🔧',bg:'지방 중소도시',family:'부모 맞벌이(회사원+자영업)',extra:'평범한 공교육, 학원 1개',color:'#10b981',
+   multipliers:[1.0,1.0,1.0,1.0,1.0,1.0],startPt:50,desc:'평범한 환경에서 성실하게 자란 준호'},
+  {id:'C',name:'민재',emoji:'👦',bg:'농촌 지역',family:'한부모(어머니) + 조부모',extra:'경제적 어려움, 통학 1시간',color:'#f59e0b',
+   multipliers:[0.7,0.7,0.65,0.7,0.65,0.6],startPt:25,desc:'어려운 환경 속에서 꿋꿋이 자란 민재'},
+  {id:'D',name:'하나',emoji:'👧',bg:'수도권 다문화 가정',family:'부모(이주 배경)',extra:'언어 장벽, 정체성 고민, 문화 다양성',color:'#ec4899',
+   multipliers:[0.8,0.75,0.8,0.75,0.7,0.75],startPt:35,desc:'두 문화 사이에서 성장한 하나'}
+];
+
+let points; // {A:n, B:n, C:n, D:n}
+let roundLog=[];
+
+const ROUNDS=[
+  {stage:'유아기 (5세)',title:'교육의 첫 출발',desc:'어린이집/유치원을 선택할 시간입니다.',
+   choices:[
+    {text:'🏫 영어유치원 + 예체능',pts:15,icon:'🌟',note:'수아만 가능(월 150만원). 나머지는 일반유치원.'},
+    {text:'📚 일반 유치원 + 독서습관',pts:10,icon:'📖',note:'누구나 선택 가능. 꾸준한 노력.'},
+    {text:'🏡 가정 보육 + 자유 놀이',pts:5,icon:'🧸',note:'경제적 부담 없음. 사회성 발달은 느릴 수 있음.'}
+   ],
+   insight:'같은 "영어유치원"을 선택해도 수아는 +22점, 민재는 +10점입니다. 가정 환경이 교육 효과에 큰 영향을 미칩니다. 실제로 부모의 소득 수준은 자녀의 어휘력·인지 발달과 높은 상관관계를 보입니다.'},
+  {stage:'초등학교 (10세)',title:'방과 후 시간',desc:'학교가 끝난 후 무엇을 하나요?',
+   choices:[
+    {text:'📐 학원 3개 + 과외',pts:18,icon:'📚',note:'수아: 수학·영어·코딩. 민재: 돌봄교실만 가능.'},
+    {text:'⚽ 방과후학교 + 운동',pts:12,icon:'🏃',note:'학교 프로그램. 비용 부담 적음.'},
+    {text:'🎮 자유시간 + 독학',pts:7,icon:'💪',note:'스스로 공부. 자기주도성은 높지만 한계 존재.'}
+   ],
+   insight:'"학원 3개"를 선택해도 수아는 +25점, 민재는 +12점입니다. 사교육비는 소득 상위 20% 가구가 하위 20%의 5배를 지출합니다(통계청, 2023). 이 격차가 성적 차이로 이어집니다.'},
+  {stage:'중학교 (15세)',title:'진로 탐색의 시간',desc:'미래를 위해 어떤 활동을 하나요?',
+   choices:[
+    {text:'🔬 진로캠프 + 멘토링',pts:16,icon:'🎯',note:'수아: 부모 네트워크. 하나: 언어 장벽으로 참여 어려움.'},
+    {text:'📝 내신 집중 + 봉사활동',pts:11,icon:'📊',note:'안정적 선택. 누구나 가능.'},
+    {text:'🎨 예체능 특기 개발',pts:8,icon:'🎵',note:'재능 있으면 기회. 레슨비 부담.'}
+   ],
+   insight:'진로 탐색 기회도 불평등합니다. 부모의 학력·직업이 자녀의 진로 인식에 영향을 줍니다. "부모가 아는 직업의 수"가 자녀의 꿈의 범위를 결정한다는 연구도 있습니다.'},
+  {stage:'고등학교 (18세)',title:'대학을 준비합니다',desc:'수능이 다가옵니다. 어떻게 준비하나요?',
+   choices:[
+    {text:'🏢 종합 입시 컨설팅',pts:20,icon:'📈',note:'비용 수백만원. 수아: 맞춤 전략. 민재: 불가능.'},
+    {text:'📖 학교 수업 + EBS',pts:13,icon:'✏️',note:'공교육 중심. 의지가 중요.'},
+    {text:'💼 취업 준비 병행',pts:6,icon:'🔧',note:'민재처럼 경제적 필요가 있는 경우.'}
+   ],
+   insight:'같은 노력이라도 결과가 다릅니다. 대학 진학률은 부모 소득과 강한 상관관계를 보입니다. 서울대 학생 중 고소득 가정 비율이 61%라는 통계(2023)가 이를 보여줍니다.'},
+  {stage:'취업 (25세)',title:'사회에 첫발을 내딛습니다',desc:'어떤 직장을 구하나요?',
+   choices:[
+    {text:'🏢 대기업 취업',pts:22,icon:'💼',note:'수아: 인턴 경험 + 어학. 민재: 지역 한계. 하나: 편견.'},
+    {text:'🏪 중소기업 / 공무원',pts:14,icon:'🏛️',note:'안정적. 지역 차이 적음.'},
+    {text:'🚀 창업 도전',pts:8,icon:'💡',note:'성공하면 크지만, 자본 필요. 실패 리스크 큼.'}
+   ],
+   insight:'취업에서도 출신 지역, 대학, 부모의 네트워크가 영향을 미칩니다. "학벌-지역-부모 배경"이라는 3중 필터가 존재합니다. 블라인드 채용이 도입된 이유이기도 합니다.'},
+  {stage:'30세',title:'자산을 형성합니다',desc:'사회생활 5년차. 경제적 기반을 쌓습니다.',
+   choices:[
+    {text:'🏠 부모 도움 + 내 집 마련',pts:25,icon:'🏡',note:'수아: 부모 증여. 민재: 학자금 대출 상환 중.'},
+    {text:'💰 적금 + 소액 투자',pts:15,icon:'📊',note:'꾸준한 저축. 시간이 필요함.'},
+    {text:'📚 자기계발 투자',pts:10,icon:'🎓',note:'미래를 위한 투자. 당장 자산 증가는 적음.'}
+   ],
+   insight:'30세 자산 격차의 핵심은 "부모 자산의 대물림"입니다. 한국 20~30대의 자산 중 상속·증여 비중은 상위 10%에서 45%에 달합니다. "금수저·흙수저"라는 말이 나온 배경입니다.'}
+];
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+
+function startGame(){
+  stu.name=document.getElementById('input-name').value.trim()||'익명';
+  stu.grade=document.getElementById('input-grade').value.trim();
+  stu.cls=document.getElementById('input-class').value.trim();
+  stu.num=document.getElementById('input-number').value.trim();
+  document.documentElement.requestFullscreen().catch(()=>{});
+  
+  // random assign
+  myChar=Math.floor(Math.random()*4);
+  points={A:CHARS[0].startPt,B:CHARS[1].startPt,C:CHARS[2].startPt,D:CHARS[3].startPt};
+  
+  showAssign();
+}
+
+function showAssign(){
+  const mc=CHARS[myChar];
+  document.getElementById('assign-content').innerHTML=`
+    <div class="text-5xl mb-4" style="animation:float 2s ease-in-out infinite">${mc.emoji}</div>
+    <h2 class="jua text-2xl text-yellow-300 mb-2">당신의 캐릭터가 배정되었습니다</h2>
+    <div class="inline-block bg-yellow-900/30 border border-yellow-700 rounded-2xl p-6 mt-4 mb-6 text-left max-w-sm w-full">
+      <div class="text-center mb-3"><span class="text-4xl">${mc.emoji}</span><div class="jua text-xl text-white mt-1">${mc.name}</div></div>
+      <div class="space-y-2 text-sm">
+        <p><span class="text-yellow-400">🏠 배경:</span> <span class="text-slate-300">${mc.bg}</span></p>
+        <p><span class="text-yellow-400">👨‍👩‍👧 가족:</span> <span class="text-slate-300">${mc.family}</span></p>
+        <p><span class="text-yellow-400">📋 특징:</span> <span class="text-slate-300">${mc.extra}</span></p>
+        <p><span class="text-yellow-400">📊 시작 점수:</span> <span class="font-bold text-white">${mc.startPt}점</span></p>
+      </div>
+    </div>
+    <p class="text-slate-400 text-sm mb-4 max-w-sm mx-auto">4명 모두 같은 선택을 하지만, 배경에 따라 결과가 달라집니다. 6라운드를 진행하세요!</p>
+    <div class="grid grid-cols-4 gap-2 max-w-md mx-auto mb-6">
+      ${CHARS.map((c,i)=>`<div class="char-card ${i===myChar?'mine':''}"><div class="text-2xl">${c.emoji}</div><div class="text-xs font-bold ${i===myChar?'text-yellow-300':'text-slate-400'}">${c.name}</div><div class="text-xs text-slate-500">${c.bg}</div><div class="font-bold text-xs mt-1" style="color:${c.color}">${c.startPt}점</div></div>`).join('')}
+    </div>
+    <button onclick="nextRound()" class="py-3 px-10 bg-yellow-600 hover:bg-yellow-500 text-white rounded-xl font-bold transition-all hover:scale-105">인생 시작 →</button>
+  `;
+  show('s-assign');
+}
+
+function nextRound(){
+  if(round>=6){showResult();return;}
+  const rd=ROUNDS[round];
+  document.getElementById('r-num').textContent=round+1;
+  document.getElementById('r-stage').textContent=rd.stage;
+  document.getElementById('r-progress').style.width=(round/6*100)+'%';
+  
+  const ct=document.getElementById('r-content');
+  ct.innerHTML=`
+    <div class="max-w-2xl mx-auto">
+      <div class="text-center mb-5 mt-4">
+        <span class="text-xs px-3 py-1 rounded-full bg-slate-800 text-slate-400">${rd.stage}</span>
+        <h2 class="jua text-2xl text-white mt-3 mb-1">${rd.title}</h2>
+        <p class="text-slate-400 text-sm">${rd.desc}</p>
+      </div>
+      
+      <div class="space-y-3 mb-6">
+        ${rd.choices.map((ch,i)=>`
+          <div class="choice-btn" onclick="makeChoice(${i})">
+            <div class="flex items-start gap-3">
+              <span class="text-2xl">${ch.icon}</span>
+              <div class="flex-1">
+                <div class="font-bold text-white text-sm">${ch.text}</div>
+                <div class="text-xs text-slate-400 mt-1">${ch.note}</div>
+              </div>
+              <span class="stat-mini bg-purple-900/50 text-purple-300">+${ch.pts}pts</span>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  show('s-round');
+}
+
+function makeChoice(idx){
+  const rd=ROUNDS[round];
+  const ch=rd.choices[idx];
+  
+  // 선택 표시
+  document.querySelectorAll('.choice-btn').forEach((b,i)=>{
+    if(i===idx)b.classList.add('selected');
+    else{b.style.opacity='.3';b.style.pointerEvents='none';}
+  });
+  
+  // 4명 모두 같은 선택을 한다고 가정 → 결과만 다름
+  const results=CHARS.map((c,ci)=>{
+    const mult=c.multipliers[round];
+    const gained=Math.round(ch.pts*mult);
+    points[c.id]+=gained;
+    return {char:c,gained};
+  });
+  
+  roundLog.push({stage:rd.stage,choice:ch.text,results});
+  
+  // 결과 비교 표시
+  setTimeout(()=>{
+    const ct=document.getElementById('r-content');
+    const comp=document.createElement('div');
+    comp.className='max-w-2xl mx-auto';
+    comp.style.animation='fadeUp .5s ease-out forwards';
+    comp.innerHTML=`
+      <div class="mb-4">
+        <div class="text-sm text-yellow-400 font-bold mb-3 text-center">📊 같은 선택, 다른 결과</div>
+        <div class="grid grid-cols-4 gap-2 mb-4">
+          ${results.map((r,i)=>`
+            <div class="char-card ${i===myChar?'mine':''}">
+              <div class="text-xl">${r.char.emoji}</div>
+              <div class="text-xs font-bold" style="color:${r.char.color}">${r.char.name}</div>
+              <div class="text-lg font-black text-white">+${r.gained}</div>
+              <div class="text-xs text-slate-500">총 ${points[r.char.id]}점</div>
+            </div>
+          `).join('')}
+        </div>
+        
+        <!-- 점수 비교 바 -->
+        <div class="space-y-2 mb-4">
+          ${CHARS.map(c=>`
+            <div class="flex items-center gap-2 text-xs">
+              <span class="w-8">${c.emoji}</span>
+              <div class="flex-1 h-5 bg-slate-800 rounded-full overflow-hidden">
+                <div class="h-full rounded-full transition-all" style="width:${Math.min(100,points[c.id]/3)}%;background:${c.color}"></div>
+              </div>
+              <span class="w-10 text-right font-bold" style="color:${c.color}">${points[c.id]}</span>
+            </div>
+          `).join('')}
+        </div>
+        
+        <div class="insight-box">
+          <div class="text-xs text-yellow-400 font-bold mb-1">💡 왜 다를까?</div>
+          <p class="text-xs text-slate-300 leading-relaxed">${rd.insight}</p>
+        </div>
+      </div>
+      <div class="text-center">
+        <button onclick="round++;nextRound()" class="py-3 px-8 bg-yellow-600 hover:bg-yellow-500 text-white rounded-xl font-bold transition-all hover:scale-105">
+          ${round<5?'다음 단계 →':'최종 결과 보기 →'}
+        </button>
+      </div>
+    `;
+    ct.appendChild(comp);
+    comp.scrollIntoView({behavior:'smooth'});
+  },500);
+}
+
+function showResult(){
+  const mc=CHARS[myChar];
+  const sorted=[...CHARS].sort((a,b)=>points[b.id]-points[a.id]);
+  const gap=points[sorted[0].id]-points[sorted[3].id];
+  const myRank=sorted.findIndex(c=>c.id===mc.id)+1;
+  
+  // gini coefficient calculation
+  const vals=CHARS.map(c=>points[c.id]).sort((a,b)=>a-b);
+  const n=vals.length, mean=vals.reduce((a,b)=>a+b)/n;
+  let giniSum=0;
+  for(let i=0;i<n;i++)for(let j=0;j<n;j++)giniSum+=Math.abs(vals[i]-vals[j]);
+  const gini=(giniSum/(2*n*n*mean)).toFixed(2);
+  
+  document.getElementById('res-subtitle').textContent=`${stu.grade?stu.grade+'학년 ':''}${stu.cls?stu.cls+'반 ':''}${stu.name} (${mc.name} 역할)`;
+  
+  document.getElementById('res-body').innerHTML=`
+    <div class="text-center mb-5">
+      <div class="text-4xl mb-2">${mc.emoji}</div>
+      <div class="jua text-xl">${mc.name}의 30세 — ${myRank}위</div>
+      <div class="text-2xl font-black mt-1" style="color:${mc.color}">${points[mc.id]}점</div>
+    </div>
+    
+    <!-- 최종 순위 -->
+    <div class="space-y-2 mb-5">
+      ${sorted.map((c,i)=>`
+        <div class="flex items-center gap-3 p-2 rounded-lg ${c.id===mc.id?'bg-yellow-50 border border-yellow-200':'bg-slate-50'}">
+          <span class="text-lg font-black" style="color:${c.color}">${i+1}위</span>
+          <span class="text-2xl">${c.emoji}</span>
+          <div class="flex-1">
+            <div class="font-bold text-sm">${c.name} <span class="text-xs text-slate-400">${c.bg}</span></div>
+            <div class="w-full h-3 bg-slate-200 rounded-full mt-1"><div class="h-full rounded-full" style="width:${points[c.id]/3}%;background:${c.color}"></div></div>
+          </div>
+          <span class="font-black" style="color:${c.color}">${points[c.id]}점</span>
+        </div>
+      `).join('')}
+    </div>
+    
+    <div class="bg-red-50 rounded-xl p-4 mb-5 text-center">
+      <div class="text-sm text-red-800 font-bold mb-1">📊 격차 분석</div>
+      <div class="grid grid-cols-2 gap-3 text-center">
+        <div><div class="text-2xl font-black text-red-600">${gap}점</div><div class="text-xs text-red-500">1위-4위 격차</div></div>
+        <div><div class="text-2xl font-black text-red-600">${gini}</div><div class="text-xs text-red-500">지니계수</div></div>
+      </div>
+      <p class="text-xs text-red-600 mt-2">${gini>=0.4?'매우 불평등한 사회':gini>=0.3?'불평등이 존재하는 사회':'비교적 평등한 사회'}입니다</p>
+    </div>
+    
+    <!-- 만약 정책이 있었다면? -->
+    <div class="bg-purple-50 rounded-xl p-4 mb-5">
+      <div class="text-sm text-purple-800 font-bold mb-2">🏛️ 만약 이런 정책이 있었다면?</div>
+      <div class="space-y-2 text-xs text-purple-900">
+        <p>📌 <b>무상교육 확대</b> → 민재의 교육 격차 -40% 감소</p>
+        <p>📌 <b>지역 균형 발전</b> → 준호·민재의 기회 격차 -30% 감소</p>
+        <p>📌 <b>다문화 지원 강화</b> → 하나의 언어·문화 장벽 -50% 감소</p>
+        <p>📌 <b>기본소득 도입</b> → 전체 최저 점수 +20점 상승</p>
+        <p style="color:#7c3aed;margin-top:8px">→ 정책 하나로 지니계수가 ${(gini-0.08).toFixed(2)}로 개선될 수 있습니다</p>
+      </div>
+    </div>
+    
+    <div class="bg-amber-50 rounded-xl p-4 mb-5">
+      <div class="text-sm text-amber-800 font-bold mb-2">🤔 생각해볼 질문</div>
+      <div class="text-xs text-amber-900 space-y-1">
+        <p>• 이 게임에서 "공정한 경쟁"이 이루어졌다고 생각하나요?</p>
+        <p>• 결과의 차이는 "노력의 차이"인가요, "환경의 차이"인가요?</p>
+        <p>• 롤스(Rawls)의 '무지의 베일' — 내가 누구로 태어날지 모른다면 어떤 사회를 설계하겠습니까?</p>
+      </div>
+    </div>
+    
+    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
+      <h3 class="font-bold text-sm text-blue-800 mb-2">📚 교과서 연결</h3>
+      <div class="text-xs text-blue-700 space-y-1">
+        <p><b>단원:</b> 통합사회 V. 사회정의와 불평등</p>
+        <p><b>성취기준:</b> [10통사2-02-01] 사회 불평등 현상의 다양한 양상을 이해하고, 정의로운 사회를 실현하기 위한 방안을 탐구한다.</p>
+        <p><b>핵심 개념:</b> 사회 불평등은 경제적 요인뿐 아니라 지역, 학력, 성별, 문화적 배경 등 복합적 요인에 의해 발생합니다. <b>롤스의 정의론</b>은 "최소 수혜자에게 최대 이익"을 주는 사회가 정의롭다고 주장합니다. <b>지니계수</b>는 0(완전 평등)~1(완전 불평등)로 소득 분배 상태를 나타냅니다.</p>
+        <p><b>확장:</b> 한국의 지니계수는 약 0.33(2023)으로, OECD 평균과 비슷하지만 자산 불평등은 더 심각합니다. 세대 간 계층 이동성(부모 세대 → 자녀 세대로 사회적 지위가 변하는 정도)이 낮아지고 있다는 우려가 있습니다.</p>
+      </div>
+    </div>
+    <div class="text-center text-xs text-slate-400 mt-3"><p>출발선이 다른 인생게임 · 통합사회 · 김스데반 T</p><p>${new Date().toLocaleDateString('ko-KR')}</p></div>
+  `;
+  missionComplete=true;
+  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+  show('s-result');
+}
+
+function saveImg(){html2canvas(document.getElementById('result-card'),{scale:2,backgroundColor:'#fff'}).then(c=>{const a=document.createElement('a');a.download=`인생게임_${stu.name}_${new Date().toISOString().slice(0,10)}.png`;a.href=c.toDataURL('image/png');a.click();}).catch(()=>alert('저장 실패'));}
+function exitToBlog(){
+  missionComplete = true;
+  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+  if(document.referrer&&document.referrer.includes('blogspot'))window.location.href=document.referrer;
+  else window.history.back();
+}
+// ===== 전체화면 가드 =====
+let missionComplete = false;
+let isReEntering = false;
+
+function reEnterFullscreen(){
+  isReEntering = true;
+  document.getElementById('fs-warning').style.display = 'none';
+  document.documentElement.requestFullscreen().catch(()=>{isReEntering=false;});
+}
+
+document.addEventListener('fullscreenchange', () => {
+  if(!document.fullscreenElement && !missionComplete && !isReEntering){
+    const cur = document.querySelector('.screen.active');
+    if(cur && cur.id !== 's-start' && cur.id !== 's-intro'){
+      document.getElementById('fs-warning').style.display = 'flex';
+    }
+  }
+  if(document.fullscreenElement){
+    isReEntering = false;
+    document.getElementById('fs-warning').style.display = 'none';
+  }
+});
+
+</script>
+<!-- 전체화면 이탈 경고 오버레이 -->
+<div class="fs-warning-overlay" id="fs-warning" style="display:none">
+  <div class="warn-icon">⚠️</div>
+  <div class="warn-title">미션 진행 중입니다!</div>
+  <div class="warn-msg">전체화면을 유지해야 미션을 계속할 수 있습니다.<br>다시 전체화면으로 돌아가세요.</div>
+  <button class="warn-btn" onclick="reEnterFullscreen()">🔒 전체화면으로 돌아가기</button>
+</div>
+<!-- 블로그 링크 배지 -->
+<a href="https://ssam-ssong.blogspot.com" target="_blank" class="blog-badge">✏️ 풀어쓰는 사회학</a>
+</body>
+</html>

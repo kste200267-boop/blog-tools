@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🌊 지구의 선택 — 기후변화 시뮬레이터</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;overflow-x:hidden}
+.jua{font-family:'Jua',sans-serif}
+
+/* 화면 전환 */
+.screen{display:none;animation:fadeUp .6s ease-out forwards;min-height:100vh}
+.screen.active{display:flex;flex-direction:column}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(59,130,246,0.3)}50%{box-shadow:0 0 40px rgba(59,130,246,0.6)}}
+
+/* 스타트 화면 */
+.start-bg{background:linear-gradient(180deg,#0c1445 0%,#1a3a5c 40%,#2d6a8a 70%,#4a9bb5 100%);position:relative;overflow:hidden}
+.start-bg::before{content:'';position:absolute;bottom:0;left:0;right:0;height:30%;background:linear-gradient(0deg,rgba(30,80,120,0.8),transparent)}
+.earth-emoji{font-size:8rem;animation:float 3s ease-in-out infinite}
+
+/* 진행 바 */
+.progress-bar{height:6px;background:#1e293b;border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#3b82f6,#8b5cf6);transition:width .5s ease;border-radius:99px}
+
+/* 연도 표시 */
+.year-display{font-size:3rem;font-weight:900;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* 선택지 버튼 */
+.choice-btn{
+  background:rgba(30,41,59,0.8);border:2px solid #334155;border-radius:1rem;padding:1.2rem 1.5rem;
+  cursor:pointer;transition:all .3s;text-align:left;backdrop-filter:blur(10px);
+}
+.choice-btn:hover{border-color:#60a5fa;background:rgba(59,130,246,0.15);transform:translateY(-3px);box-shadow:0 8px 25px rgba(59,130,246,0.2)}
+.choice-btn:active{transform:scale(0.98)}
+.choice-btn .icon{font-size:2rem;margin-bottom:0.5rem}
+
+/* 스탯 바 */
+.stat-bar{height:10px;background:#1e293b;border-radius:99px;overflow:hidden}
+.stat-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(0.4,0,0.2,1)}
+
+/* 이벤트 카드 */
+.event-card{background:rgba(15,23,42,0.9);border:1px solid #334155;border-radius:1.5rem;backdrop-filter:blur(20px)}
+
+/* 지구 상태 시각화 */
+.earth-visual{position:relative;width:200px;height:200px;margin:0 auto;border-radius:50%;transition:all 1s}
+.earth-overlay{position:absolute;inset:0;border-radius:50%;transition:all 1s}
+
+/* 결과 카드 (PDF용) */
+.result-card{background:white;color:#1e293b;border-radius:1.5rem;max-width:600px;margin:0 auto;overflow:hidden}
+.result-header{padding:2rem;text-align:center}
+.result-body{padding:1.5rem 2rem}
+
+/* 타이머 */
+.timer-ring{width:50px;height:50px;border-radius:50%;border:3px solid #334155;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;transition:border-color .3s}
+.timer-ring.warning{border-color:#f59e0b;color:#f59e0b}
+.timer-ring.danger{border-color:#ef4444;color:#ef4444;animation:pulse 1s infinite}
+
+/* 대화 버블 */
+.dialogue-bubble{
+  background:rgba(30,41,59,0.9);border:1px solid #475569;border-radius:1.2rem;
+  padding:1rem 1.5rem;position:relative;max-width:90%;
+}
+.dialogue-bubble::after{content:'';position:absolute;bottom:-8px;left:24px;width:16px;height:16px;background:rgba(30,41,59,0.9);border-right:1px solid #475569;border-bottom:1px solid #475569;transform:rotate(45deg)}
+.narrator{border-color:#60a5fa}
+.narrator::after{border-color:#60a5fa}
+
+/* 모바일 */
+@media(max-width:640px){
+  .earth-emoji{font-size:5rem}
+  .year-display{font-size:2rem}
+  .choice-btn{padding:1rem}
+}
+
+/* 인쇄 */
+@media print{body{background:white;color:black}.screen{display:none!important}.result-card{box-shadow:none}}
+
+/* 전체화면 이탈 경고 오버레이 */
+.fs-warning-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.92);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;animation:fadeIn .3s}
+.fs-warning-overlay .warn-icon{font-size:4rem;animation:shake .5s}
+.fs-warning-overlay .warn-title{font-size:1.5rem;font-weight:900;color:#fbbf24}
+.fs-warning-overlay .warn-msg{font-size:1rem;color:#94a3b8;text-align:center;max-width:320px;line-height:1.6}
+.fs-warning-overlay .warn-btn{padding:14px 40px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);border:none;border-radius:12px;color:#fff;font-size:1.1rem;font-weight:700;cursor:pointer;transition:transform .2s}
+.fs-warning-overlay .warn-btn:hover{transform:scale(1.05)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* 블로그 링크 배지 */
+.blog-badge{position:fixed;bottom:12px;right:12px;z-index:100;background:rgba(15,23,42,0.85);border:1px solid #334155;border-radius:10px;padding:6px 14px;font-size:0.75rem;color:#94a3b8;text-decoration:none;backdrop-filter:blur(8px);transition:all .3s;display:flex;align-items:center;gap:6px}
+.blog-badge:hover{background:rgba(59,130,246,0.2);border-color:#3b82f6;color:#60a5fa}
+</style>
+</head>
+<body>
+
+<!-- ========== 스크린 0: 스타트 ========== -->
+<div class="screen active start-bg" id="s-start">
+  <div class="flex-1 flex flex-col items-center justify-center p-6 text-center relative z-10">
+    <div class="earth-emoji mb-6">🌍</div>
+    <h1 class="jua text-4xl md:text-5xl text-white mb-4 drop-shadow-lg">지구의 선택</h1>
+    <p class="text-blue-200 text-lg md:text-xl mb-2 max-w-md leading-relaxed">기후변화 시뮬레이터</p>
+    <p class="text-blue-300/70 text-sm mb-8 max-w-sm">2025년부터 2100년까지, 당신의 선택이 지구의 운명을 결정합니다.</p>
+    
+    <!-- 학생 정보 입력 -->
+    <div class="w-full max-w-xs space-y-3 mb-6">
+      <div class="flex gap-2">
+        <input type="text" id="input-grade" placeholder="학년" maxlength="1" class="flex-1 text-center py-3 rounded-xl bg-white/20 text-white placeholder-blue-300/50 border border-white/20 font-bold outline-none focus:border-white/60" style="backdrop-filter:blur(8px)">
+        <input type="text" id="input-class" placeholder="반" maxlength="2" class="flex-1 text-center py-3 rounded-xl bg-white/20 text-white placeholder-blue-300/50 border border-white/20 font-bold outline-none focus:border-white/60" style="backdrop-filter:blur(8px)">
+        <input type="text" id="input-number" placeholder="번호" maxlength="2" class="flex-1 text-center py-3 rounded-xl bg-white/20 text-white placeholder-blue-300/50 border border-white/20 font-bold outline-none focus:border-white/60" style="backdrop-filter:blur(8px)">
+      </div>
+      <input type="text" id="input-name" placeholder="이름을 입력하세요" maxlength="10" class="w-full text-center py-3 rounded-xl bg-white/20 text-white placeholder-blue-300/50 border border-white/20 font-bold text-lg outline-none focus:border-white/60" style="backdrop-filter:blur(8px)">
+    </div>
+    
+    <div class="space-y-3 w-full max-w-xs">
+      <button onclick="startGame()" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold text-lg transition-all hover:scale-105 shadow-lg shadow-blue-600/30" style="animation:glow 2s infinite">
+        🚀 시뮬레이션 시작
+      </button>
+      <p class="text-blue-400/50 text-xs">⏱ 예상 소요시간: 10~15분 · 총 8라운드</p>
+    </div>
+  </div>
+  <div class="text-center pb-4 text-blue-400/30 text-xs">통합사회 III. 자연환경과 인간 · [10통사1-03-01]</div>
+</div>
+
+<!-- ========== 스크린 1: 캐릭터 선택 ========== -->
+<div class="screen" id="s-role">
+  <div class="flex-1 flex flex-col items-center justify-center p-6">
+    <h2 class="jua text-2xl text-blue-300 mb-2">당신의 역할을 선택하세요</h2>
+    <p class="text-slate-400 text-sm mb-8">역할에 따라 선택지와 결과가 달라집니다</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-3xl">
+      <button onclick="selectRole('president')" class="choice-btn text-center group">
+        <div class="text-5xl mb-3 group-hover:scale-110 transition">🏛️</div>
+        <div class="font-bold text-lg text-white mb-1">국가 지도자</div>
+        <div class="text-slate-400 text-sm">정책과 외교로 기후 위기에 대응</div>
+        <div class="mt-3 text-xs text-blue-400">난이도 ★★★</div>
+      </button>
+      <button onclick="selectRole('scientist')" class="choice-btn text-center group">
+        <div class="text-5xl mb-3 group-hover:scale-110 transition">🔬</div>
+        <div class="font-bold text-lg text-white mb-1">기후 과학자</div>
+        <div class="text-slate-400 text-sm">연구와 기술로 해결책을 찾는다</div>
+        <div class="mt-3 text-xs text-green-400">난이도 ★★☆</div>
+      </button>
+      <button onclick="selectRole('citizen')" class="choice-btn text-center group">
+        <div class="text-5xl mb-3 group-hover:scale-110 transition">🧑‍🤝‍🧑</div>
+        <div class="font-bold text-lg text-white mb-1">시민 활동가</div>
+        <div class="text-slate-400 text-sm">운동과 실천으로 변화를 이끈다</div>
+        <div class="mt-3 text-xs text-yellow-400">난이도 ★☆☆</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 스크린 2: 메인 게임 ========== -->
+<div class="screen" id="s-game">
+  <div class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3">
+    <div class="max-w-3xl mx-auto">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl" id="g-role-icon">🏛️</span>
+          <div>
+            <div class="text-xs text-slate-500">ROUND <span id="g-round">1</span>/8</div>
+            <div class="year-display" id="g-year">2025</div>
+          </div>
+        </div>
+        <div class="timer-ring" id="g-timer">30</div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="g-progress" style="width:0%"></div></div>
+      <!-- 스탯 -->
+      <div class="grid grid-cols-3 gap-3 mt-3">
+        <div>
+          <div class="flex justify-between text-xs mb-1"><span>🌡️ 기온</span><span id="g-temp-val" class="font-bold text-red-400">+1.1°C</span></div>
+          <div class="stat-bar"><div class="stat-fill bg-red-500" id="g-temp-bar" style="width:22%"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between text-xs mb-1"><span>🌊 해수면</span><span id="g-sea-val" class="font-bold text-blue-400">+20cm</span></div>
+          <div class="stat-bar"><div class="stat-fill bg-blue-500" id="g-sea-bar" style="width:10%"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between text-xs mb-1"><span>🌿 생태계</span><span id="g-eco-val" class="font-bold text-green-400">78%</span></div>
+          <div class="stat-bar"><div class="stat-fill bg-green-500" id="g-eco-bar" style="width:78%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 게임 본문 -->
+  <div class="flex-1 p-4 pb-24" id="g-content">
+    <!-- JS가 채움 -->
+  </div>
+</div>
+
+<!-- ========== 스크린 3: 이벤트(중간 결과) ========== -->
+<div class="screen" id="s-event">
+  <div class="flex-1 flex items-center justify-center p-6">
+    <div class="event-card p-8 max-w-lg w-full text-center">
+      <div class="text-6xl mb-4" id="ev-icon">⚡</div>
+      <h2 class="jua text-2xl text-white mb-3" id="ev-title">긴급 뉴스</h2>
+      <p class="text-slate-300 leading-relaxed mb-6" id="ev-desc"></p>
+      <div class="bg-slate-800/50 rounded-xl p-4 mb-6" id="ev-impact"></div>
+      <button onclick="continueGame()" class="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold transition-all hover:scale-105">
+        계속하기 →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 스크린 4: 최종 결과 ========== -->
+<div class="screen" id="s-result">
+  <div class="flex-1 p-4 py-8">
+    <div class="result-card" id="result-card">
+      <!-- 헤더 -->
+      <div class="result-header" id="res-header" style="background:linear-gradient(135deg,#1e40af,#7c3aed)">
+        <div class="text-5xl mb-3" id="res-icon">🌍</div>
+        <h1 class="jua text-3xl text-white mb-1" id="res-title">2100년의 지구</h1>
+        <p class="text-blue-200 text-sm" id="res-subtitle"></p>
+      </div>
+      <!-- 바디 -->
+      <div class="result-body" id="res-body">
+        <div class="text-center mb-6">
+          <div class="text-6xl mb-2" id="res-grade-icon">🌡️</div>
+          <div class="jua text-2xl" id="res-grade">등급</div>
+          <p class="text-slate-500 text-sm mt-1" id="res-grade-desc"></p>
+        </div>
+
+        <!-- 최종 스탯 -->
+        <div class="grid grid-cols-3 gap-4 mb-6 text-center">
+          <div class="bg-red-50 rounded-xl p-3">
+            <div class="text-2xl">🌡️</div>
+            <div class="font-black text-red-600 text-lg" id="res-temp">+1.5°C</div>
+            <div class="text-xs text-red-400">기온 상승</div>
+          </div>
+          <div class="bg-blue-50 rounded-xl p-3">
+            <div class="text-2xl">🌊</div>
+            <div class="font-black text-blue-600 text-lg" id="res-sea">+30cm</div>
+            <div class="text-xs text-blue-400">해수면 상승</div>
+          </div>
+          <div class="bg-green-50 rounded-xl p-3">
+            <div class="text-2xl">🌿</div>
+            <div class="font-black text-green-600 text-lg" id="res-eco">70%</div>
+            <div class="text-xs text-green-400">생태계 건강도</div>
+          </div>
+        </div>
+
+        <!-- 타임라인 요약 -->
+        <h3 class="font-bold text-sm text-slate-800 mb-3 flex items-center gap-2">📜 나의 선택 타임라인</h3>
+        <div class="space-y-2 mb-6" id="res-timeline"></div>
+
+        <!-- 실제 과학 데이터 비교 -->
+        <div class="bg-slate-100 rounded-xl p-4 mb-6">
+          <h3 class="font-bold text-sm text-slate-700 mb-2">📊 실제 과학 데이터와 비교</h3>
+          <div class="text-xs text-slate-600 space-y-1" id="res-science"></div>
+        </div>
+
+        <!-- 교과서 연결 -->
+        <div class="bg-blue-50 rounded-xl p-4 mb-4">
+          <h3 class="font-bold text-sm text-blue-800 mb-2">📚 교과서 연결</h3>
+          <p class="text-xs text-blue-700 leading-relaxed">이 시뮬레이션은 통합사회 <b>III. 자연환경과 인간</b> 단원의 기후변화 내용과 연결됩니다. 인간 활동이 자연환경에 미치는 영향, 그리고 지속가능한 발전을 위한 노력을 탐구해보세요.</p>
+        </div>
+
+        <div class="text-center text-xs text-slate-400 mt-4">
+          <p>통합사회 · 기후변화 시뮬레이터 · 김스데반 T</p>
+          <p id="res-date"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 버튼들 -->
+    <div class="flex flex-wrap justify-center gap-3 mt-6 max-w-lg mx-auto">
+      <button onclick="savePDF()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold transition-all hover:scale-105 flex items-center gap-2">
+        📄 결과 저장 (이미지)
+      </button>
+      <button onclick="location.reload()" class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-bold transition-all hover:scale-105 flex items-center gap-2">
+        🔄 다시 하기
+      </button>
+      <button onclick="exitToBlog()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all hover:scale-105 flex items-center gap-2">
+        📝 블로그로 돌아가기
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 전체화면 이탈 경고 오버레이 -->
+<div class="fs-warning-overlay" id="fs-warning" style="display:none">
+  <div class="warn-icon">⚠️</div>
+  <div class="warn-title">미션 진행 중입니다!</div>
+  <div class="warn-msg">전체화면을 유지해야 미션을 계속할 수 있습니다.<br>다시 전체화면으로 돌아가세요.</div>
+  <button class="warn-btn" onclick="reEnterFullscreen()">🔒 전체화면으로 돌아가기</button>
+</div>
+
+<!-- 블로그 링크 배지 -->
+<a href="https://ssam-ssong.blogspot.com" target="_blank" class="blog-badge" id="blog-badge">
+  ✏️ 풀어쓰는 사회학
+</a>
+
+<script>
+// ===== 게임 데이터 =====
+let state = {
+  role: '', round: 0, year: 2025,
+  temp: 1.1, sea: 20, eco: 78, // 기온상승(°C), 해수면(cm), 생태계(%)
+  choices: [], events: []
+};
+
+const ROLES = {
+  president: { icon:'🏛️', name:'국가 지도자' },
+  scientist: { icon:'🔬', name:'기후 과학자' },
+  citizen: { icon:'🧑‍🤝‍🧑', name:'시민 활동가' }
+};
+
+// 8라운드 시나리오
+const SCENARIOS = [
+  { // R1: 2025
+    year:2025, title:'파리 협정 이행의 갈림길',
+    narration:'전 세계가 주목하고 있습니다. 2025년, 각국의 탄소 감축 목표 이행 시한이 다가옵니다.',
+    bg:'🏭',
+    choices:{
+      president:[
+        {text:'탄소세를 즉시 도입한다',icon:'💰',desc:'경제적 부담이 있지만 확실한 감축 효과',temp:-0.1,sea:-2,eco:+3,tag:'강력한 정책'},
+        {text:'산업계와 자율 협약을 맺는다',icon:'🤝',desc:'반발은 줄이되 효과는 미지수',temp:+0.05,sea:0,eco:+1,tag:'타협'},
+        {text:'경제 성장을 우선시한다',icon:'📈',desc:'당장의 GDP는 오르지만...',temp:+0.2,sea:+3,eco:-5,tag:'성장 우선'}
+      ],
+      scientist:[
+        {text:'탄소 포집 기술에 전력 투자',icon:'🧪',desc:'성공하면 게임체인저, 실패 리스크 존재',temp:-0.15,sea:-3,eco:+2,tag:'기술 혁신'},
+        {text:'재생에너지 보급 확대 연구',icon:'☀️',desc:'안정적이지만 효과가 느리다',temp:-0.05,sea:-1,eco:+4,tag:'안정적 전환'},
+        {text:'핵융합 연구에 올인',icon:'⚛️',desc:'20년 뒤 결과가 나올 수도...',temp:+0.1,sea:+1,eco:0,tag:'장기 도박'}
+      ],
+      citizen:[
+        {text:'대규모 기후 시위를 조직한다',icon:'📢',desc:'여론을 움직여 정책 변화를 이끈다',temp:-0.08,sea:-1,eco:+3,tag:'시민 행동'},
+        {text:'채식 캠페인을 시작한다',icon:'🥬',desc:'축산업 탄소 감축에 기여',temp:-0.03,sea:0,eco:+2,tag:'생활 실천'},
+        {text:'SNS 인플루언서로 활동한다',icon:'📱',desc:'인식은 높이지만 실질 효과는?',temp:+0.02,sea:0,eco:+1,tag:'인식 개선'}
+      ]
+    }
+  },
+  { // R2: 2030
+    year:2030, title:'극단적 기상현상의 시대',
+    narration:'전 세계에서 폭염, 홍수, 산불이 동시다발로 발생합니다. UN은 "기후 비상사태"를 선포했습니다.',
+    bg:'🔥',
+    choices:{
+      president:[
+        {text:'국제 기후 긴급 기금을 설립한다',icon:'🌐',desc:'전 세계 협력, 하지만 분담금 갈등',temp:-0.12,sea:-2,eco:+4,tag:'국제 협력'},
+        {text:'국내 방재 인프라에 집중 투자',icon:'🏗️',desc:'자국민 보호, 하지만 근본 해결은 아님',temp:+0.05,sea:-1,eco:0,tag:'방어적 대응'},
+        {text:'기후 난민을 수용한다',icon:'🏠',desc:'인도적이지만 정치적 부담',temp:+0.02,sea:0,eco:+2,tag:'인도주의'}
+      ],
+      scientist:[
+        {text:'해양 이산화탄소 흡수 프로젝트',icon:'🌊',desc:'바다의 흡수 능력을 인공적으로 강화',temp:-0.15,sea:-4,eco:+3,tag:'해양 공학'},
+        {text:'내열성 작물 개발',icon:'🌾',desc:'식량 위기 대응, 기온 자체는 못 낮춤',temp:+0.05,sea:0,eco:+2,tag:'적응 전략'},
+        {text:'기후 모델링 정밀화',icon:'💻',desc:'예측 정확도를 높여 피해를 줄인다',temp:-0.03,sea:-1,eco:+1,tag:'데이터 기반'}
+      ],
+      citizen:[
+        {text:'제로웨이스트 마을을 만든다',icon:'♻️',desc:'작지만 확실한 변화의 시작',temp:-0.05,sea:-1,eco:+5,tag:'지역 실천'},
+        {text:'기후 소송에 참여한다',icon:'⚖️',desc:'석유 기업에 책임을 묻는다',temp:-0.1,sea:-2,eco:+2,tag:'법적 행동'},
+        {text:'탄소발자국 앱을 개발한다',icon:'📊',desc:'개인의 인식을 높인다',temp:-0.02,sea:0,eco:+1,tag:'디지털 혁신'}
+      ]
+    }
+  },
+  { // R3: 2035
+    year:2035, title:'식량 위기의 그림자',
+    narration:'동남아 쌀 생산량이 30% 급감했습니다. 아프리카에서는 대규모 가뭄이 3년째 계속됩니다.',
+    bg:'🌾',
+    choices:{
+      president:[
+        {text:'국제 식량 비축 시스템을 구축한다',icon:'🏪',desc:'단기 안정, 장기 해결은 별개',temp:+0.03,sea:0,eco:+1,tag:'식량 안보'},
+        {text:'농업 혁신 특구를 지정한다',icon:'🚜',desc:'스마트팜으로 식량 자급률 향상',temp:-0.05,sea:0,eco:+3,tag:'농업 혁신'},
+        {text:'식량 수출을 금지한다',icon:'🚫',desc:'자국 우선, 하지만 국제 갈등 심화',temp:+0.08,sea:+1,eco:-2,tag:'자국 우선'}
+      ],
+      scientist:[
+        {text:'수직농장 기술을 상용화한다',icon:'🏢',desc:'도시에서 식량 생산, 에너지 소비 증가',temp:-0.03,sea:0,eco:+4,tag:'도시 농업'},
+        {text:'해수 담수화 대규모 투자',icon:'💧',desc:'물 부족 해결, 에너지 문제 동반',temp:+0.05,sea:-2,eco:+2,tag:'물 기술'},
+        {text:'유전자 편집 작물 개발',icon:'🧬',desc:'획기적이지만 생태계 영향 불확실',temp:-0.02,sea:0,eco:-1,tag:'생명공학'}
+      ],
+      citizen:[
+        {text:'도시 텃밭 운동을 확산한다',icon:'🌱',desc:'공동체 회복 + 탄소 발자국 감소',temp:-0.03,sea:0,eco:+4,tag:'도시 농업'},
+        {text:'음식물 쓰레기 제로 캠페인',icon:'🍽️',desc:'전체 식량 낭비의 30%를 줄인다',temp:-0.05,sea:-1,eco:+3,tag:'음식 혁명'},
+        {text:'육식 줄이기 전국 릴레이',icon:'🥗',desc:'축산 온실가스 직접 감축',temp:-0.08,sea:-1,eco:+2,tag:'식단 전환'}
+      ]
+    }
+  },
+  { // R4: 2045
+    year:2045, title:'에너지 전환의 결정적 순간',
+    narration:'화석연료 가격이 폭등하고, 전 세계 에너지 시스템이 전환점에 섰습니다.',
+    bg:'⚡',
+    choices:{
+      president:[
+        {text:'신재생에너지 100% 전환 선언',icon:'☀️',desc:'대담하지만 인프라 비용 엄청남',temp:-0.2,sea:-5,eco:+5,tag:'에너지 혁명'},
+        {text:'원자력 + 재생에너지 혼합',icon:'⚛️',desc:'현실적이지만 핵폐기물 문제',temp:-0.1,sea:-3,eco:+1,tag:'혼합 전략'},
+        {text:'석유 비축량을 풀어 안정시킨다',icon:'🛢️',desc:'단기 안정, 전환 지연',temp:+0.15,sea:+3,eco:-4,tag:'현상 유지'}
+      ],
+      scientist:[
+        {text:'소형 모듈 원자로(SMR) 상용화',icon:'🔋',desc:'안전하고 효율적, 하지만 여론 문제',temp:-0.15,sea:-4,eco:+2,tag:'차세대 원전'},
+        {text:'태양광 효율 2배 신기술 개발',icon:'🌞',desc:'재생에너지의 게임체인저',temp:-0.18,sea:-4,eco:+5,tag:'태양광 혁신'},
+        {text:'수소 경제 인프라 구축',icon:'💨',desc:'깨끗하지만 아직 비싸다',temp:-0.08,sea:-2,eco:+3,tag:'수소 시대'}
+      ],
+      citizen:[
+        {text:'에너지 자립 마을을 전국으로',icon:'🏘️',desc:'태양광+배터리로 마을 단위 자급',temp:-0.1,sea:-2,eco:+4,tag:'에너지 자립'},
+        {text:'화석연료 불매운동',icon:'✊',desc:'기업 압박, 하지만 생활 불편',temp:-0.08,sea:-2,eco:+2,tag:'소비자 행동'},
+        {text:'전기차 공유 플랫폼 확산',icon:'🚗',desc:'교통 탄소 30% 감축 목표',temp:-0.05,sea:-1,eco:+3,tag:'모빌리티'}
+      ]
+    }
+  },
+  { // R5: 2055
+    year:2055, title:'티핑 포인트의 문턱',
+    narration:'과학자들이 경고합니다. "앞으로 10년 안에 돌이킬 수 없는 변화가 시작될 수 있습니다."',
+    bg:'⏳',
+    choices:{
+      president:[
+        {text:'지구공학(태양빛 반사) 실행',icon:'🪞',desc:'즉각적 냉각, 하지만 부작용 불명',temp:-0.3,sea:-5,eco:-3,tag:'지구공학'},
+        {text:'전 세계 탄소 배출 제로 협약',icon:'📜',desc:'역사적 합의, 실행이 관건',temp:-0.2,sea:-4,eco:+4,tag:'글로벌 합의'},
+        {text:'적응 중심 전략으로 전환',icon:'🏰',desc:'막을 수 없으니 버티자',temp:+0.1,sea:+2,eco:-2,tag:'적응 전략'}
+      ],
+      scientist:[
+        {text:'인공 빙하 프로젝트 착수',icon:'🧊',desc:'녹는 빙하를 인공적으로 복원',temp:-0.1,sea:-8,eco:+2,tag:'빙하 복원'},
+        {text:'대기 중 CO2 직접 포집 공장',icon:'🏭',desc:'연간 100만톤 CO2 제거 목표',temp:-0.2,sea:-3,eco:+3,tag:'탄소 포집'},
+        {text:'생태계 복원 대규모 프로젝트',icon:'🌳',desc:'자연의 자정 능력을 되살린다',temp:-0.05,sea:-1,eco:+8,tag:'자연 복원'}
+      ],
+      citizen:[
+        {text:'글로벌 기후 총파업 조직',icon:'🌍',desc:'전 세계 동시 파업으로 압박',temp:-0.12,sea:-2,eco:+3,tag:'글로벌 행동'},
+        {text:'탄소 중립 공동체 네트워크',icon:'🔗',desc:'자급자족 커뮤니티 전 세계 연결',temp:-0.08,sea:-2,eco:+5,tag:'공동체'},
+        {text:'기후 교육 세계화',icon:'📚',desc:'다음 세대의 인식을 바꾼다',temp:-0.03,sea:0,eco:+3,tag:'교육'}
+      ]
+    }
+  },
+  { // R6: 2065
+    year:2065, title:'해수면 상승, 도시가 잠기다',
+    narration:'방콕, 자카르타, 마이애미… 세계 주요 해안 도시들이 침수 위기에 처했습니다.',
+    bg:'🏙️',
+    choices:{
+      president:[
+        {text:'해안 방벽 메가 프로젝트',icon:'🧱',desc:'네덜란드식 방벽을 전 세계에',temp:+0.02,sea:-6,eco:-1,tag:'방벽 건설'},
+        {text:'내륙 신도시 이주 계획',icon:'🏗️',desc:'해안 도시를 포기하고 내륙으로',temp:+0.05,sea:0,eco:+2,tag:'전략적 후퇴'},
+        {text:'수상 도시 건설 프로젝트',icon:'🚢',desc:'물 위에서 살자!',temp:+0.03,sea:-2,eco:+1,tag:'수상 도시'}
+      ],
+      scientist:[
+        {text:'해류 조절 기술 개발',icon:'🌀',desc:'해류를 인위적으로 바꿔 냉각',temp:-0.15,sea:-5,eco:-2,tag:'해류 공학'},
+        {text:'산호초 인공 복원 대작전',icon:'🐠',desc:'해양 생태계의 심장을 되살린다',temp:-0.02,sea:-1,eco:+7,tag:'해양 복원'},
+        {text:'위성 기반 해수면 경보 시스템',icon:'🛰️',desc:'피해를 줄이되 근본 해결은 아님',temp:+0.03,sea:-1,eco:+1,tag:'모니터링'}
+      ],
+      citizen:[
+        {text:'해안 주민 연대 조직',icon:'🤲',desc:'이주민 지원 + 정부 압박',temp:0,sea:-1,eco:+3,tag:'연대'},
+        {text:'맹그로브 숲 복원 자원봉사',icon:'🌴',desc:'자연 방벽을 되살린다',temp:-0.03,sea:-3,eco:+6,tag:'자연 방벽'},
+        {text:'해양 쓰레기 수거 프로젝트',icon:'🧹',desc:'바다를 깨끗이, 생태계를 살린다',temp:-0.01,sea:0,eco:+4,tag:'해양 정화'}
+      ]
+    }
+  },
+  { // R7: 2080
+    year:2080, title:'생물 다양성의 마지막 보루',
+    narration:'전 세계 포유류의 25%가 멸종 위기에 처했습니다. 꿀벌 개체수가 70% 감소했습니다.',
+    bg:'🦋',
+    choices:{
+      president:[
+        {text:'전 국토 30%를 보호구역으로',icon:'🏞️',desc:'자연에게 공간을 돌려준다',temp:-0.05,sea:-1,eco:+8,tag:'보호구역'},
+        {text:'멸종위기종 복원 예산 3배',icon:'🐻‍❄️',desc:'직접적 종 보전에 집중',temp:0,sea:0,eco:+5,tag:'종 보전'},
+        {text:'생태계 서비스 경제 도입',icon:'💎',desc:'자연에 가격을 매겨 보호',temp:-0.03,sea:0,eco:+4,tag:'생태 경제'}
+      ],
+      scientist:[
+        {text:'유전자 은행 프로젝트',icon:'🧬',desc:'모든 생물의 DNA를 보존',temp:0,sea:0,eco:+3,tag:'유전자 보존'},
+        {text:'AI 생태계 모니터링 시스템',icon:'🤖',desc:'실시간으로 생태계 변화 감지',temp:-0.02,sea:0,eco:+5,tag:'AI 생태'},
+        {text:'인공 수분(受粉) 드론 개발',icon:'🐝',desc:'꿀벌을 대체하는 기술',temp:+0.02,sea:0,eco:+2,tag:'기술 대체'}
+      ],
+      citizen:[
+        {text:'야생화 정원 100만 개 만들기',icon:'🌸',desc:'도시 곳곳에 생태 공간을',temp:-0.02,sea:0,eco:+6,tag:'도시 생태'},
+        {text:'로컬 먹거리 운동 전국화',icon:'🥕',desc:'운송 탄소 줄이고 지역 생태 보호',temp:-0.05,sea:-1,eco:+4,tag:'로컬푸드'},
+        {text:'숲 입양 프로그램',icon:'🌲',desc:'시민이 직접 숲을 가꾼다',temp:-0.08,sea:-2,eco:+7,tag:'숲 지킴이'}
+      ]
+    }
+  },
+  { // R8: 2095 — 마지막
+    year:2095, title:'2100년을 앞둔 마지막 선택',
+    narration:'세기말이 다가옵니다. 당신의 마지막 결정이 2100년 지구의 모습을 확정합니다.',
+    bg:'🌅',
+    choices:{
+      president:[
+        {text:'세계 정부 기후 통합 거버넌스',icon:'🌐',desc:'전 인류가 하나로 기후 대응',temp:-0.2,sea:-5,eco:+5,tag:'글로벌 통합'},
+        {text:'우주 태양광 발전소 건설',icon:'🛸',desc:'우주에서 에너지를 가져온다',temp:-0.15,sea:-3,eco:+3,tag:'우주 에너지'},
+        {text:'현상 유지, 다음 세대에 맡긴다',icon:'😔',desc:'더 이상 할 수 있는 게 없다?',temp:+0.2,sea:+5,eco:-5,tag:'포기'}
+      ],
+      scientist:[
+        {text:'인공 광합성 공장 가동',icon:'🍃',desc:'식물보다 100배 빠른 CO2 흡수',temp:-0.25,sea:-5,eco:+4,tag:'인공 광합성'},
+        {text:'지구 자기장 보강 기술',icon:'🧲',desc:'우주 방사선 차단으로 대기 보호',temp:-0.1,sea:-2,eco:+3,tag:'지구 보호'},
+        {text:'테라포밍 기술로 사막 녹화',icon:'🏜️',desc:'사하라를 숲으로 바꾼다',temp:-0.15,sea:-3,eco:+8,tag:'사막 녹화'}
+      ],
+      citizen:[
+        {text:'전 세계 기후 시민 헌법 제정',icon:'📜',desc:'시민이 직접 기후 법을 만든다',temp:-0.1,sea:-3,eco:+5,tag:'시민 헌법'},
+        {text:'기후 세대 교육 혁명',icon:'🎓',desc:'모든 학교에 기후 필수 교육',temp:-0.05,sea:-1,eco:+4,tag:'교육 혁명'},
+        {text:'자연과 공존하는 마을 1만 개',icon:'🏡',desc:'탈성장 사회로의 전환',temp:-0.12,sea:-3,eco:+7,tag:'공존 사회'}
+      ]
+    }
+  }
+];
+
+// 랜덤 이벤트
+const EVENTS = [
+  {icon:'🌋',title:'화산 대폭발!',desc:'대규모 화산 폭발로 일시적 기온 하락이 발생했습니다. 하지만 농업 피해가 심각합니다.',temp:-0.3,sea:0,eco:-3},
+  {icon:'🧊',title:'빙하 붕괴 가속',desc:'남극 서부 빙상이 예상보다 빠르게 붕괴하고 있습니다.',temp:+0.1,sea:+8,eco:-4},
+  {icon:'🌿',title:'아마존 회복 신호',desc:'보호 정책의 효과로 아마존 열대우림이 서서히 회복되고 있습니다!',temp:-0.05,sea:-1,eco:+5},
+  {icon:'🏭',title:'중국, 탄소 제로 선언',desc:'세계 최대 배출국이 탄소 중립을 달성했습니다!',temp:-0.2,sea:-3,eco:+3},
+  {icon:'☄️',title:'메탄 폭탄 경고',desc:'영구동토층에서 대량의 메탄가스가 방출되기 시작했습니다.',temp:+0.3,sea:+3,eco:-5},
+  {icon:'🌊',title:'엘니뇨 슈퍼사이클',desc:'역사상 가장 강력한 엘니뇨가 발생했습니다.',temp:+0.15,sea:+2,eco:-3}
+];
+
+let timerInterval;
+let studentInfo = {name:'',grade:'',cls:'',num:''};
+
+// ===== 게임 로직 =====
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function startGame(){
+  studentInfo.name = document.getElementById('input-name').value.trim() || '익명';
+  studentInfo.grade = document.getElementById('input-grade').value.trim() || '';
+  studentInfo.cls = document.getElementById('input-class').value.trim() || '';
+  studentInfo.num = document.getElementById('input-number').value.trim() || '';
+  // 전체화면
+  document.documentElement.requestFullscreen().catch(()=>{});
+  show('s-role');
+}
+
+function selectRole(role){
+  state.role = role;
+  show('s-game');
+  nextRound();
+}
+
+function nextRound(){
+  if(state.round >= 8){ showResult(); return; }
+  
+  const sc = SCENARIOS[state.round];
+  state.year = sc.year;
+  
+  updateHUD();
+  
+  const ct = document.getElementById('g-content');
+  const choices = sc.choices[state.role];
+  
+  ct.innerHTML = `
+    <div class="max-w-3xl mx-auto">
+      <!-- 내레이션 -->
+      <div class="flex items-start gap-3 mb-6">
+        <div class="text-4xl">${sc.bg}</div>
+        <div>
+          <div class="dialogue-bubble narrator">
+            <div class="text-xs text-blue-400 font-bold mb-1">📡 뉴스 속보 — ${sc.year}년</div>
+            <div class="text-white font-bold text-lg mb-2">${sc.title}</div>
+            <div class="text-slate-300 text-sm leading-relaxed">${sc.narration}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 지구 상태 시각화 -->
+      <div class="text-center mb-6">
+        <div class="earth-visual mx-auto" style="background:${getEarthColor()};box-shadow:0 0 40px ${getEarthGlow()}">
+          <div class="earth-overlay" style="background:radial-gradient(circle at 30% 30%,rgba(255,255,255,0.2),transparent 60%)"></div>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:5rem">${getEarthEmoji()}</div>
+        </div>
+        <div class="text-xs text-slate-500 mt-2">${sc.year}년 지구의 상태</div>
+      </div>
+
+      <!-- 선택지 -->
+      <div class="mb-4">
+        <div class="text-sm text-slate-400 mb-3 flex items-center gap-2">
+          <span class="text-lg">${ROLES[state.role].icon}</span>
+          <span>${ROLES[state.role].name}으로서 선택하세요</span>
+        </div>
+        <div class="space-y-3" id="choices-area">
+          ${choices.map((c,i)=>`
+            <button onclick="makeChoice(${i})" class="choice-btn w-full flex items-start gap-4" id="choice-${i}">
+              <div class="icon flex-shrink-0">${c.icon}</div>
+              <div class="flex-1">
+                <div class="font-bold text-white text-sm md:text-base">${c.text}</div>
+                <div class="text-slate-400 text-xs mt-1">${c.desc}</div>
+              </div>
+              <div class="text-slate-600 text-xl flex-shrink-0">→</div>
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+  
+  startTimer();
+}
+
+function makeChoice(idx){
+  clearInterval(timerInterval);
+  
+  const sc = SCENARIOS[state.round];
+  const choice = sc.choices[state.role][idx];
+  
+  // 스탯 적용
+  state.temp = Math.max(0, state.temp + choice.temp);
+  state.sea = Math.max(0, state.sea + choice.sea);
+  state.eco = Math.min(100, Math.max(0, state.eco + choice.eco));
+  
+  // 기록
+  state.choices.push({year:sc.year, text:choice.text, icon:choice.icon, tag:choice.tag});
+  
+  // 선택 표시
+  document.querySelectorAll('.choice-btn').forEach((b,i)=>{
+    if(i===idx){b.style.borderColor='#60a5fa';b.style.background='rgba(59,130,246,0.2)';}
+    else{b.style.opacity='0.3';b.style.pointerEvents='none';}
+  });
+  
+  state.round++;
+  
+  // 50% 확률로 랜덤 이벤트
+  setTimeout(()=>{
+    if(Math.random() < 0.4 && state.round < 8){
+      triggerEvent();
+    } else {
+      nextRound();
+    }
+  }, 800);
+}
+
+function triggerEvent(){
+  const ev = EVENTS[Math.floor(Math.random()*EVENTS.length)];
+  
+  state.temp = Math.max(0, state.temp + ev.temp);
+  state.sea = Math.max(0, state.sea + ev.sea);
+  state.eco = Math.min(100, Math.max(0, state.eco + ev.eco));
+  state.events.push(ev.title);
+  
+  document.getElementById('ev-icon').textContent = ev.icon;
+  document.getElementById('ev-title').textContent = ev.title;
+  document.getElementById('ev-desc').textContent = ev.desc;
+  document.getElementById('ev-impact').innerHTML = `
+    <div class="grid grid-cols-3 gap-3 text-center text-sm">
+      <div><span class="${ev.temp<0?'text-green-400':'text-red-400'} font-bold">${ev.temp>0?'+':''}${ev.temp}°C</span><div class="text-xs text-slate-500">기온</div></div>
+      <div><span class="${ev.sea<0?'text-green-400':'text-red-400'} font-bold">${ev.sea>0?'+':''}${ev.sea}cm</span><div class="text-xs text-slate-500">해수면</div></div>
+      <div><span class="${ev.eco>0?'text-green-400':'text-red-400'} font-bold">${ev.eco>0?'+':''}${ev.eco}%</span><div class="text-xs text-slate-500">생태계</div></div>
+    </div>
+  `;
+  
+  show('s-event');
+}
+
+function continueGame(){ show('s-game'); nextRound(); }
+
+function startTimer(){
+  let t = 30;
+  const el = document.getElementById('g-timer');
+  el.textContent = t;
+  el.className = 'timer-ring';
+  clearInterval(timerInterval);
+  timerInterval = setInterval(()=>{
+    t--;
+    el.textContent = t;
+    if(t<=10) el.className='timer-ring warning';
+    if(t<=5) el.className='timer-ring danger';
+    if(t<=0){
+      clearInterval(timerInterval);
+      // 시간 초과 → 랜덤 선택
+      const choices = SCENARIOS[state.round].choices[state.role];
+      makeChoice(Math.floor(Math.random()*choices.length));
+    }
+  },1000);
+}
+
+function updateHUD(){
+  document.getElementById('g-round').textContent = state.round+1;
+  document.getElementById('g-year').textContent = state.year;
+  document.getElementById('g-progress').style.width = (state.round/8*100)+'%';
+  document.getElementById('g-role-icon').textContent = ROLES[state.role].icon;
+  
+  document.getElementById('g-temp-val').textContent = '+'+state.temp.toFixed(1)+'°C';
+  document.getElementById('g-temp-bar').style.width = Math.min(100,state.temp/5*100)+'%';
+  
+  document.getElementById('g-sea-val').textContent = '+'+Math.round(state.sea)+'cm';
+  document.getElementById('g-sea-bar').style.width = Math.min(100,state.sea/200*100)+'%';
+  
+  document.getElementById('g-eco-val').textContent = Math.round(state.eco)+'%';
+  document.getElementById('g-eco-bar').style.width = state.eco+'%';
+}
+
+function getEarthColor(){
+  if(state.temp < 1.5) return 'linear-gradient(135deg,#1d4ed8,#059669)';
+  if(state.temp < 2.5) return 'linear-gradient(135deg,#2563eb,#d97706)';
+  if(state.temp < 3.5) return 'linear-gradient(135deg,#dc2626,#d97706)';
+  return 'linear-gradient(135deg,#7f1d1d,#451a03)';
+}
+function getEarthGlow(){
+  if(state.temp < 1.5) return 'rgba(34,197,94,0.3)';
+  if(state.temp < 2.5) return 'rgba(234,179,8,0.3)';
+  return 'rgba(239,68,68,0.4)';
+}
+function getEarthEmoji(){
+  if(state.eco > 70) return '🌍';
+  if(state.eco > 40) return '🌎';
+  return '💀';
+}
+
+// ===== 결과 =====
+function showResult(){
+  clearInterval(timerInterval);
+  
+  // 등급 계산
+  const score = (100-state.temp*20) + (100-state.sea/2) + state.eco;
+  let grade, gradeIcon, gradeDesc, headerBg;
+  
+  if(score >= 250){
+    grade='S등급: 지구의 수호자';gradeIcon='🌟';gradeDesc='놀랍습니다! 당신의 선택 덕분에 지구는 희망을 되찾았습니다.';headerBg='linear-gradient(135deg,#059669,#0d9488)';
+  } else if(score >= 200){
+    grade='A등급: 현명한 관리자';gradeIcon='🌿';gradeDesc='좋은 선택들이 모여 의미 있는 변화를 만들었습니다.';headerBg='linear-gradient(135deg,#2563eb,#059669)';
+  } else if(score >= 150){
+    grade='B등급: 위태로운 균형';gradeIcon='⚖️';gradeDesc='아슬아슬하지만 그래도 버텨냈습니다. 더 나을 수 있었을까요?';headerBg='linear-gradient(135deg,#d97706,#2563eb)';
+  } else if(score >= 100){
+    grade='C등급: 후회의 미래';gradeIcon='🌫️';gradeDesc='돌이킬 수 없는 변화가 시작되었습니다. 다음 세대가 걱정됩니다.';headerBg='linear-gradient(135deg,#dc2626,#d97706)';
+  } else {
+    grade='D등급: 디스토피아';gradeIcon='🔥';gradeDesc='지구는 더 이상 우리가 알던 행성이 아닙니다.';headerBg='linear-gradient(135deg,#7f1d1d,#dc2626)';
+  }
+  
+  document.getElementById('res-header').style.background = headerBg;
+  document.getElementById('res-subtitle').textContent = `${studentInfo.grade?studentInfo.grade+'학년 ':''}${studentInfo.cls?studentInfo.cls+'반 ':''}${studentInfo.name} · ${ROLES[state.role].name}로서의 75년`;
+  document.getElementById('res-grade-icon').textContent = gradeIcon;
+  document.getElementById('res-grade').textContent = grade;
+  document.getElementById('res-grade-desc').textContent = gradeDesc;
+  
+  document.getElementById('res-temp').textContent = '+'+state.temp.toFixed(1)+'°C';
+  document.getElementById('res-sea').textContent = '+'+Math.round(state.sea)+'cm';
+  document.getElementById('res-eco').textContent = Math.round(state.eco)+'%';
+  
+  // 타임라인
+  const tl = document.getElementById('res-timeline');
+  tl.innerHTML = state.choices.map(c=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f8fafc;border-radius:10px;font-size:0.8rem;">
+      <span style="font-size:1.3rem">${c.icon}</span>
+      <div style="flex:1"><b>${c.year}년</b> ${c.text}<br><span style="color:#6b7280;font-size:0.7rem">#${c.tag}</span></div>
+    </div>
+  `).join('');
+  
+  // 과학 데이터 비교
+  document.getElementById('res-science').innerHTML = `
+    <p>• IPCC 보고서 기준, 1.5°C 상승 시 산호초 70~90% 소멸</p>
+    <p>• 2°C 상승 시 해수면 약 50cm 상승 예측 (2100년 기준)</p>
+    <p>• 현재 추세(2025년 기준) 유지 시 2100년 +2.7°C 예상</p>
+    <p>• <b>당신의 시뮬레이션 결과: +${state.temp.toFixed(1)}°C / 해수면 +${Math.round(state.sea)}cm</b></p>
+    <p style="margin-top:6px;color:#2563eb">→ ${state.temp <= 1.5 ? '파리 협정 목표(1.5°C)를 달성했습니다! 🎉' : state.temp <= 2.0 ? '2°C 이내로 억제했습니다. 양호합니다.' : '위험 수준을 넘었습니다. 다시 도전해보세요!'}</p>
+  `;
+  
+  document.getElementById('res-date').textContent = new Date().toLocaleDateString('ko-KR') + ' 시뮬레이션';
+  
+  show('s-result');
+  // 미션 완료 → 전체화면 해제
+  missionComplete = true;
+  if(document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+}
+
+// ===== PDF(이미지) 저장 =====
+function savePDF(){
+  const card = document.getElementById('result-card');
+  const btn = document.querySelector('#s-result .flex.flex-wrap');
+  btn.style.display='none';
+  
+  html2canvas(card, {
+    scale:2, backgroundColor:'#ffffff',
+    useCORS:true, logging:false
+  }).then(canvas=>{
+    btn.style.display='';
+    const link = document.createElement('a');
+    link.download = `기후변화시뮬레이터_결과_${new Date().toISOString().slice(0,10)}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }).catch(()=>{
+    btn.style.display='';
+    alert('저장에 실패했습니다. 스크린샷을 이용해주세요.');
+  });
+}
+// ===== 블로그 복귀 =====
+function exitToBlog(){
+  missionComplete = true;
+  if(document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+  if(document.referrer && document.referrer.includes('blogspot')){
+    window.location.href = document.referrer;
+  } else {
+    window.history.back();
+  }
+}
+
+// ===== 전체화면 가드 =====
+let missionComplete = false;
+let isReEntering = false;
+
+function reEnterFullscreen(){
+  isReEntering = true;
+  document.getElementById('fs-warning').style.display = 'none';
+  document.documentElement.requestFullscreen().catch(()=>{
+    isReEntering = false;
+  });
+}
+
+document.addEventListener('fullscreenchange', () => {
+  if(!document.fullscreenElement && !missionComplete && !isReEntering){
+    // 전체화면에서 빠져나왔고 미션이 끝나지 않았으면 경고
+    const currentScreen = document.querySelector('.screen.active');
+    if(currentScreen && currentScreen.id !== 's-intro'){
+      document.getElementById('fs-warning').style.display = 'flex';
+    }
+  }
+  if(document.fullscreenElement){
+    isReEntering = false;
+    document.getElementById('fs-warning').style.display = 'none';
+  }
+});
+</script>
+</body>
+</html>

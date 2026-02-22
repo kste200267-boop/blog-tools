@@ -5,8 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>핵심 개념 정리 — 자산 관리와 금융 생활</title>
   <link rel="stylesheet" href="style.css">
+<style>
+/* 전체화면 이탈 경고 */
+.fs-warning-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.92);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;animation:fadeIn .3s}
+.fs-warning-overlay .warn-icon{font-size:4rem}
+.fs-warning-overlay .warn-title{font-size:1.5rem;font-weight:900;color:#fbbf24}
+.fs-warning-overlay .warn-msg{font-size:1rem;color:#94a3b8;text-align:center;max-width:320px;line-height:1.6}
+.fs-warning-overlay .warn-btn{padding:14px 40px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);border:none;border-radius:12px;color:#fff;font-size:1.1rem;font-weight:700;cursor:pointer;transition:transform .2s}
+.fs-warning-overlay .warn-btn:hover{transform:scale(1.05)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.blog-badge{position:fixed;bottom:12px;right:12px;z-index:100;background:rgba(15,23,42,0.85);border:1px solid #334155;border-radius:10px;padding:6px 14px;font-size:0.75rem;color:#94a3b8;text-decoration:none;backdrop-filter:blur(8px);transition:all .3s;display:flex;align-items:center;gap:6px}
+.blog-badge:hover{background:rgba(59,130,246,0.2);border-color:#3b82f6;color:#60a5fa}
+/* 학습 시작 오버레이 */
+.start-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;text-align:center;padding:24px}
+.start-overlay .start-icon{font-size:5rem;animation:float 2.5s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.start-overlay .start-title{font-size:1.6rem;font-weight:900;color:#f1f5f9;line-height:1.3}
+.start-overlay .start-sub{font-size:0.95rem;color:#94a3b8;max-width:340px;line-height:1.5}
+.start-overlay .start-unit{font-size:0.8rem;color:#64748b;border:1px solid #334155;border-radius:20px;padding:4px 14px;margin-bottom:4px}
+.start-overlay .start-btn{margin-top:12px;padding:16px 48px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);border:none;border-radius:14px;color:#fff;font-size:1.15rem;font-weight:700;cursor:pointer;transition:all .3s;box-shadow:0 4px 20px rgba(59,130,246,0.4)}
+.start-overlay .start-btn:hover{transform:scale(1.05);box-shadow:0 6px 30px rgba(59,130,246,0.5)}
+
+</style>
 </head>
 <body>
+<!-- 학습 시작 오버레이 -->
+<div class="start-overlay" id="start-overlay">
+  <div class="start-unit">자산 관리와 금융 생활</div>
+  <div class="start-icon">📖</div>
+  <div class="start-title">핵심 개념 정리</div>
+  <div class="start-sub">수익성·안전성·유동성·포트폴리오 쉬운 문장 정리</div>
+  <button class="start-btn" onclick="startLearning()">🚀 학습 시작</button>
+</div>
   <header class="site-header"><div class="container"><a href="index.html" class="site-title"><span class="logo-icon">T</span>교사 실무 자동화 센터</a><button class="btn" onclick="App.goFullscreen()">🖥️</button></div></header>
   <div class="container" style="padding-top:4px;padding-bottom:60px;">
     <nav class="breadcrumb" id="breadcrumb"></nav>
@@ -62,5 +92,38 @@
   <footer class="site-footer"><div class="container">교사 실무 자동화 센터</div></footer>
   <script src="app.js"></script>
   <script>App.renderBreadcrumb([{label:'통합사회',href:'hub-social.html'},{label:'자산 관리와 금융 생활',href:'hub-unit-economy.html'},{label:'핵심 개념 정리'}]);</script>
+<!-- 전체화면 이탈 경고 -->
+<div class="fs-warning-overlay" id="fs-warning" style="display:none">
+  <div class="warn-icon">⚠️</div>
+  <div class="warn-title">학습 진행 중입니다!</div>
+  <div class="warn-msg">전체화면을 유지해야 학습을 계속할 수 있습니다.<br>다시 전체화면으로 돌아가세요.</div>
+  <button class="warn-btn" onclick="reEnterFullscreen()">🔒 전체화면으로 돌아가기</button>
+</div>
+<a href="https://ssam-ssong.blogspot.com" target="_blank" class="blog-badge">✏️ 풀어쓰는 사회학</a>
+<script>
+// 학습 시작 버튼 → 전체화면 진입
+function startLearning(){
+  document.documentElement.requestFullscreen().catch(()=>{});
+  document.getElementById('start-overlay').style.display='none';
+}
+
+// 전체화면 가드
+let missionComplete = false;
+let isReEntering = false;
+function reEnterFullscreen(){
+  isReEntering = true;
+  document.getElementById('fs-warning').style.display = 'none';
+  document.documentElement.requestFullscreen().catch(()=>{isReEntering=false;});
+}
+document.addEventListener('fullscreenchange', () => {
+  if(!document.fullscreenElement && !missionComplete && !isReEntering){
+    document.getElementById('fs-warning').style.display = 'flex';
+  }
+  if(document.fullscreenElement){
+    isReEntering = false;
+    document.getElementById('fs-warning').style.display = 'none';
+  }
+});
+</script>
 </body>
 </html>

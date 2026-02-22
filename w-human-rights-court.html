@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>⚖️ 인권 법정 — 당신이 판사입니다</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:#1a1a2e;color:#e2e8f0;min-height:100vh;overflow-x:hidden}
+.jua{font-family:'Jua',sans-serif}
+.screen{display:none;animation:fadeUp .5s ease-out forwards;min-height:100vh}
+.screen.active{display:flex;flex-direction:column}
+@keyframes fadeUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(139,92,246,0.3)}50%{box-shadow:0 0 40px rgba(139,92,246,0.6)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+.start-bg{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%)}
+.card{background:rgba(30,41,59,0.8);border:2px solid #334155;border-radius:1rem;padding:1.2rem;transition:all .3s;backdrop-filter:blur(10px)}
+.card:hover{border-color:#8b5cf6;transform:translateY(-2px)}
+.card.clickable{cursor:pointer}
+.card.selected{border-color:#8b5cf6;background:rgba(139,92,246,0.15)}
+.plaintiff{border-left:4px solid #3b82f6;background:rgba(59,130,246,0.08)}
+.defendant{border-left:4px solid #ef4444;background:rgba(239,68,68,0.08)}
+.evidence{border-left:4px solid #f59e0b;background:rgba(245,158,11,0.08)}
+.verdict-btn{flex:1;padding:1.2rem;border-radius:1rem;cursor:pointer;transition:all .3s;text-align:center;font-weight:700;border:2px solid transparent}
+.verdict-btn:hover{transform:translateY(-3px)}
+.v-plaintiff{background:rgba(59,130,246,0.15);border-color:#3b82f6;color:#93c5fd}.v-plaintiff:hover{background:rgba(59,130,246,0.25)}
+.v-defendant{background:rgba(239,68,68,0.15);border-color:#ef4444;color:#fca5a5}.v-defendant:hover{background:rgba(239,68,68,0.25)}
+.v-compromise{background:rgba(245,158,11,0.15);border-color:#f59e0b;color:#fcd34d}.v-compromise:hover{background:rgba(245,158,11,0.25)}
+.progress-bar{height:6px;background:#1e293b;border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#8b5cf6,#3b82f6);border-radius:99px;transition:width .5s}
+.result-card{background:white;color:#1e293b;border-radius:1.5rem;max-width:580px;margin:0 auto;overflow:hidden}
+.reason-btn{background:rgba(30,41,59,0.8);border:1.5px solid #475569;border-radius:.8rem;padding:.8rem 1rem;cursor:pointer;transition:all .2s;text-align:left;font-size:.85rem}
+.reason-btn:hover{border-color:#8b5cf6;background:rgba(139,92,246,0.1)}
+.reason-btn.selected{border-color:#8b5cf6;background:rgba(139,92,246,0.2)}
+@media(max-width:640px){.verdict-btn{padding:.8rem;font-size:.85rem}}
+
+/* 전체화면 이탈 경고 오버레이 */
+.fs-warning-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.92);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;animation:fadeIn .3s}
+.fs-warning-overlay .warn-icon{font-size:4rem;animation:shake .5s}
+.fs-warning-overlay .warn-title{font-size:1.5rem;font-weight:900;color:#fbbf24}
+.fs-warning-overlay .warn-msg{font-size:1rem;color:#94a3b8;text-align:center;max-width:320px;line-height:1.6}
+.fs-warning-overlay .warn-btn{padding:14px 40px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);border:none;border-radius:12px;color:#fff;font-size:1.1rem;font-weight:700;cursor:pointer;transition:transform .2s}
+.fs-warning-overlay .warn-btn:hover{transform:scale(1.05)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+/* 블로그 링크 배지 */
+.blog-badge{position:fixed;bottom:12px;right:12px;z-index:100;background:rgba(15,23,42,0.85);border:1px solid #334155;border-radius:10px;padding:6px 14px;font-size:0.75rem;color:#94a3b8;text-decoration:none;backdrop-filter:blur(8px);transition:all .3s;display:flex;align-items:center;gap:6px}
+.blog-badge:hover{background:rgba(59,130,246,0.2);border-color:#3b82f6;color:#60a5fa}
+</style>
+</head>
+<body>
+
+<!-- START -->
+<div class="screen active start-bg" id="s-start">
+  <div class="flex-1 flex flex-col items-center justify-center p-6 text-center">
+    <div style="font-size:6rem;animation:float 3s ease-in-out infinite">⚖️</div>
+    <h1 class="jua text-4xl md:text-5xl text-white mb-3 mt-4">인권 법정</h1>
+    <p class="text-purple-200 text-lg mb-1">당신이 판사입니다</p>
+    <p class="text-slate-400 text-sm mb-6 max-w-sm">5개의 실제 인권 사건을 심리합니다. 증거를 검토하고, 판결을 내리세요. 정답은 없습니다.</p>
+    <div class="w-full max-w-xs space-y-3 mb-6">
+      <div class="flex gap-2">
+        <input type="text" id="input-grade" placeholder="학년" maxlength="1" class="flex-1 text-center py-3 rounded-xl bg-white/10 text-white placeholder-slate-500 border border-white/20 font-bold outline-none focus:border-purple-400">
+        <input type="text" id="input-class" placeholder="반" maxlength="2" class="flex-1 text-center py-3 rounded-xl bg-white/10 text-white placeholder-slate-500 border border-white/20 font-bold outline-none focus:border-purple-400">
+        <input type="text" id="input-number" placeholder="번호" maxlength="2" class="flex-1 text-center py-3 rounded-xl bg-white/10 text-white placeholder-slate-500 border border-white/20 font-bold outline-none focus:border-purple-400">
+      </div>
+      <input type="text" id="input-name" placeholder="이름을 입력하세요" maxlength="10" class="w-full text-center py-3 rounded-xl bg-white/10 text-white placeholder-slate-500 border border-white/20 font-bold text-lg outline-none focus:border-purple-400">
+    </div>
+    <button onclick="startGame()" class="py-4 px-12 bg-purple-600 hover:bg-purple-500 text-white rounded-2xl font-bold text-lg transition-all hover:scale-105 shadow-lg" style="animation:glow 2s infinite">
+      🔨 재판 시작
+    </button>
+    <p class="text-slate-600 text-xs mt-4">⏱ 약 12~15분 · 5건의 사건 심리</p>
+  </div>
+  <div class="text-center pb-4 text-slate-600 text-xs">통합사회 IV. 인권 보장과 헌법 · [10통사2-01-01]</div>
+</div>
+
+<!-- CASE SCREEN -->
+<div class="screen" id="s-case">
+  <div class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-700 px-4 py-3">
+    <div class="max-w-2xl mx-auto">
+      <div class="flex justify-between items-center mb-2 text-sm">
+        <span class="text-purple-400 font-bold">📋 사건 <span id="c-num">1</span>/5</span>
+        <span class="text-slate-500" id="c-right-label"></span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="c-progress" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="flex-1 p-4 pb-24" id="c-content"></div>
+</div>
+
+<!-- RESULT -->
+<div class="screen" id="s-result">
+  <div class="flex-1 p-4 py-8">
+    <div class="result-card" id="result-card">
+      <div class="p-6 text-center" id="res-header" style="background:linear-gradient(135deg,#7c3aed,#4f46e5)">
+        <div class="text-5xl mb-2" id="res-icon">⚖️</div>
+        <h1 class="jua text-2xl text-white">판사 성향 분석</h1>
+        <p class="text-purple-200 text-sm" id="res-subtitle"></p>
+      </div>
+      <div class="p-5" id="res-body"></div>
+    </div>
+    <div class="flex flex-wrap justify-center gap-3 mt-6 max-w-lg mx-auto">
+      <button onclick="saveImg()" class="px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-xl font-bold transition-all hover:scale-105">📄 결과 저장</button>
+      <button onclick="location.reload()" class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-bold transition-all hover:scale-105">🔄 다시 하기</button>
+      <button onclick="exitToBlog()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all hover:scale-105">📝 블로그로 돌아가기</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let stu={name:'',grade:'',cls:'',num:''};
+let caseIdx=0, verdicts=[], phase='overview';
+// scores: rights=인권옹호, order=질서중시, balance=균형
+let scores={rights:0,order:0,balance:0};
+
+const CASES=[
+  {
+    title:'학교 두발 자유 논쟁',emoji:'💇',
+    category:'자유권 vs 교육 목적',
+    rightType:'자유권(신체의 자유)',
+    overview:'A고등학교 학생회가 "두발 규제를 폐지해달라"는 청원을 제출했습니다. 학교는 "면학 분위기를 위해 필요하다"며 거부했습니다.',
+    plaintiff:{name:'학생회',icon:'🧑‍🎓',args:['헌법 제10조 행복추구권, 자기결정권의 침해입니다.','UN 아동권리협약은 아동의 표현의 자유를 보장합니다.']},
+    defendant:{name:'학교 측',icon:'🏫',args:['학교는 교육 목적상 합리적 범위 내에서 규칙을 정할 수 있습니다.','두발 자유가 학습 환경에 미치는 영향을 고려해야 합니다.']},
+    evidences:[
+      {icon:'📊',title:'학생 설문조사',desc:'재학생 78%가 "두발 규제가 학습과 무관하다"고 응답'},
+      {icon:'📜',title:'학생인권조례',desc:'서울·경기 등 학생인권조례는 두발 규제를 금지하고 있음'},
+      {icon:'🏫',title:'해외 사례',desc:'대부분의 OECD 국가에서 공립학교 두발 규제 없음'}
+    ],
+    reasons:{
+      plaintiff:['학생도 기본권의 주체이며, 신체에 대한 자기결정권은 핵심적 인권이다','교육 목적과 두발 사이에 합리적 인과관계가 입증되지 않았다','학생인권조례의 취지를 존중해야 한다'],
+      defendant:['학교는 교육 공동체로서 자율적 규칙 제정권이 있다','집단생활에서 일정한 규율은 교육적으로 필요하다','표현의 자유도 공동체 질서 속에서 제한될 수 있다'],
+      compromise:['두발 자유를 원칙으로 하되, 극단적 경우에 한해 교육적 지도를 허용한다','학생 의견을 반영한 최소한의 가이드라인을 합의한다','단계적으로 자유를 확대하며 학습 영향을 모니터링한다']
+    },
+    realResult:'대부분의 학생인권조례 시행 지역에서 두발 자유가 보장되었으며, 학습 성취도에 유의미한 변화는 관찰되지 않았습니다.',
+    knowledge:'기본권 중 <b>자유권</b>은 국가 권력으로부터 개인의 자유를 보호하는 권리입니다. 그러나 기본권도 <b>타인의 권리, 공공복리, 사회 질서</b>를 위해 제한될 수 있습니다(헌법 제37조 제2항). 핵심은 "제한이 합리적이고 비례적인가"입니다.'
+  },
+  {
+    title:'아파트 CCTV 논란',emoji:'📹',
+    category:'사생활권 vs 안전권',
+    rightType:'사생활의 비밀과 자유',
+    overview:'B아파트 입주민이 복도와 엘리베이터에 고화질 CCTV를 설치하자고 제안했습니다. 일부 주민은 "사생활 침해"라며 강하게 반대합니다.',
+    plaintiff:{name:'CCTV 반대 주민',icon:'🙅',args:['주거 공간 근처 CCTV는 사생활의 자유를 침해합니다.','녹화 영상이 유출되면 심각한 2차 피해가 발생합니다.']},
+    defendant:{name:'CCTV 찬성 주민',icon:'👮',args:['범죄 예방과 주민 안전을 위해 CCTV는 필수입니다.','공용 공간이므로 완전한 사적 공간으로 볼 수 없습니다.']},
+    evidences:[
+      {icon:'📊',title:'범죄율 통계',desc:'CCTV 설치 아파트의 범죄 발생률이 평균 35% 감소'},
+      {icon:'⚖️',title:'개인정보보호법',desc:'CCTV 설치 시 안내판 부착, 영상 보관 기간 제한 등 규정 존재'},
+      {icon:'🏠',title:'입주민 투표',desc:'찬성 62% vs 반대 38% (과반수 찬성이지만 상당수 반대)'}
+    ],
+    reasons:{
+      plaintiff:['사생활의 비밀과 자유는 헌법이 보장하는 기본권이다','범죄 예방 효과가 있더라도 더 침해가 적은 수단이 존재한다','소수 주민의 기본권도 다수결로 침해할 수 없다'],
+      defendant:['공용 공간에서의 합리적 CCTV 운영은 사생활 침해에 해당하지 않는다','주민 안전이라는 공공이익이 사생활 제한보다 크다','법적 절차를 준수하면 적법한 설치가 가능하다'],
+      compromise:['CCTV를 설치하되, 최소한의 범위·해상도로 제한한다','영상 접근 권한을 엄격히 관리하고 보관 기간을 30일로 제한한다','반대 주민의 층에는 사각지대를 두는 등 절충안을 마련한다']
+    },
+    realResult:'대부분의 아파트에서 CCTV가 설치되었지만, 개인정보보호법에 따라 운영 규정을 엄격히 적용하고 있습니다. 영상 유출 시 형사처벌 대상입니다.',
+    knowledge:'<b>사생활의 비밀과 자유</b>(헌법 제17조)와 <b>안전할 권리</b>가 충돌하는 사례입니다. 이처럼 기본권끼리 충돌할 때는 <b>이익형량</b>(어느 쪽 이익이 더 큰지 비교)과 <b>비례의 원칙</b>(목적 달성에 필요한 최소한의 제한인지)으로 판단합니다.'
+  },
+  {
+    title:'온라인 혐오 표현 처벌',emoji:'💬',
+    category:'표현의 자유 vs 인격권',
+    rightType:'표현의 자유 / 인격권',
+    overview:'인터넷 커뮤니티에서 특정 집단(장애인/이주민/성소수자)에 대한 혐오 발언이 반복되고 있습니다. 시민단체가 "혐오 표현 처벌법"을 요구합니다.',
+    plaintiff:{name:'시민단체',icon:'📢',args:['혐오 표현은 소수자에게 직접적 정신적 피해를 줍니다.','표현의 자유에도 한계가 있으며, 차별 선동은 보호 대상이 아닙니다.']},
+    defendant:{name:'표현 자유 옹호측',icon:'🗽',args:['불쾌한 표현도 표현의 자유로 보호해야 합니다. 규제는 검열의 시작입니다.','혐오의 기준이 모호해 남용될 위험이 큽니다.']},
+    evidences:[
+      {icon:'🌍',title:'해외 입법례',desc:'독일·프랑스·캐나다 등은 혐오 표현 처벌법이 존재. 미국은 없음'},
+      {icon:'📊',title:'피해 실태 조사',desc:'혐오 표현 경험자 72%가 우울·불안 증상, 23%가 자해 충동 경험'},
+      {icon:'⚖️',title:'헌법재판소 판례',desc:'표현의 자유도 타인의 인격권을 침해하는 경우 제한 가능(헌재 결정)'}
+    ],
+    reasons:{
+      plaintiff:['인간의 존엄성은 표현의 자유보다 상위 가치이다','혐오 표현은 차별을 정당화하고 폭력으로 이어질 수 있다','소수자 보호는 민주주의의 핵심 의무이다'],
+      defendant:['표현 규제는 민주주의의 근간을 흔든다','불쾌한 표현과 위험한 표현의 경계가 불분명하다','법적 규제보다 교육과 사회적 합의가 먼저다'],
+      compromise:['직접적 차별 선동만 처벌하고 단순 의견 표현은 교육 대상으로 한다','온라인 플랫폼의 자율 규제를 강화하되 법적 최소 기준을 설정한다','혐오 표현 피해자 구제 절차를 먼저 마련한다']
+    },
+    realResult:'한국은 2025년 현재 혐오 표현 처벌법이 없지만, 국가인권위원회는 차별금지법 제정을 지속적으로 권고하고 있습니다. 국제사회에서는 "증오 선동"에 대한 규제가 확대 추세입니다.',
+    knowledge:'<b>표현의 자유</b>는 민주주의의 핵심 기본권이지만, 절대적이지 않습니다. 특히 <b>인격권</b>(인간의 존엄성)과 충돌할 때 어디까지 보호할지가 쟁점입니다. 국가인권위원회는 인권 침해를 조사·구제하는 독립 기관입니다.'
+  },
+  {
+    title:'제주 난민 수용 논쟁',emoji:'🚢',
+    category:'인간 존엄성 vs 국가 안보',
+    rightType:'인간의 존엄성 / 사회권',
+    overview:'내전을 피해 500명의 난민이 제주도에 도착했습니다. 난민 인정 심사를 받고 있지만, 일부 지역 주민이 "수용 반대" 시위를 벌이고 있습니다.',
+    plaintiff:{name:'난민 지원 단체',icon:'🕊️',args:['난민 보호는 국제법상 의무이며, 인간의 존엄성은 국적과 무관합니다.','한국은 난민협약 가입국으로서 난민 심사를 성실히 해야 합니다.']},
+    defendant:{name:'수용 반대 주민',icon:'🏘️',args:['지역 사회의 안전과 질서가 위협받고 있습니다.','제한된 사회적 자원으로 자국민도 어려운 상황입니다.']},
+    evidences:[
+      {icon:'📜',title:'난민협약',desc:'1951년 난민협약: 박해를 피해 온 사람을 강제 송환하지 못한다(강제송환 금지 원칙)'},
+      {icon:'📊',title:'한국 난민 현황',desc:'한국 난민 인정률 약 1%(OECD 최하위). 심사 대기 기간 평균 3년'},
+      {icon:'🏠',title:'지역 영향 조사',desc:'난민 수용 지역에서 범죄율 유의미한 증가는 관찰되지 않음(법무부 통계)'}
+    ],
+    reasons:{
+      plaintiff:['인간의 존엄성은 보편적이며, 국적이나 체류 자격과 무관하다','난민 보호는 국제 사회의 약속이자 인류애의 표현이다','편견이 아닌 객관적 데이터에 기반해 판단해야 한다'],
+      defendant:['국가는 국민의 안전을 최우선으로 보호할 의무가 있다','급격한 유입은 지역 사회에 부담을 줄 수 있다','심사 절차의 엄격함이 곧 난민을 거부하는 것은 아니다'],
+      compromise:['난민 심사를 신속하고 공정하게 진행하되, 지역 사회 지원책을 병행한다','난민의 기본적 인권을 보장하면서 단계적 사회 통합 프로그램을 운영한다','중앙 정부가 지역에 재정·행정 지원을 확대한다']
+    },
+    realResult:'2018년 제주 예멘 난민 사태 당시 549명 중 2명만 난민 인정, 412명은 인도적 체류 허가를 받았습니다. 국민 청원 71만 명이 반대했지만, 정부는 국제법 준수 원칙을 유지했습니다.',
+    knowledge:'<b>인간의 존엄성</b>은 모든 인권의 근본이며 국적에 관계없이 보장됩니다. <b>난민 보호</b>는 세계인권선언 제14조와 난민협약에 규정되어 있습니다. 한편 국가는 <b>국민의 안전을 보호할 의무</b>도 있어, 두 가치 사이의 균형이 쟁점이 됩니다.'
+  },
+  {
+    title:'초콜릿과 아동 노동',emoji:'🍫',
+    category:'경제적 권리 vs 아동 인권',
+    rightType:'아동의 권리 / 사회권',
+    overview:'글로벌 초콜릿 기업 C사의 카카오 농장에서 아동 노동이 발견되었습니다. 아이들은 학교에 가지 못하고 하루 10시간 이상 일합니다.',
+    plaintiff:{name:'국제 아동 보호 단체',icon:'👦',args:['아동 노동은 명백한 인권 침해이며, 기업은 공급망 관리 책임이 있습니다.','소비자도 아동 노동 제품을 거부할 윤리적 책임이 있습니다.']},
+    defendant:{name:'C사 및 현지 농가',icon:'🏭',args:['현지 경제 사정상 가족 모두 일해야 생존할 수 있습니다.','기업이 철수하면 오히려 현지 경제가 붕괴됩니다.']},
+    evidences:[
+      {icon:'📊',title:'아동 노동 실태',desc:'서아프리카 카카오 농장 아동 노동자 약 156만 명(2020년 기준)'},
+      {icon:'💰',title:'경제 구조',desc:'카카오 원두 가격의 6%만 농가에 돌아감. 나머지는 유통·가공·판매'},
+      {icon:'🏷️',title:'공정무역 인증',desc:'공정무역 인증 초콜릿은 농가 수입 30% 증가, 아동 노동 감소 효과 확인'}
+    ],
+    reasons:{
+      plaintiff:['아동의 교육받을 권리와 건강할 권리는 어떤 경제적 이유로도 침해할 수 없다','글로벌 기업은 공급망 전체에서 인권을 존중할 의무가 있다','소비자 불매운동은 정당한 시민 행동이다'],
+      defendant:['현지 경제 현실을 무시한 일방적 규제는 역효과를 낳을 수 있다','기업 철수 시 일자리 상실로 오히려 빈곤이 심화된다','문제의 근본은 국제 원자재 가격 구조의 불공정함이다'],
+      compromise:['아동 노동 즉각 금지 + 대체 소득 지원 프로그램을 동시에 실행한다','공정무역 인증 확대로 농가 소득을 높여 아동 노동 유인을 줄인다','기업의 공급망 실사 의무를 법제화하되 단계적 이행을 허용한다']
+    },
+    realResult:'EU는 2024년 기업 공급망 실사 지침을 도입하여, 대기업이 공급망 내 인권·환경 문제를 관리하도록 의무화했습니다. 공정무역 초콜릿 시장은 연 15%씩 성장 중입니다.',
+    knowledge:'<b>아동의 권리</b>는 UN 아동권리협약으로 보호됩니다. 핵심은 교육권, 건강권, 놀 권리입니다. 이 사건은 <b>사회권</b>(인간다운 생활을 할 권리)과 <b>경제 구조적 불평등</b>이 연결된 복합 인권 문제입니다. 소비자의 선택도 인권 보호에 영향을 줄 수 있습니다.'
+  }
+];
+
+// Shuffle cases for variety
+let caseOrder;
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+
+function startGame(){
+  stu.name=document.getElementById('input-name').value.trim()||'익명';
+  stu.grade=document.getElementById('input-grade').value.trim();
+  stu.cls=document.getElementById('input-class').value.trim();
+  stu.num=document.getElementById('input-number').value.trim();
+  document.documentElement.requestFullscreen().catch(()=>{});
+  // shuffle
+  caseOrder=[0,1,2,3,4];
+  for(let i=caseOrder.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[caseOrder[i],caseOrder[j]]=[caseOrder[j],caseOrder[i]];}
+  nextCase();
+}
+
+function nextCase(){
+  if(caseIdx>=5){showResult();return;}
+  const ci=caseOrder[caseIdx];
+  const c=CASES[ci];
+  document.getElementById('c-num').textContent=caseIdx+1;
+  document.getElementById('c-progress').style.width=(caseIdx/5*100)+'%';
+  document.getElementById('c-right-label').textContent=c.rightType;
+  
+  renderOverview(c,ci);
+  show('s-case');
+}
+
+function renderOverview(c,ci){
+  const ct=document.getElementById('c-content');
+  ct.innerHTML=`
+    <div class="max-w-2xl mx-auto">
+      <div class="text-center mb-5 mt-4">
+        <div class="text-5xl mb-2">${c.emoji}</div>
+        <h2 class="jua text-2xl text-white mb-1">사건 ${caseIdx+1}: ${c.title}</h2>
+        <span class="inline-block text-xs px-3 py-1 rounded-full bg-purple-900/50 text-purple-300 border border-purple-700">${c.category}</span>
+      </div>
+      
+      <div class="card mb-4">
+        <div class="text-xs text-amber-400 font-bold mb-2">📋 사건 개요</div>
+        <p class="text-slate-300 text-sm leading-relaxed">${c.overview}</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div class="card plaintiff">
+          <div class="flex items-center gap-2 mb-2"><span class="text-2xl">${c.plaintiff.icon}</span><span class="font-bold text-blue-300 text-sm">${c.plaintiff.name} 주장</span></div>
+          ${c.plaintiff.args.map(a=>`<p class="text-xs text-slate-300 mb-1 flex gap-2"><span class="text-blue-400">▸</span>${a}</p>`).join('')}
+        </div>
+        <div class="card defendant">
+          <div class="flex items-center gap-2 mb-2"><span class="text-2xl">${c.defendant.icon}</span><span class="font-bold text-red-300 text-sm">${c.defendant.name} 주장</span></div>
+          ${c.defendant.args.map(a=>`<p class="text-xs text-slate-300 mb-1 flex gap-2"><span class="text-red-400">▸</span>${a}</p>`).join('')}
+        </div>
+      </div>
+      
+      <div class="text-xs text-amber-400 font-bold mb-2">📂 증거 자료</div>
+      <div class="space-y-2 mb-6">
+        ${c.evidences.map(e=>`
+          <div class="card evidence flex items-start gap-3" style="padding:.8rem 1rem">
+            <span class="text-xl">${e.icon}</span>
+            <div><div class="font-bold text-xs text-amber-200">${e.title}</div><div class="text-xs text-slate-400">${e.desc}</div></div>
+          </div>
+        `).join('')}
+      </div>
+      
+      <div class="text-center mb-2"><div class="text-sm text-slate-400 mb-3">🔨 판결을 내려주세요</div></div>
+      <div class="flex gap-3 mb-4">
+        <div class="verdict-btn v-plaintiff" onclick="renderReason(${ci},'plaintiff')">
+          <div class="text-2xl mb-1">${c.plaintiff.icon}</div>
+          <div class="text-sm">${c.plaintiff.name} 승</div>
+        </div>
+        <div class="verdict-btn v-compromise" onclick="renderReason(${ci},'compromise')">
+          <div class="text-2xl mb-1">🤝</div>
+          <div class="text-sm">조건부 합의</div>
+        </div>
+        <div class="verdict-btn v-defendant" onclick="renderReason(${ci},'defendant')">
+          <div class="text-2xl mb-1">${c.defendant.icon}</div>
+          <div class="text-sm">${c.defendant.name} 승</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderReason(ci,verdict){
+  const c=CASES[ci];
+  const reasons=c.reasons[verdict];
+  const ct=document.getElementById('c-content');
+  
+  // keep existing content and append reason selection
+  const existing=ct.querySelector('.reason-section');
+  if(existing)existing.remove();
+  
+  const div=document.createElement('div');
+  div.className='reason-section max-w-2xl mx-auto';
+  div.innerHTML=`
+    <div class="card mb-4" style="border-color:#8b5cf6">
+      <div class="text-xs text-purple-400 font-bold mb-3">📝 판결 이유를 선택하세요</div>
+      <div class="space-y-2">
+        ${reasons.map((r,i)=>`<div class="reason-btn" onclick="selectReason(${ci},'${verdict}',${i},this)">${r}</div>`).join('')}
+      </div>
+    </div>
+  `;
+  ct.appendChild(div);
+  div.scrollIntoView({behavior:'smooth'});
+}
+
+function selectReason(ci,verdict,ri,el){
+  el.parentElement.querySelectorAll('.reason-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  
+  const c=CASES[ci];
+  
+  // score
+  if(verdict==='plaintiff')scores.rights+=2;
+  else if(verdict==='defendant')scores.order+=2;
+  else scores.balance+=2;
+  
+  verdicts.push({caseTitle:c.title,emoji:c.emoji,verdict,reason:c.reasons[verdict][ri]});
+  
+  // show result comparison
+  setTimeout(()=>{
+    const ct=document.getElementById('c-content');
+    const comp=document.createElement('div');
+    comp.className='max-w-2xl mx-auto';
+    comp.style.animation='fadeUp .5s ease-out forwards';
+    comp.innerHTML=`
+      <div class="card mb-4" style="border-color:#059669">
+        <div class="text-xs text-green-400 font-bold mb-2">📌 실제 결과</div>
+        <p class="text-sm text-slate-300 leading-relaxed mb-3">${c.realResult}</p>
+        <div class="bg-slate-800/60 rounded-xl p-3 border border-slate-700">
+          <div class="text-xs text-amber-400 font-bold mb-1">📚 교과서 연결</div>
+          <p class="text-xs text-slate-300 leading-relaxed">${c.knowledge}</p>
+        </div>
+      </div>
+      <div class="text-center">
+        <button onclick="caseIdx++;nextCase()" class="py-3 px-8 bg-purple-600 hover:bg-purple-500 text-white rounded-xl font-bold transition-all hover:scale-105">
+          ${caseIdx<4?'다음 사건 →':'최종 분석 보기 →'}
+        </button>
+      </div>
+    `;
+    ct.appendChild(comp);
+    comp.scrollIntoView({behavior:'smooth'});
+  },300);
+}
+
+function showResult(){
+  const total=scores.rights+scores.order+scores.balance;
+  let type,icon,typeDesc,advice,headerBg;
+  
+  if(scores.rights>=scores.order&&scores.rights>=scores.balance){
+    type='인권 수호자';icon='🕊️';
+    typeDesc='인간의 존엄성과 기본권을 최우선으로 판단하는 유형입니다. 약자의 편에 서서 권리를 지키려는 강한 신념이 있습니다.';
+    advice='때로는 공동체의 질서와 현실적 제약도 고려해보세요. 권리만큼 책임도 중요하며, 이상과 현실의 균형이 성숙한 판단을 만듭니다.';
+    headerBg='linear-gradient(135deg,#2563eb,#7c3aed)';
+  } else if(scores.order>=scores.rights&&scores.order>=scores.balance){
+    type='질서 수호자';icon='🏛️';
+    typeDesc='사회의 안정과 질서를 중시하는 유형입니다. 규칙과 제도의 중요성을 알고, 공동체 전체의 이익을 먼저 생각합니다.';
+    advice='질서도 중요하지만, 그 질서가 누군가의 기본권을 부당하게 침해하고 있지는 않은지 되돌아보세요. 좋은 질서는 인권 위에 세워집니다.';
+    headerBg='linear-gradient(135deg,#dc2626,#7c3aed)';
+  } else {
+    type='균형의 현자';icon='⚖️';
+    typeDesc='양쪽 입장을 모두 경청하고 최선의 절충점을 찾는 유형입니다. 대화와 합의를 통한 문제 해결을 선호합니다.';
+    advice='균형감각은 훌륭한 덕목입니다. 다만, 때로는 타협할 수 없는 핵심 가치가 있다는 것도 기억하세요. 인간의 존엄성은 협상의 대상이 아닙니다.';
+    headerBg='linear-gradient(135deg,#f59e0b,#7c3aed)';
+  }
+  
+  document.getElementById('res-header').style.background=headerBg;
+  document.getElementById('res-icon').textContent=icon;
+  document.getElementById('res-subtitle').textContent=`${stu.grade?stu.grade+'학년 ':''}${stu.cls?stu.cls+'반 ':''}${stu.name} 판사`;
+  
+  const rPct=total?Math.round(scores.rights/total*100):33;
+  const oPct=total?Math.round(scores.order/total*100):33;
+  const bPct=total?Math.round(scores.balance/total*100):34;
+  
+  document.getElementById('res-body').innerHTML=`
+    <div class="text-center mb-5">
+      <div class="jua text-xl mb-1">${type}</div>
+      <p class="text-sm text-slate-500">${typeDesc}</p>
+    </div>
+    
+    <div class="grid grid-cols-3 gap-3 mb-5 text-center">
+      <div class="bg-blue-50 rounded-xl p-3"><div class="text-2xl">🕊️</div><div class="font-black text-blue-600">${rPct}%</div><div class="text-xs text-blue-500">인권 옹호</div></div>
+      <div class="bg-amber-50 rounded-xl p-3"><div class="text-2xl">⚖️</div><div class="font-black text-amber-600">${bPct}%</div><div class="text-xs text-amber-500">균형 추구</div></div>
+      <div class="bg-red-50 rounded-xl p-3"><div class="text-2xl">🏛️</div><div class="font-black text-red-600">${oPct}%</div><div class="text-xs text-red-500">질서 중시</div></div>
+    </div>
+    
+    <div class="bg-green-50 rounded-xl p-4 mb-4">
+      <h3 class="font-bold text-sm text-green-800 mb-2">💡 판사님을 위한 조언</h3>
+      <p class="text-xs text-green-900 leading-relaxed">${advice}</p>
+    </div>
+    
+    <h3 class="font-bold text-sm mb-2">📜 나의 판결 기록</h3>
+    <div class="space-y-1 mb-5">
+      ${verdicts.map(v=>{
+        const vLabel=v.verdict==='plaintiff'?'🔵 원고 승':v.verdict==='defendant'?'🔴 피고 승':'🟡 조건부 합의';
+        return `<div class="text-xs bg-slate-50 p-2 rounded-lg flex items-center gap-2"><span class="text-lg">${v.emoji}</span><div class="flex-1"><b>${v.caseTitle}</b> → ${vLabel}</div></div>`;
+      }).join('')}
+    </div>
+    
+    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
+      <h3 class="font-bold text-sm text-blue-800 mb-2">📚 교과서 연결</h3>
+      <div class="text-xs text-blue-700 space-y-1">
+        <p><b>단원:</b> 통합사회 IV. 인권 보장과 헌법</p>
+        <p><b>성취기준:</b> [10통사2-01-01] 인권의 의미와 변화 양상을 이해하고, 현대 사회에서 발생하는 인권 문제의 양상을 탐구한다.</p>
+        <p><b>핵심 개념:</b> 인권은 천부인권(태어날 때부터 가진 권리)이자 보편적 권리입니다. 기본권은 자유권·평등권·사회권·청구권·참정권으로 분류되며, 서로 충돌할 때 이익형량과 비례원칙으로 판단합니다. 인권 침해 시 헌법소원, 국가인권위원회, 법원을 통해 구제받을 수 있습니다.</p>
+        <p><b>확장:</b> 인권의 범위는 계속 넓어지고 있습니다. 디지털 인권(잊힐 권리), 환경 인권(깨끗한 환경에서 살 권리), 미래 세대의 인권 등 새로운 인권 개념이 등장하고 있습니다.</p>
+      </div>
+    </div>
+    <div class="text-center text-xs text-slate-400 mt-3"><p>인권 법정 · 통합사회 · 김스데반 T</p><p>${new Date().toLocaleDateString('ko-KR')}</p></div>
+  `;
+  missionComplete=true;
+  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+  show('s-result');
+}
+
+function saveImg(){html2canvas(document.getElementById('result-card'),{scale:2,backgroundColor:'#fff'}).then(c=>{const a=document.createElement('a');a.download=`인권법정_${stu.name}_${new Date().toISOString().slice(0,10)}.png`;a.href=c.toDataURL('image/png');a.click();}).catch(()=>alert('저장 실패'));}
+function exitToBlog(){
+  missionComplete = true;
+  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+  if(document.referrer&&document.referrer.includes('blogspot'))window.location.href=document.referrer;
+  else window.history.back();
+}
+// ===== 전체화면 가드 =====
+let missionComplete = false;
+let isReEntering = false;
+
+function reEnterFullscreen(){
+  isReEntering = true;
+  document.getElementById('fs-warning').style.display = 'none';
+  document.documentElement.requestFullscreen().catch(()=>{isReEntering=false;});
+}
+
+document.addEventListener('fullscreenchange', () => {
+  if(!document.fullscreenElement && !missionComplete && !isReEntering){
+    const cur = document.querySelector('.screen.active');
+    if(cur && cur.id !== 's-start' && cur.id !== 's-intro'){
+      document.getElementById('fs-warning').style.display = 'flex';
+    }
+  }
+  if(document.fullscreenElement){
+    isReEntering = false;
+    document.getElementById('fs-warning').style.display = 'none';
+  }
+});
+
+</script>
+<!-- 전체화면 이탈 경고 오버레이 -->
+<div class="fs-warning-overlay" id="fs-warning" style="display:none">
+  <div class="warn-icon">⚠️</div>
+  <div class="warn-title">미션 진행 중입니다!</div>
+  <div class="warn-msg">전체화면을 유지해야 미션을 계속할 수 있습니다.<br>다시 전체화면으로 돌아가세요.</div>
+  <button class="warn-btn" onclick="reEnterFullscreen()">🔒 전체화면으로 돌아가기</button>
+</div>
+<!-- 블로그 링크 배지 -->
+<a href="https://ssam-ssong.blogspot.com" target="_blank" class="blog-badge">✏️ 풀어쓰는 사회학</a>
+</body>
+</html>

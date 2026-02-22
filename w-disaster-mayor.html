@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🏘️ 재난 시장 — 우리 마을을 지켜라</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;overflow-x:hidden}
+.jua{font-family:'Jua',sans-serif}
+.screen{display:none;animation:fadeUp .5s ease-out forwards;min-height:100vh}
+.screen.active{display:flex;flex-direction:column}
+@keyframes fadeUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(245,158,11,0.3)}50%{box-shadow:0 0 40px rgba(245,158,11,0.6)}}
+.start-bg{background:linear-gradient(135deg,#1e3a5f 0%,#0f172a 50%,#1a0a2e 100%)}
+.budget-btn{background:rgba(30,41,59,0.8);border:2px solid #334155;border-radius:1rem;padding:1rem;cursor:pointer;transition:all .3s;text-align:left;backdrop-filter:blur(10px)}
+.budget-btn:hover{border-color:#f59e0b;background:rgba(245,158,11,0.1);transform:translateY(-2px)}
+.budget-btn.selected{border-color:#f59e0b;background:rgba(245,158,11,0.15)}
+.budget-btn.disabled{opacity:.4;pointer-events:none}
+.stat-bar{height:10px;background:#1e293b;border-radius:99px;overflow:hidden}
+.stat-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.disaster-card{background:rgba(15,23,42,0.95);border:2px solid #dc2626;border-radius:1.5rem;padding:2rem;text-align:center;animation:shake .5s}
+.result-card{background:white;color:#1e293b;border-radius:1.5rem;max-width:580px;margin:0 auto;overflow:hidden}
+.choice-card{background:rgba(30,41,59,0.8);border:2px solid #334155;border-radius:1rem;padding:1.2rem;cursor:pointer;transition:all .3s;text-align:center}
+.choice-card:hover{border-color:#60a5fa;transform:translateY(-3px);box-shadow:0 8px 25px rgba(59,130,246,0.2)}
+@media(max-width:640px){.budget-btn{padding:.8rem}}
+
+/* 전체화면 이탈 경고 오버레이 */
+.fs-warning-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.92);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;animation:fadeIn .3s}
+.fs-warning-overlay .warn-icon{font-size:4rem;animation:shake .5s}
+.fs-warning-overlay .warn-title{font-size:1.5rem;font-weight:900;color:#fbbf24}
+.fs-warning-overlay .warn-msg{font-size:1rem;color:#94a3b8;text-align:center;max-width:320px;line-height:1.6}
+.fs-warning-overlay .warn-btn{padding:14px 40px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);border:none;border-radius:12px;color:#fff;font-size:1.1rem;font-weight:700;cursor:pointer;transition:transform .2s}
+.fs-warning-overlay .warn-btn:hover{transform:scale(1.05)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+/* 블로그 링크 배지 */
+.blog-badge{position:fixed;bottom:12px;right:12px;z-index:100;background:rgba(15,23,42,0.85);border:1px solid #334155;border-radius:10px;padding:6px 14px;font-size:0.75rem;color:#94a3b8;text-decoration:none;backdrop-filter:blur(8px);transition:all .3s;display:flex;align-items:center;gap:6px}
+.blog-badge:hover{background:rgba(59,130,246,0.2);border-color:#3b82f6;color:#60a5fa}
+</style>
+</head>
+<body>
+
+<!-- ===== START ===== -->
+<div class="screen active start-bg" id="s-start">
+  <div class="flex-1 flex flex-col items-center justify-center p-6 text-center">
+    <div style="font-size:6rem;animation:float 3s ease-in-out infinite">🏘️</div>
+    <h1 class="jua text-4xl md:text-5xl text-white mb-3 mt-4">재난 시장</h1>
+    <p class="text-amber-200 text-lg mb-1">우리 마을을 지켜라!</p>
+    <p class="text-slate-400 text-sm mb-6 max-w-sm">당신은 해안 도시의 시장입니다. 제한된 예산으로 재난에 대비하고, 주민들을 지켜야 합니다.</p>
+    <div class="w-full max-w-xs space-y-3 mb-6">
+      <div class="flex gap-2">
+        <input type="text" id="input-grade" placeholder="학년" maxlength="1" class="flex-1 text-center py-3 rounded-xl bg-white/10 text-white placeholder-slate-500 border border-white/20 font-bold outline-none focus:border-amber-400">
+        <input type="text" id="input-class" placeholder="반" maxlength="2" class="flex-1 text-center py-3 rounded-xl bg-white/10 text-white placeholder-slate-500 border border-white/20 font-bold outline-none focus:border-amber-400">
+        <input type="text" id="input-number" placeholder="번호" maxlength="2" class="flex-1 text-center py-3 rounded-xl bg-white/10 text-white placeholder-slate-500 border border-white/20 font-bold outline-none focus:border-amber-400">
+      </div>
+      <input type="text" id="input-name" placeholder="이름을 입력하세요" maxlength="10" class="w-full text-center py-3 rounded-xl bg-white/10 text-white placeholder-slate-500 border border-white/20 font-bold text-lg outline-none focus:border-amber-400">
+    </div>
+    <button onclick="startGame()" class="py-4 px-12 bg-amber-600 hover:bg-amber-500 text-white rounded-2xl font-bold text-lg transition-all hover:scale-105 shadow-lg" style="animation:glow 2s infinite">
+      🏛️ 취임하기
+    </button>
+    <p class="text-slate-600 text-xs mt-4">⏱ 약 12~15분 · 예산 배분 + 재난 대응 5라운드</p>
+  </div>
+  <div class="text-center pb-4 text-slate-600 text-xs">통합사회 III. 자연환경과 인간 · [10통사1-03-02]</div>
+</div>
+
+<!-- ===== BRIEFING ===== -->
+<div class="screen" id="s-brief">
+  <div class="flex-1 p-4 flex flex-col items-center justify-center">
+    <div class="max-w-2xl w-full">
+      <div class="text-center mb-6">
+        <div class="text-5xl mb-3">📋</div>
+        <h2 class="jua text-2xl text-amber-300 mb-2">시장 브리핑</h2>
+        <p class="text-slate-400 text-sm" id="brief-student"></p>
+      </div>
+      <div class="bg-slate-800/60 rounded-2xl p-5 mb-6 border border-slate-700 space-y-4 text-sm leading-relaxed">
+        <p>🏘️ <b class="text-white">해안도시 '바다마을'</b>의 시장으로 취임하신 것을 축하합니다!</p>
+        <p>📊 현재 상황: 인구 <b class="text-amber-300">50,000명</b>, 주요 산업은 수산업과 관광업입니다.</p>
+        <p>💰 올해 <b class="text-amber-300">방재 예산은 100포인트</b>입니다. 모든 대비를 할 수는 없습니다.</p>
+        <p>⚠️ 기상청에 따르면 올해 <b class="text-red-400">자연재해 발생 확률이 높습니다.</b></p>
+        <div class="bg-slate-900/60 rounded-xl p-4 border border-slate-600">
+          <p class="text-amber-400 font-bold mb-2">📚 참고: 자연재해 대응 4단계</p>
+          <p class="text-slate-300">① <b>예방</b> — 재해 발생 자체를 줄이는 노력 (방파제, 숲 복원)</p>
+          <p class="text-slate-300">② <b>대비</b> — 재해 발생 시를 위한 준비 (경보시스템, 교육)</p>
+          <p class="text-slate-300">③ <b>대응</b> — 재해 발생 중 행동 (대피, 응급의료)</p>
+          <p class="text-slate-300">④ <b>복구</b> — 재해 이후 회복 (경제지원, 재건)</p>
+        </div>
+      </div>
+      <div class="text-center">
+        <button onclick="showBudget()" class="py-3 px-10 bg-amber-600 hover:bg-amber-500 text-white rounded-xl font-bold transition-all hover:scale-105">예산 배분 시작 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BUDGET ===== -->
+<div class="screen" id="s-budget">
+  <div class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3">
+    <div class="max-w-2xl mx-auto flex items-center justify-between">
+      <div class="text-sm"><span class="text-amber-400 font-bold">💰 남은 예산:</span> <span class="jua text-2xl text-white" id="budget-remain">100</span><span class="text-slate-400">pt</span></div>
+      <div class="text-sm text-slate-400">선택: <span id="budget-count">0</span>개</div>
+    </div>
+  </div>
+  <div class="flex-1 p-4 pb-24">
+    <div class="max-w-2xl mx-auto">
+      <h2 class="jua text-xl text-amber-300 mb-2 text-center">예산을 배분하세요</h2>
+      <p class="text-slate-400 text-sm text-center mb-6">100포인트로 모든 것을 살 수 없습니다. 우선순위를 정하세요!</p>
+      <div class="space-y-3" id="budget-list"></div>
+      <div class="text-center mt-6">
+        <button onclick="confirmBudget()" class="py-3 px-10 bg-amber-600 hover:bg-amber-500 text-white rounded-xl font-bold transition-all hover:scale-105" id="btn-confirm">배분 완료 → 재난 시작</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DISASTER ROUND ===== -->
+<div class="screen" id="s-disaster">
+  <div class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3">
+    <div class="max-w-2xl mx-auto">
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-sm font-bold text-red-400">⚠️ ROUND <span id="d-round">1</span>/5</span>
+        <span class="text-sm text-slate-400" id="d-year">1년차</span>
+      </div>
+      <div class="grid grid-cols-3 gap-3">
+        <div><div class="flex justify-between text-xs mb-1"><span>👥 인구</span><span class="font-bold text-green-400" id="d-pop">50,000</span></div><div class="stat-bar"><div class="stat-fill bg-green-500" id="d-pop-bar" style="width:100%"></div></div></div>
+        <div><div class="flex justify-between text-xs mb-1"><span>💰 경제</span><span class="font-bold text-amber-400" id="d-econ">100%</span></div><div class="stat-bar"><div class="stat-fill bg-amber-500" id="d-econ-bar" style="width:100%"></div></div></div>
+        <div><div class="flex justify-between text-xs mb-1"><span>🏠 인프라</span><span class="font-bold text-blue-400" id="d-infra">100%</span></div><div class="stat-bar"><div class="stat-fill bg-blue-500" id="d-infra-bar" style="width:100%"></div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="flex-1 p-4 flex items-center justify-center" id="d-content"></div>
+</div>
+
+<!-- ===== RESPONSE CHOICE ===== -->
+<div class="screen" id="s-response">
+  <div class="flex-1 p-4 flex items-center justify-center">
+    <div class="max-w-2xl w-full" id="resp-content"></div>
+  </div>
+</div>
+
+<!-- ===== RESULT ===== -->
+<div class="screen" id="s-result">
+  <div class="flex-1 p-4 py-8">
+    <div class="result-card" id="result-card">
+      <div class="p-6 text-center" id="res-header" style="background:linear-gradient(135deg,#1e40af,#7c3aed)">
+        <div class="text-5xl mb-2" id="res-icon">🏘️</div>
+        <h1 class="jua text-2xl text-white" id="res-title">5년 후 바다마을</h1>
+        <p class="text-blue-200 text-sm" id="res-subtitle"></p>
+      </div>
+      <div class="p-5" id="res-body"></div>
+    </div>
+    <div class="flex flex-wrap justify-center gap-3 mt-6 max-w-lg mx-auto">
+      <button onclick="saveImg()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold transition-all hover:scale-105">📄 결과 저장</button>
+      <button onclick="location.reload()" class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-bold transition-all hover:scale-105">🔄 다시 하기</button>
+      <button onclick="exitToBlog()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all hover:scale-105">📝 블로그로 돌아가기</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+let stu={name:'',grade:'',cls:'',num:''};
+let budget=100, purchased=[], round=0;
+let pop=50000, econ=100, infra=100;
+let log=[];
+
+const ITEMS=[
+  {id:'seawall',name:'🧱 방파제 건설',cost:30,desc:'해안에 콘크리트 방벽을 설치. 해일·태풍 피해를 크게 줄임.',effects:{tsunami:-70,typhoon:-50,flood:-20},category:'예방'},
+  {id:'mangrove',name:'🌳 맹그로브 숲 복원',cost:20,desc:'자연 방벽인 맹그로브를 복원. 해일 완화 + 생태계 보전.',effects:{tsunami:-40,typhoon:-30,heatwave:-10},category:'예방'},
+  {id:'hospital',name:'🏥 응급의료 시스템',cost:25,desc:'재난 전용 응급센터. 사상자를 크게 줄임.',effects:{ALL_CASUALTIES:-50},category:'대응'},
+  {id:'warning',name:'📡 조기경보 시스템',cost:15,desc:'지진·해일 감지 후 5분 내 전 주민에게 경보.',effects:{ALL_CASUALTIES:-30,tsunami:-20},category:'대비'},
+  {id:'education',name:'🏫 방재 교육 프로그램',cost:10,desc:'전 주민 대상 대피 훈련. 재해 종류에 관계없이 효과.',effects:{ALL:-15},category:'대비'},
+  {id:'economy',name:'💰 경제 복구 기금',cost:20,desc:'재난 후 빠른 경제 회복을 위한 비축 기금.',effects:{ECON_RECOVERY:+40},category:'복구'},
+  {id:'shelter',name:'🏕️ 대피소 네트워크',cost:15,desc:'마을 곳곳에 내진 설계 대피소 배치.',effects:{earthquake:-40,ALL_CASUALTIES:-20},category:'대비'},
+  {id:'drain',name:'🚰 배수 시스템 확장',cost:20,desc:'도시 침수를 방지하는 대형 배수관.',effects:{flood:-60,typhoon:-30},category:'예방'}
+];
+
+const DISASTERS=[
+  {id:'tsunami',name:'🌊 대규모 해일',desc:'해저 지진으로 높이 8m의 해일이 밀려옵니다!',baseDmg:{pop:-8000,econ:-35,infra:-40},
+   knowledge:'해일(쓰나미)은 해저 지진·화산 폭발로 발생합니다. 깊은 바다에서는 빠르지만 낮고, 해안에 가까워지면 높아집니다. 일본 동일본 대지진(2011)에서 방파제가 있던 후다이 마을은 사망자 0명이었습니다.',
+   responses:[
+    {text:'🏃 고지대 즉시 대피 명령',effect:{pop:+2000},desc:'경보 시스템이 있으면 효과 2배'},
+    {text:'🚤 해안 주민 보트 대피',effect:{pop:+1000,infra:-5},desc:'빠르지만 위험이 동반'},
+    {text:'🧱 방파제 긴급 보강',effect:{infra:+10},desc:'이미 있으면 추가 효과'}
+   ]},
+  {id:'typhoon',name:'🌀 초강력 태풍',desc:'중심기압 920hPa, 풍속 55m/s의 태풍이 직격합니다!',baseDmg:{pop:-3000,econ:-30,infra:-35},
+   knowledge:'태풍은 열대 바다에서 발생하는 강력한 저기압입니다. 기후변화로 해수면 온도가 올라가면서 강력한 태풍이 더 자주 발생하고 있습니다. 2020년 태풍 하이선은 한반도에 큰 피해를 줬습니다.',
+   responses:[
+    {text:'🏠 전 가구 실내 대피 명령',effect:{pop:+1500},desc:'대피소가 있으면 효과 2배'},
+    {text:'⚡ 전력망 사전 차단',effect:{infra:+15,econ:-5},desc:'2차 피해를 막지만 경제 손실'},
+    {text:'🚁 해안 지역 강제 이주',effect:{pop:+2000,econ:-10},desc:'인명은 살리지만 비용 큼'}
+   ]},
+  {id:'flood',name:'🌧️ 기록적 폭우·산사태',desc:'3일간 700mm 폭우! 산사태와 도심 침수가 동시에 발생합니다.',baseDmg:{pop:-2000,econ:-25,infra:-30},
+   knowledge:'집중호우는 짧은 시간에 좁은 지역에 많은 비가 내리는 현상입니다. 도시화로 아스팔트가 늘어나면 빗물이 흡수되지 않아 침수가 심해집니다. 2022년 서울 강남 침수 사태가 대표적 사례입니다.',
+   responses:[
+    {text:'🚰 비상 배수 펌프 가동',effect:{infra:+10},desc:'배수시스템 있으면 효과 2배'},
+    {text:'🏔️ 산사태 위험 지역 대피',effect:{pop:+1000},desc:'경보시스템 있으면 신속 대응'},
+    {text:'🏗️ 임시 제방 설치',effect:{infra:+5,econ:-5},desc:'급조하지만 효과는 제한적'}
+   ]},
+  {id:'heatwave',name:'🥵 살인적 폭염',desc:'40°C 이상 폭염이 3주째 계속됩니다. 온열 환자가 폭증!',baseDmg:{pop:-1500,econ:-20,infra:-10},
+   knowledge:'폭염은 기후변화의 가장 직접적인 영향입니다. IPCC에 따르면 지구 평균기온이 1.5°C 오르면 폭염 빈도가 4배 증가합니다. 2018년 한국 폭염으로 48명이 사망했습니다.',
+   responses:[
+    {text:'❄️ 무더위 쉼터 전면 개방',effect:{pop:+800},desc:'대피소 네트워크 있으면 효과 2배'},
+    {text:'💧 급수차 마을 순회',effect:{pop:+500,econ:-5},desc:'기본적이지만 확실한 대응'},
+    {text:'🏭 공장·공사 일시 중단',effect:{pop:+400,econ:-15},desc:'인명 보호하지만 경제 타격'}
+   ]},
+  {id:'earthquake',name:'🫨 규모 6.5 지진',desc:'내륙 얕은 곳에서 강진이 발생! 건물 붕괴가 이어집니다.',baseDmg:{pop:-4000,econ:-30,infra:-45},
+   knowledge:'한반도도 지진 안전지대가 아닙니다. 2016년 경주 지진(규모 5.8), 2017년 포항 지진(규모 5.4)이 발생했습니다. 내진 설계와 대피 훈련이 피해를 크게 줄입니다.',
+   responses:[
+    {text:'🔍 매몰자 구조 즉시 투입',effect:{pop:+2000},desc:'응급의료 있으면 구조율 상승'},
+    {text:'🏗️ 위험 건물 접근 금지',effect:{pop:+1000,infra:-5},desc:'2차 붕괴 방지'},
+    {text:'📡 여진 경보 발령',effect:{pop:+500},desc:'경보시스템 있으면 즉시 발동'}
+   ]}
+];
+
+// ===== FUNCTIONS =====
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+
+function startGame(){
+  stu.name=document.getElementById('input-name').value.trim()||'익명';
+  stu.grade=document.getElementById('input-grade').value.trim();
+  stu.cls=document.getElementById('input-class').value.trim();
+  stu.num=document.getElementById('input-number').value.trim();
+  document.documentElement.requestFullscreen().catch(()=>{});
+  document.getElementById('brief-student').textContent=`${stu.grade?stu.grade+'학년 ':''}${stu.cls?stu.cls+'반 ':''}${stu.name} 시장님`;
+  show('s-brief');
+}
+
+function showBudget(){
+  const list=document.getElementById('budget-list');
+  list.innerHTML=ITEMS.map(it=>`
+    <div class="budget-btn flex items-start gap-3" id="item-${it.id}" onclick="toggleItem('${it.id}')">
+      <div class="flex-1">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-bold text-white text-sm">${it.name}</span>
+          <span class="text-amber-400 font-bold text-sm">${it.cost}pt</span>
+        </div>
+        <p class="text-slate-400 text-xs leading-relaxed">${it.desc}</p>
+        <span class="inline-block mt-1 text-xs px-2 py-0.5 rounded-full bg-slate-700 text-slate-300">${it.category}</span>
+      </div>
+    </div>
+  `).join('');
+  show('s-budget');
+}
+
+function toggleItem(id){
+  const item=ITEMS.find(i=>i.id===id);
+  const idx=purchased.indexOf(id);
+  if(idx>=0){purchased.splice(idx,1);budget+=item.cost;}
+  else{if(budget<item.cost)return;purchased.push(id);budget-=item.cost;}
+  updateBudgetUI();
+}
+
+function updateBudgetUI(){
+  document.getElementById('budget-remain').textContent=budget;
+  document.getElementById('budget-count').textContent=purchased.length;
+  ITEMS.forEach(it=>{
+    const el=document.getElementById('item-'+it.id);
+    const bought=purchased.includes(it.id);
+    el.classList.toggle('selected',bought);
+    if(!bought&&budget<it.cost)el.classList.add('disabled');
+    else el.classList.remove('disabled');
+  });
+}
+
+function confirmBudget(){
+  log.push({type:'budget',items:purchased.map(id=>ITEMS.find(i=>i.id===id).name)});
+  nextRound();
+}
+
+function nextRound(){
+  if(round>=5){showResult();return;}
+  round++;
+  // pick random disaster (no repeat in a row)
+  const d=DISASTERS[Math.floor(Math.random()*DISASTERS.length)];
+  
+  document.getElementById('d-round').textContent=round;
+  document.getElementById('d-year').textContent=round+'년차';
+  updateStats();
+  
+  // calculate damage
+  let dmg={pop:d.baseDmg.pop,econ:d.baseDmg.econ,infra:d.baseDmg.infra};
+  
+  // apply purchased item effects
+  purchased.forEach(pid=>{
+    const item=ITEMS.find(i=>i.id===pid);
+    if(item.effects[d.id]) {
+      const red=item.effects[d.id]/100;
+      dmg.pop=Math.round(dmg.pop*(1+red));
+      dmg.econ=Math.round(dmg.econ*(1+red));
+      dmg.infra=Math.round(dmg.infra*(1+red));
+    }
+    if(item.effects.ALL){
+      const red=item.effects.ALL/100;
+      dmg.pop=Math.round(dmg.pop*(1+red));
+      dmg.econ=Math.round(dmg.econ*(1+red));
+      dmg.infra=Math.round(dmg.infra*(1+red));
+    }
+    if(item.effects.ALL_CASUALTIES){
+      dmg.pop=Math.round(dmg.pop*(1+item.effects.ALL_CASUALTIES/100));
+    }
+  });
+  
+  // apply damage
+  pop=Math.max(0,pop+dmg.pop);
+  econ=Math.max(0,Math.min(100,econ+dmg.econ));
+  infra=Math.max(0,Math.min(100,infra+dmg.infra));
+  
+  log.push({type:'disaster',name:d.name,dmg:dmg});
+  
+  // show disaster
+  document.getElementById('d-content').innerHTML=`
+    <div class="disaster-card max-w-lg w-full">
+      <div class="text-6xl mb-4">${d.name.split(' ')[0]}</div>
+      <h2 class="jua text-2xl text-red-400 mb-3">${d.name}</h2>
+      <p class="text-slate-300 mb-4">${d.desc}</p>
+      <div class="grid grid-cols-3 gap-3 mb-4 text-center text-sm">
+        <div class="bg-red-900/30 rounded-lg p-2"><span class="text-red-400 font-bold">${dmg.pop.toLocaleString()}</span><div class="text-xs text-slate-500">인명 피해</div></div>
+        <div class="bg-amber-900/30 rounded-lg p-2"><span class="text-amber-400 font-bold">${dmg.econ}%</span><div class="text-xs text-slate-500">경제 피해</div></div>
+        <div class="bg-blue-900/30 rounded-lg p-2"><span class="text-blue-400 font-bold">${dmg.infra}%</span><div class="text-xs text-slate-500">인프라 피해</div></div>
+      </div>
+      <div class="bg-slate-800/60 rounded-xl p-3 mb-4 text-left text-xs text-slate-300 leading-relaxed border border-slate-700">
+        <span class="text-amber-400 font-bold">📚 알아두세요:</span> ${d.knowledge}
+      </div>
+      <button onclick="showResponse(${DISASTERS.indexOf(d)})" class="py-3 px-8 bg-red-600 hover:bg-red-500 text-white rounded-xl font-bold transition-all hover:scale-105">긴급 대응 선택 →</button>
+    </div>
+  `;
+  updateStats();
+  show('s-disaster');
+}
+
+function showResponse(dIdx){
+  const d=DISASTERS[dIdx];
+  const ct=document.getElementById('resp-content');
+  ct.innerHTML=`
+    <div class="text-center mb-6">
+      <h2 class="jua text-xl text-amber-300 mb-2">긴급 대응을 선택하세요</h2>
+      <p class="text-slate-400 text-sm">${d.name} 발생! 즉각적인 대응이 필요합니다.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      ${d.responses.map((r,i)=>`
+        <div class="choice-card" onclick="chooseResponse(${dIdx},${i})">
+          <div class="text-3xl mb-2">${r.text.split(' ')[0]}</div>
+          <div class="font-bold text-white text-sm mb-1">${r.text}</div>
+          <div class="text-slate-400 text-xs">${r.desc}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  show('s-response');
+}
+
+function chooseResponse(dIdx,rIdx){
+  const d=DISASTERS[dIdx];
+  const r=d.responses[rIdx];
+  let eff={...r.effect};
+  
+  // synergy with purchased items
+  if(r.desc.includes('경보시스템')&&purchased.includes('warning')){if(eff.pop)eff.pop*=2;}
+  if(r.desc.includes('대피소')&&purchased.includes('shelter')){if(eff.pop)eff.pop*=2;}
+  if(r.desc.includes('응급의료')&&purchased.includes('hospital')){if(eff.pop)eff.pop=Math.round(eff.pop*1.5);}
+  if(r.desc.includes('배수시스템')&&purchased.includes('drain')){if(eff.infra)eff.infra*=2;}
+  
+  pop=Math.max(0,pop+(eff.pop||0));
+  econ=Math.max(0,Math.min(100,econ+(eff.econ||0)));
+  infra=Math.max(0,Math.min(100,infra+(eff.infra||0)));
+  
+  // economic recovery from fund
+  if(purchased.includes('economy')){econ=Math.min(100,econ+8);}
+  
+  log.push({type:'response',text:r.text});
+  updateStats();
+  
+  setTimeout(()=>nextRound(),500);
+}
+
+function updateStats(){
+  document.getElementById('d-pop').textContent=pop.toLocaleString();
+  document.getElementById('d-pop-bar').style.width=(pop/50000*100)+'%';
+  document.getElementById('d-econ').textContent=econ+'%';
+  document.getElementById('d-econ-bar').style.width=econ+'%';
+  document.getElementById('d-infra').textContent=infra+'%';
+  document.getElementById('d-infra-bar').style.width=infra+'%';
+}
+
+function showResult(){
+  const score=Math.round((pop/50000*40)+(econ/100*30)+(infra/100*30));
+  let grade,icon,desc,bg;
+  if(score>=80){grade='S등급: 명시장';icon='🌟';desc='훌륭합니다! 체계적인 대비로 마을을 지켜냈습니다.';bg='linear-gradient(135deg,#059669,#0d9488)';}
+  else if(score>=60){grade='A등급: 유능한 시장';icon='👍';desc='좋은 판단이었습니다. 주민들이 신뢰합니다.';bg='linear-gradient(135deg,#2563eb,#059669)';}
+  else if(score>=40){grade='B등급: 아쉬운 대응';icon='😰';desc='피해를 줄였지만 더 나을 수 있었습니다.';bg='linear-gradient(135deg,#d97706,#2563eb)';}
+  else if(score>=20){grade='C등급: 위기의 마을';icon='🆘';desc='큰 피해가 발생했습니다. 복구에 수년이 걸릴 것입니다.';bg='linear-gradient(135deg,#dc2626,#d97706)';}
+  else{grade='D등급: 마을 붕괴';icon='💔';desc='마을 기능이 마비되었습니다. 주민들이 이주를 시작합니다.';bg='linear-gradient(135deg,#7f1d1d,#dc2626)';}
+  
+  document.getElementById('res-header').style.background=bg;
+  document.getElementById('res-icon').textContent=icon;
+  document.getElementById('res-subtitle').textContent=`${stu.grade?stu.grade+'학년 ':''}${stu.cls?stu.cls+'반 ':''}${stu.name} 시장의 5년`;
+  
+  const survived=pop, dead=50000-pop;
+  
+  document.getElementById('res-body').innerHTML=`
+    <div class="text-center mb-5">
+      <div class="jua text-xl mb-1" style="color:${score>=60?'#059669':'#dc2626'}">${grade}</div>
+      <p class="text-sm text-slate-500">${desc}</p>
+    </div>
+    <div class="grid grid-cols-3 gap-3 mb-5 text-center">
+      <div class="bg-green-50 rounded-xl p-3"><div class="text-2xl">👥</div><div class="font-black text-green-700">${survived.toLocaleString()}</div><div class="text-xs text-green-600">생존 인구</div></div>
+      <div class="bg-amber-50 rounded-xl p-3"><div class="text-2xl">💰</div><div class="font-black text-amber-700">${econ}%</div><div class="text-xs text-amber-600">경제력</div></div>
+      <div class="bg-blue-50 rounded-xl p-3"><div class="text-2xl">🏠</div><div class="font-black text-blue-700">${infra}%</div><div class="text-xs text-blue-600">인프라</div></div>
+    </div>
+    <div class="bg-red-50 rounded-xl p-3 mb-5 text-center"><span class="text-red-600 font-bold text-sm">⚰️ 총 사상자: ${dead.toLocaleString()}명</span></div>
+    
+    <h3 class="font-bold text-sm mb-2">🛡️ 내가 투자한 방재</h3>
+    <div class="flex flex-wrap gap-1 mb-4">${purchased.length?purchased.map(id=>`<span class="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded-full font-bold">${ITEMS.find(i=>i.id===id).name}</span>`).join(''):'<span class="text-xs text-slate-400">투자 없음</span>'}</div>
+    
+    <h3 class="font-bold text-sm mb-2">📜 5년간의 기록</h3>
+    <div class="space-y-1 mb-5">${log.filter(l=>l.type==='disaster').map((l,i)=>`<div class="text-xs bg-slate-50 p-2 rounded-lg"><b>${i+1}년차</b> ${l.name} → 인명 ${l.dmg.pop.toLocaleString()}</div>`).join('')}</div>
+    
+    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4">
+      <h3 class="font-bold text-sm text-amber-800 mb-2">💡 시장님을 위한 피드백</h3>
+      <p class="text-xs text-amber-900 leading-relaxed">${getFeedback()}</p>
+    </div>
+    
+    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
+      <h3 class="font-bold text-sm text-blue-800 mb-2">📚 교과서 연결</h3>
+      <div class="text-xs text-blue-700 space-y-1">
+        <p><b>단원:</b> 통합사회 III. 자연환경과 인간</p>
+        <p><b>성취기준:</b> [10통사1-03-02] 자연재해 및 환경 문제의 해결을 위한 다양한 노력을 탐구한다.</p>
+        <p><b>핵심 개념:</b> 자연재해에 대한 '예방-대비-대응-복구' 4단계 대응 체계. 같은 재해라도 사전 대비 수준에 따라 피해 규모가 크게 달라집니다. 일본 후다이 마을은 방파제 덕분에 2011년 대지진 해일에도 사망자가 없었습니다.</p>
+        <p><b>확장:</b> 기후변화로 자연재해의 빈도·강도가 증가하고 있으며, 이에 대한 국제적 협력(파리협정)과 지역 차원의 방재 계획이 모두 필요합니다.</p>
+      </div>
+    </div>
+    
+    <div class="text-center text-xs text-slate-400 mt-3"><p>재난 시장 · 통합사회 · 김스데반 T</p><p>${new Date().toLocaleDateString('ko-KR')}</p></div>
+  `;
+  missionComplete=true;
+  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+  show('s-result');
+}
+
+function getFeedback(){
+  const tips=[];
+  if(!purchased.includes('warning'))tips.push('조기경보시스템(15pt)은 가성비가 가장 높은 투자입니다. 모든 재난에서 대피 시간을 확보해줍니다.');
+  if(!purchased.includes('education'))tips.push('방재교육(10pt)은 저렴하지만 모든 재난에 -15% 효과가 있습니다.');
+  if(purchased.includes('seawall')&&purchased.includes('mangrove'))tips.push('방파제+맹그로브 조합은 해안 재해에 최강입니다. 좋은 선택!');
+  if(!purchased.includes('hospital'))tips.push('응급의료 없이는 재난 후 2차 사망이 늘어납니다.');
+  if(purchased.includes('economy'))tips.push('경제 복구 기금 덕분에 매 라운드 경제력이 회복되었습니다.');
+  if(tips.length===0)tips.push('균형 잡힌 투자였습니다! 다양한 재난에 골고루 대비하셨네요.');
+  return tips.join(' ');
+}
+
+function saveImg(){
+  html2canvas(document.getElementById('result-card'),{scale:2,backgroundColor:'#fff'}).then(c=>{
+    const a=document.createElement('a');a.download=`재난시장_${stu.name}_${new Date().toISOString().slice(0,10)}.png`;a.href=c.toDataURL('image/png');a.click();
+  }).catch(()=>alert('저장 실패'));
+}
+
+function exitToBlog(){
+  missionComplete = true;
+  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+  if(document.referrer&&document.referrer.includes('blogspot'))window.location.href=document.referrer;
+  else window.history.back();
+}
+// ===== 전체화면 가드 =====
+let missionComplete = false;
+let isReEntering = false;
+
+function reEnterFullscreen(){
+  isReEntering = true;
+  document.getElementById('fs-warning').style.display = 'none';
+  document.documentElement.requestFullscreen().catch(()=>{isReEntering=false;});
+}
+
+document.addEventListener('fullscreenchange', () => {
+  if(!document.fullscreenElement && !missionComplete && !isReEntering){
+    const cur = document.querySelector('.screen.active');
+    if(cur && cur.id !== 's-start' && cur.id !== 's-intro'){
+      document.getElementById('fs-warning').style.display = 'flex';
+    }
+  }
+  if(document.fullscreenElement){
+    isReEntering = false;
+    document.getElementById('fs-warning').style.display = 'none';
+  }
+});
+
+</script>
+<!-- 전체화면 이탈 경고 오버레이 -->
+<div class="fs-warning-overlay" id="fs-warning" style="display:none">
+  <div class="warn-icon">⚠️</div>
+  <div class="warn-title">미션 진행 중입니다!</div>
+  <div class="warn-msg">전체화면을 유지해야 미션을 계속할 수 있습니다.<br>다시 전체화면으로 돌아가세요.</div>
+  <button class="warn-btn" onclick="reEnterFullscreen()">🔒 전체화면으로 돌아가기</button>
+</div>
+<!-- 블로그 링크 배지 -->
+<a href="https://ssam-ssong.blogspot.com" target="_blank" class="blog-badge">✏️ 풀어쓰는 사회학</a>
+</body>
+</html>

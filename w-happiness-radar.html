@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>😊 행복 레이더 — 나의 행복 성향 진단</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:#fefce8;color:#1e293b;min-height:100vh;overflow-x:hidden}
+.jua{font-family:'Jua',sans-serif}
+
+.screen{display:none;animation:fadeUp .5s ease-out forwards;min-height:100vh}
+.screen.active{display:flex;flex-direction:column}
+@keyframes fadeUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes pop{0%{transform:scale(0.8);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+
+/* 시작 화면 */
+.start-bg{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 30%,#fbbf24 60%,#f59e0b 100%);position:relative}
+
+/* 진행 바 */
+.progress-outer{height:8px;background:#fef3c7;border-radius:99px;overflow:hidden}
+.progress-inner{height:100%;background:linear-gradient(90deg,#f59e0b,#ef4444,#8b5cf6,#3b82f6,#10b981);border-radius:99px;transition:width .5s}
+
+/* 카드형 선택지 */
+.opt-card{
+  background:white;border:2.5px solid #e5e7eb;border-radius:1.2rem;padding:1.2rem;
+  cursor:pointer;transition:all .3s;text-align:center;position:relative;overflow:hidden;
+}
+.opt-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,0.1);border-color:#f59e0b}
+.opt-card:active{transform:scale(0.97)}
+.opt-card.selected{border-color:#f59e0b;background:#fffbeb;box-shadow:0 0 0 3px rgba(245,158,11,0.2)}
+.opt-card .opt-emoji{font-size:2.5rem;margin-bottom:0.5rem;display:block}
+.opt-card .opt-text{font-size:0.9rem;font-weight:600;color:#1e293b;line-height:1.4}
+.opt-card .opt-sub{font-size:0.75rem;color:#9ca3af;margin-top:4px}
+
+/* VS 카드 (양자택일) */
+.vs-card{
+  flex:1;background:white;border:3px solid #e5e7eb;border-radius:1.5rem;padding:1.5rem;
+  cursor:pointer;transition:all .3s;text-align:center;min-height:140px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.vs-card:hover{transform:scale(1.03);box-shadow:0 12px 30px rgba(0,0,0,0.08)}
+.vs-card.selected{border-color:#f59e0b;background:#fffbeb}
+
+/* 슬라이더 */
+.custom-slider{-webkit-appearance:none;width:100%;height:12px;border-radius:6px;background:linear-gradient(90deg,#fee2e2,#fef3c7,#dcfce7);outline:none}
+.custom-slider::-webkit-slider-thumb{-webkit-appearance:none;width:32px;height:32px;border-radius:50%;background:#f59e0b;cursor:pointer;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+
+/* 상황극 카드 */
+.scenario-card{background:white;border-radius:1.5rem;padding:1.5rem;border:1px solid #e5e7eb;box-shadow:0 4px 12px rgba(0,0,0,0.05)}
+.scenario-header{display:flex;align-items:center;gap:12px;margin-bottom:1rem;padding-bottom:0.8rem;border-bottom:1px solid #f3f4f6}
+
+/* 결과 */
+.result-card{background:white;border-radius:1.5rem;max-width:560px;margin:0 auto;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.08)}
+.type-badge{display:inline-block;padding:6px 18px;border-radius:99px;font-size:0.85rem;font-weight:700}
+
+/* 교과서 박스 */
+.edu-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:1rem;padding:1rem 1.2rem}
+
+@media(max-width:640px){.opt-card .opt-emoji{font-size:2rem}.vs-card{min-height:120px;padding:1rem}}
+@media print{body{background:white}.screen{display:none!important}}
+
+/* 전체화면 이탈 경고 오버레이 */
+.fs-warning-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.92);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;animation:fadeIn .3s}
+.fs-warning-overlay .warn-icon{font-size:4rem;animation:shake .5s}
+.fs-warning-overlay .warn-title{font-size:1.5rem;font-weight:900;color:#fbbf24}
+.fs-warning-overlay .warn-msg{font-size:1rem;color:#94a3b8;text-align:center;max-width:320px;line-height:1.6}
+.fs-warning-overlay .warn-btn{padding:14px 40px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);border:none;border-radius:12px;color:#fff;font-size:1.1rem;font-weight:700;cursor:pointer;transition:transform .2s}
+.fs-warning-overlay .warn-btn:hover{transform:scale(1.05)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+/* 블로그 링크 배지 */
+.blog-badge{position:fixed;bottom:12px;right:12px;z-index:100;background:rgba(15,23,42,0.85);border:1px solid #334155;border-radius:10px;padding:6px 14px;font-size:0.75rem;color:#94a3b8;text-decoration:none;backdrop-filter:blur(8px);transition:all .3s;display:flex;align-items:center;gap:6px}
+.blog-badge:hover{background:rgba(59,130,246,0.2);border-color:#3b82f6;color:#60a5fa}
+</style>
+</head>
+<body>
+
+<!-- ===== 스타트 ===== -->
+<div class="screen active start-bg" id="s-start">
+  <div class="flex-1 flex flex-col items-center justify-center p-6 text-center">
+    <div style="font-size:6rem;animation:float 3s ease-in-out infinite">😊</div>
+    <h1 class="jua text-4xl md:text-5xl text-amber-900 mb-3 mt-4">행복 레이더</h1>
+    <p class="text-amber-800 text-lg mb-1">나의 행복은 어떤 모양일까?</p>
+    <p class="text-amber-700/60 text-sm mb-10 max-w-sm leading-relaxed">12개의 질문으로 알아보는 나만의 행복 성향 진단. 정답은 없어요, 솔직하게 골라보세요!</p>
+    <button onclick="startQuiz()" class="py-4 px-12 bg-amber-900 hover:bg-amber-800 text-white rounded-2xl font-bold text-lg transition-all hover:scale-105 shadow-lg" style="animation:heartbeat 2s infinite">
+      진단 시작하기 💛
+    </button>
+    <p class="text-amber-600/40 text-xs mt-4">⏱ 약 10~12분 소요 · 총 12문항</p>
+  </div>
+  <div class="text-center pb-4 text-amber-600/30 text-xs">통합사회 II. 인간과 공동체 — 행복 · [10통사1-02-01]</div>
+</div>
+
+<!-- ===== 이름 입력 ===== -->
+<div class="screen" id="s-name">
+  <div class="flex-1 flex flex-col items-center justify-center p-6 text-center">
+    <div class="text-5xl mb-4">✍️</div>
+    <h2 class="jua text-2xl text-amber-900 mb-2">정보를 입력해주세요</h2>
+    <p class="text-amber-700/60 text-sm mb-6">결과지에 표시됩니다</p>
+    <div class="w-72 space-y-3">
+      <div class="flex gap-2">
+        <input type="text" id="input-grade" placeholder="학년" maxlength="1" class="flex-1 text-center py-3 border-2 border-amber-200 rounded-xl focus:border-amber-500 outline-none bg-white font-bold">
+        <input type="text" id="input-class" placeholder="반" maxlength="2" class="flex-1 text-center py-3 border-2 border-amber-200 rounded-xl focus:border-amber-500 outline-none bg-white font-bold">
+        <input type="text" id="input-number" placeholder="번호" maxlength="2" class="flex-1 text-center py-3 border-2 border-amber-200 rounded-xl focus:border-amber-500 outline-none bg-white font-bold">
+      </div>
+      <input type="text" id="user-name" placeholder="이름을 입력하세요" maxlength="10" 
+        class="w-full text-center text-xl py-3 px-4 border-2 border-amber-300 rounded-xl focus:border-amber-500 outline-none bg-white font-bold"
+        onkeydown="if(event.key==='Enter')submitName()">
+    </div>
+    <button onclick="submitName()" class="mt-4 py-3 px-10 bg-amber-600 hover:bg-amber-500 text-white rounded-xl font-bold transition-all hover:scale-105">
+      시작! →
+    </button>
+  </div>
+</div>
+
+<!-- ===== 퀴즈 화면 ===== -->
+<div class="screen" id="s-quiz">
+  <div class="sticky top-0 z-50 bg-yellow-50/90 backdrop-blur-md border-b border-amber-200 px-4 py-3">
+    <div class="max-w-2xl mx-auto">
+      <div class="flex justify-between items-center mb-2 text-sm">
+        <span class="font-bold text-amber-800">Q<span id="q-num">1</span> / 12</span>
+        <span class="text-amber-600/60" id="q-category">가치관</span>
+      </div>
+      <div class="progress-outer"><div class="progress-inner" id="q-progress" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="flex-1 p-4 pb-24" id="q-content"></div>
+</div>
+
+<!-- ===== 분석 중 ===== -->
+<div class="screen" id="s-loading">
+  <div class="flex-1 flex flex-col items-center justify-center p-6 text-center">
+    <div class="text-6xl mb-6" style="animation:heartbeat 1s infinite">🔍</div>
+    <h2 class="jua text-2xl text-amber-900 mb-3">행복 레이더 분석 중...</h2>
+    <div class="w-64 progress-outer mb-4"><div class="progress-inner" id="loading-bar" style="width:0%"></div></div>
+    <p class="text-amber-700/60 text-sm" id="loading-text">응답을 분석하고 있습니다</p>
+  </div>
+</div>
+
+<!-- ===== 결과 ===== -->
+<div class="screen" id="s-result">
+  <div class="flex-1 p-4 py-8">
+    <div class="result-card" id="result-card">
+      <div class="p-6 text-center" id="res-header" style="background:linear-gradient(135deg,#fbbf24,#f59e0b)">
+        <div class="text-xs text-amber-100 mb-1">행복 레이더 진단 결과</div>
+        <div class="text-5xl mb-2" id="res-emoji">😊</div>
+        <h1 class="jua text-2xl text-white" id="res-name">김행복</h1>
+        <div class="type-badge bg-white/20 text-white mt-2" id="res-type">행복 유형</div>
+      </div>
+      
+      <div class="p-5">
+        <!-- 레이더 차트 -->
+        <div class="mb-6" style="max-width:320px;margin:0 auto;">
+          <canvas id="radarChart"></canvas>
+        </div>
+
+        <!-- 6축 점수 -->
+        <div class="grid grid-cols-3 gap-3 mb-6 text-center" id="res-scores"></div>
+
+        <!-- 유형 설명 -->
+        <div class="bg-amber-50 rounded-xl p-4 mb-5">
+          <h3 class="font-bold text-amber-800 text-sm mb-2" id="res-type-title">🌟 유형 설명</h3>
+          <p class="text-sm text-amber-900 leading-relaxed" id="res-type-desc"></p>
+        </div>
+
+        <!-- 행복 조언 -->
+        <div class="bg-green-50 rounded-xl p-4 mb-5">
+          <h3 class="font-bold text-green-800 text-sm mb-2">💡 행복 성장 포인트</h3>
+          <p class="text-sm text-green-900 leading-relaxed" id="res-advice"></p>
+        </div>
+
+        <!-- 비슷한 유명인 -->
+        <div class="bg-purple-50 rounded-xl p-4 mb-5">
+          <h3 class="font-bold text-purple-800 text-sm mb-2">🌏 비슷한 유형의 사람들</h3>
+          <p class="text-sm text-purple-900 leading-relaxed" id="res-famous"></p>
+        </div>
+
+        <!-- 교과서 연결 -->
+        <div class="edu-box mb-4">
+          <h3 class="font-bold text-blue-800 text-sm mb-2">📚 교과서 연결</h3>
+          <div class="text-xs text-blue-700 space-y-1">
+            <p><b>단원:</b> 통합사회 II. 인간과 공동체 — 행복</p>
+            <p><b>성취기준:</b> [10통사1-02-01] 행복의 의미와 기준은 시대·사회에 따라 다양함을 이해한다.</p>
+            <p><b>핵심 개념:</b> 행복은 주관적이며, 각자의 가치관·관계·환경에 따라 다르게 경험됩니다. 이 진단은 '나의 행복이 어떤 요소에 더 민감한지'를 탐색하는 활동입니다.</p>
+          </div>
+        </div>
+
+        <!-- 응답 요약 -->
+        <details class="mb-4">
+          <summary class="text-xs text-slate-500 cursor-pointer font-bold">📋 나의 응답 요약 보기</summary>
+          <div class="mt-2 space-y-1" id="res-answers"></div>
+        </details>
+
+        <div class="text-center text-xs text-slate-400 mt-2">
+          <p>행복 레이더 · 통합사회 · 김스데반 T</p>
+          <p id="res-date"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-3 mt-6 max-w-lg mx-auto">
+      <button onclick="saveResult()" class="px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-xl font-bold transition-all hover:scale-105">
+        📄 결과 저장
+      </button>
+      <button onclick="location.reload()" class="px-6 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-bold transition-all hover:scale-105">
+        🔄 다시 하기
+      </button>
+      <button onclick="exitToBlog()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all hover:scale-105">
+        📝 블로그로 돌아가기
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== 6축 정의 =====
+const AXES = [
+  {id:'relation',   label:'관계',  emoji:'🤝', color:'#ef4444', desc:'사람과의 유대에서 행복을 느끼는 정도'},
+  {id:'growth',     label:'성장',  emoji:'🌱', color:'#10b981', desc:'배움과 자기 발전에서 행복을 느끼는 정도'},
+  {id:'freedom',    label:'자유',  emoji:'🦅', color:'#3b82f6', desc:'자율성과 독립에서 행복을 느끼는 정도'},
+  {id:'stability',  label:'안정',  emoji:'🏠', color:'#8b5cf6', desc:'안전하고 예측 가능한 삶에서 행복을 느끼는 정도'},
+  {id:'pleasure',   label:'즐거움',emoji:'🎉', color:'#f59e0b', desc:'쾌락과 즐거운 경험에서 행복을 느끼는 정도'},
+  {id:'meaning',    label:'의미',  emoji:'⭐', color:'#ec4899', desc:'삶의 목적과 가치에서 행복을 느끼는 정도'}
+];
+
+// 12문항 (다양한 형식)
+const QUESTIONS = [
+  { // Q1: 4지선다
+    type:'select4', category:'가치관',
+    question:'지금 당장 하나만 이룰 수 있다면?',
+    subtext:'직감적으로 골라보세요',
+    options:[
+      {emoji:'❤️',text:'소중한 사람과 오래 함께하기',axes:{relation:3,meaning:1}},
+      {emoji:'🎓',text:'꿈꿔왔던 분야의 전문가 되기',axes:{growth:3,meaning:1}},
+      {emoji:'✈️',text:'아무 걱정 없이 세계 여행하기',axes:{freedom:3,pleasure:1}},
+      {emoji:'🏡',text:'안정적인 직장과 편안한 집',axes:{stability:3,relation:1}}
+    ]
+  },
+  { // Q2: VS
+    type:'vs', category:'관계 vs 자유',
+    question:'금요일 저녁, 당신의 선택은?',
+    optA:{emoji:'🍕',text:'친구들과 시끌벅적한 파티',axes:{relation:3,pleasure:2}},
+    optB:{emoji:'📖',text:'나만의 조용한 힐링 시간',axes:{freedom:3,stability:1}}
+  },
+  { // Q3: 슬라이더
+    type:'slider', category:'안정 vs 도전',
+    question:'인생에서 안정과 도전 중 어디에 가까운가요?',
+    leftEmoji:'🛡️', leftText:'절대 안정!', rightEmoji:'🚀', rightText:'무조건 도전!',
+    leftAxes:{stability:3,relation:1}, rightAxes:{growth:3,freedom:1}
+  },
+  { // Q4: 상황극
+    type:'scenario', category:'가치관',
+    scene:{emoji:'💰',title:'복권 당첨!',desc:'10억 원에 당첨되었습니다. 어떻게 쓸까요?'},
+    options:[
+      {emoji:'🏠',text:'안정적으로 저축 + 집 구매',sub:'미래를 위해',axes:{stability:3}},
+      {emoji:'🌍',text:'1년간 세계 여행',sub:'경험이 재산',axes:{freedom:2,pleasure:2}},
+      {emoji:'🎁',text:'가족과 친구들에게 선물',sub:'나눔이 행복',axes:{relation:3,meaning:1}},
+      {emoji:'📚',text:'사업이나 공부에 투자',sub:'성장의 기회',axes:{growth:3}}
+    ]
+  },
+  { // Q5: VS
+    type:'vs', category:'즐거움 vs 의미',
+    question:'직업을 고른다면?',
+    optA:{emoji:'🎮',text:'재미있고 즐거운 일\n(게임 디자이너, 유튜버)',axes:{pleasure:3,freedom:1}},
+    optB:{emoji:'🏥',text:'힘들지만 세상에 도움이 되는 일\n(의사, 소방관)',axes:{meaning:3,relation:1}}
+  },
+  { // Q6: 4지선다
+    type:'select4', category:'행복의 조건',
+    question:'이것만 있으면 매일 행복할 것 같아요',
+    subtext:'하나만 골라야 합니다!',
+    options:[
+      {emoji:'👨‍👩‍👧‍👦',text:'함께할 사람들',axes:{relation:3}},
+      {emoji:'📈',text:'매일 성장하는 느낌',axes:{growth:3}},
+      {emoji:'🎶',text:'좋아하는 것을 할 자유',axes:{freedom:2,pleasure:2}},
+      {emoji:'🔒',text:'걱정 없는 안정감',axes:{stability:3}}
+    ]
+  },
+  { // Q7: 슬라이더
+    type:'slider', category:'개인 vs 공동체',
+    question:'행복은 혼자 만드는 것 vs 함께 만드는 것',
+    leftEmoji:'🧘',leftText:'나 혼자여도 행복',rightEmoji:'🤗',rightText:'사람들과 함께여야 행복',
+    leftAxes:{freedom:2,growth:2}, rightAxes:{relation:3,meaning:1}
+  },
+  { // Q8: 상황극
+    type:'scenario', category:'위기 대응',
+    scene:{emoji:'😰',title:'최악의 하루',desc:'시험 망치고, 친구와 싸우고, 비까지 내립니다. 어떻게 버틸까요?'},
+    options:[
+      {emoji:'📞',text:'누군가에게 전화한다',sub:'위로가 필요해',axes:{relation:3}},
+      {emoji:'🏃',text:'운동하거나 걷는다',sub:'몸을 움직이면 나아져',axes:{growth:1,freedom:2}},
+      {emoji:'🍫',text:'맛있는 것 먹으며 넷플릭스',sub:'일단 기분 전환!',axes:{pleasure:3}},
+      {emoji:'📓',text:'일기를 쓰며 정리한다',sub:'의미를 찾으면 괜찮아져',axes:{meaning:3}}
+    ]
+  },
+  { // Q9: VS
+    type:'vs', category:'현재 vs 미래',
+    question:'지금 이 순간 vs 미래의 큰 행복',
+    optA:{emoji:'🍰',text:'오늘 맛있는 것 먹고\n작은 행복 누리기',axes:{pleasure:3,freedom:1}},
+    optB:{emoji:'💪',text:'오늘 참고 노력해서\n나중에 큰 보람 얻기',axes:{growth:2,meaning:2}}
+  },
+  { // Q10: 4지선다
+    type:'select4', category:'행복 장소',
+    question:'가장 행복할 것 같은 장소는?',
+    subtext:'상상만으로도 기분이 좋아지는 곳',
+    options:[
+      {emoji:'🏔️',text:'아무도 없는 산속 오두막',axes:{freedom:3,stability:1}},
+      {emoji:'☕',text:'친구들과 수다 떨 수 있는 카페',axes:{relation:3,pleasure:1}},
+      {emoji:'🏫',text:'새로운 것을 배우는 교실',axes:{growth:3}},
+      {emoji:'🏟️',text:'사람들에게 감동을 주는 무대',axes:{meaning:2,pleasure:2}}
+    ]
+  },
+  { // Q11: 슬라이더
+    type:'slider', category:'물질 vs 경험',
+    question:'갖고 싶은 것 vs 하고 싶은 것',
+    leftEmoji:'🎁',leftText:'좋은 물건 갖기',rightEmoji:'🎪',rightText:'멋진 경험 하기',
+    leftAxes:{stability:2,pleasure:2}, rightAxes:{freedom:2,growth:1,pleasure:1}
+  },
+  { // Q12: 상황극 (마지막)
+    type:'scenario', category:'인생 철학',
+    scene:{emoji:'🧓',title:'80세의 나',desc:'80세가 된 나에게 물었습니다. "인생에서 가장 행복했던 순간은?"'},
+    options:[
+      {emoji:'💑',text:'"사랑하는 사람들과 함께한 순간"',sub:'관계가 전부였어',axes:{relation:4}},
+      {emoji:'🏆',text:'"목표를 이뤄냈을 때"',sub:'노력이 빛나는 순간',axes:{growth:3,meaning:1}},
+      {emoji:'🌅',text:'"자유롭게 떠돌았던 시간들"',sub:'어디든 갈 수 있었지',axes:{freedom:3,pleasure:1}},
+      {emoji:'💎',text:'"세상에 좋은 영향을 남긴 것"',sub:'의미 있는 삶이었어',axes:{meaning:4}}
+    ]
+  }
+];
+
+// ===== 상태 =====
+let userName = '';
+let studentGrade = '', studentClass = '', studentNum = '';
+let currentQ = 0;
+let scores = {relation:0,growth:0,freedom:0,stability:0,pleasure:0,meaning:0};
+let answers = [];
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+
+function startQuiz(){
+  document.documentElement.requestFullscreen().catch(()=>{});
+  show('s-name');
+  setTimeout(()=>document.getElementById('user-name').focus(),300);
+}
+
+function submitName(){
+  userName = document.getElementById('user-name').value.trim() || '익명';
+  studentGrade = document.getElementById('input-grade').value.trim();
+  studentClass = document.getElementById('input-class').value.trim();
+  studentNum = document.getElementById('input-number').value.trim();
+  show('s-quiz');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  if(currentQ >= QUESTIONS.length){showLoading();return;}
+  
+  const q = QUESTIONS[currentQ];
+  document.getElementById('q-num').textContent = currentQ+1;
+  document.getElementById('q-category').textContent = q.category;
+  document.getElementById('q-progress').style.width = (currentQ/QUESTIONS.length*100)+'%';
+  
+  const ct = document.getElementById('q-content');
+  let html = `<div class="max-w-2xl mx-auto">`;
+  html += `<h2 class="jua text-xl md:text-2xl text-center text-amber-900 mb-2 mt-4">${q.question}</h2>`;
+  if(q.subtext) html += `<p class="text-center text-amber-600/60 text-sm mb-6">${q.subtext||''}</p>`;
+  else html += `<div class="mb-6"></div>`;
+
+  switch(q.type){
+    case 'select4':
+      html += `<div class="grid grid-cols-2 gap-3">`;
+      q.options.forEach((o,i)=>{
+        html += `<div class="opt-card" onclick="answer4(${i})">
+          <span class="opt-emoji">${o.emoji}</span>
+          <div class="opt-text">${o.text}</div>
+        </div>`;
+      });
+      html += `</div>`;
+      break;
+
+    case 'vs':
+      html += `<div class="flex gap-4 items-stretch">
+        <div class="vs-card" onclick="answerVS('A')">
+          <div class="text-4xl mb-2">${q.optA.emoji}</div>
+          <div class="font-bold text-sm" style="white-space:pre-line">${q.optA.text}</div>
+        </div>
+        <div class="flex items-center"><span class="jua text-2xl text-amber-400">VS</span></div>
+        <div class="vs-card" onclick="answerVS('B')">
+          <div class="text-4xl mb-2">${q.optB.emoji}</div>
+          <div class="font-bold text-sm" style="white-space:pre-line">${q.optB.text}</div>
+        </div>
+      </div>`;
+      break;
+
+    case 'slider':
+      html += `<div class="bg-white rounded-2xl p-6 shadow-sm border border-amber-100">
+        <div class="flex justify-between items-center mb-6">
+          <div class="text-center"><div class="text-3xl">${q.leftEmoji}</div><div class="text-xs font-bold text-slate-600 mt-1">${q.leftText}</div></div>
+          <div class="text-center"><div class="text-3xl">${q.rightEmoji}</div><div class="text-xs font-bold text-slate-600 mt-1">${q.rightText}</div></div>
+        </div>
+        <input type="range" min="0" max="100" value="50" class="custom-slider" id="slider-input">
+        <div class="text-center mt-4">
+          <button onclick="answerSlider()" class="py-3 px-10 bg-amber-500 hover:bg-amber-400 text-white rounded-xl font-bold transition-all hover:scale-105">선택 완료 ✓</button>
+        </div>
+      </div>`;
+      break;
+
+    case 'scenario':
+      html += `<div class="scenario-card mb-4">
+        <div class="scenario-header">
+          <div class="text-3xl">${q.scene.emoji}</div>
+          <div><div class="font-bold text-lg">${q.scene.title}</div><div class="text-slate-500 text-sm">${q.scene.desc}</div></div>
+        </div>
+        <div class="space-y-2">
+          ${q.options.map((o,i)=>`
+            <div class="opt-card flex items-center gap-3 text-left" onclick="answerScenario(${i})" style="padding:0.8rem 1rem">
+              <span style="font-size:1.8rem;flex-shrink:0">${o.emoji}</span>
+              <div><div class="opt-text" style="font-size:0.88rem">${o.text}</div><div class="opt-sub">${o.sub}</div></div>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+      break;
+  }
+  
+  html += `</div>`;
+  ct.innerHTML = html;
+}
+
+function addScores(axes){
+  for(const[k,v]of Object.entries(axes)) scores[k]=(scores[k]||0)+v;
+}
+
+function answer4(idx){
+  const q=QUESTIONS[currentQ];
+  addScores(q.options[idx].axes);
+  answers.push({q:q.question, a:q.options[idx].text});
+  // 선택 표시
+  document.querySelectorAll('.opt-card')[idx].classList.add('selected');
+  setTimeout(()=>{currentQ++;renderQuestion();},400);
+}
+
+function answerVS(side){
+  const q=QUESTIONS[currentQ];
+  const chosen = side==='A' ? q.optA : q.optB;
+  addScores(chosen.axes);
+  answers.push({q:q.question, a:chosen.text.replace(/\n/g,' ')});
+  document.querySelectorAll('.vs-card')[side==='A'?0:1].classList.add('selected');
+  setTimeout(()=>{currentQ++;renderQuestion();},400);
+}
+
+function answerSlider(){
+  const q=QUESTIONS[currentQ];
+  const val = parseInt(document.getElementById('slider-input').value);
+  const leftW = (100-val)/100, rightW = val/100;
+  for(const[k,v]of Object.entries(q.leftAxes)) scores[k]=(scores[k]||0)+v*leftW;
+  for(const[k,v]of Object.entries(q.rightAxes)) scores[k]=(scores[k]||0)+v*rightW;
+  answers.push({q:q.question, a:val<=30?q.leftText:val>=70?q.rightText:'중간'});
+  currentQ++;renderQuestion();
+}
+
+function answerScenario(idx){
+  const q=QUESTIONS[currentQ];
+  addScores(q.options[idx].axes);
+  answers.push({q:q.question, a:q.options[idx].text});
+  document.querySelectorAll('.opt-card')[idx].classList.add('selected');
+  setTimeout(()=>{currentQ++;renderQuestion();},400);
+}
+
+// ===== 로딩 =====
+function showLoading(){
+  show('s-loading');
+  const texts=['응답을 분석하고 있습니다','행복 패턴을 찾는 중...','레이더 차트를 그리는 중...','유형을 판별하고 있습니다','거의 완성!'];
+  let p=0;
+  const bar=document.getElementById('loading-bar');
+  const txt=document.getElementById('loading-text');
+  const iv=setInterval(()=>{
+    p+=20;
+    bar.style.width=p+'%';
+    txt.textContent=texts[Math.min(Math.floor(p/20),texts.length-1)];
+    if(p>=100){clearInterval(iv);setTimeout(showResult,500);}
+  },600);
+}
+
+// ===== 결과 계산 =====
+const TYPES = [
+  {id:'connector',emoji:'🤗',name:'따뜻한 연결자',primary:'relation',
+   desc:'사람들과의 관계에서 가장 큰 행복을 느끼는 유형입니다. 사랑하는 사람과 함께하는 시간이 무엇보다 소중하고, 누군가를 돕거나 위로할 때 마음이 따뜻해집니다.',
+   advice:'혼자만의 시간도 소중히 여겨보세요. 관계에 에너지를 쏟다 보면 나 자신을 돌보는 걸 잊기 쉽습니다. 일주일에 하루는 "나를 위한 시간"을 만들어보는 건 어떨까요?',
+   famous:'간디, 테레사 수녀, BTS RM — 관계와 공감을 통해 세상을 바꾸는 사람들'},
+  {id:'explorer',emoji:'🦅',name:'자유로운 탐험가',primary:'freedom',
+   desc:'자유와 독립을 가장 중요하게 여기는 유형입니다. 규칙에 얽매이는 것을 싫어하고, 자기만의 방식으로 살아가는 것에서 행복을 느낍니다.',
+   advice:'자유를 추구하면서도 꾸준함의 가치를 잊지 마세요. 때로는 한 곳에 깊이 뿌리내리는 것에서도 큰 행복이 옵니다.',
+   famous:'체 게바라, 이소룡, 지코 — 자기만의 길을 개척한 자유로운 영혼들'},
+  {id:'grower',emoji:'🌱',name:'끊임없는 성장러',primary:'growth',
+   desc:'배움과 성장에서 가장 큰 만족을 느끼는 유형입니다. 어제보다 나은 오늘을 살고 싶고, 새로운 도전이 삶의 원동력입니다.',
+   advice:'완벽주의에 빠지지 않도록 주의하세요. 성장은 직선이 아니라 곡선입니다. 때로는 멈추고 지금의 나를 인정하는 것도 성장입니다.',
+   famous:'일론 머스크, 김연아, 유퀴즈 유재석 — 끊임없이 자신을 발전시키는 사람들'},
+  {id:'guardian',emoji:'🏠',name:'든든한 안정파',primary:'stability',
+   desc:'안전하고 예측 가능한 삶에서 행복을 느끼는 유형입니다. 가까운 사람들과 편안한 일상을 유지하는 것이 가장 큰 행복입니다.',
+   advice:'가끔은 익숙한 영역 밖으로 나가보세요. 작은 모험이 예상치 못한 큰 행복을 가져다줄 수 있습니다.',
+   famous:'워런 버핏, 백종원, 이영자 — 꾸준함과 안정 속에서 큰 성취를 이룬 사람들'},
+  {id:'hedonist',emoji:'🎉',name:'지금 이 순간파',primary:'pleasure',
+   desc:'즐거움과 쾌락에서 행복을 찾는 유형입니다. 맛있는 음식, 신나는 음악, 재미있는 경험이 삶을 빛나게 합니다.',
+   advice:'순간의 즐거움도 좋지만, 장기적인 목표도 함께 세워보세요. "미래의 나에게 주는 선물"을 생각하면 균형이 맞아집니다.',
+   famous:'싸이, 나영석 PD, 박나래 — 삶을 즐기면서도 자기 분야에서 성과를 내는 사람들'},
+  {id:'philosopher',emoji:'⭐',name:'의미를 찾는 철학자',primary:'meaning',
+   desc:'삶의 목적과 가치에서 깊은 행복을 느끼는 유형입니다. 단순한 즐거움보다 "왜 사는가"에 대한 답을 찾을 때 충만해집니다.',
+   advice:'의미를 너무 무겁게 짊어지지 마세요. 작은 일상 속에서도 의미는 발견됩니다. 가벼운 웃음도 삶의 소중한 부분입니다.',
+   famous:'유발 하라리, 김수영, 아이유 — 깊은 사유와 메시지를 전하는 사람들'}
+];
+
+function showResult(){
+  // 최고 축 찾기
+  let maxAxis = 'relation', maxVal = 0;
+  for(const ax of AXES){
+    if(scores[ax.id] > maxVal){maxVal=scores[ax.id];maxAxis=ax.id;}
+  }
+  
+  const type = TYPES.find(t=>t.primary===maxAxis) || TYPES[0];
+  
+  document.getElementById('res-emoji').textContent = type.emoji;
+  document.getElementById('res-name').textContent = `${studentGrade?studentGrade+'학년 ':''}${studentClass?studentClass+'반 ':''}${userName}님의 행복 레이더`;
+  document.getElementById('res-type').textContent = type.name;
+  document.getElementById('res-type-title').textContent = `🌟 ${type.name}`;
+  document.getElementById('res-type-desc').textContent = type.desc;
+  document.getElementById('res-advice').textContent = type.advice;
+  document.getElementById('res-famous').textContent = type.famous;
+  document.getElementById('res-date').textContent = new Date().toLocaleDateString('ko-KR') + ' 진단';
+  
+  // 헤더 색상
+  const colors = {relation:'#ef4444',growth:'#10b981',freedom:'#3b82f6',stability:'#8b5cf6',pleasure:'#f59e0b',meaning:'#ec4899'};
+  document.getElementById('res-header').style.background = `linear-gradient(135deg,${colors[maxAxis]},${colors[maxAxis]}cc)`;
+  
+  // 점수 표시
+  const maxPossible = Math.max(...Object.values(scores)) || 1;
+  const scoresEl = document.getElementById('res-scores');
+  scoresEl.innerHTML = AXES.map(ax=>{
+    const pct = Math.round(scores[ax.id]/maxPossible*100);
+    return `<div class="rounded-xl p-3" style="background:${ax.color}10;border:1px solid ${ax.color}30">
+      <div class="text-2xl">${ax.emoji}</div>
+      <div class="font-black text-lg" style="color:${ax.color}">${pct}%</div>
+      <div class="text-xs font-bold" style="color:${ax.color}">${ax.label}</div>
+    </div>`;
+  }).join('');
+  
+  // 레이더 차트
+  const ctx = document.getElementById('radarChart').getContext('2d');
+  const radarData = AXES.map(ax=> Math.round(scores[ax.id]/maxPossible*100));
+  new Chart(ctx,{
+    type:'radar',
+    data:{
+      labels:AXES.map(ax=>`${ax.emoji} ${ax.label}`),
+      datasets:[{
+        data:radarData,
+        backgroundColor:'rgba(245,158,11,0.2)',
+        borderColor:'#f59e0b',
+        borderWidth:2,
+        pointBackgroundColor:AXES.map(ax=>ax.color),
+        pointBorderColor:'#fff',
+        pointBorderWidth:2,
+        pointRadius:5
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{display:false}},
+      scales:{r:{
+        min:0,max:100,
+        ticks:{stepSize:25,font:{size:9},backdropColor:'transparent'},
+        pointLabels:{font:{size:11,weight:'bold'}},
+        grid:{color:'#e5e7eb'}
+      }}
+    }
+  });
+  
+  // 응답 요약
+  document.getElementById('res-answers').innerHTML = answers.map((a,i)=>
+    `<div style="font-size:0.75rem;padding:6px 10px;background:#f9fafb;border-radius:8px;color:#6b7280;">
+      <b>Q${i+1}.</b> ${a.q} → <span style="color:#1e293b">${a.a}</span>
+    </div>`
+  ).join('');
+  
+  missionComplete=true;
+  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+  show('s-result');
+}
+
+function saveResult(){
+  const card = document.getElementById('result-card');
+  html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:true}).then(canvas=>{
+    const link=document.createElement('a');
+    link.download=`행복레이더_${userName}_${new Date().toISOString().slice(0,10)}.png`;
+    link.href=canvas.toDataURL('image/png');
+    link.click();
+  }).catch(()=>alert('저장 실패. 스크린샷을 이용해주세요.'));
+}
+
+function exitToBlog(){
+  missionComplete = true;
+  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+  if(document.referrer&&document.referrer.includes('blogspot'))window.location.href=document.referrer;
+  else window.history.back();
+}
+// ===== 전체화면 가드 =====
+let missionComplete = false;
+let isReEntering = false;
+
+function reEnterFullscreen(){
+  isReEntering = true;
+  document.getElementById('fs-warning').style.display = 'none';
+  document.documentElement.requestFullscreen().catch(()=>{isReEntering=false;});
+}
+
+document.addEventListener('fullscreenchange', () => {
+  if(!document.fullscreenElement && !missionComplete && !isReEntering){
+    const cur = document.querySelector('.screen.active');
+    if(cur && cur.id !== 's-start' && cur.id !== 's-intro'){
+      document.getElementById('fs-warning').style.display = 'flex';
+    }
+  }
+  if(document.fullscreenElement){
+    isReEntering = false;
+    document.getElementById('fs-warning').style.display = 'none';
+  }
+});
+
+}
+</script>
+<!-- 전체화면 이탈 경고 오버레이 -->
+<div class="fs-warning-overlay" id="fs-warning" style="display:none">
+  <div class="warn-icon">⚠️</div>
+  <div class="warn-title">미션 진행 중입니다!</div>
+  <div class="warn-msg">전체화면을 유지해야 미션을 계속할 수 있습니다.<br>다시 전체화면으로 돌아가세요.</div>
+  <button class="warn-btn" onclick="reEnterFullscreen()">🔒 전체화면으로 돌아가기</button>
+</div>
+<!-- 블로그 링크 배지 -->
+<a href="https://ssam-ssong.blogspot.com" target="_blank" class="blog-badge">✏️ 풀어쓰는 사회학</a>
+</body>
+</html>

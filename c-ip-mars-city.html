@@ -977,6 +977,16 @@
             .balance-visual { gap: 12px; }
             .balance-bar-wrap { width: 45px; }
         }
+/* 전체화면 이탈 경고 */
+.fs-warning-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.92);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;animation:fadeIn .3s}
+.fs-warning-overlay .warn-icon{font-size:4rem}
+.fs-warning-overlay .warn-title{font-size:1.5rem;font-weight:900;color:#fbbf24}
+.fs-warning-overlay .warn-msg{font-size:1rem;color:#94a3b8;text-align:center;max-width:320px;line-height:1.6}
+.fs-warning-overlay .warn-btn{padding:14px 40px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);border:none;border-radius:12px;color:#fff;font-size:1.1rem;font-weight:700;cursor:pointer;transition:transform .2s}
+.fs-warning-overlay .warn-btn:hover{transform:scale(1.05)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.blog-badge{position:fixed;bottom:12px;right:12px;z-index:100;background:rgba(15,23,42,0.85);border:1px solid #334155;border-radius:10px;padding:6px 14px;font-size:0.75rem;color:#94a3b8;text-decoration:none;backdrop-filter:blur(8px);transition:all .3s;display:flex;align-items:center;gap:6px}
+.blog-badge:hover{background:rgba(59,130,246,0.2);border-color:#3b82f6;color:#60a5fa}
     </style>
 </head>
 <body>
@@ -1288,6 +1298,10 @@
         }
 
         function buildBuilding(buildingId) {
+            // 첫 건설 시 전체화면 진입
+            if(!document.fullscreenElement && !missionComplete){
+              document.documentElement.requestFullscreen().catch(()=>{});
+            }
             let building = null, perspective = null;
             for (const [key, list] of Object.entries(buildings)) {
                 const found = list.find(b => b.id === buildingId);
@@ -1600,10 +1614,39 @@
             `;
 
             reportPages.innerHTML = page1 + page2;
+            // 미션 완료 → 전체화면 해제
+            missionComplete=true;
+            if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
             reportModal.classList.add('active');
         }
 
         document.addEventListener('DOMContentLoaded', init);
+
+        // ===== 전체화면 가드 =====
+        let missionComplete = false;
+        let isReEntering = false;
+        function reEnterFullscreen(){
+          isReEntering = true;
+          document.getElementById('fs-warning').style.display = 'none';
+          document.documentElement.requestFullscreen().catch(()=>{isReEntering=false;});
+        }
+        document.addEventListener('fullscreenchange', () => {
+          if(!document.fullscreenElement && !missionComplete && !isReEntering){
+            document.getElementById('fs-warning').style.display = 'flex';
+          }
+          if(document.fullscreenElement){
+            isReEntering = false;
+            document.getElementById('fs-warning').style.display = 'none';
+          }
+        });
     </script>
+<!-- 전체화면 이탈 경고 -->
+<div class="fs-warning-overlay" id="fs-warning" style="display:none">
+  <div class="warn-icon">⚠️</div>
+  <div class="warn-title">미션 진행 중입니다!</div>
+  <div class="warn-msg">전체화면을 유지해야 미션을 계속할 수 있습니다.<br>다시 전체화면으로 돌아가세요.</div>
+  <button class="warn-btn" onclick="reEnterFullscreen()">🔒 전체화면으로 돌아가기</button>
+</div>
+<a href="https://ssam-ssong.blogspot.com" target="_blank" class="blog-badge">✏️ 풀어쓰는 사회학</a>
 </body>
 </html>
