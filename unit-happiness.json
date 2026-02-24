@@ -22,6 +22,26 @@
       "difficulty": "보통",
       "duration": "15분",
       "tags": []
+    },
+    {
+      "slug": "game",
+      "file": "c-happiness-happiness-quiz-game.html",
+      "title": "행복 단원 정리 퀴즈",
+      "desc": "",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "15분",
+      "tags": []
+    },
+    {
+      "slug": "compass",
+      "file": "c-happiness-happiness-compass.html",
+      "title": "행복나침반",
+      "desc": "",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "15분",
+      "tags": []
     }
   ]
 }
