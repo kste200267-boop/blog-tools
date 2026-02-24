@@ -332,7 +332,7 @@
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // --- 1. 슬라이드 이동 ---
         function nextSlide(n) {
-            if(num>=4){missionComplete=true;if(document.fullscreenElement)document.exitFullscreen().catch(function(){});}
+            if(n>=4){missionComplete=true;if(document.fullscreenElement)document.exitFullscreen().catch(function(){});}
             document.querySelectorAll('.slide-container').forEach(el => el.classList.remove('slide-active'));
             document.getElementById('slide-' + n).classList.add('slide-active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -482,7 +482,7 @@
   <div class="warn-msg">전체화면을 유지해야 학습을 계속할 수 있습니다.<br>다시 전체화면으로 돌아가세요.</div>
   <button class="warn-btn" onclick="reEnterFullscreen()">🔒 전체화면으로 돌아가기</button>
 </div>
-<a href="https://ssam-ssong.blogspot.com" target="_blank" class="blog-badge">✏️ 풀어쓰는 사회학</a>
+<a href="https://kste200267-boop.github.io/blog-tools/hub-unit-economy.html" target="_blank" class="blog-badge">✏️ 풀어쓰는 사회학</a>
 <script>
 var missionComplete = false;
 var isReEntering = false;
