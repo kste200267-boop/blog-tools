@@ -28,6 +28,16 @@
         "자기소개"
       ],
       "desc": "자기소개를 자유롭게 디자인"
+    },
+    {
+      "slug": "c-1-content-mm0j9sg5",
+      "file": "c-1-content-mm0j9sg5.html",
+      "title": "학생 선거 용지 생성기",
+      "desc": "",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "15분",
+      "tags": []
     }
   ]
 }
