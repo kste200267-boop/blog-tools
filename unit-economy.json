@@ -8,11 +8,5 @@
     { "slug": "life-activity", "title": "생활 사례 활동지 (A4 1장)", "type": "활동지", "difficulty": "보통", "duration": "20분", "tags": ["활동지", "사례", "통사2"], "desc": "실생활 금융 상황에서 3원칙을 적용해보는 활동지", "file": "c-economy-life-activity.html" },
     { "slug": "quiz-5", "title": "형성평가 5지선다 5문항 (매우 쉬움)", "type": "문항", "difficulty": "매우 쉬움", "duration": "10분", "tags": ["형성평가", "기초", "통사2"], "desc": "수업 후 바로 풀 수 있는 기초 확인 문항 5개", "file": "c-economy-quiz-5.html" },
     { "slug": "teacher-guide", "title": "교사용 지도 포인트 (오개념·질문 리스트)", "type": "교사용", "difficulty": "-", "duration": "참고", "tags": ["교사용", "오개념", "통사2"], "desc": "학생 오개념 TOP5, 예상 질문, 수업 중 강조 포인트", "file": "c-economy-teacher-guide.html" }
-    ,
-    { "slug": "web-1", "title": "1차시 웹교구: 자산 관리와 금융 생활", "type": "수업자료", "difficulty": "보통", "duration": "50분", "tags": ["웹교구", "1차시", "통사2"], "desc": "금융 상품 개념 학습 인터랙티브 웹 교구", "file": "w-economy-1.html" },
-    { "slug": "web-2", "title": "2차시 웹교구: 자산 관리 원칙과 포트폴리오", "type": "수업자료", "difficulty": "보통", "duration": "50분", "tags": ["웹교구", "2차시", "통사2"], "desc": "3원칙 그래프 게임 & 포트폴리오 설계", "file": "w-economy-2.html" },
-    { "slug": "web-3", "title": "3차시 웹교구: AI 6대 자산 정밀 진단", "type": "활동지", "difficulty": "심화", "duration": "50분", "tags": ["웹교구", "3차시", "통사2"], "desc": "AI 기반 자산 진단 시뮬레이션", "file": "w-economy-3.html" },
-    { "slug": "web-4", "title": "4차시 웹교구: 10년 투자 서바이벌", "type": "활동지", "difficulty": "심화", "duration": "50분", "tags": ["웹교구", "4차시", "통사2"], "desc": "장기 투자 시뮬레이션 게임", "file": "w-economy-4.html" }
-  { "slug": "web-4", "title": "선거", "type": "활동지", "difficulty": "심화", "duration": "50분", "tags": ["웹도구", "1차시", "통사2"], "desc": "학생회 임원 투표 용지 생성기", "file": "election.html" }
   ]
 }

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2차시: 자산 관리 원칙과 포트폴리오 (김스데반 T)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background: #f0fdf4; color: #1e293b; user-select: none; overflow-x: hidden; }
+        .jua { font-family: 'Jua', sans-serif; }
+        
+        /* 슬라이드 컨테이너 */
+        .slide-container { display: none; animation: slideIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; min-height: 75vh; padding-bottom: 80px; }
+        .slide-active { display: block; }
+        
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes bounce-gentle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        
+        /* 교육과정 배지 */
+        .badge { padding: 4px 12px; border-radius: 99px; font-size: 0.8rem; font-weight: bold; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); }
+        
+        /* 워터마크 */
+        .watermark { position: fixed; bottom: 20px; right: 20px; font-size: 14px; color: rgba(0,0,0,0.2); font-weight: bold; pointer-events: none; z-index: 9999; }
+
+        /* 그래프 게임 스타일 */
+        .graph-zone {
+            position: relative; width: 100%; height: 350px; background: white;
+            border-left: 4px solid #333; border-bottom: 4px solid #333;
+            margin: 20px 0; border-radius: 0 0 10px 0;
+        }
+        .graph-zone::before { content: '수익성'; position: absolute; top: -30px; left: -10px; font-weight: bold; font-size: 1.1rem; color: #ef4444; }
+        .graph-zone::after { content: '안전성'; position: absolute; bottom: -30px; right: 0; font-weight: bold; font-size: 1.1rem; color: #3b82f6; }
+        
+        .drop-target {
+            position: absolute; width: 100px; height: 100px; border-radius: 50%;
+            border: 3px dashed #cbd5e1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 0.9rem; text-align: center; cursor: pointer; transition: all 0.3s;
+            background: rgba(255,255,255,0.9); box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .drop-target:hover { background: #e0f2fe; border-color: #3b82f6; transform: scale(1.1); z-index: 10; }
+        .drop-target.correct { background: #dcfce7; border-color: #22c55e; color: #15803d; border-style: solid; animation: pop 0.3s; }
+        .drop-target.wrong { background: #fee2e2; border-color: #ef4444; animation: shake 0.3s; }
+
+        /* 포트폴리오 슬라이더 */
+        .range-slider {
+            -webkit-appearance: none; width: 100%; height: 15px; border-radius: 5px; background: #e5e7eb; outline: none; border: 1px solid #d1d5db;
+        }
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none; width: 28px; height: 28px; border-radius: 50%; 
+            background: #4f46e5; cursor: pointer; transition: .2s; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* 3원칙 카드 */
+        .principle-card {
+            background: white; border-radius: 1.5rem; padding: 1.5rem; text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); transition: all 0.3s; border: 2px solid transparent;
+            display: flex; flex-direction: column; justify-content: space-between; height: 100%; cursor: pointer;
+        }
+        .principle-card:hover { transform: translateY(-8px); border-color: #4f46e5; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .principle-card:active { transform: scale(0.98); }
+
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+    
+/* 전체화면 이탈 경고 */
+.fs-warning-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.92);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;animation:fadeIn .3s}
+.fs-warning-overlay .warn-icon{font-size:4rem}
+.fs-warning-overlay .warn-title{font-size:1.5rem;font-weight:900;color:#fbbf24}
+.fs-warning-overlay .warn-msg{font-size:1rem;color:#94a3b8;text-align:center;max-width:320px;line-height:1.6}
+.fs-warning-overlay .warn-btn{padding:14px 40px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);border:none;border-radius:12px;color:#fff;font-size:1.1rem;font-weight:700;cursor:pointer;transition:transform .2s}
+.fs-warning-overlay .warn-btn:hover{transform:scale(1.05)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.blog-badge{position:fixed;bottom:12px;right:12px;z-index:100;background:rgba(15,23,42,0.85);border:1px solid #334155;border-radius:10px;padding:6px 14px;font-size:0.75rem;color:#94a3b8;text-decoration:none;backdrop-filter:blur(8px);transition:all .3s;display:flex;align-items:center;gap:6px}
+.blog-badge:hover{background:rgba(59,130,246,0.2);border-color:#3b82f6;color:#60a5fa}
+
+</style>
+</head>
+<body class="p-4 md:p-8 min-h-screen flex flex-col" oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+
+    <!-- 워터마크 -->
+    <div class="watermark">Designed by 경북교육청 교사 김스데반 (무단 배포 금지)</div>
+
+    <!-- 상단 헤더 -->
+    <header class="bg-indigo-900 text-white p-6 rounded-[2rem] shadow-xl mb-8 relative overflow-hidden border-t-4 border-indigo-400">
+        <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">📈</div>
+        <div class="relative z-10 text-center">
+            <div class="flex flex-wrap justify-center gap-2 mb-4">
+                <span class="badge text-indigo-200">통합사회</span>
+                <span class="badge text-blue-200">IV. 시장 경제와 지속가능발전</span>
+                <span class="badge text-yellow-200">3. 자산 관리와 금융 생활</span>
+            </div>
+            <div class="bg-indigo-800/50 rounded-xl p-4 max-w-4xl mx-auto border border-indigo-700/50 backdrop-blur-sm">
+                <span class="text-indigo-300 font-bold mr-2 text-sm md:text-base">[10통사2-03-03]</span>
+                <span class="text-slate-200 text-sm md:text-base font-light leading-relaxed break-keep">
+                    금융 자산의 특징과 자산 관리의 원칙을 토대로 금융 생활을 설계하고, 경제적, 사회적 환경의 변화가 금융과 관련한 의사 결정에 미치는 영향을 탐구한다.
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="max-w-5xl mx-auto w-full flex-1 relative bg-white/60 rounded-[2.5rem] p-6 md:p-10 shadow-sm backdrop-blur-sm border border-white">
+        
+        <!-- Slide 1: 오프닝 -->
+        <div id="slide-1" class="slide-container slide-active flex flex-col items-center justify-center text-center py-10">
+            <div class="text-9xl mb-6 animate-bounce">🥚</div>
+            <h1 class="jua text-5xl md:text-6xl text-indigo-900 mb-6">자산 관리의 원칙과 포트폴리오</h1>
+            <p class="text-xl text-slate-600 mb-10 max-w-2xl leading-relaxed">
+                "계란을 한 바구니에 담지 마라!"<br>
+                투자 고수들의 필승 전략, <b>분산 투자</b>의 비밀을 밝혀봅시다.
+            </p>
+            <button onclick="document.documentElement.requestFullscreen().catch(function(){});nextSlide(2)" class="bg-indigo-600 hover:bg-indigo-700 text-white text-2xl jua py-4 px-16 rounded-2xl shadow-lg transition-transform hover:scale-105 flex items-center gap-3">
+                <span>미션 시작하기 ▶</span>
+            </button>
+        </div>
+
+        <!-- Slide 2: 자산 관리 3원칙 (설명 수정됨) -->
+        <div id="slide-2" class="slide-container">
+            <h2 class="jua text-3xl text-indigo-900 mb-8 border-l-8 border-indigo-500 pl-4">01. 자산 관리의 3원칙</h2>
+            <p class="text-center text-slate-500 mb-6 text-sm">👇 카드를 클릭하면 상세한 설명을 들을 수 있습니다.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 items-stretch">
+                <!-- 수익성 -->
+                <div class="principle-card group" onclick="speak('수익성은 투자한 돈이 얼마나 불어날 수 있는지입니다. 주식이나 펀드는 수익이 높을 수 있지만 그만큼 위험도 큽니다.')">
+                    <div>
+                        <div class="text-6xl mb-4 group-hover:scale-110 transition">💰</div>
+                        <h3 class="jua text-2xl text-slate-800 mb-3">수익성</h3>
+                        <div class="h-px w-10 bg-slate-200 mx-auto mb-4"></div>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4 break-keep">
+                            투자한 돈이 얼마나 <b>큰 이익</b>으로 돌아올까요?<br>
+                            <span class="text-xs text-slate-400 block mt-1">("대박 아니면 쪽박?")</span>
+                        </p>
+                    </div>
+                    <div class="bg-red-50 text-red-600 py-3 rounded-xl font-bold text-sm border border-red-100 flex items-center justify-center gap-2">
+                        🔥 주식, 펀드
+                    </div>
+                </div>
+
+                <!-- 안전성 -->
+                <div class="principle-card group" onclick="speak('안전성은 원금이 줄어들지 않고 보장되는 정도입니다. 예금은 안전하지만 수익이 낮습니다.')">
+                    <div>
+                        <div class="text-6xl mb-4 group-hover:scale-110 transition">🛡️</div>
+                        <h3 class="jua text-2xl text-slate-800 mb-3">안전성</h3>
+                        <div class="h-px w-10 bg-slate-200 mx-auto mb-4"></div>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4 break-keep">
+                            내 <b>원금</b>이 떼이지 않고 안전하게 보장되나요?<br>
+                            <span class="text-xs text-slate-400 block mt-1">("마음 편한 게 최고!")</span>
+                        </p>
+                    </div>
+                    <div class="bg-blue-50 text-blue-600 py-3 rounded-xl font-bold text-sm border border-blue-100 flex items-center justify-center gap-2">
+                        🛡️ 예금, 적금, 국채
+                    </div>
+                </div>
+
+                <!-- 유동성 -->
+                <div class="principle-card group" onclick="speak('유동성은 필요할 때 즉시 현금으로 바꿀 수 있는 정도입니다. 부동산은 파는 데 몇 달이 걸려 유동성이 낮습니다.')">
+                    <div>
+                        <div class="text-6xl mb-4 group-hover:scale-110 transition">💧</div>
+                        <h3 class="jua text-2xl text-slate-800 mb-3">유동성</h3>
+                        <div class="h-px w-10 bg-slate-200 mx-auto mb-4"></div>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4 break-keep">
+                            필요할 때 <b>즉시 현금</b>으로 바꿀 수 있나요?<br>
+                            <span class="text-xs text-slate-400 block mt-1">("급전이 필요할 때!")</span>
+                        </p>
+                    </div>
+                    <div class="bg-indigo-50 text-indigo-600 py-3 rounded-xl font-bold text-sm border border-indigo-100 flex items-center justify-center gap-2">
+                        💧 현금, 수시입출금
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-amber-50 p-6 rounded-2xl border border-amber-200 flex items-start gap-4 shadow-sm">
+                <span class="text-3xl">⚖️</span>
+                <div>
+                    <h4 class="font-bold text-amber-800 mb-1">상충 관계 (Trade-off)</h4>
+                    <p class="text-sm text-amber-800 leading-relaxed">
+                        세 마리 토끼를 다 잡는 <b>완벽한 금융 상품은 없습니다.</b><br>
+                        • <b>주식:</b> 수익성은 높지만 안전성은 낮음<br>
+                        • <b>부동산:</b> 안전할 수 있지만 유동성(현금화 속도)이 매우 낮음
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex justify-between mt-8">
+                <button onclick="prevSlide(1)" class="text-slate-400 hover:text-slate-600 font-bold px-4 py-2 hover:bg-slate-100 rounded-lg transition">◀ 이전</button>
+                <button onclick="nextSlide(3)" class="bg-indigo-600 text-white px-8 py-3 rounded-xl hover:bg-indigo-700 font-bold shadow-md transition-transform hover:scale-105">다음: 그래프 미션 ▶</button>
+            </div>
+        </div>
+
+        <!-- Slide 3: [게임] 그래프 위치 찾기 -->
+        <div id="slide-3" class="slide-container">
+            <div class="flex items-center justify-between mb-6 border-l-8 border-green-500 pl-4">
+                <h2 class="jua text-3xl text-slate-800">02. 미션: 자산 위치 찾기</h2>
+            </div>
+            
+            <!-- [수정됨] 초대형 문제 표시 배너 -->
+            <div class="bg-green-50 border-4 border-green-400 rounded-3xl p-8 text-center mb-8 shadow-lg transform transition-all hover:scale-[1.01]">
+                <p class="text-green-700 font-bold text-xl mb-4">👇 아래 자산은 그래프의 어느 구역일까요?</p>
+                <div class="inline-block bg-white px-16 py-6 rounded-2xl border-2 border-green-200 shadow-md">
+                    <span class="text-5xl mr-3 align-middle">🎯</span>
+                    <span id="game-quest" class="jua text-7xl text-green-900 drop-shadow-sm align-middle">주식</span>
+                </div>
+            </div>
+
+            <!-- 그래프 영역 -->
+            <div class="graph-zone relative rounded-lg shadow-inner bg-slate-50 overflow-hidden">
+                <!-- 배경 그리드 -->
+                <div class="absolute inset-0 pointer-events-none" style="background-image: linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px); background-size: 25px 25px; opacity: 0.6;"></div>
+
+                <!-- Zone 1: 고수익/저안전 (좌상단) -->
+                <div class="drop-target" style="top: 8%; left: 8%;" onclick="checkGraphAnswer('stock', this)">
+                    <span class="pointer-events-none font-bold text-slate-700 text-lg">A 구역<br><span class="text-sm font-normal text-slate-500">고수익 / 저안전</span></span>
+                </div>
+
+                <!-- Zone 2: 중수익/중안전 (중앙) -->
+                <div class="drop-target" style="top: 40%; left: 40%;" onclick="checkGraphAnswer('bond', this)">
+                    <span class="pointer-events-none font-bold text-slate-700 text-lg">B 구역<br><span class="text-sm font-normal text-slate-500">중수익 / 중안전</span></span>
+                </div>
+
+                <!-- Zone 3: 저수익/고안전 (우하단) -->
+                <div class="drop-target" style="top: 68%; left: 68%;" onclick="checkGraphAnswer('deposit', this)">
+                    <span class="pointer-events-none font-bold text-slate-700 text-lg">C 구역<br><span class="text-sm font-normal text-slate-500">저수익 / 고안전</span></span>
+                </div>
+                
+                <!-- 축 설명 -->
+                <div class="absolute bottom-2 right-4 text-blue-600 font-bold">안전성 (높음) ➡</div>
+                <div class="absolute top-4 left-2 text-red-600 font-bold">⬆ 수익성 (높음)</div>
+            </div>
+
+            <div id="game-feedback" class="text-center h-10 font-bold text-xl text-slate-700 mt-4"></div>
+
+            <div class="flex justify-between mt-8">
+                <button onclick="prevSlide(2)" class="text-slate-400 hover:text-slate-600 font-bold px-4 py-2 hover:bg-slate-100 rounded-lg transition">◀ 이전</button>
+                <button id="btn-next-step3" onclick="nextSlide(4)" class="bg-indigo-600 text-white px-8 py-3 rounded-xl hover:bg-indigo-700 font-bold shadow-md opacity-50 pointer-events-none transition-all">모든 미션 완료 시 오픈 🔒</button>
+            </div>
+        </div>
+
+        <!-- Slide 4: 100-나이 법칙 -->
+        <div id="slide-4" class="slide-container">
+            <h2 class="jua text-3xl text-slate-800 mb-6 border-l-8 border-pink-500 pl-4">03. 100 - 나이 법칙</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <!-- 설명 -->
+                <div class="space-y-4">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-xl mb-3 text-pink-600 flex items-center gap-2">🧮 공식의 의미</h3>
+                        <p class="text-slate-700 leading-loose text-lg">
+                            <b class="text-slate-900 bg-red-50 px-2 py-1 rounded">100 - (자신의 나이)</b> <br> = <span class="text-red-500 font-bold">공격적 투자(주식)</span> 비중<br><br>
+                            <b class="text-slate-900 bg-blue-50 px-2 py-1 rounded">(자신의 나이)</b> <br> = <span class="text-blue-500 font-bold">안전한 투자(예금)</span> 비중
+                        </p>
+                    </div>
+                    <p class="text-sm text-slate-500 bg-slate-100 p-4 rounded-xl">
+                        💡 <b>왜 그럴까요?</b><br>젊을 때는 실패해도 다시 벌 시간이 있어 공격적으로,<br>
+                        나이가 들면 은퇴 자금을 지키기 위해 안전하게 투자하라는 뜻입니다.
+                    </p>
+                </div>
+
+                <!-- 인터랙티브 계산기 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-2 border-pink-100 text-center">
+                    <label class="block font-bold text-slate-700 mb-6 text-xl animate-bounce-gentle">👇 슬라이더로 나이를 조절해보세요!</label>
+                    
+                    <div class="flex items-center gap-4 mb-8">
+                        <span class="text-3xl">👶</span>
+                        <input type="range" min="0" max="100" value="20" class="range-slider flex-1" id="age-slider" oninput="updateChart(this.value)">
+                        <span class="text-3xl">👴</span>
+                    </div>
+                    
+                    <div class="font-bold text-3xl mb-6 text-slate-800">
+                        현재 나이: <span id="age-display" class="text-pink-600 font-black">20</span>세
+                    </div>
+                    
+                    <!-- 차트 -->
+                    <div class="w-56 h-56 mx-auto relative mb-6">
+                        <canvas id="portfolioChart"></canvas>
+                    </div>
+                    
+                    <div class="flex justify-center gap-6 text-sm font-bold bg-slate-50 p-3 rounded-xl">
+                        <span class="text-red-500 flex items-center gap-1"><span class="w-3 h-3 bg-red-500 rounded-full inline-block"></span> 공격형: <span id="stock-pct" class="text-lg">80</span>%</span>
+                        <span class="text-blue-500 flex items-center gap-1"><span class="w-3 h-3 bg-blue-500 rounded-full inline-block"></span> 안전형: <span id="safe-pct" class="text-lg">20</span>%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between mt-8">
+                <button onclick="prevSlide(3)" class="text-slate-400 hover:text-slate-600 font-bold px-4 py-2 hover:bg-slate-100 rounded-lg transition">◀ 이전</button>
+                <button onclick="nextSlide(5)" class="bg-indigo-600 text-white px-8 py-3 rounded-xl hover:bg-indigo-700 font-bold shadow-md transition-transform hover:scale-105">다음: 실전 포트폴리오 ▶</button>
+            </div>
+        </div>
+
+        <!-- Slide 5: 실전 미션 (40세 가장) -->
+        <div id="slide-5" class="slide-container">
+            <h2 class="jua text-3xl text-slate-800 mb-6 border-l-8 border-purple-500 pl-4">04. 한 걸음 나아가기</h2>
+            
+            <div class="bg-white p-8 rounded-3xl shadow-lg border border-slate-200">
+                <div class="flex items-center gap-4 mb-6 border-b pb-4">
+                    <div class="bg-purple-100 p-4 rounded-full text-4xl">👨‍💼</div>
+                    <div>
+                        <h3 class="font-bold text-2xl text-slate-800">미션: 40세의 포트폴리오</h3>
+                        <p class="text-slate-500 text-lg">여러분이 이제 40세 가장이라고 가정해 봅시다.<br>자녀 교육비와 노후 준비를 동시에 해야 합니다.</p>
+                    </div>
+                </div>
+
+                <div class="mb-6 bg-purple-50 p-5 rounded-2xl border border-purple-200 text-slate-700 leading-relaxed">
+                    <span class="font-bold text-purple-600 text-lg block mb-2">💡 포트폴리오 작성 팁</span>
+                    <ul class="list-disc list-inside space-y-1 text-sm md:text-base">
+                        <li>'100-나이 법칙'에 따르면 <b>공격형 60% : 안전형 40%</b>가 기준입니다.</li>
+                        <li>하지만 개인 상황에 따라 달라질 수 있습니다.</li>
+                        <li>예금, 주식, 채권, 펀드, 보험을 적절히 섞어보세요.</li>
+                    </ul>
+                </div>
+
+                <label class="block text-slate-800 font-bold mb-3 text-lg">나만의 자산 배분 계획을 적어보세요.</label>
+                <textarea id="portfolio-text" class="w-full p-5 bg-slate-50 border-2 border-slate-200 rounded-2xl h-40 focus:border-purple-500 outline-none resize-none mb-6 text-slate-700 text-lg" placeholder="예시: 저는 안전을 중시해서 예금 40%, 채권 20%를 담고, 수익을 위해 주식 30%, 펀드 10%로 나누겠습니다. 그 이유는..."></textarea>
+                
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-slate-400">수신: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cea5bdbaabbea6bba2f88ea0afb8abbce0ada1a3">[email&#160;protected]</a></span>
+                    <button onclick="submitPortfolio()" class="bg-purple-600 hover:bg-purple-700 text-white jua text-xl py-3 px-10 rounded-xl shadow-lg transition-transform hover:scale-105 flex items-center gap-2">
+                        <span>📤 제출 및 수업 종료</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <button onclick="nextSlide(1)" class="text-slate-400 hover:text-slate-600 underline text-sm">처음으로 돌아가기</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // --- 1. 슬라이드 이동 ---
+        function nextSlide(n) {
+            if(num>=4){missionComplete=true;if(document.fullscreenElement)document.exitFullscreen().catch(function(){});}
+            document.querySelectorAll('.slide-container').forEach(el => el.classList.remove('slide-active'));
+            document.getElementById('slide-' + n).classList.add('slide-active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function prevSlide(n) { nextSlide(n); }
+
+        // --- 2. TTS ---
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = 'ko-KR';
+            u.rate = 1.0; // 속도 조절
+            window.speechSynthesis.speak(u);
+        }
+
+        // --- 3. 그래프 게임 로직 ---
+        let currentQuestIndex = 0;
+        const quests = [
+            { id: 'stock', name: '주식', desc: '수익성 높음 / 안전성 낮음 (A 구역)', zoneHint: 'A 구역' },
+            { id: 'deposit', name: '예금', desc: '안전성 높음 / 수익성 낮음 (C 구역)', zoneHint: 'C 구역' },
+            { id: 'bond', name: '채권', desc: '중간 수익 / 중간 위험 (B 구역)', zoneHint: 'B 구역' }
+        ];
+        
+        function updateQuestDisplay() {
+            if (currentQuestIndex < quests.length) {
+                document.getElementById('game-quest').innerText = quests[currentQuestIndex].name;
+                document.getElementById('game-feedback').innerText = "";
+                // 초기화
+                document.querySelectorAll('.drop-target').forEach(el => {
+                    el.classList.remove('correct', 'wrong');
+                    el.style.pointerEvents = 'auto';
+                });
+            } else {
+                // 게임 완료
+                document.getElementById('game-quest').innerText = "Clear!";
+                document.getElementById('game-feedback').innerHTML = "<span class='text-green-600'>🎉 모든 자산의 위치를 찾았습니다!</span>";
+                const nextBtn = document.getElementById('btn-next-step3');
+                nextBtn.classList.remove('opacity-50', 'pointer-events-none');
+                nextBtn.innerText = "다음: 100-나이 법칙 ▶";
+                nextBtn.classList.add('animate-bounce');
+                speak("축하합니다! 모든 미션을 완료했습니다.");
+            }
+        }
+
+        function checkGraphAnswer(zoneType, element) {
+            const currentQ = quests[currentQuestIndex];
+            
+            // 정답 체크 로직
+            let isCorrect = false;
+            if (currentQ.id === 'stock' && zoneType === 'stock') isCorrect = true;
+            if (currentQ.id === 'deposit' && zoneType === 'deposit') isCorrect = true;
+            if (currentQ.id === 'bond' && zoneType === 'bond') isCorrect = true;
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                document.getElementById('game-feedback').innerHTML = `⭕ 정답! <b>${currentQ.name}</b>: ${currentQ.desc}`;
+                speak("정답입니다!");
+                
+                // 모든 구역 클릭 방지
+                document.querySelectorAll('.drop-target').forEach(el => el.style.pointerEvents = 'none');
+                
+                // 다음 문제로 (딜레이)
+                setTimeout(() => {
+                    currentQuestIndex++;
+                    updateQuestDisplay();
+                }, 1500);
+            } else {
+                element.classList.add('wrong');
+                document.getElementById('game-feedback').innerHTML = "<span class='text-red-500'>❌ 다시 생각해보세요. 수익성과 안전성을 따져보세요.</span>";
+                speak("다시 시도해보세요.");
+                setTimeout(() => element.classList.remove('wrong'), 500);
+            }
+        }
+
+        // --- 4. Chart.js (100-나이 법칙) ---
+        let myChart;
+        function initChart() {
+            const ctx = document.getElementById('portfolioChart').getContext('2d');
+            myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['공격형 (주식 등)', '안전형 (예금 등)'],
+                    datasets: [{
+                        data: [80, 20], // 초기값 (20세 기준)
+                        backgroundColor: ['#ef4444', '#3b82f6'],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    animation: { animateScale: true, animateRotate: true }
+                }
+            });
+        }
+
+        function updateChart(age) {
+            document.getElementById('age-display').innerText = age;
+            const stock = Math.max(0, 100 - age);
+            const safe = Math.min(100, age); 
+            
+            document.getElementById('stock-pct').innerText = stock;
+            document.getElementById('safe-pct').innerText = parseInt(age);
+
+            myChart.data.datasets[0].data = [stock, age];
+            myChart.update();
+        }
+
+        // 초기화
+        setTimeout(() => {
+            initChart();
+            updateQuestDisplay();
+        }, 500);
+
+        // --- 5. 제출 기능 ---
+        function submitPortfolio() {
+            missionComplete=true;
+            if(document.fullscreenElement)document.exitFullscreen().catch(function(){});
+            if(document.getElementById('portfolio-text').value.length < 5) {
+                alert("내용을 더 작성해주세요!"); return;
+            }
+            // 모달 효과
+            const modal = document.createElement('div');
+            modal.className = "fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm";
+            modal.innerHTML = `
+                <div class="bg-white p-8 rounded-3xl text-center shadow-2xl max-w-sm m-4 animate-[pop_0.3s_ease-out]">
+                    <div class="text-6xl mb-4">📧</div>
+                    <h3 class="jua text-2xl text-slate-800 mb-2">전송 완료!</h3>
+                    <p class="text-slate-600 mb-6">선생님(kstephul6@naver.com)께<br>포트폴리오가 제출되었습니다.</p>
+                    <button onclick="this.parentElement.parentElement.remove()" class="w-full bg-slate-800 text-white py-3 rounded-xl font-bold">확인</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // --- 6. 보안 ---
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || (e.ctrlKey && (e.key === 'u' || e.key === 'U'))) { e.preventDefault(); }
+        });
+    </script>
+<!-- 전체화면 이탈 경고 -->
+<div class="fs-warning-overlay" id="fs-warning" style="display:none">
+  <div class="warn-icon">⚠️</div>
+  <div class="warn-title">학습 진행 중입니다!</div>
+  <div class="warn-msg">전체화면을 유지해야 학습을 계속할 수 있습니다.<br>다시 전체화면으로 돌아가세요.</div>
+  <button class="warn-btn" onclick="reEnterFullscreen()">🔒 전체화면으로 돌아가기</button>
+</div>
+<a href="https://ssam-ssong.blogspot.com" target="_blank" class="blog-badge">✏️ 풀어쓰는 사회학</a>
+<script>
+var missionComplete = false;
+var isReEntering = false;
+function reEnterFullscreen(){
+  isReEntering = true;
+  document.getElementById('fs-warning').style.display = 'none';
+  document.documentElement.requestFullscreen().catch(function(){isReEntering=false;});
+}
+document.addEventListener('fullscreenchange', function(){
+  if(!document.fullscreenElement && !missionComplete && !isReEntering){
+    document.getElementById('fs-warning').style.display = 'flex';
+  }
+  if(document.fullscreenElement){
+    isReEntering = false;
+    document.getElementById('fs-warning').style.display = 'none';
+  }
+});
+</script>
+</body>
+</html>
