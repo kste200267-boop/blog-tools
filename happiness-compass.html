@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>행복나침반 — 나의 행복관 찾기</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#0f172a;--card:#1e293b;--card2:#334155;--text:#f1f5f9;--sub:#94a3b8;--border:#475569;
+--coral:#f97066;--mint:#2dd4bf;--sky:#38bdf8;--violet:#a78bfa;--gold:#fbbf24;}
+body{font-family:'Nanum Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.container{max-width:640px;margin:0 auto;padding:20px;}
+.header{text-align:center;padding:36px 0 20px;position:relative;}
+.header::before{content:'';position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:250px;height:250px;background:radial-gradient(circle,rgba(249,112,102,.12),transparent 70%);pointer-events:none;}
+.header .unit{display:inline-block;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:4px 16px;font-size:.7rem;color:var(--coral);margin-bottom:10px;}
+.header h1{font-size:2rem;font-weight:800;margin-bottom:4px;}
+.header h1 span{background:linear-gradient(135deg,var(--coral),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.header p{color:var(--sub);font-size:.88rem;}
+.prog-wrap{margin:0 0 24px;}
+.prog-bar{height:5px;background:var(--card2);border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--coral),var(--gold));transition:width .4s;}
+.prog-info{display:flex;justify-content:space-between;margin-top:5px;font-size:.72rem;color:var(--sub);}
+.screen{display:none;animation:fadeUp .35s ease;}.screen.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px;margin-bottom:16px;position:relative;overflow:hidden;}
+.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--coral),var(--gold));}
+.q-num{font-size:.72rem;color:var(--coral);font-weight:700;margin-bottom:6px;}
+.q-text{font-size:1.05rem;font-weight:700;line-height:1.6;}
+.options{display:grid;gap:10px;}
+.opt{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:16px 18px;cursor:pointer;font-family:inherit;font-size:.9rem;color:var(--text);text-align:left;transition:all .2s;line-height:1.5;}
+.opt:hover{border-color:var(--coral);background:var(--card2);transform:translateX(3px);}
+.opt.selected{border-color:var(--coral);background:rgba(249,112,102,.1);}
+.nav{display:flex;gap:10px;justify-content:center;margin-top:20px;}
+.btn{padding:12px 30px;border:none;border-radius:10px;font-family:inherit;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-next{background:linear-gradient(135deg,var(--coral),var(--gold));color:#fff;}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(249,112,102,.3);}
+.btn-next:disabled{opacity:.4;transform:none;cursor:default;}
+.btn-prev{background:var(--card2);color:var(--text);}
+.res-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:32px;text-align:center;margin-bottom:20px;}
+.res-emoji{font-size:3.5rem;margin-bottom:8px;}
+.res-type{font-size:1.5rem;font-weight:800;margin-bottom:4px;}
+.res-sub{font-size:.85rem;color:var(--sub);line-height:1.7;margin-top:8px;}
+.res-thinker{display:inline-block;padding:5px 16px;border-radius:16px;font-size:.8rem;font-weight:700;margin-top:10px;}
+.desc-box{background:var(--card);border-radius:16px;padding:22px;margin:16px 0;text-align:left;}
+.desc-box h3{font-size:1rem;font-weight:700;margin-bottom:10px;}
+.desc-box p{font-size:.85rem;color:var(--sub);line-height:1.7;margin-bottom:8px;}
+.desc-box ul{list-style:none;padding:0;}
+.desc-box li{font-size:.85rem;color:var(--sub);line-height:1.7;padding:3px 0;}
+.desc-box li::before{content:'•';color:var(--coral);margin-right:8px;font-weight:800;}
+.bars{margin:20px 0;}
+.bar-item{margin-bottom:14px;}
+.bar-label{display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:4px;}
+.bar-label span:first-child{font-weight:700;}
+.bar-label span:last-child{color:var(--sub);}
+.bar-track{height:10px;background:var(--card2);border-radius:5px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:5px;transition:width 1s ease;}
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0;}
+.type-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;position:relative;}
+.type-card.top{border-width:2px;}
+.tc-emoji{font-size:1.8rem;margin-bottom:4px;}
+.tc-name{font-size:.8rem;font-weight:700;margin-bottom:2px;}
+.tc-score{font-size:1.3rem;font-weight:800;}
+.tc-pct{font-size:.7rem;color:var(--sub);}
+.match-box{background:var(--card);border-radius:16px;padding:20px;margin:16px 0;display:flex;gap:16px;align-items:center;}
+.match-emoji{font-size:2.5rem;flex-shrink:0;}
+.match-info h4{font-size:.95rem;font-weight:700;margin-bottom:4px;}
+.match-info p{font-size:.82rem;color:var(--sub);line-height:1.6;}
+.btn-group{display:flex;gap:10px;justify-content:center;margin-top:20px;}
+.btn-restart{padding:12px 28px;background:linear-gradient(135deg,var(--coral),var(--gold));color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;}
+.btn-print{padding:12px 28px;background:var(--card2);color:var(--text);border:1px solid var(--border);border-radius:10px;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;}
+.footer{text-align:center;padding:20px;font-size:.7rem;color:var(--border);}
+@media(max-width:500px){.header h1{font-size:1.5rem;}.match-box{flex-direction:column;text-align:center;}}
+@media print{body{background:#fff;color:#000;}.header,.prog-wrap,.nav,.btn-group,.footer{display:none;}.screen.active{display:block;}.res-card,.desc-box,.type-card,.match-box{background:#fff;border:1px solid #ddd;}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<div class="unit">통합사회 · 2단원 · 행복</div>
+<h1>🧭 행복 <span>나침반</span></h1>
+<p>나는 어떤 행복관을 가지고 있을까?</p>
+</div>
+<div class="prog-wrap">
+<div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+<div class="prog-info"><span id="progLabel">시작 전</span><span id="progCount">0/20</span></div>
+</div>
+
+<div class="screen active" id="s-intro">
+<div class="q-card" style="text-align:center;">
+<div style="font-size:2.5rem;margin-bottom:12px;">🤔</div>
+<h2 style="font-size:1.15rem;margin-bottom:14px;">나에게 행복이란 뭘까?</h2>
+<p style="color:var(--sub);line-height:1.8;font-size:.88rem;">
+같은 상황에서도 사람마다 느끼는 행복이 다릅니다.<br>
+20개의 상황에서 가장 가까운 생각을 골라보세요.<br><br>
+당신의 행복관이 어떤 사상가와 닮았는지,<br>
+<b>12가지 유형</b> 중 어디에 해당하는지 알려드립니다.
+</p>
+<div style="display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap;">
+<span style="background:rgba(249,112,102,.15);color:var(--coral);padding:4px 12px;border-radius:12px;font-size:.72rem;font-weight:700;">🔥 쾌락</span>
+<span style="background:rgba(251,191,36,.15);color:var(--gold);padding:4px 12px;border-radius:12px;font-size:.72rem;font-weight:700;">⚖️ 공리</span>
+<span style="background:rgba(45,212,191,.15);color:var(--mint);padding:4px 12px;border-radius:12px;font-size:.72rem;font-weight:700;">🧘 평온</span>
+<span style="background:rgba(167,139,250,.15);color:var(--violet);padding:4px 12px;border-radius:12px;font-size:.72rem;font-weight:700;">🌱 덕</span>
+</div>
+</div>
+<div class="nav"><button class="btn btn-next" onclick="start()">시작하기 (약 5분)</button></div>
+</div>
+
+<div class="screen" id="s-quiz"></div>
+<div class="screen" id="s-result"></div>
+</div>
+<div class="footer">풀어쓰는 사회학 · kstephullab.com</div>
+
+<script>
+const Qs=[
+// 1~5
+{q:'친구들과 맛있는 걸 먹으러 갔다. 가장 행복한 순간은?',o:[
+{t:'맛있는 음식을 먹는 그 순간 자체가 행복하다',k:'H'},
+{t:'모두가 즐거워하는 모습을 보는 게 좋다',k:'U'},
+{t:'여유롭게 대화하며 편안한 시간을 보내는 것',k:'S'},
+{t:'내가 좋은 가게를 골라서 친구들이 고마워할 때',k:'V'}]},
+{q:'시험 기간이다. 나의 마음가짐은?',o:[
+{t:'시험 끝나면 뭐하고 놀지 생각하면서 버틴다',k:'H'},
+{t:'반 평균을 올려서 우리 반이 잘됐으면 좋겠다',k:'U'},
+{t:'결과에 연연하지 않고 할 수 있는 만큼만 한다',k:'S'},
+{t:'최선을 다하는 것 자체가 의미 있다고 생각한다',k:'V'}]},
+{q:'용돈 10만 원이 생겼다! 어떻게 쓸까?',o:[
+{t:'평소 갖고 싶었던 걸 바로 산다',k:'H'},
+{t:'친구들과 나눠 쓰거나 같이 즐길 수 있는 데 쓴다',k:'U'},
+{t:'급하게 쓰지 않고 정말 필요할 때를 위해 아껴둔다',k:'S'},
+{t:'부모님 선물을 사거나 의미 있는 곳에 기부한다',k:'V'}]},
+{q:'주말에 하루 종일 자유시간이 있다면?',o:[
+{t:'게임, 영화, 맛집 등 하고 싶은 걸 마음껏 한다',k:'H'},
+{t:'봉사활동이나 동아리처럼 의미 있는 일을 한다',k:'U'},
+{t:'혼자 산책하거나 음악 들으며 조용히 쉰다',k:'S'},
+{t:'독서나 자기계발처럼 성장할 수 있는 일을 한다',k:'V'}]},
+{q:'친구가 고민을 이야기한다. 나의 반응은?',o:[
+{t:'기분 풀어주려고 재밌는 곳에 데려간다',k:'H'},
+{t:'어떻게 하면 모두에게 좋은 해결책인지 같이 고민한다',k:'U'},
+{t:'조용히 들어주고 마음이 편해지도록 곁에 있는다',k:'S'},
+{t:'솔직하게 조언해서 올바른 선택을 하도록 돕는다',k:'V'}]},
+// 6~10
+{q:'"성공"이라는 단어를 들으면 떠오르는 이미지는?',o:[
+{t:'하고 싶은 걸 마음껏 할 수 있는 자유',k:'H'},
+{t:'많은 사람에게 도움이 되는 영향력',k:'U'},
+{t:'마음에 불안이 없는 평화로운 상태',k:'S'},
+{t:'스스로 떳떳하고 존경받는 삶',k:'V'}]},
+{q:'반에서 축제 부스를 정하는 투표. 나의 입장은?',o:[
+{t:'내가 하고 싶은 거에 투표한다, 재밌어야지!',k:'H'},
+{t:'가장 많은 사람이 즐길 수 있는 걸 골라야 한다',k:'U'},
+{t:'뭐든 상관없다, 다투지만 않으면 된다',k:'S'},
+{t:'의미 있는 걸 해야 한다, 단순 놀이는 아쉽다',k:'V'}]},
+{q:'SNS에서 누군가 나를 비난하는 댓글을 달았다.',o:[
+{t:'기분 나쁘니까 당장 맛있는 거 먹으러 간다',k:'H'},
+{t:'다른 사람들도 피해받지 않도록 신고한다',k:'U'},
+{t:'신경 쓰지 않는다, 마음의 평화가 중요하니까',k:'S'},
+{t:'내가 잘못한 게 있는지 먼저 돌아본다',k:'V'}]},
+{q:'내가 생각하는 "좋은 하루"란?',o:[
+{t:'즐거운 일이 많았던 하루',k:'H'},
+{t:'누군가에게 도움이 된 하루',k:'U'},
+{t:'마음이 편안하고 고요했던 하루',k:'S'},
+{t:'나 자신이 조금이라도 성장한 하루',k:'V'}]},
+{q:'졸업 후 가장 기억에 남을 것 같은 순간은?',o:[
+{t:'친구들과 놀았던 즐거운 순간들',k:'H'},
+{t:'함께 노력해서 무언가를 이뤄낸 경험',k:'U'},
+{t:'힘든 시기를 잘 견뎌낸 나 자신',k:'S'},
+{t:'선생님이나 친구에게 좋은 영향을 준 기억',k:'V'}]},
+// 11~15
+{q:'행복하지 않은 상태란?',o:[
+{t:'즐거운 일이 하나도 없는 지루한 상태',k:'H'},
+{t:'내 주변 사람들이 힘들어하는 상태',k:'U'},
+{t:'마음이 불안하고 걱정이 많은 상태',k:'S'},
+{t:'스스로에게 부끄러운 행동을 한 상태',k:'V'}]},
+{q:'인생에서 가장 중요한 것은?',o:[
+{t:'지금 이 순간을 즐기는 것',k:'H'},
+{t:'함께 잘 사는 세상을 만드는 것',k:'U'},
+{t:'내면의 평화를 유지하는 것',k:'S'},
+{t:'올바르게 살고 성장하는 것',k:'V'}]},
+{q:'여행을 간다면 어떤 여행이 좋을까?',o:[
+{t:'놀이공원, 맛집 투어 같은 즐거운 여행',k:'H'},
+{t:'현지 봉사활동이 포함된 의미 있는 여행',k:'U'},
+{t:'조용한 시골이나 자연 속에서 쉬는 여행',k:'S'},
+{t:'역사 유적지나 박물관을 돌아보는 배움의 여행',k:'V'}]},
+{q:'생일 선물로 가장 받고 싶은 것은?',o:[
+{t:'갖고 싶었던 전자기기나 옷',k:'H'},
+{t:'친구들이 함께 준비한 깜짝 파티',k:'U'},
+{t:'아무도 방해하지 않는 하루 자유시간',k:'S'},
+{t:'존경하는 사람이 쓴 책이나 의미 있는 편지',k:'V'}]},
+{q:'학교에서 상을 받는다면 어떤 상이 좋을까?',o:[
+{t:'가장 재미있는 친구 상',k:'H'},
+{t:'봉사왕 상',k:'U'},
+{t:'가장 차분한 학생 상',k:'S'},
+{t:'성실 모범 학생 상',k:'V'}]},
+// 16~20
+{q:'친구 사이에 갈등이 생겼다. 나의 역할은?',o:[
+{t:'분위기를 바꾸려고 웃긴 이야기를 한다',k:'H'},
+{t:'양쪽 이야기를 다 듣고 공평하게 중재한다',k:'U'},
+{t:'시간이 지나면 해결될 거라 생각하고 기다린다',k:'S'},
+{t:'잘못한 쪽에 솔직하게 말해준다',k:'V'}]},
+{q:'어떤 어른이 되고 싶나요?',o:[
+{t:'매일매일 즐겁게 사는 사람',k:'H'},
+{t:'세상에 좋은 영향을 주는 사람',k:'U'},
+{t:'마음이 평온하고 흔들리지 않는 사람',k:'S'},
+{t:'누구에게나 존경받는 인격자',k:'V'}]},
+{q:'돈을 많이 벌었다면 가장 먼저 하고 싶은 일은?',o:[
+{t:'세계 여행, 고급 레스토랑 등 즐기기',k:'H'},
+{t:'장학재단이나 사회적 기업 만들기',k:'U'},
+{t:'조용한 곳에 작은 집을 짓고 여유롭게 살기',k:'S'},
+{t:'후배들을 가르치거나 좋은 책 쓰기',k:'V'}]},
+{q:'가장 부러운 사람은?',o:[
+{t:'매일 재미있게 사는 사람',k:'H'},
+{t:'많은 사람에게 사랑받는 사람',k:'U'},
+{t:'어떤 상황에서도 평온한 사람',k:'S'},
+{t:'꾸준히 자기 길을 걸어가는 사람',k:'V'}]},
+{q:'잠들기 전 오늘을 돌아보며 드는 생각은?',o:[
+{t:'오늘 재미있었나? 내일은 뭐하고 놀지?',k:'H'},
+{t:'오늘 누군가에게 도움이 됐나?',k:'U'},
+{t:'오늘 마음이 편했나? 걱정은 없었나?',k:'S'},
+{t:'오늘 나는 어제보다 나은 사람이 됐나?',k:'V'}]}
+];
+
+const TOTAL=20;
+let cur=0, ans=new Array(TOTAL).fill(null);
+
+function start(){
+document.getElementById('s-intro').classList.remove('active');
+document.getElementById('s-quiz').classList.add('active');
+render();
+}
+
+function render(){
+const q=Qs[cur];
+document.getElementById('progFill').style.width=((cur/TOTAL)*100)+'%';
+document.getElementById('progLabel').textContent='Q'+(cur+1);
+document.getElementById('progCount').textContent=(cur+1)+'/'+TOTAL;
+document.getElementById('s-quiz').innerHTML=`
+<div class="q-card"><div class="q-num">Q${cur+1} / ${TOTAL}</div><div class="q-text">${q.q}</div></div>
+<div class="options">${q.o.map((o,i)=>`<button class="opt ${ans[cur]===i?'selected':''}" onclick="pick(${i})">${o.t}</button>`).join('')}</div>
+<div class="nav">${cur>0?'<button class="btn btn-prev" onclick="prev()">← 이전</button>':''}
+<button class="btn btn-next" onclick="next()" ${ans[cur]===null?'disabled':''}>${cur<TOTAL-1?'다음 →':'결과 보기 🧭'}</button></div>`;
+}
+
+function pick(i){ans[cur]=i;render();}
+function next(){if(ans[cur]===null)return;if(cur<TOTAL-1){cur++;render();}else result();}
+function prev(){if(cur>0){cur--;render();}}
+
+function result(){
+document.getElementById('s-quiz').classList.remove('active');
+document.getElementById('s-result').classList.add('active');
+document.getElementById('progFill').style.width='100%';
+document.getElementById('progLabel').textContent='완료';
+document.getElementById('progCount').textContent=TOTAL+'/'+TOTAL;
+
+let sc={H:0,U:0,S:0,V:0};
+ans.forEach((a,i)=>{sc[Qs[i].o[a].k]++;});
+
+const sorted=Object.entries(sc).sort((a,b)=>b[1]-a[1]);
+const top1=sorted[0], top2=sorted[1];
+const maxV=top1[1], secV=top2[1];
+
+// 유형 판정
+let typeKey;
+const range=maxV-sorted[3][1];
+const std=Math.sqrt(Object.values(sc).reduce((s,v)=>s+Math.pow(v-TOTAL/4,2),0)/4);
+
+if(std<=1.5){
+  typeKey='BAL'; // 균형형
+}else if(maxV>=10){
+  typeKey=top1[0]+'_PURE'; // 순수형
+}else if(secV>=6 && maxV-secV<=2){
+  // 조합형
+  const pair=[top1[0],top2[0]].sort().join('');
+  const combos={HU:'HU',HS:'HS',HV:'HV',SU:'SU',UV:'UV',SV:'SV'};
+  typeKey=combos[pair]||top1[0]+'_PURE';
+}else{
+  typeKey=top1[0]+'_PURE';
+}
+
+const base={
+H:{name:'쾌락 추구',emoji:'🔥',color:'var(--coral)',bg:'rgba(249,112,102,.12)'},
+U:{name:'공동체 행복',emoji:'⚖️',color:'var(--gold)',bg:'rgba(251,191,36,.12)'},
+S:{name:'내면 평화',emoji:'🧘',color:'var(--mint)',bg:'rgba(45,212,191,.12)'},
+V:{name:'성장·덕',emoji:'🌱',color:'var(--violet)',bg:'rgba(167,139,250,.12)'}
+};
+
+const types={
+H_PURE:{name:'순수 쾌락형',emoji:'🔥',color:'var(--coral)',bg:'rgba(249,112,102,.12)',
+thinker:'에피쿠로스',tBg:'rgba(249,112,102,.2)',tC:'var(--coral)',
+desc:'즐거움이 곧 행복! 맛있는 음식, 재미있는 놀이, 좋아하는 활동에서 에너지를 얻습니다. 지금 이 순간을 최대한 즐기는 것이 인생의 목표입니다.',
+traits:['순간의 즐거움에서 큰 에너지를 얻습니다','새로운 경험과 자극을 좋아합니다','주변 분위기를 밝게 만드는 힘이 있습니다','장기적 계획보다 현재의 즐거움을 우선합니다'],
+advice:'에피쿠로스는 "진짜 쾌락은 고통이 없는 상태"라고 했습니다. 순간의 즐거움도 좋지만, 내일의 나도 행복할 수 있는 선택인지 한 번쯤 생각해 보세요.',
+match:'에피쿠로스의 쾌락주의와 가장 닮았습니다. 감각적 즐거움을 긍정하면서도, 진정한 쾌락은 마음의 평온(아타락시아)이라는 그의 통찰을 기억해 보세요.'},
+
+U_PURE:{name:'순수 공동체형',emoji:'⚖️',color:'var(--gold)',bg:'rgba(251,191,36,.12)',
+thinker:'벤담',tBg:'rgba(251,191,36,.2)',tC:'var(--gold)',
+desc:'나보다 "우리"가 먼저! 주변 사람들의 행복이 곧 나의 행복입니다. 공정하고 합리적인 방법으로 더 많은 사람이 행복해지길 바랍니다.',
+traits:['다른 사람의 감정에 민감하게 반응합니다','불공정한 상황을 참지 못합니다','팀 활동에서 리더십을 발휘합니다','자기 자신의 필요를 뒤로 미루는 경향이 있습니다'],
+advice:'벤담의 "최대 다수의 최대 행복"은 멋진 이상이지만, 그 속에 나 자신의 행복도 포함되어야 합니다. 가끔은 자기 자신을 위한 시간도 가져보세요.',
+match:'벤담의 공리주의와 가장 닮았습니다. 사회 전체의 행복을 고민하는 당신의 마음은 훌륭합니다.'},
+
+S_PURE:{name:'순수 평온형',emoji:'🧘',color:'var(--mint)',bg:'rgba(45,212,191,.12)',
+thinker:'석가모니',tBg:'rgba(45,212,191,.2)',tC:'var(--mint)',
+desc:'행복은 밖에 있지 않습니다. 마음이 편안한 것, 불필요한 욕심에서 벗어나는 것이 진짜 행복이라고 느끼는 유형입니다.',
+traits:['고요하고 안정적인 환경을 선호합니다','경쟁이나 갈등 상황을 피하는 편입니다','자기만의 시간과 공간이 중요합니다','때로는 소극적으로 보일 수 있습니다'],
+advice:'석가모니는 "욕심을 버리면 고통에서 벗어난다"고 했습니다. 마음의 평화는 큰 힘이지만, 가끔은 불편함 속에서도 성장할 수 있다는 것을 기억하세요.',
+match:'석가모니의 가르침과 가장 닮았습니다. 내면의 평화를 추구하는 것은 깊은 지혜입니다.'},
+
+V_PURE:{name:'순수 덕 추구형',emoji:'🌱',color:'var(--violet)',bg:'rgba(167,139,250,.12)',
+thinker:'공자 + 아리스토텔레스',tBg:'rgba(167,139,250,.2)',tC:'var(--violet)',
+desc:'올바르게 사는 것이 행복! 배려, 성실, 자기 성장을 통해 진짜 행복에 도달할 수 있다고 믿는 유형입니다.',
+traits:['자기 자신에 대한 기준이 높습니다','배려와 도덕적 행동을 당연하게 여깁니다','의미 있는 활동에서 보람을 느낍니다','완벽주의 성향으로 스스로를 몰아붙일 수 있습니다'],
+advice:'공자는 "배려"를, 아리스토텔레스는 "좋은 삶(에우다이모니아)"을 강조했습니다. 성장도 중요하지만, 가끔은 아무것도 하지 않고 쉬는 것도 행복입니다.',
+match:'공자와 아리스토텔레스의 덕 윤리와 가장 닮았습니다. 인간으로서 성장하려는 의지가 돋보입니다.'},
+
+HU:{name:'축제 기획자형',emoji:'🎪',color:'var(--coral)',bg:'rgba(249,112,102,.08)',
+thinker:'벤담 (쾌락+공리)',tBg:'rgba(251,191,36,.2)',tC:'var(--gold)',
+desc:'즐거움을 나누는 것이 최고의 행복! 혼자 즐기는 것보다 모두가 함께 웃을 수 있는 상황을 만드는 데 에너지를 씁니다.',
+traits:['파티나 모임을 기획하는 걸 좋아합니다','사람들이 즐거워하면 나도 행복합니다','사교적이고 에너지가 넘칩니다','모든 사람의 기대를 맞추려다 지칠 수 있습니다'],
+advice:'즐거움을 나누는 건 멋진 일이지만, 모든 사람을 만족시킬 필요는 없습니다. 때로는 조용히 나만의 시간을 가져보세요.',
+match:'벤담의 공리주의에 쾌락적 요소가 결합된 형태입니다. "함께 즐기기"의 달인!'},
+
+HS:{name:'힐링 탐험가형',emoji:'🌊',color:'var(--mint)',bg:'rgba(45,212,191,.08)',
+thinker:'에피쿠로스',tBg:'rgba(45,212,191,.2)',tC:'var(--mint)',
+desc:'즐거움도 좋지만, 결국 행복은 마음이 편안할 때 찾아온다고 느끼는 유형입니다. 좋아하는 일을 하면서도 내면의 평화를 잃지 않으려 합니다.',
+traits:['맛집, 카페 등 소소한 즐거움을 좋아합니다','자극적인 것보다 잔잔한 행복을 선호합니다','혼자만의 취미 활동에서 충전합니다','결정을 빨리 내리는 것이 어려울 수 있습니다'],
+advice:'에피쿠로스가 말한 "아타락시아(마음의 평온)"가 당신의 이상적 행복입니다. 소소한 즐거움과 내면의 평화, 둘 다 잘 균형 잡고 있네요!',
+match:'에피쿠로스의 원래 가르침에 가장 가깝습니다. 감각적 쾌락보다 마음의 평온을 더 중시한 그의 철학과 닮았습니다.'},
+
+HV:{name:'열정 모험가형',emoji:'⚡',color:'var(--coral)',bg:'rgba(249,112,102,.08)',
+thinker:'아리스토텔레스',tBg:'rgba(167,139,250,.2)',tC:'var(--violet)',
+desc:'즐기면서 성장하는 것이 진짜 행복! 재미있는 일에 뛰어들면서도 그 과정에서 배움을 얻으려는 유형입니다.',
+traits:['도전적이고 행동력이 뛰어납니다','실패해도 금방 회복하고 다시 도전합니다','경험을 통해 배우는 것을 좋아합니다','가만히 있는 것을 힘들어합니다'],
+advice:'아리스토텔레스는 행복을 "활동 속에서 덕을 실현하는 것"이라고 했습니다. 당신의 열정적인 삶이 바로 그것일 수 있어요!',
+match:'아리스토텔레스의 에우다이모니아에 쾌락적 활력이 더해진 형태입니다.'},
+
+SU:{name:'평화 중재자형',emoji:'🕊️',color:'var(--mint)',bg:'rgba(45,212,191,.08)',
+thinker:'석가모니 + 벤담',tBg:'rgba(45,212,191,.2)',tC:'var(--mint)',
+desc:'갈등 없이 모두가 평화롭게 지내는 것이 행복! 다른 사람의 고통에 공감하면서도, 차분하게 해결책을 찾으려 합니다.',
+traits:['갈등 상황에서 중재자 역할을 합니다','감정적으로 안정적입니다','모두가 편한 분위기를 만들려고 노력합니다','자기 의견을 강하게 주장하지 못할 수 있습니다'],
+advice:'평화를 사랑하는 마음은 소중하지만, 때로는 명확하게 의견을 말하는 것도 필요합니다. 침묵이 항상 평화를 가져오지는 않아요.',
+match:'석가모니의 자비와 벤담의 공리가 결합된 형태입니다. 조용하지만 강한 영향력을 가진 유형이에요.'},
+
+UV:{name:'정의로운 리더형',emoji:'👑',color:'var(--gold)',bg:'rgba(251,191,36,.08)',
+thinker:'공자 + 벤담',tBg:'rgba(251,191,36,.2)',tC:'var(--gold)',
+desc:'올바른 방법으로 모두의 행복을 이끄는 것! 도덕적 원칙과 사회적 책임감을 동시에 갖춘 유형입니다.',
+traits:['리더십과 책임감이 강합니다','불의를 보면 참지 못합니다','조직이나 공동체를 이끄는 역할을 맡습니다','지나치게 무거운 책임감에 지칠 수 있습니다'],
+advice:'공자는 "수신제가치국평천하"를 말했습니다. 세상을 바꾸기 전에 먼저 자기 자신을 돌보는 것도 잊지 마세요.',
+match:'공자의 도덕적 리더십과 벤담의 사회적 공리가 결합된 형태입니다. 세상을 바꿀 잠재력이 있어요!'},
+
+SV:{name:'고요한 현자형',emoji:'📚',color:'var(--violet)',bg:'rgba(167,139,250,.08)',
+thinker:'석가모니 + 공자',tBg:'rgba(167,139,250,.2)',tC:'var(--violet)',
+desc:'내면의 평화와 인격적 성장을 동시에 추구하는 유형입니다. 조용히 자기 길을 걸으면서도 주변을 배려합니다.',
+traits:['사색과 독서를 좋아합니다','말보다 행동으로 보여주는 스타일입니다','깊이 있는 대화를 선호합니다','사교 활동에 적극적이지 않을 수 있습니다'],
+advice:'석가모니의 내면 수행과 공자의 도덕적 실천이 조화를 이루고 있습니다. 가끔은 밖으로 나가서 사람들과 어울리는 것도 좋은 경험이 됩니다.',
+match:'동양 철학의 지혜를 가장 잘 체현하는 유형입니다. 석가모니의 평온함과 공자의 배려가 함께 있어요.'},
+
+BAL:{name:'균형 탐색형',emoji:'🎯',color:'var(--sky)',bg:'rgba(56,189,248,.08)',
+thinker:'아리스토텔레스',tBg:'rgba(56,189,248,.2)',tC:'var(--sky)',
+desc:'특정 행복관에 치우치지 않고, 상황에 따라 유연하게 행복을 찾는 유형입니다. 즐거움도, 배려도, 평온도, 성장도 모두 중요합니다.',
+traits:['상황 판단력이 뛰어납니다','다양한 관점을 이해합니다','유연하고 적응력이 좋습니다','자신만의 확고한 가치관을 찾는 중일 수 있습니다'],
+advice:'아리스토텔레스는 "중용(메소테스)"을 강조했습니다. 균형 잡힌 시각은 큰 강점이지만, 때로는 "나에게 가장 중요한 것"이 무엇인지 깊이 생각해 보는 것도 좋습니다.',
+match:'아리스토텔레스의 중용 사상과 가장 닮았습니다. 어떤 행복이든 놓치지 않으려는 균형 감각이 돋보여요!'}
+};
+
+const t=types[typeKey];
+const order=[{k:'H',l:'쾌락 추구'},{k:'U',l:'공동체 행복'},{k:'S',l:'내면 평화'},{k:'V',l:'성장·덕'}];
+
+document.getElementById('s-result').innerHTML=`
+<div class="res-card" style="border-color:${t.color}">
+<div class="res-emoji">${t.emoji}</div>
+<div class="res-type" style="color:${t.color}">${t.name}</div>
+<div class="res-sub">${t.desc}</div>
+<div class="res-thinker" style="background:${t.tBg};color:${t.tC}">관련 사상가: ${t.thinker}</div>
+</div>
+
+<div class="desc-box">
+<h3>📊 나의 행복관 분포</h3>
+<div class="bars">
+${order.map(o=>{const s=sc[o.k],p=Math.round(s/TOTAL*100),c=base[o.k].color;
+return `<div class="bar-item"><div class="bar-label"><span style="color:${c}">${base[o.k].emoji} ${o.l}</span><span>${s}개 (${p}%)</span></div>
+<div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${c}"></div></div></div>`;}).join('')}
+</div>
+</div>
+
+<div class="type-grid">
+${sorted.map((s,i)=>{const b=base[s[0]],p=Math.round(s[1]/TOTAL*100);
+return `<div class="type-card ${i===0?'top':''}" style="${i===0?'border-color:'+b.color+';background:'+b.bg:''}">
+${i===0?'<div style="position:absolute;top:6px;right:8px;font-size:.6rem;color:'+b.color+';font-weight:800">1위</div>':''}
+<div class="tc-emoji">${b.emoji}</div><div class="tc-name" style="color:${b.color}">${b.name}</div>
+<div class="tc-score">${p}%</div><div class="tc-pct">${s[1]}개 / ${TOTAL}</div></div>`;}).join('')}
+</div>
+
+<div class="desc-box"><h3>${t.emoji} 나의 특성</h3><ul>${t.traits.map(tr=>`<li>${tr}</li>`).join('')}</ul></div>
+
+<div class="match-box">
+<div class="match-emoji">🏛️</div>
+<div class="match-info"><h4>사상가 매칭</h4><p>${t.match}</p></div>
+</div>
+
+<div class="desc-box" style="border-left:3px solid ${t.color}"><h3>💡 생각해 볼 점</h3><p>${t.advice}</p></div>
+
+<div class="desc-box"><h3>🔍 행복관에 정답은 없습니다</h3>
+<p>당신의 행복관은 <b style="color:${t.color}">${t.name}</b>이지만, 이것은 현재 시점의 성향일 뿐입니다. 시간이 지나면 행복관도 변할 수 있습니다.</p>
+<p>중요한 건 <b>"나는 무엇을 할 때 행복한가"</b>를 스스로 알고, 그에 맞는 삶을 설계해 나가는 것입니다.</p>
+</div>
+
+<div class="btn-group">
+<button class="btn-restart" onclick="location.reload()">🔄 다시 해보기</button>
+<button class="btn-print" onclick="window.print()">🖨️ 결과 인쇄</button>
+</div>`;
+}
+</script>
+</body>
+</html>

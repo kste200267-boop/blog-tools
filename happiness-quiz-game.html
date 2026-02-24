@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>행복 단원 정리 퀴즈 — 통합사회 2단원</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+--bg:#0c0a1a;--card:#1a1730;--card2:#252042;--accent:#f472b6;--mint:#2dd4bf;--sky:#38bdf8;
+--gold:#fbbf24;--text:#f1f5f9;--sub:#94a3b8;--correct:#22c55e;--wrong:#ef4444;--border:#3b3560;
+}
+body{font-family:'Nanum Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+/* PARTICLES BG */
+.bg-particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.bg-particles span{position:absolute;border-radius:50%;animation:float linear infinite;opacity:.15;}
+@keyframes float{0%{transform:translateY(100vh) rotate(0deg)}100%{transform:translateY(-100px) rotate(720deg)}}
+
+.container{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:20px;}
+
+/* HEADER */
+.game-header{text-align:center;padding:30px 0 20px;}
+.game-header .badge{display:inline-block;background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 16px;font-size:.7rem;color:var(--accent);margin-bottom:8px;}
+.game-header h1{font-size:1.8rem;font-weight:800;margin-bottom:4px;}
+.game-header h1 span{background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.game-header p{color:var(--sub);font-size:.85rem;}
+
+/* SCREENS */
+.screen{display:none;animation:slideIn .4s ease;}
+.screen.active{display:block;}
+@keyframes slideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+
+/* STATS BAR */
+.stats{display:flex;gap:8px;margin-bottom:20px;}
+.stat{flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;}
+.stat .s-val{font-size:1.4rem;font-weight:800;}
+.stat .s-label{font-size:.65rem;color:var(--sub);text-transform:uppercase;letter-spacing:1px;}
+.stat-score .s-val{color:var(--gold);}
+.stat-combo .s-val{color:var(--accent);}
+.stat-time .s-val{color:var(--sky);}
+
+/* PROGRESS */
+.q-progress{height:4px;background:var(--card2);border-radius:2px;margin-bottom:20px;overflow:hidden;}
+.q-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .4s ease;}
+
+/* QUESTION */
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:16px;position:relative;overflow:hidden;}
+.q-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--accent),var(--gold));}
+.q-num{font-size:.75rem;color:var(--accent);font-weight:700;margin-bottom:8px;}
+.q-text{font-size:1.1rem;font-weight:700;line-height:1.6;}
+
+/* OPTIONS */
+.options{display:grid;gap:10px;}
+.opt-btn{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:16px 20px;cursor:pointer;font-family:inherit;font-size:.95rem;color:var(--text);text-align:left;transition:all .2s;display:flex;align-items:center;gap:12px;}
+.opt-btn:hover:not(.disabled){border-color:var(--accent);transform:translateX(4px);background:var(--card2);}
+.opt-btn .opt-num{width:32px;height:32px;border-radius:8px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;flex-shrink:0;transition:all .2s;}
+.opt-btn:hover:not(.disabled) .opt-num{background:var(--accent);color:var(--bg);}
+.opt-btn.correct{border-color:var(--correct);background:rgba(34,197,94,.1);}
+.opt-btn.correct .opt-num{background:var(--correct);color:#fff;}
+.opt-btn.wrong{border-color:var(--wrong);background:rgba(239,68,68,.1);}
+.opt-btn.wrong .opt-num{background:var(--wrong);color:#fff;}
+.opt-btn.disabled{pointer-events:none;opacity:.6;}
+.opt-btn.disabled.correct{opacity:1;}
+
+/* FEEDBACK */
+.feedback{margin-top:16px;padding:16px;border-radius:12px;display:none;animation:fadeIn .3s ease;}
+.feedback.show{display:block;}
+.feedback.fb-correct{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);}
+.feedback.fb-wrong{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);}
+.feedback .fb-title{font-weight:800;font-size:1rem;margin-bottom:4px;}
+.feedback .fb-desc{font-size:.85rem;color:var(--sub);line-height:1.6;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.next-btn{display:none;width:100%;margin-top:16px;padding:14px;background:linear-gradient(135deg,var(--accent),#c084fc);color:#fff;border:none;border-radius:12px;font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer;transition:transform .2s;}
+.next-btn:hover{transform:translateY(-2px);}
+.next-btn.show{display:block;}
+
+/* COMBO ANIMATION */
+.combo-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:3rem;font-weight:800;pointer-events:none;z-index:100;animation:comboPop .8s ease forwards;}
+@keyframes comboPop{0%{opacity:1;transform:translate(-50%,-50%) scale(.5)}30%{transform:translate(-50%,-50%) scale(1.3)}100%{opacity:0;transform:translate(-50%,-70%) scale(1)}}
+
+/* RESULT */
+.result-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px;text-align:center;margin-bottom:20px;}
+.result-card h2{font-size:1.6rem;font-weight:800;margin-bottom:8px;}
+.result-emoji{font-size:4rem;margin-bottom:12px;}
+.result-score{font-size:3.5rem;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.result-sub{color:var(--sub);font-size:.9rem;margin-top:4px;}
+.result-grade{display:inline-block;padding:6px 20px;border-radius:20px;font-weight:800;font-size:1.1rem;margin-top:12px;}
+
+.result-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:24px 0;}
+.rs{background:var(--card2);border-radius:12px;padding:14px;text-align:center;}
+.rs .rs-val{font-size:1.5rem;font-weight:800;}
+.rs .rs-label{font-size:.7rem;color:var(--sub);margin-top:2px;}
+
+.review-list{text-align:left;margin:20px 0;}
+.review-item{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start;}
+.review-item:last-child{border:none;}
+.ri-icon{font-size:1.2rem;flex-shrink:0;margin-top:2px;}
+.ri-q{font-size:.85rem;line-height:1.5;}
+.ri-q b{color:var(--correct);}
+
+.btn-group{display:flex;gap:10px;justify-content:center;margin-top:20px;}
+.btn-restart{padding:12px 28px;background:linear-gradient(135deg,var(--accent),#c084fc);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;}
+.btn-print{padding:12px 28px;background:var(--card2);color:var(--text);border:1px solid var(--border);border-radius:10px;font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;}
+
+.footer{text-align:center;padding:20px;font-size:.7rem;color:var(--border);}
+
+@media(max-width:500px){
+.stats{flex-wrap:wrap;}
+.stat{min-width:calc(33% - 6px);}
+.result-stats{grid-template-columns:1fr 1fr 1fr;}
+}
+@media print{
+body{background:#fff;color:#000;}
+.bg-particles,.game-header,.stats,.q-progress,.btn-group,.footer{display:none;}
+.screen.active{display:block;}
+.result-card,.review-item{border:1px solid #ddd;background:#fff;}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-particles" id="particles"></div>
+
+<div class="container">
+<div class="game-header">
+<div class="badge">통합사회 · 2단원 · 행복</div>
+<h1>🎯 행복 퀴즈 <span>챌린지</span></h1>
+<p>2단원 핵심 내용을 확인해 보세요</p>
+</div>
+
+<!-- INTRO -->
+<div class="screen active" id="screen-intro">
+<div class="q-card" style="text-align:center;">
+<h2 style="font-size:1.2rem;margin-bottom:16px;">🧠 도전 준비!</h2>
+<p style="color:var(--sub);line-height:1.8;margin-bottom:8px;">
+총 <b style="color:var(--gold)">15문제</b> · 문항당 <b style="color:var(--sky)">15초</b> 제한<br>
+연속 정답 시 <b style="color:var(--accent)">콤보 보너스</b> 획득!
+</p>
+<p style="font-size:.8rem;color:var(--sub);margin-top:12px;">
+행복의 의미와 기준 + 행복한 삶의 조건 전 범위
+</p>
+</div>
+<button class="btn-restart" style="width:100%;padding:16px;font-size:1.1rem;" onclick="startGame()">퀴즈 시작 🚀</button>
+</div>
+
+<!-- QUIZ -->
+<div class="screen" id="screen-quiz">
+<div class="stats">
+<div class="stat stat-score"><div class="s-val" id="scoreVal">0</div><div class="s-label">점수</div></div>
+<div class="stat stat-combo"><div class="s-val" id="comboVal">0🔥</div><div class="s-label">콤보</div></div>
+<div class="stat stat-time"><div class="s-val" id="timeVal">15</div><div class="s-label">남은 시간</div></div>
+</div>
+<div class="q-progress"><div class="q-progress-fill" id="qProgress"></div></div>
+<div id="quizContent"></div>
+</div>
+
+<!-- RESULT -->
+<div class="screen" id="screen-result"></div>
+</div>
+
+<div class="footer">풀어쓰는 사회학 · kstephullab.com</div>
+
+<script>
+// 파티클 배경
+(function(){
+const c = document.getElementById('particles');
+const colors = ['#f472b6','#2dd4bf','#38bdf8','#fbbf24','#a78bfa'];
+for(let i=0;i<30;i++){
+const s = document.createElement('span');
+const size = Math.random()*6+2;
+s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;background:${colors[i%5]};animation-duration:${Math.random()*15+10}s;animation-delay:${Math.random()*10}s;`;
+c.appendChild(s);
+}
+})();
+
+const allQuestions = [
+// 행복의 의미와 기준 (8문항)
+{q:'"더 많은 사람의 행복을 추구하는 것"이라고 주장한 사상가는?',
+o:['공자','석가모니','벤담','에피쿠로스'],a:2,
+exp:'벤담은 공리주의를 주장하며, 최대 다수의 최대 행복을 강조했습니다.'},
+
+{q:'석가모니가 말한 행복에 도달하는 방법은?',
+o:['다른 사람을 배려하기','욕심을 버리기','마음의 평온 유지','더 많이 소유하기'],a:1,
+exp:'석가모니는 욕심을 버리면 고통에서 벗어나 행복해진다고 가르쳤습니다.'},
+
+{q:'선사시대 사람들에게 행복의 기준은 무엇이었을까요?',
+o:['학문 탐구','신앙생활','생존과 안전','자유와 권리'],a:2,
+exp:'선사시대에는 먹고살기 위한 생존 자체가 가장 큰 행복이었습니다.'},
+
+{q:'"마음의 평온이 진짜 행복이다"라고 주장한 사상가는?',
+o:['공자','에피쿠로스','벤담','아리스토텔레스'],a:1,
+exp:'에피쿠로스는 감각적 쾌락보다 마음의 평온(아타락시아)을 진정한 행복으로 보았습니다.'},
+
+{q:'시대에 따라 행복의 기준이 다른 이유로 적절한 것은?',
+o:['사람의 성격이 달라서','사회 환경과 가치관이 변하기 때문','날씨가 달라서','인구가 늘어서'],a:1,
+exp:'시대마다 사회 구조와 가치관이 달라지므로 행복의 기준도 함께 변합니다.'},
+
+{q:'아리스토텔레스가 말한 행복(에우다이모니아)의 의미는?',
+o:['쾌락의 극대화','삶의 궁극적 목적','경제적 풍요','신앙심'],a:1,
+exp:'아리스토텔레스는 행복을 인간 삶의 궁극적 목적이자 최고의 선으로 보았습니다.'},
+
+{q:'근현대에 행복의 기준으로 새롭게 등장한 가치는?',
+o:['신앙과 내세','생존과 사냥','자유와 권리','덕과 지혜'],a:2,
+exp:'근현대에는 개인의 자유와 권리가 행복의 중요한 기준이 되었습니다.'},
+
+{q:'공자가 강조한 행복의 핵심은?',
+o:['욕심 버리기','다른 사람을 배려하고 도덕적으로 살기','마음의 평온','최대 다수의 행복'],a:1,
+exp:'공자는 인(仁), 즉 다른 사람을 배려하고 도덕적으로 사는 것이 행복이라고 했습니다.'},
+
+// 행복한 삶의 조건 (7문항)
+{q:'행복한 삶을 위한 4가지 조건에 해당하지 않는 것은?',
+o:['질 높은 정주환경','높은 학력','경제적 안정','민주주의 발전'],a:1,
+exp:'교과서에서 제시하는 4가지 조건은 정주환경, 경제적 안정, 민주주의, 도덕적 실천입니다.'},
+
+{q:'"반경 5km 내 병원·학교가 없다"는 어떤 조건이 부족한 것일까요?',
+o:['경제적 안정','민주주의 발전','질 높은 정주환경','도덕적 실천'],a:2,
+exp:'생활에 필요한 시설이 갖춰진 환경을 질 높은 정주환경이라고 합니다.'},
+
+{q:'세계 행복지수에서 한국이 가장 높은 순위를 기록한 요인은?',
+o:['관용','건강 기대 수명','삶을 선택할 자유','사회적 지지'],a:1,
+exp:'한국은 건강 기대 수명에서 세계 4위를 기록했습니다.'},
+
+{q:'세계 행복지수에서 한국이 107위로 가장 낮은 요인은?',
+o:['1인당 GDP','부정부패 인식','사회적 지지','삶을 선택할 자유'],a:3,
+exp:'삶을 선택할 자유가 107위로 한국에서 가장 부족한 영역입니다.'},
+
+{q:'투표율이 낮아지는 현상은 어떤 조건과 관련이 있나요?',
+o:['정주환경','경제적 안정','민주주의 발전','도덕적 실천'],a:2,
+exp:'시민이 정치에 참여하는 것은 민주주의 발전과 관련됩니다.'},
+
+{q:'다른 사람을 배려하고 나눔을 실천하는 것은 어떤 조건인가요?',
+o:['질 높은 정주환경','경제적 안정','민주주의 발전','도덕적 실천'],a:3,
+exp:'이타적 행동과 배려는 도덕적 실천에 해당하며, 행복감을 높여줍니다.'},
+
+{q:'행복한 삶의 조건 중 "기본 생활을 유지할 수 있는 소득"은?',
+o:['질 높은 정주환경','경제적 안정','민주주의 발전','도덕적 실천'],a:1,
+exp:'먹고사는 문제가 해결되는 것, 즉 경제적 안정이 행복의 기본 조건입니다.'},
+];
+
+let questions, current, score, combo, maxCombo, correct, timer, timeLeft;
+let results = [];
+
+function shuffle(arr){
+const a=[...arr];
+for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+return a;
+}
+
+function startGame(){
+questions = shuffle(allQuestions).slice(0,15);
+current=0; score=0; combo=0; maxCombo=0; correct=0; results=[];
+document.getElementById('screen-intro').classList.remove('active');
+document.getElementById('screen-quiz').classList.add('active');
+showQuestion();
+}
+
+function startTimer(){
+timeLeft=15;
+document.getElementById('timeVal').textContent=timeLeft;
+clearInterval(timer);
+timer=setInterval(()=>{
+timeLeft--;
+document.getElementById('timeVal').textContent=timeLeft;
+if(timeLeft<=5) document.getElementById('timeVal').style.color='var(--wrong)';
+if(timeLeft<=0){clearInterval(timer);timeUp();}
+},1000);
+}
+
+function timeUp(){
+// 시간 초과 = 오답 처리
+combo=0;
+results.push({q:questions[current].q,correct:false,answer:'시간 초과',correctAnswer:questions[current].o[questions[current].a]});
+document.querySelectorAll('.opt-btn').forEach(b=>b.classList.add('disabled'));
+document.querySelectorAll('.opt-btn')[questions[current].a].classList.add('correct');
+const fb=document.getElementById('feedback');
+fb.className='feedback show fb-wrong';
+fb.innerHTML=`<div class="fb-title">⏰ 시간 초과!</div><div class="fb-desc">정답: <b>${questions[current].o[questions[current].a]}</b><br>${questions[current].exp}</div>`;
+document.getElementById('nextBtn').classList.add('show');
+updateStats();
+}
+
+function showQuestion(){
+const q=questions[current];
+document.getElementById('qProgress').style.width=((current/15)*100)+'%';
+document.getElementById('timeVal').style.color='var(--sky)';
+const labels=['①','②','③','④'];
+document.getElementById('quizContent').innerHTML=`
+<div class="q-card">
+<div class="q-num">Q${current+1} / 15</div>
+<div class="q-text">${q.q}</div>
+</div>
+<div class="options">
+${q.o.map((o,i)=>`<button class="opt-btn" onclick="answer(${i})"><span class="opt-num">${labels[i]}</span>${o}</button>`).join('')}
+</div>
+<div class="feedback" id="feedback"></div>
+<button class="next-btn" id="nextBtn" onclick="nextQuestion()">${current<14?'다음 문제 →':'결과 보기 🏆'}</button>`;
+startTimer();
+}
+
+function answer(idx){
+clearInterval(timer);
+const q=questions[current];
+const btns=document.querySelectorAll('.opt-btn');
+btns.forEach(b=>b.classList.add('disabled'));
+
+const fb=document.getElementById('feedback');
+if(idx===q.a){
+btns[idx].classList.add('correct');
+combo++;
+if(combo>maxCombo)maxCombo=combo;
+correct++;
+let bonus = 10 + Math.min(combo-1,5)*2 + Math.max(0,timeLeft);
+score+=bonus;
+fb.className='feedback show fb-correct';
+fb.innerHTML=`<div class="fb-title">✅ 정답! +${bonus}점</div><div class="fb-desc">${q.exp}</div>`;
+if(combo>=3) showCombo();
+results.push({q:q.q,correct:true,answer:q.o[idx],correctAnswer:q.o[q.a]});
+}else{
+btns[idx].classList.add('wrong');
+btns[q.a].classList.add('correct');
+combo=0;
+fb.className='feedback show fb-wrong';
+fb.innerHTML=`<div class="fb-title">❌ 오답</div><div class="fb-desc">정답: <b>${q.o[q.a]}</b><br>${q.exp}</div>`;
+results.push({q:q.q,correct:false,answer:q.o[idx],correctAnswer:q.o[q.a]});
+}
+document.getElementById('nextBtn').classList.add('show');
+updateStats();
+}
+
+function updateStats(){
+document.getElementById('scoreVal').textContent=score;
+document.getElementById('comboVal').textContent=combo+'🔥';
+}
+
+function showCombo(){
+const el=document.createElement('div');
+el.className='combo-popup';
+el.textContent=combo+'연속🔥';
+el.style.color=['','','','#fbbf24','#f472b6','#2dd4bf','#a78bfa'][Math.min(combo,6)];
+document.body.appendChild(el);
+setTimeout(()=>el.remove(),800);
+}
+
+function nextQuestion(){
+current++;
+if(current>=15)showResult();
+else showQuestion();
+}
+
+function showResult(){
+document.getElementById('screen-quiz').classList.remove('active');
+document.getElementById('screen-result').classList.add('active');
+
+let emoji,grade,gradeColor;
+const pct=Math.round(correct/15*100);
+if(pct>=90){emoji='🏆';grade='S등급';gradeColor='linear-gradient(135deg,#fbbf24,#f97316)';}
+else if(pct>=70){emoji='🎉';grade='A등급';gradeColor='linear-gradient(135deg,#22c55e,#2dd4bf)';}
+else if(pct>=50){emoji='😊';grade='B등급';gradeColor='linear-gradient(135deg,#38bdf8,#818cf8)';}
+else{emoji='💪';grade='C등급';gradeColor='linear-gradient(135deg,#f472b6,#c084fc)';}
+
+document.getElementById('screen-result').innerHTML=`
+<div class="result-card">
+<div class="result-emoji">${emoji}</div>
+<h2>퀴즈 완료!</h2>
+<div class="result-score">${score}점</div>
+<div class="result-sub">15문제 중 ${correct}문제 정답 (${pct}%)</div>
+<div class="result-grade" style="background:${gradeColor};color:#fff;">${grade}</div>
+
+<div class="result-stats">
+<div class="rs"><div class="rs-val" style="color:var(--correct)">${correct}</div><div class="rs-label">정답</div></div>
+<div class="rs"><div class="rs-val" style="color:var(--wrong)">${15-correct}</div><div class="rs-label">오답</div></div>
+<div class="rs"><div class="rs-val" style="color:var(--accent)">${maxCombo}🔥</div><div class="rs-label">최대 콤보</div></div>
+</div>
+</div>
+
+${results.filter(r=>!r.correct).length > 0 ? `
+<div class="q-card">
+<h3 style="margin-bottom:12px;">📝 틀린 문제 복습</h3>
+<div class="review-list">
+${results.filter(r=>!r.correct).map(r=>`
+<div class="review-item">
+<span class="ri-icon">❌</span>
+<div class="ri-q">${r.q}<br>내 답: ${r.answer} → 정답: <b>${r.correctAnswer}</b></div>
+</div>`).join('')}
+</div>
+</div>` : '<div class="q-card" style="text-align:center;"><h3>🎯 전문 만점! 완벽합니다!</h3></div>'}
+
+<div class="btn-group">
+<button class="btn-restart" onclick="location.reload()">🔄 다시 도전</button>
+<button class="btn-print" onclick="window.print()">🖨️ 결과 인쇄</button>
+</div>`;
+}
+</script>
+</body>
+</html>
