@@ -445,7 +445,7 @@
 
         // --- 3. 슬라이드 공통 ---
         function nextSlide(n) {
-            if(num>=5){missionComplete=true;if(document.fullscreenElement)document.exitFullscreen().catch(function(){});}
+            if(n>=5){missionComplete=true;if(document.fullscreenElement)document.exitFullscreen().catch(function(){});}
             document.querySelectorAll('.slide-container').forEach(el => el.classList.remove('slide-active'));
             document.getElementById('slide-' + n).classList.add('slide-active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
