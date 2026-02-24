@@ -1,33 +1,31 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>교사 실무 자동화 센터</title>
-  <meta name="description" content="수업 준비부터 평가까지, 교사의 실무를 가볍게.">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏫 교사 실무 자동화 센터</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="container">
-      <a href="index.html" class="site-title"><span class="logo-icon">T</span>교사 실무 자동화 센터</a>
-      <button class="btn" onclick="App.goFullscreen()">🖥️</button>
-    </div>
-  </header>
-  <div class="container" style="padding-top:12px;padding-bottom:60px;">
-    <div class="page-hero" style="text-align:center;border:none;background:linear-gradient(135deg,#eff4ff 0%,#f8f9fc 100%);">
-      <h1 style="font-size:2rem;">🏫 교사 실무 자동화 센터</h1>
-      <p class="hero-desc" style="margin:10px auto 0;">수업 준비부터 평가까지, 현장 교사의 실무를 가볍게.<br>필요한 카테고리를 선택하세요.</p>
-    </div>
-    <div class="card-grid" id="grid"><div class="empty-state"><p>로딩 중...</p></div></div>
-  </div>
-  <footer class="site-footer"><div class="container">교사 실무 자동화 센터 · GitHub Pages 기반</div></footer>
-  <script src="app.js"></script>
-  <script>
-    (async()=>{
-      const d = await App.loadJSON('site.json');
-      if(d) App.renderCategoryCards(d.categories, App.$('#grid'));
-    })();
-  </script>
+<header class="site-header"><div class="container"><a href="index.html" class="site-title"><span class="logo-icon">T</span>교사 실무 자동화 센터</a><button class="btn" onclick="App.goFullscreen()">🖥️</button></div></header>
+<div class="container" style="padding-top:4px;padding-bottom:60px;">
+  <section class="hero">
+    <h1>🏫 교사 실무 자동화 센터</h1>
+    <p>수업 준비부터 평가까지, 현장 교사의 실무를 가볍게.<br>필요한 카테고리를 선택하세요.</p>
+  </section>
+  <div class="card-grid" id="cat-cards">로딩 중...</div>
+</div>
+<footer class="site-footer"><div class="container">교사 실무 자동화 센터 · GitHub Pages 기반</div></footer>
+<script src="app.js"></script>
+<script>
+(async()=>{
+  const site = await App.loadJSON('site.json');
+  if(site && site.categories){
+    App.renderCategoryCards(site.categories, document.getElementById('cat-cards'));
+  } else {
+    document.getElementById('cat-cards').innerHTML = '<div class="empty-state"><p>site.json을 불러올 수 없습니다.</p></div>';
+  }
+})();
+</script>
 </body>
 </html>
