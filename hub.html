@@ -55,7 +55,7 @@
       document.getElementById('tag-filter').innerHTML = allTags.map(t=>'<button class="tag-btn" data-tag="'+t+'">'+t+'</button>').join('');
       App.initTagFilter('#tag-filter','#cards');
     } else {
-      document.getElementById('cards').innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><p>아직 등록된 콘텐츠가 없습니다.</p></div>';
+      document.getElementById('cards').innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><p>콘텐츠 준비 중입니다. 🚧</p></div>';
     }
 
   } else if(mode === 'category' && id){
@@ -85,7 +85,7 @@
       }).join('');
       App.initSearch('#search','#cards');
     } else {
-      document.getElementById('cards').innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><p>아직 등록된 단원이 없습니다.<br>관리자 모드에서 단원을 추가하세요.</p></div>';
+      document.getElementById('cards').innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><p>콘텐츠 준비 중입니다. 🚧<br>곧 업데이트됩니다!</p></div>';
     }
 
   } else {

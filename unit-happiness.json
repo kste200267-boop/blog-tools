@@ -1,27 +1,6 @@
 {
-  "unit": "",
+  "unit": "인간과 공동체 — 행복",
   "unitSlug": "happiness",
-  "achievementStandard": "",
-  "contents": [
-    {
-      "slug": "game",
-      "file": "c-happiness-happiness-quiz-game.html",
-      "title": "행복 단원 정리 퀴즈",
-      "desc": "",
-      "type": "웹교구",
-      "difficulty": "보통",
-      "duration": "15분",
-      "tags": []
-    },
-    {
-      "slug": "compass",
-      "file": "c-happiness-happiness-compass.html",
-      "title": "행복나침반",
-      "desc": "",
-      "type": "웹교구",
-      "difficulty": "보통",
-      "duration": "15분",
-      "tags": []
-    }
-  ]
+  "achievementStandard": "[10통사1-02] 행복의 의미와 기준을 탐구하고, 다양한 측면에서 행복한 삶을 위한 조건을 탐색한다.",
+  "contents": []
 }
