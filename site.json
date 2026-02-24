@@ -7,7 +7,7 @@
       "icon": "🌍",
       "desc": "2022 개정 교육과정 기반 단원별 수업자료·활동지·평가",
       "color": "#2563eb",
-      "link": "hub.html?mode=category&id=integrated-social"
+      "link": "hub-social.html"
     },
     {
       "id": "evaluation",
@@ -15,7 +15,7 @@
       "icon": "📋",
       "desc": "평가계획서, 성적 산출, 학생부 문구 등 평가 실무",
       "color": "#059669",
-      "link": "hub.html?mode=category&id=evaluation"
+      "link": "#"
     },
     {
       "id": "guidance",
@@ -23,7 +23,7 @@
       "icon": "🤝",
       "desc": "상담 기록, 출결 관리, 학부모 안내문 템플릿",
       "color": "#d97706",
-      "link": "hub.html?mode=category&id=guidance"
+      "link": "#"
     },
     {
       "id": "templates",
@@ -31,7 +31,7 @@
       "icon": "🛠️",
       "desc": "가정통신문, 시간표, 좌석표 등 범용 자동화 도구",
       "color": "#7c3aed",
-      "link": "hub.html?mode=category&id=templates"
+      "link": "#"
     }
   ]
 }
