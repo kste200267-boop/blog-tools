@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>허브 — 교사 실무 자동화 센터</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header"><div class="container"><a href="index.html" class="site-title"><span class="logo-icon">T</span>교사 실무 자동화 센터</a><button class="btn" onclick="App.goFullscreen()">🖥️</button></div></header>
+<div class="container" style="padding-top:4px;padding-bottom:60px;">
+  <nav class="breadcrumb" id="breadcrumb"></nav>
+  <section class="hero" id="hero">
+    <h1 id="hero-title">로딩 중...</h1>
+    <p id="hero-desc"></p>
+    <div id="hero-extra" style="font-size:.85rem;color:var(--sub);margin-top:8px;max-width:640px;line-height:1.5;"></div>
+  </section>
+  <div class="search-bar"><input type="text" id="search" placeholder="🔍 검색..."></div>
+  <div class="tag-filter" id="tag-filter"></div>
+  <div class="card-grid" id="cards">로딩 중...</div>
+</div>
+<script src="app.js"></script>
+<script>
+(async()=>{
+  const params = new URLSearchParams(location.search);
+  const mode = params.get('mode'); // 'category' or 'unit'
+  const id = params.get('id');
+
+  if(mode === 'unit' && id){
+    // === 단원 허브: 콘텐츠 목록 ===
+    const units = await App.loadJSON('units.json');
+    const unitInfo = units?.units?.find(u=>u.slug===id);
+    const data = await App.loadJSON('unit-'+id+'.json');
+
+    document.title = (unitInfo?.title||id) + ' — 교사 실무 자동화 센터';
+    document.getElementById('hero-title').textContent = unitInfo?.title || id;
+    document.getElementById('hero-desc').textContent = unitInfo?.subtitle || '';
+    document.getElementById('hero-extra').textContent = data?.achievementStandard || '';
+
+    // 브레드크럼: 어느 카테고리 소속인지 찾기
+    const site = await App.loadJSON('site.json');
+    const cat = site?.categories?.find(c=> {
+      // units.json에서 categoryId 매칭
+      return unitInfo?.categoryId === c.id;
+    });
+    const crumbs = [];
+    if(cat) crumbs.push({label: cat.icon+' '+cat.title, href:'hub.html?mode=category&id='+cat.id});
+    crumbs.push({label: unitInfo?.title || id});
+    App.renderBreadcrumb(crumbs);
+
+    if(data && data.contents && data.contents.length){
+      App.renderContentCards(data.contents, document.getElementById('cards'));
+      App.initSearch('#search','#cards');
+      const allTags = [...new Set(data.contents.flatMap(c=>c.tags||[]))];
+      document.getElementById('tag-filter').innerHTML = allTags.map(t=>'<button class="tag-btn" data-tag="'+t+'">'+t+'</button>').join('');
+      App.initTagFilter('#tag-filter','#cards');
+    } else {
+      document.getElementById('cards').innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><p>아직 등록된 콘텐츠가 없습니다.</p></div>';
+    }
+
+  } else if(mode === 'category' && id){
+    // === 카테고리 허브: 단원 목록 ===
+    const site = await App.loadJSON('site.json');
+    const cat = site?.categories?.find(c=>c.id===id);
+    const units = await App.loadJSON('units.json');
+
+    document.title = (cat?.title||id) + ' — 교사 실무 자동화 센터';
+    document.getElementById('hero-title').textContent = (cat?.icon||'') + ' ' + (cat?.title||id);
+    document.getElementById('hero-desc').textContent = cat?.desc || '';
+    App.renderBreadcrumb([{label: (cat?.icon||'')+' '+(cat?.title||id)}]);
+
+    // 해당 카테고리의 단원만 필터링
+    const filtered = (units?.units||[]).filter(u=>u.categoryId===id);
+
+    if(filtered.length){
+      // 단원 카드 렌더 (링크를 hub.html?mode=unit&id=slug 으로)
+      const container = document.getElementById('cards');
+      container.innerHTML = filtered.map(u=>{
+        return '<a href="hub.html?mode=unit&id='+u.slug+'" class="card" data-tags="'+u.tags.join(' ')+'" data-title="'+u.title+'">'+
+          '<div class="card-icon" style="font-size:1.5rem;background:var(--primary-lt);">'+u.code+'</div>'+
+          '<div class="card-title">'+u.title+'</div>'+
+          '<div class="card-desc">'+u.subtitle+'</div>'+
+          '<div class="card-meta">'+u.tags.map(t=>'<span class="tag">'+t+'</span>').join('')+'<span class="tag code">콘텐츠 '+u.contentCount+'개</span></div>'+
+          '<span class="card-arrow">→</span></a>';
+      }).join('');
+      App.initSearch('#search','#cards');
+    } else {
+      document.getElementById('cards').innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><p>아직 등록된 단원이 없습니다.<br>관리자 모드에서 단원을 추가하세요.</p></div>';
+    }
+
+  } else {
+    // fallback
+    document.getElementById('hero-title').textContent = '페이지를 찾을 수 없습니다';
+    document.getElementById('cards').innerHTML = '<div class="empty-state"><p><a href="index.html">홈으로 돌아가기</a></p></div>';
+  }
+})();
+</script>
+</body>
+</html>
