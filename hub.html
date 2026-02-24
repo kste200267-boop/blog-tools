@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>허브 — 교사 실무 자동화 센터</title>
+<title>허브 — 풀어쓰는 사회학 정보부</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="site-header"><div class="container"><a href="index.html" class="site-title"><span class="logo-icon">T</span>교사 실무 자동화 센터</a><button class="btn" onclick="App.goFullscreen()">🖥️</button></div></header>
+<header class="site-header"><div class="container"><a href="index.html" class="site-title"><span class="logo-icon">T</span>풀어쓰는 사회학 정보부</a><button class="btn" onclick="App.goFullscreen()">🖥️</button></div></header>
 <div class="container" style="padding-top:4px;padding-bottom:60px;">
   <nav class="breadcrumb" id="breadcrumb"></nav>
   <section class="hero" id="hero">
@@ -32,7 +32,7 @@
     const unitInfo = units?.units?.find(u=>u.slug===id);
     const data = await App.loadJSON('unit-'+id+'.json');
 
-    document.title = (unitInfo?.title||id) + ' — 교사 실무 자동화 센터';
+    document.title = (unitInfo?.title||id) + ' — 풀어쓰는 사회학 정보부';
     document.getElementById('hero-title').textContent = unitInfo?.title || id;
     document.getElementById('hero-desc').textContent = unitInfo?.subtitle || '';
     document.getElementById('hero-extra').textContent = data?.achievementStandard || '';
@@ -64,7 +64,7 @@
     const cat = site?.categories?.find(c=>c.id===id);
     const units = await App.loadJSON('units.json');
 
-    document.title = (cat?.title||id) + ' — 교사 실무 자동화 센터';
+    document.title = (cat?.title||id) + ' — 풀어쓰는 사회학 정보부';
     document.getElementById('hero-title').textContent = (cat?.icon||'') + ' ' + (cat?.title||id);
     document.getElementById('hero-desc').textContent = cat?.desc || '';
     App.renderBreadcrumb([{label: (cat?.icon||'')+' '+(cat?.title||id)}]);

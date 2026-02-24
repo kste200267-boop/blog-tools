@@ -1,0 +1,33 @@
+{
+  "unit": "학급 운영",
+  "unitSlug": "class-mgmt",
+  "achievementStandard": "",
+  "contents": [
+    {
+      "slug": "school-rule",
+      "file": "school rule.html",
+      "title": "📜 학급 규칙 만들기",
+      "type": "웹교구",
+      "difficulty": "쉬움",
+      "duration": "15분",
+      "tags": [
+        "학급",
+        "규칙"
+      ],
+      "desc": "학급 규칙을 직접 만들고 포스터로 출력"
+    },
+    {
+      "slug": "self-intro",
+      "file": "self.html",
+      "title": "👋 자기소개 카드 만들기",
+      "type": "웹교구",
+      "difficulty": "쉬움",
+      "duration": "15분",
+      "tags": [
+        "학급",
+        "자기소개"
+      ],
+      "desc": "자기소개를 자유롭게 디자인"
+    }
+  ]
+}

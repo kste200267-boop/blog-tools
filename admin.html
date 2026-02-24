@@ -124,7 +124,7 @@ function opM(id){document.getElementById(id).classList.add('show')}
 function clM(id){document.getElementById(id).classList.remove('show')}
 document.querySelectorAll('.mo').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')})});
 // 내보내기
-function gSite(){const cats=D.cat.map(c=>({...c,link:'hub.html?mode=category&id='+c.id}));return JSON.stringify({siteName:"교사 실무 자동화 센터",categories:cats},null,2)}
+function gSite(){const cats=D.cat.map(c=>({...c,link:'hub.html?mode=category&id='+c.id}));return JSON.stringify({siteName:"풀어쓰는 사회학 정보부",categories:cats},null,2)}
 function gUnits(){return JSON.stringify({_comment:"admin 자동생성",subject:"통합사회",curriculum:"2022 개정 교육과정",units:D.units.map(u=>({slug:u.slug,code:u.code,title:u.title,subtitle:u.subtitle,tags:u.tags,contentCount:u.contentCount,categoryId:u.categoryId}))},null,2)}
 function gUnit(s){const u=D.uc[s];if(!u)return null;return JSON.stringify({unit:u.unit,unitSlug:u.unitSlug,achievementStandard:u.achievementStandard,contents:u.contents},null,2)}
 function dlF(n,c){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'application/json'}));a.download=n;a.click();URL.revokeObjectURL(a.href)}

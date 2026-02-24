@@ -1,27 +1,31 @@
 {
-  "unit": "교구",
+  "unit": "교구 모음",
   "unitSlug": "tool",
   "achievementStandard": "",
   "contents": [
     {
       "slug": "self",
-      "file": "c-tool-self.html",
-      "title": "자기소개 카드 만들기",
-      "desc": "",
+      "file": "self.html",
+      "title": "👋 자기소개 카드 만들기",
       "type": "웹교구",
-      "difficulty": "보통",
+      "difficulty": "쉬움",
       "duration": "15분",
-      "tags": []
+      "tags": [
+        "도구"
+      ],
+      "desc": "자기소개를 자유롭게 디자인"
     },
     {
-      "slug": "rule",
-      "file": "c-tool-school-rule.html",
-      "title": "학급 규칙 포스터 에디터",
-      "desc": "",
+      "slug": "school-rule",
+      "file": "school rule.html",
+      "title": "📜 학급 규칙 포스터 에디터",
       "type": "웹교구",
-      "difficulty": "보통",
+      "difficulty": "쉬움",
       "duration": "15분",
-      "tags": []
+      "tags": [
+        "도구"
+      ],
+      "desc": "학급 규칙을 만들고 포스터로 출력"
     }
   ]
 }

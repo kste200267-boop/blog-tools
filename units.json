@@ -24,7 +24,7 @@
         "통사1",
         "기초"
       ],
-      "contentCount": 0,
+      "contentCount": 2,
       "categoryId": "integrated-social"
     },
     {
@@ -51,6 +51,30 @@
       ],
       "contentCount": 6,
       "categoryId": "integrated-social"
+    },
+    {
+      "slug": "class-mgmt",
+      "code": "①",
+      "title": "학급 운영",
+      "subtitle": "선거, 규칙, 자기소개 등 학급 운영 도구",
+      "tags": [
+        "학급",
+        "운영"
+      ],
+      "contentCount": 2,
+      "categoryId": "guidance"
+    },
+    {
+      "slug": "tool",
+      "code": "②",
+      "title": "교구 모음",
+      "subtitle": "범용 교사 도구",
+      "tags": [
+        "도구",
+        "템플릿"
+      ],
+      "contentCount": 2,
+      "categoryId": "templates"
     }
   ]
 }

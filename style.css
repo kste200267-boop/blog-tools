@@ -1,4 +1,4 @@
-/* 교사 실무 자동화 센터 — 공통 스타일 */
+/* 풀어쓰는 사회학 정보부 — 공통 스타일 */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#f8f9fc;--surface:#fff;--border:#e2e5ed;--text:#1a1d26;--sub:#5c6272;--muted:#8b90a0;--primary:#2563eb;--primary-lt:#eff4ff;--accent:#f59e0b;--success:#059669;--danger:#dc2626;--r:14px;--rlg:20px;--shadow:0 4px 16px rgba(0,0,0,0.08);--max:1080px}
 html{scroll-behavior:smooth}

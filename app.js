@@ -1,4 +1,4 @@
-/* 교사 실무 자동화 센터 — 공통 JS (플랫 구조) */
+/* 풀어쓰는 사회학 정보부 — 공통 JS (플랫 구조) */
 const App = (() => {
   const $ = (s, p) => (p || document).querySelector(s);
   const $$ = (s, p) => [...(p || document).querySelectorAll(s)];
