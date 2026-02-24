@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>학급 규칙 포스터 에디터</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@400;600;700;900&family=Jua&family=Black+Han+Sans&family=Do+Hyeon&family=Gaegu:wght@400;700&family=Gamja+Flower&family=Gothic+A1:wght@400;700;900&family=Sunflower:wght@300;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --bg:#1a1a2e;--panel:#16213e;--panel2:#1a2744;--card:#0f3460;
+  --accent:#e94560;--accent2:#0ea5e9;--accent3:#22c55e;--accent4:#f59e0b;
+  --text:#eaeaea;--textSub:#8899aa;--border:#2a2a5a;--input:#1a1a3e;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);display:flex;height:100vh;overflow:hidden;}
+
+/* === LEFT PANEL === */
+.left{width:420px;min-width:420px;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.left-head{padding:12px 16px;background:var(--card);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.left-head h1{font-size:15px;font-weight:700;}
+.left-head h1 span{color:var(--accent);}
+.left-head .badge{font-size:10px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:10px;}
+.left-body{flex:1;overflow-y:auto;padding:0;}
+.left-body::-webkit-scrollbar{width:5px;}
+.left-body::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px;}
+
+/* Accordion Sections */
+.sec{border-bottom:1px solid var(--border);}
+.sec-head{padding:10px 16px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;font-size:12px;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:1px;transition:background .2s;}
+.sec-head:hover{background:rgba(14,165,233,.08);}
+.sec-head i{font-size:10px;transition:transform .2s;}
+.sec.open .sec-head i{transform:rotate(90deg);}
+.sec-body{display:none;padding:8px 16px 14px;}
+.sec.open .sec-body{display:block;}
+
+label{font-size:11px;color:var(--textSub);display:block;margin:8px 0 3px;font-weight:500;}
+label:first-child{margin-top:0;}
+input[type="text"],input[type="number"],textarea,select{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:6px;background:var(--input);color:var(--text);font-size:12px;font-family:inherit;outline:none;transition:border .2s;}
+input:focus,textarea:focus,select:focus{border-color:var(--accent2);}
+textarea{resize:vertical;min-height:60px;line-height:1.6;}
+select{cursor:pointer;}
+input[type="color"]{width:36px;height:28px;padding:1px;border:1px solid var(--border);border-radius:4px;background:var(--input);cursor:pointer;}
+input[type="range"]{width:100%;accent-color:var(--accent2);}
+
+.row{display:flex;gap:8px;align-items:flex-end;}
+.row>*{flex:1;}
+.row-color{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+.row-color label{margin:0;white-space:nowrap;}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:7px 14px;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;gap:5px;transition:all .15s;font-family:inherit;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{filter:brightness(1.2);}
+.btn-sm{padding:5px 10px;font-size:10px;border-radius:4px;}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);}
+.btn-outline:hover{border-color:var(--accent2);color:var(--accent2);}
+.btn-success{background:var(--accent3);color:#fff;}
+.btn-warn{background:var(--accent4);color:#000;}
+
+.preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:6px;}
+.preset-btn{padding:6px 8px;font-size:10px;border:1px solid var(--border);border-radius:5px;background:var(--input);color:var(--text);cursor:pointer;text-align:left;transition:all .15s;font-family:inherit;line-height:1.3;}
+.preset-btn:hover{border-color:var(--accent);background:rgba(233,69,96,.1);}
+.preset-btn .pname{font-weight:700;display:block;}
+.preset-btn .pdesc{font-size:9px;color:var(--textSub);}
+
+.icon-picker{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;max-height:120px;overflow-y:auto;}
+.icon-pick{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:4px;cursor:pointer;font-size:16px;transition:all .15s;}
+.icon-pick:hover,.icon-pick.active{border-color:var(--accent);background:rgba(233,69,96,.15);}
+
+/* Bottom Buttons */
+.left-foot{padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:8px;background:var(--panel2);}
+
+/* === RIGHT: PREVIEW === */
+.right{flex:1;background:#2a2a3e;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:auto;padding:20px;}
+
+/* A4 Preview Container */
+.a4-wrap{width:595px;height:842px;background:#fff;box-shadow:0 8px 40px rgba(0,0,0,.5);position:relative;overflow:hidden;transform-origin:top center;}
+
+/* === PRINT === */
+@media print{
+  body{background:#fff!important;}
+  .left,.left-foot{display:none!important;}
+  .right{padding:0!important;background:#fff!important;display:block!important;}
+  .a4-wrap{width:210mm!important;height:297mm!important;box-shadow:none!important;margin:0!important;transform:none!important;}
+}
+
+/* Poster Styles inside .a4-wrap */
+.poster{width:100%;height:100%;position:relative;overflow:hidden;display:flex;flex-direction:column;}
+
+/* Border Frame */
+.poster-border{position:absolute;inset:0;pointer-events:none;z-index:2;}
+
+/* Background */
+.poster-bg{position:absolute;inset:0;z-index:0;}
+
+/* Content */
+.poster-content{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;padding:40px 36px 30px;}
+
+/* Header Area */
+.poster-header{text-align:center;margin-bottom:8px;}
+.poster-header .school-name{font-size:11px;letter-spacing:2px;opacity:.7;margin-bottom:4px;}
+.poster-header .main-title{font-size:36px;font-weight:900;line-height:1.2;margin-bottom:6px;}
+.poster-header .sub-title{font-size:13px;opacity:.8;}
+.poster-header .class-info{font-size:12px;margin-top:6px;opacity:.6;}
+.poster-header .deco-line{width:80px;height:3px;margin:10px auto 0;border-radius:2px;}
+
+/* Logo */
+.poster-logo{position:absolute;top:15px;z-index:3;}
+.poster-logo img{max-height:50px;max-width:70px;object-fit:contain;}
+
+/* Rules List */
+.rules-list{flex:1;display:flex;flex-direction:column;justify-content:center;gap:6px;margin:10px 0;}
+.rule-item{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-radius:8px;transition:all .2s;}
+.rule-num{min-width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:900;font-size:14px;flex-shrink:0;}
+.rule-icon{min-width:28px;font-size:18px;text-align:center;flex-shrink:0;line-height:30px;}
+.rule-text{font-size:14px;line-height:1.5;flex:1;}
+
+/* Footer */
+.poster-footer{text-align:center;margin-top:auto;padding-top:10px;}
+.poster-footer .pledge{font-size:11px;line-height:1.6;opacity:.8;margin-bottom:8px;}
+.poster-footer .sign-area{display:flex;justify-content:center;gap:40px;margin-top:6px;}
+.poster-footer .sign-box{text-align:center;min-width:100px;}
+.poster-footer .sign-line{width:100%;border-bottom:1px solid;margin-bottom:3px;height:30px;}
+.poster-footer .sign-label{font-size:10px;opacity:.6;}
+.poster-footer .date-text{font-size:10px;opacity:.5;margin-top:8px;}
+.poster-footer .brand{font-size:8px;opacity:.3;margin-top:4px;}
+
+/* Stamp */
+.poster-stamp{position:absolute;z-index:3;}
+.poster-stamp img{max-width:70px;max-height:70px;object-fit:contain;opacity:.8;}
+
+/* Watermark */
+.poster-watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:80px;opacity:.04;font-weight:900;white-space:nowrap;z-index:0;pointer-events:none;}
+
+/* Decorative Elements */
+.poster-deco-tl,.poster-deco-tr,.poster-deco-bl,.poster-deco-br{position:absolute;z-index:2;pointer-events:none;font-size:40px;opacity:.15;}
+.poster-deco-tl{top:10px;left:10px;}
+.poster-deco-tr{top:10px;right:10px;}
+.poster-deco-bl{bottom:10px;left:10px;}
+.poster-deco-br{bottom:10px;right:10px;}
+
+/* Border Styles */
+.border-classic{border:12px double;margin:6px;}
+.border-gold{border:8px solid;outline:3px solid;outline-offset:4px;margin:8px;border-image:linear-gradient(135deg,#d4a843,#f5e6a3,#d4a843,#b8860b) 1;}
+.border-modern{border-left:6px solid;margin:0;}
+.border-rounded{border:4px solid;border-radius:20px;margin:10px;}
+.border-double-line{border:3px solid;outline:1px solid;outline-offset:6px;margin:10px;}
+.border-dashed{border:4px dashed;margin:10px;}
+.border-dotted-thick{border:6px dotted;margin:8px;}
+.border-groove{border:8px groove;margin:6px;}
+.border-ribbon{border:0;margin:8px;box-shadow:inset 0 0 0 2px,inset 0 0 0 6px rgba(255,255,255,.3),inset 0 0 0 8px;}
+.border-none{border:none;margin:0;}
+
+/* BG Patterns */
+.bg-grid{background-image:linear-gradient(rgba(0,0,0,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.03) 1px,transparent 1px);background-size:20px 20px;}
+.bg-dots{background-image:radial-gradient(circle,rgba(0,0,0,.06) 1px,transparent 1px);background-size:16px 16px;}
+.bg-lines{background-image:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(0,0,0,.02) 10px,rgba(0,0,0,.02) 11px);}
+.bg-waves{background-image:url("data:image/svg+xml,%3Csvg width='100' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q25 0 50 10 T100 10' fill='none' stroke='rgba(0,0,0,0.03)' stroke-width='1'/%3E%3C/svg%3E");background-size:100px 20px;}
+.bg-none{}
+
+/* Number Styles */
+.num-circle .rule-num{border-radius:50%;}
+.num-square .rule-num{border-radius:4px;}
+.num-diamond .rule-num{border-radius:4px;transform:rotate(45deg);}
+.num-diamond .rule-num span{display:inline-block;transform:rotate(-45deg);}
+.num-badge .rule-num{border-radius:0 8px 8px 0;min-width:36px;}
+.num-none .rule-num{display:none;}
+</style>
+</head>
+<body>
+
+<!-- LEFT PANEL -->
+<div class="left">
+<div class="left-head">
+<h1><i class="fas fa-scroll"></i> <span>학급 규칙</span> 포스터 에디터</h1>
+<span class="badge">A4 FULL</span>
+</div>
+<div class="left-body">
+
+<!-- Presets -->
+<div class="sec open">
+<div class="sec-head" onclick="toggleSec(this)"><i class="fas fa-chevron-right"></i> 프리셋 템플릿</div>
+<div class="sec-body">
+<div class="preset-grid" id="presetGrid"></div>
+</div>
+</div>
+
+<!-- Title & Info -->
+<div class="sec open">
+<div class="sec-head" onclick="toggleSec(this)"><i class="fas fa-chevron-right"></i> 제목 및 정보</div>
+<div class="sec-body">
+<label>학교명</label>
+<input type="text" id="inSchool" value="○○고등학교" oninput="render()">
+<label>메인 제목</label>
+<input type="text" id="inTitle" value="우리 반 규칙" oninput="render()">
+<label>부제목</label>
+<input type="text" id="inSubtitle" value="함께 만드는 행복한 교실" oninput="render()">
+<label>학급 정보</label>
+<input type="text" id="inClass" value="1학년 3반" oninput="render()">
+<label>날짜</label>
+<input type="text" id="inDate" value="2026년 3월" oninput="render()">
+<label>워터마크 텍스트 (선택)</label>
+<input type="text" id="inWatermark" value="" placeholder="예: RULES" oninput="render()">
+</div>
+</div>
+
+<!-- Rules -->
+<div class="sec open">
+<div class="sec-head" onclick="toggleSec(this)"><i class="fas fa-chevron-right"></i> 규칙 항목</div>
+<div class="sec-body">
+<textarea id="inRules" rows="10" oninput="render()" placeholder="한 줄에 하나씩 규칙을 입력하세요">수업 시작 전 착석하기
+휴대폰은 수업 중 가방 안에
+다른 사람 말할 때 끝까지 듣기
+욕설·비속어 사용하지 않기
+교실 정리정돈은 내 자리부터
+모둠 활동에 적극 참여하기
+복도에서 뛰지 않기
+쓰레기는 분리수거함에</textarea>
+<div style="margin-top:6px;display:flex;gap:6px;">
+<button class="btn btn-sm btn-outline" onclick="addSampleRule()"><i class="fas fa-plus"></i> 규칙 추가</button>
+<button class="btn btn-sm btn-outline" onclick="clearRules()"><i class="fas fa-trash"></i> 전체 삭제</button>
+</div>
+</div>
+</div>
+
+<!-- Pledge / Footer -->
+<div class="sec">
+<div class="sec-head" onclick="toggleSec(this)"><i class="fas fa-chevron-right"></i> 서약문 및 서명</div>
+<div class="sec-body">
+<label>서약문 (빈칸 = 숨김)</label>
+<textarea id="inPledge" rows="3" oninput="render()">위 규칙을 성실히 지키겠습니다.</textarea>
+<label>서명란 개수</label>
+<select id="selSignCount" onchange="render()">
+<option value="0">없음</option>
+<option value="1">1개</option>
+<option value="2" selected>2개</option>
+<option value="3">3개</option>
+</select>
+<div class="row">
+<div><label>서명1 라벨</label><input type="text" id="inSign1" value="담임교사" oninput="render()"></div>
+<div><label>서명2 라벨</label><input type="text" id="inSign2" value="학급 대표" oninput="render()"></div>
+</div>
+<label>서명3 라벨</label>
+<input type="text" id="inSign3" value="학생" oninput="render()">
+<label>하단 브랜드 텍스트</label>
+<input type="text" id="inBrand" value="풀어쓰는 사회학 · kstephullab.com" oninput="render()">
+</div>
+</div>
+
+<!-- Design: Colors -->
+<div class="sec">
+<div class="sec-head" onclick="toggleSec(this)"><i class="fas fa-chevron-right"></i> 색상 설정</div>
+<div class="sec-body">
+<div class="row-color">
+<label>배경</label><input type="color" id="colBg" value="#ffffff" oninput="render()">
+<label>글자</label><input type="color" id="colText" value="#1a1a2e" oninput="render()">
+<label>강조</label><input type="color" id="colAccent" value="#e94560" oninput="render()">
+</div>
+<div class="row-color" style="margin-top:6px;">
+<label>테두리</label><input type="color" id="colBorder" value="#2a2a5a" oninput="render()">
+<label>번호배경</label><input type="color" id="colNumBg" value="#e94560" oninput="render()">
+<label>번호글자</label><input type="color" id="colNumText" value="#ffffff" oninput="render()">
+</div>
+<div class="row-color" style="margin-top:6px;">
+<label>규칙배경</label><input type="color" id="colRuleBg" value="#f8f9fa" oninput="render()">
+<label>데코라인</label><input type="color" id="colDeco" value="#e94560" oninput="render()">
+</div>
+</div>
+</div>
+
+<!-- Design: Typography -->
+<div class="sec">
+<div class="sec-head" onclick="toggleSec(this)"><i class="fas fa-chevron-right"></i> 글꼴 및 크기</div>
+<div class="sec-body">
+<label>제목 글꼴</label>
+<select id="selTitleFont" onchange="render()">
+<option value="'Black Han Sans'">Black Han Sans (임팩트)</option>
+<option value="'Do Hyeon'">Do Hyeon (둥근)</option>
+<option value="Jua">Jua (귀여운)</option>
+<option value="'Noto Serif KR'">Noto Serif KR (정중한)</option>
+<option value="'Gothic A1'">Gothic A1 (깔끔한)</option>
+<option value="'Gamja Flower'">Gamja Flower (손글씨)</option>
+<option value="Sunflower">Sunflower (가벼운)</option>
+<option value="'Noto Sans KR'" selected>Noto Sans KR (기본)</option>
+<option value="Gaegu">Gaegu (낙서풍)</option>
+</select>
+<label>본문 글꼴</label>
+<select id="selBodyFont" onchange="render()">
+<option value="'Noto Sans KR'" selected>Noto Sans KR</option>
+<option value="'Gothic A1'">Gothic A1</option>
+<option value="'Noto Serif KR'">Noto Serif KR</option>
+<option value="Jua">Jua</option>
+<option value="Sunflower">Sunflower</option>
+<option value="Gaegu">Gaegu</option>
+<option value="'Gamja Flower'">Gamja Flower</option>
+</select>
+<label>제목 크기: <span id="valTitleSize">36</span>px</label>
+<input type="range" id="rngTitleSize" min="20" max="56" value="36" oninput="$('valTitleSize').textContent=this.value;render()">
+<label>규칙 글자 크기: <span id="valRuleSize">14</span>px</label>
+<input type="range" id="rngRuleSize" min="10" max="24" value="14" oninput="$('valRuleSize').textContent=this.value;render()">
+<label>규칙 줄간격: <span id="valLineH">1.5</span></label>
+<input type="range" id="rngLineH" min="1" max="2.5" step="0.1" value="1.5" oninput="$('valLineH').textContent=this.value;render()">
+<label>규칙 간격: <span id="valGap">6</span>px</label>
+<input type="range" id="rngGap" min="0" max="16" value="6" oninput="$('valGap').textContent=this.value;render()">
+<label>규칙 패딩: <span id="valPad">8</span>px</label>
+<input type="range" id="rngPad" min="2" max="20" value="8" oninput="$('valPad').textContent=this.value;render()">
+</div>
+</div>
+
+<!-- Design: Border & BG -->
+<div class="sec">
+<div class="sec-head" onclick="toggleSec(this)"><i class="fas fa-chevron-right"></i> 테두리 및 배경</div>
+<div class="sec-body">
+<label>테두리 스타일</label>
+<select id="selBorder" onchange="render()">
+<option value="classic" selected>클래식 (이중선)</option>
+<option value="gold">금박풍</option>
+<option value="modern">모던 (왼쪽 강조)</option>
+<option value="rounded">라운드</option>
+<option value="double-line">이중 아웃라인</option>
+<option value="dashed">점선</option>
+<option value="dotted-thick">두꺼운 도트</option>
+<option value="groove">입체 그루브</option>
+<option value="ribbon">리본</option>
+<option value="none">없음</option>
+</select>
+<label>배경 패턴</label>
+<select id="selBgPattern" onchange="render()">
+<option value="none" selected>없음 (단색)</option>
+<option value="grid">격자</option>
+<option value="dots">도트</option>
+<option value="lines">사선</option>
+<option value="waves">웨이브</option>
+</select>
+<label>번호 스타일</label>
+<select id="selNumStyle" onchange="render()">
+<option value="circle" selected>원형</option>
+<option value="square">사각형</option>
+<option value="diamond">다이아몬드</option>
+<option value="badge">뱃지</option>
+<option value="none">숨김</option>
+</select>
+<label>규칙 항목 배경 둥글기: <span id="valRuleRad">8</span>px</label>
+<input type="range" id="rngRuleRad" min="0" max="20" value="8" oninput="$('valRuleRad').textContent=this.value;render()">
+</div>
+</div>
+
+<!-- Icons per rule -->
+<div class="sec">
+<div class="sec-head" onclick="toggleSec(this)"><i class="fas fa-chevron-right"></i> 규칙별 아이콘</div>
+<div class="sec-body">
+<p style="font-size:10px;color:var(--textSub);margin-bottom:6px;">각 규칙 앞에 표시할 아이콘을 선택하세요. 비워두면 숫자만 표시됩니다.</p>
+<div id="iconAssignArea"></div>
+<label style="margin-top:10px;">아이콘 크기: <span id="valIconSize">18</span>px</label>
+<input type="range" id="rngIconSize" min="12" max="32" value="18" oninput="$('valIconSize').textContent=this.value;render()">
+</div>
+</div>
+
+<!-- Corner Decos -->
+<div class="sec">
+<div class="sec-head" onclick="toggleSec(this)"><i class="fas fa-chevron-right"></i> 꾸미기 요소</div>
+<div class="sec-body">
+<label>코너 장식 아이콘</label>
+<div class="row">
+<div><label>좌상</label><input type="text" id="inDecoTL" value="⭐" oninput="render()" style="text-align:center;font-size:16px;"></div>
+<div><label>우상</label><input type="text" id="inDecoTR" value="⭐" oninput="render()" style="text-align:center;font-size:16px;"></div>
+<div><label>좌하</label><input type="text" id="inDecoBL" value="⭐" oninput="render()" style="text-align:center;font-size:16px;"></div>
+<div><label>우하</label><input type="text" id="inDecoBR" value="⭐" oninput="render()" style="text-align:center;font-size:16px;"></div>
+</div>
+<label>코너 장식 크기: <span id="valDecoSize">40</span>px</label>
+<input type="range" id="rngDecoSize" min="20" max="80" value="40" oninput="$('valDecoSize').textContent=this.value;render()">
+<label>코너 장식 투명도: <span id="valDecoOp">15</span>%</label>
+<input type="range" id="rngDecoOp" min="5" max="60" value="15" oninput="$('valDecoOp').textContent=this.value;render()">
+</div>
+</div>
+
+<!-- Image Uploads -->
+<div class="sec">
+<div class="sec-head" onclick="toggleSec(this)"><i class="fas fa-chevron-right"></i> 이미지 업로드</div>
+<div class="sec-body">
+<label>학교 로고 (좌측 상단)</label>
+<input type="file" id="inLogo" accept="image/*" onchange="loadImg(this,'logo')">
+<div class="row" style="margin-top:4px;">
+<div><label>위치</label>
+<select id="selLogoPos" onchange="render()">
+<option value="left">좌측</option>
+<option value="right">우측</option>
+<option value="center">중앙</option>
+</select></div>
+<div><label>크기: <span id="valLogoSize">50</span>px</label>
+<input type="range" id="rngLogoSize" min="30" max="100" value="50" oninput="$('valLogoSize').textContent=this.value;render()"></div>
+</div>
+<label style="margin-top:10px;">직인/도장 이미지</label>
+<input type="file" id="inStamp" accept="image/*" onchange="loadImg(this,'stamp')">
+<div class="row" style="margin-top:4px;">
+<div><label>위치</label>
+<select id="selStampPos" onchange="render()">
+<option value="bottom-right" selected>우하단</option>
+<option value="bottom-center">하단 중앙</option>
+<option value="bottom-left">좌하단</option>
+</select></div>
+<div><label>크기: <span id="valStampSize">70</span>px</label>
+<input type="range" id="rngStampSize" min="30" max="120" value="70" oninput="$('valStampSize').textContent=this.value;render()"></div>
+</div>
+<div style="margin-top:8px;">
+<button class="btn btn-sm btn-outline" onclick="removeImg('logo')"><i class="fas fa-times"></i> 로고 제거</button>
+<button class="btn btn-sm btn-outline" onclick="removeImg('stamp')"><i class="fas fa-times"></i> 도장 제거</button>
+</div>
+</div>
+</div>
+
+</div><!-- end left-body -->
+
+<div class="left-foot">
+<button class="btn btn-primary" onclick="doPrint()" style="flex:1;"><i class="fas fa-print"></i> PDF 인쇄</button>
+<button class="btn btn-success" onclick="resetAll()"><i class="fas fa-redo"></i> 초기화</button>
+</div>
+</div>
+
+<!-- RIGHT PREVIEW -->
+<div class="right" id="previewArea">
+<div class="a4-wrap" id="a4Wrap">
+<div class="poster" id="poster"></div>
+</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+let logoData=null, stampData=null;
+let ruleIcons=[];
+
+const ICONS_POOL=['📚','✏️','📱','🤝','🗣️','🧹','🏃','♻️','⏰','🎒','💬','🤫','👀','✋','💪','🌟','❤️','🎯','📝','🔔','🚫','✅','👍','🙏','🎵','🧠','💡','📖','🏠','👨‍🏫','🤲','😊','🌈','🔑','🛡️','⚡','🎭','🧪','🖥️','🍱'];
+
+const PRESETS=[
+{name:'📕 기본 학급 규칙',desc:'깔끔한 기본형',data:{title:'우리 반 규칙',subtitle:'함께 만드는 행복한 교실',rules:'수업 시작 전 착석하기\n휴대폰은 수업 중 가방 안에\n다른 사람 말할 때 끝까지 듣기\n욕설·비속어 사용하지 않기\n교실 정리정돈은 내 자리부터\n모둠 활동에 적극 참여하기\n복도에서 뛰지 않기\n쓰레기는 분리수거함에',pledge:'위 규칙을 성실히 지키겠습니다.',colBg:'#ffffff',colText:'#1a1a2e',colAccent:'#e94560',colBorder:'#2a2a5a',colNumBg:'#e94560',colNumText:'#ffffff',colRuleBg:'#f8f9fa',colDeco:'#e94560',border:'classic',pattern:'none',numStyle:'circle',titleFont:"'Noto Sans KR'",bodyFont:"'Noto Sans KR'",titleSize:36,ruleSize:14,icons:['⏰','📱','👀','🚫','🧹','🤝','🏃','♻️'],decos:['⭐','⭐','⭐','⭐']}},
+{name:'🌈 밝은 교실',desc:'파스텔 컬러 따뜻한 분위기',data:{title:'우리의 약속',subtitle:'서로 존중하는 따뜻한 교실',rules:'서로 이름 불러주기\n고운 말 사용하기\n친구의 다름을 존중하기\n도움이 필요하면 말하기\n함께 쓰는 물건 아끼기\n실수해도 괜찮아, 다시 해보기\n고마운 마음 표현하기\n웃으며 인사하기',pledge:'우리는 서로를 존중합니다.',colBg:'#fef9ef',colText:'#5d4037',colAccent:'#ff7043',colBorder:'#ff7043',colNumBg:'#ffb74d',colNumText:'#ffffff',colRuleBg:'#fff8e1',colDeco:'#ff7043',border:'rounded',pattern:'dots',numStyle:'circle',titleFont:"Jua",bodyFont:"'Noto Sans KR'",titleSize:38,ruleSize:14,icons:['😊','💬','🌈','🤲','💎','💪','❤️','👋'],decos:['🌻','🌻','🌻','🌻']}},
+{name:'🏫 공식 서약서',desc:'격식있는 서약서 형태',data:{title:'학급 서약서',subtitle:'2026학년도 학급 생활 규칙 서약',rules:'등교 시간(08:30)을 준수한다\n수업에 필요한 준비물을 반드시 지참한다\n수업 중 허락 없이 자리를 이탈하지 않는다\n타인의 물건을 허락 없이 사용하지 않는다\n학교 시설물을 소중히 다룬다\n급식 시간 질서를 지킨다\n청소 구역을 책임지고 정리한다\n안전사고 예방에 적극 협력한다',pledge:'본인은 위의 규칙을 성실히 이행할 것을 서약합니다.',colBg:'#ffffff',colText:'#212121',colAccent:'#1565c0',colBorder:'#1565c0',colNumBg:'#1565c0',colNumText:'#ffffff',colRuleBg:'#e3f2fd',colDeco:'#1565c0',border:'double-line',pattern:'none',numStyle:'square',titleFont:"'Noto Serif KR'",bodyFont:"'Noto Sans KR'",titleSize:34,ruleSize:13,icons:[],decos:['','','',''],signCount:'3'}},
+{name:'✨ 모던 다크',desc:'세련된 다크 테마',data:{title:'CLASS RULES',subtitle:'우리가 함께 만드는 규칙',rules:'시간을 지키자\n경청하자\n배려하자\n정리하자\n참여하자\n응원하자\n책임지자\n즐기자',pledge:'',colBg:'#1a1a2e',colText:'#e8e8e8',colAccent:'#00d4ff',colBorder:'#00d4ff',colNumBg:'#00d4ff',colNumText:'#1a1a2e',colRuleBg:'#16213e',colDeco:'#00d4ff',border:'modern',pattern:'grid',numStyle:'badge',titleFont:"'Black Han Sans'",bodyFont:"'Gothic A1'",titleSize:42,ruleSize:15,icons:['⏰','👂','💙','🧹','✋','👏','💪','🎉'],decos:['💎','💎','💎','💎']}},
+{name:'🎀 귀여운 스타일',desc:'저학년/분위기 전환용',data:{title:'우리 반 꿀약속',subtitle:'사이좋은 꿀벌 교실 🐝',rules:'선생님 말씀에 귀 기울이기\n친구에게 먼저 인사하기\n놀림·따돌림 절대 안 하기\n사용한 물건 제자리에\n급식은 감사하며 먹기\n화가 나면 말로 표현하기\n쉬는 시간에 교실에서 뛰지 않기\n하루 한 번 칭찬하기',pledge:'꿀벌처럼 부지런하고 다정한 우리 반!',colBg:'#fff9f0',colText:'#5d4037',colAccent:'#ff6f91',colBorder:'#ff6f91',colNumBg:'#ff6f91',colNumText:'#ffffff',colRuleBg:'#fce4ec',colDeco:'#ff6f91',border:'dashed',pattern:'dots',numStyle:'circle',titleFont:"'Gamja Flower'",bodyFont:"Jua",titleSize:40,ruleSize:15,icons:['👂','👋','🚫','📦','🍱','💬','🚶','👏'],decos:['🐝','🐝','🐝','🐝']}},
+{name:'📋 시험 기간',desc:'시험 기간 특별 규칙',data:{title:'시험 기간 규칙',subtitle:'집중! 최선을 다하는 시간',rules:'시험 시작 10분 전 착석 완료\n필기구 외 소지품 가방에 보관\n휴대폰 전원 끄고 제출\n시험 중 질문은 손 들고 조용히\n부정행위 절대 금지\n답안지에 이름·번호 먼저 기입\n시험 종료 후 조용히 대기\n다음 시험 준비에 집중',pledge:'정정당당하게 시험에 임하겠습니다.',colBg:'#f5f5f5',colText:'#212121',colAccent:'#d32f2f',colBorder:'#d32f2f',colNumBg:'#d32f2f',colNumText:'#ffffff',colRuleBg:'#ffebee',colDeco:'#d32f2f',border:'groove',pattern:'lines',numStyle:'square',titleFont:"'Black Han Sans'",bodyFont:"'Gothic A1'",titleSize:36,ruleSize:14,icons:['⏰','🎒','📱','✋','🚫','✏️','🤫','📖'],decos:['📝','📝','📝','📝']}},
+{name:'🌿 에코 그린',desc:'환경 의식 클린 교실',data:{title:'그린 교실 약속',subtitle:'지구를 생각하는 우리 반',rules:'종이컵 대신 개인 텀블러 사용\n분리수거 철저히 실천\n안 쓰는 전등·에어컨 끄기\n양면 인쇄 생활화\n음식 남기지 않기\n일회용품 줄이기\n교실 화분 돌보기\n환경 관련 활동 적극 참여',pledge:'작은 실천이 지구를 바꿉니다.',colBg:'#f1f8e9',colText:'#33691e',colAccent:'#43a047',colBorder:'#43a047',colNumBg:'#43a047',colNumText:'#ffffff',colRuleBg:'#e8f5e9',colDeco:'#43a047',border:'rounded',pattern:'waves',numStyle:'circle',titleFont:"Sunflower",bodyFont:"'Noto Sans KR'",titleSize:36,ruleSize:14,icons:['🥤','♻️','💡','📄','🍱','🚫','🌱','🌍'],decos:['🌿','🌿','🌿','🌿']}},
+{name:'🎨 자유 커스텀',desc:'빈 템플릿에서 시작',data:{title:'제목을 입력하세요',subtitle:'',rules:'규칙 1\n규칙 2\n규칙 3',pledge:'',colBg:'#ffffff',colText:'#333333',colAccent:'#6366f1',colBorder:'#6366f1',colNumBg:'#6366f1',colNumText:'#ffffff',colRuleBg:'#f0f0ff',colDeco:'#6366f1',border:'none',pattern:'none',numStyle:'circle',titleFont:"'Noto Sans KR'",bodyFont:"'Noto Sans KR'",titleSize:36,ruleSize:14,icons:[],decos:['','','','']}}
+];
+
+// Init presets
+function initPresets(){
+  const g=$('presetGrid');
+  g.innerHTML='';
+  PRESETS.forEach((p,i)=>{
+    const b=document.createElement('button');
+    b.className='preset-btn';
+    b.innerHTML=`<span class="pname">${p.name}</span><span class="pdesc">${p.desc}</span>`;
+    b.onclick=()=>applyPreset(i);
+    g.appendChild(b);
+  });
+}
+
+function applyPreset(i){
+  const d=PRESETS[i].data;
+  $('inTitle').value=d.title;
+  $('inSubtitle').value=d.subtitle||'';
+  $('inRules').value=d.rules;
+  $('inPledge').value=d.pledge||'';
+  $('colBg').value=d.colBg;
+  $('colText').value=d.colText;
+  $('colAccent').value=d.colAccent;
+  $('colBorder').value=d.colBorder;
+  $('colNumBg').value=d.colNumBg;
+  $('colNumText').value=d.colNumText;
+  $('colRuleBg').value=d.colRuleBg;
+  $('colDeco').value=d.colDeco;
+  $('selBorder').value=d.border;
+  $('selBgPattern').value=d.pattern;
+  $('selNumStyle').value=d.numStyle;
+  $('selTitleFont').value=d.titleFont;
+  $('selBodyFont').value=d.bodyFont;
+  $('rngTitleSize').value=d.titleSize;$('valTitleSize').textContent=d.titleSize;
+  $('rngRuleSize').value=d.ruleSize;$('valRuleSize').textContent=d.ruleSize;
+  if(d.signCount) $('selSignCount').value=d.signCount;
+  ruleIcons=d.icons?[...d.icons]:[];
+  if(d.decos){
+    $('inDecoTL').value=d.decos[0]||'';
+    $('inDecoTR').value=d.decos[1]||'';
+    $('inDecoBL').value=d.decos[2]||'';
+    $('inDecoBR').value=d.decos[3]||'';
+  }
+  buildIconAssign();
+  render();
+}
+
+// Toggle accordion
+function toggleSec(el){el.parentElement.classList.toggle('open');}
+
+// Image loading
+function loadImg(input,type){
+  const f=input.files[0];
+  if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    if(type==='logo')logoData=e.target.result;
+    else stampData=e.target.result;
+    render();
+  };
+  r.readAsDataURL(f);
+}
+function removeImg(type){
+  if(type==='logo'){logoData=null;$('inLogo').value='';}
+  else{stampData=null;$('inStamp').value='';}
+  render();
+}
+
+// Rules helper
+function getRules(){return $('inRules').value.split('\n').filter(r=>r.trim());}
+function addSampleRule(){
+  const samples=['새로운 규칙을 입력하세요','자리에서 일어날 때 의자 넣기','과제 제출 기한 지키기','교실에서 음식 먹지 않기','친구 별명으로 부르지 않기'];
+  $('inRules').value+=(($('inRules').value&&!$('inRules').value.endsWith('\n'))?'\n':'')+samples[Math.floor(Math.random()*samples.length)];
+  buildIconAssign();render();
+}
+function clearRules(){$('inRules').value='';ruleIcons=[];buildIconAssign();render();}
+
+// Icon assignment UI
+function buildIconAssign(){
+  const rules=getRules();
+  const area=$('iconAssignArea');
+  area.innerHTML='';
+  rules.forEach((r,i)=>{
+    const wrap=document.createElement('div');
+    wrap.style.cssText='display:flex;align-items:center;gap:6px;margin-bottom:4px;';
+    const num=document.createElement('span');
+    num.style.cssText='font-size:10px;color:var(--textSub);min-width:18px;';
+    num.textContent=`${i+1}.`;
+    const iconBtn=document.createElement('button');
+    iconBtn.className='btn btn-sm btn-outline';
+    iconBtn.style.cssText='min-width:36px;font-size:16px;padding:4px;';
+    iconBtn.textContent=ruleIcons[i]||'➕';
+    iconBtn.onclick=()=>showIconPicker(i,iconBtn);
+    const lbl=document.createElement('span');
+    lbl.style.cssText='font-size:10px;color:var(--textSub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;';
+    lbl.textContent=r.substring(0,20);
+    const clr=document.createElement('button');
+    clr.className='btn btn-sm btn-outline';
+    clr.style.cssText='font-size:9px;padding:2px 6px;';
+    clr.textContent='✕';
+    clr.onclick=()=>{ruleIcons[i]='';iconBtn.textContent='➕';render();};
+    wrap.append(num,iconBtn,lbl,clr);
+    area.appendChild(wrap);
+  });
+}
+
+function showIconPicker(idx,btn){
+  // Remove existing
+  document.querySelectorAll('.floating-picker').forEach(e=>e.remove());
+  const picker=document.createElement('div');
+  picker.className='floating-picker';
+  picker.style.cssText='position:fixed;z-index:999;background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:8px;max-width:280px;display:flex;flex-wrap:wrap;gap:4px;box-shadow:0 8px 30px rgba(0,0,0,.5);';
+  ICONS_POOL.forEach(ic=>{
+    const ib=document.createElement('button');
+    ib.style.cssText='width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:4px;background:var(--input);cursor:pointer;font-size:16px;transition:all .1s;';
+    ib.textContent=ic;
+    ib.onmouseenter=()=>ib.style.borderColor='var(--accent)';
+    ib.onmouseleave=()=>ib.style.borderColor='var(--border)';
+    ib.onclick=()=>{ruleIcons[idx]=ic;btn.textContent=ic;picker.remove();render();};
+    picker.appendChild(ib);
+  });
+  const rect=btn.getBoundingClientRect();
+  picker.style.top=Math.min(rect.bottom+4,window.innerHeight-200)+'px';
+  picker.style.left=Math.min(rect.left,window.innerWidth-290)+'px';
+  document.body.appendChild(picker);
+  setTimeout(()=>{
+    const close=e=>{if(!picker.contains(e.target)&&e.target!==btn){picker.remove();document.removeEventListener('click',close);}};
+    document.addEventListener('click',close);
+  },10);
+}
+
+// === RENDER ===
+function render(){
+  const poster=$('poster');
+  const rules=getRules();
+  const bg=$('colBg').value;
+  const text=$('colText').value;
+  const accent=$('colAccent').value;
+  const borderCol=$('colBorder').value;
+  const numBg=$('colNumBg').value;
+  const numText=$('colNumText').value;
+  const ruleBg=$('colRuleBg').value;
+  const decoCol=$('colDeco').value;
+  const borderStyle=$('selBorder').value;
+  const bgPattern=$('selBgPattern').value;
+  const numStyle=$('selNumStyle').value;
+  const titleFont=$('selTitleFont').value;
+  const bodyFont=$('selBodyFont').value;
+  const titleSize=$('rngTitleSize').value;
+  const ruleSize=$('rngRuleSize').value;
+  const lineH=$('rngLineH').value;
+  const gap=$('rngGap').value;
+  const pad=$('rngPad').value;
+  const ruleRad=$('rngRuleRad').value;
+  const iconSize=$('rngIconSize').value;
+  const decoSize=$('rngDecoSize').value;
+  const decoOp=$('rngDecoOp').value;
+  const signCount=parseInt($('selSignCount').value);
+  const logoPos=$('selLogoPos').value;
+  const logoSize=$('rngLogoSize').value;
+  const stampPos=$('selStampPos').value;
+  const stampSize=$('rngStampSize').value;
+
+  // Border class
+  const borderCls='border-'+borderStyle;
+  // BG pattern class
+  const bgCls='bg-'+bgPattern;
+  // Num style class
+  const numCls='num-'+numStyle;
+
+  // Build rules HTML
+  let rulesHTML='';
+  rules.forEach((r,i)=>{
+    const icon=ruleIcons[i]||'';
+    const iconHTML=icon?`<div class="rule-icon" style="font-size:${iconSize}px;">${icon}</div>`:'';
+    const numHTML=numStyle!=='none'?`<div class="rule-num" style="background:${numBg};color:${numText};font-size:${Math.max(10,ruleSize-1)}px;width:${parseInt(ruleSize)+16}px;height:${parseInt(ruleSize)+16}px;min-width:${parseInt(ruleSize)+16}px;"><span>${i+1}</span></div>`:'';
+    rulesHTML+=`<div class="rule-item" style="background:${ruleBg};padding:${pad}px ${parseInt(pad)+4}px;border-radius:${ruleRad}px;">${numHTML}${iconHTML}<div class="rule-text" style="font-size:${ruleSize}px;line-height:${lineH};font-family:${bodyFont};">${r}</div></div>`;
+  });
+
+  // Logo HTML
+  let logoHTML='';
+  if(logoData){
+    let posStyle='left:15px;';
+    if(logoPos==='right')posStyle='right:15px;';
+    else if(logoPos==='center')posStyle='left:50%;transform:translateX(-50%);';
+    logoHTML=`<div class="poster-logo" style="${posStyle}"><img src="${logoData}" style="max-height:${logoSize}px;max-width:${parseInt(logoSize)+20}px;"></div>`;
+  }
+
+  // Stamp HTML
+  let stampHTML='';
+  if(stampData){
+    let sPos='bottom:20px;right:30px;';
+    if(stampPos==='bottom-center')sPos='bottom:20px;left:50%;transform:translateX(-50%);';
+    else if(stampPos==='bottom-left')sPos='bottom:20px;left:30px;';
+    stampHTML=`<div class="poster-stamp" style="${sPos}"><img src="${stampData}" style="max-width:${stampSize}px;max-height:${stampSize}px;"></div>`;
+  }
+
+  // Sign area
+  let signHTML='';
+  if(signCount>0){
+    let signs=[];
+    if(signCount>=1)signs.push($('inSign1').value);
+    if(signCount>=2)signs.push($('inSign2').value);
+    if(signCount>=3)signs.push($('inSign3').value);
+    signHTML=`<div class="sign-area">${signs.map(s=>`<div class="sign-box"><div class="sign-line" style="border-color:${text}30;"></div><div class="sign-label" style="color:${text};">${s}</div></div>`).join('')}</div>`;
+  }
+
+  // Pledge
+  const pledge=$('inPledge').value.trim();
+  const pledgeHTML=pledge?`<div class="pledge" style="color:${text};font-family:${bodyFont};">${pledge}</div>`:'';
+
+  // Watermark
+  const wm=$('inWatermark').value.trim();
+  const wmHTML=wm?`<div class="poster-watermark" style="color:${text};">${wm}</div>`:'';
+
+  // Decos
+  const dtl=$('inDecoTL').value, dtr=$('inDecoTR').value, dbl=$('inDecoBL').value, dbr=$('inDecoBR').value;
+  const decoStyle=`font-size:${decoSize}px;opacity:${decoOp/100};`;
+  const decoHTML=(dtl||dtr||dbl||dbr)?`
+    ${dtl?`<div class="poster-deco-tl" style="${decoStyle}">${dtl}</div>`:''}
+    ${dtr?`<div class="poster-deco-tr" style="${decoStyle}">${dtr}</div>`:''}
+    ${dbl?`<div class="poster-deco-bl" style="${decoStyle}">${dbl}</div>`:''}
+    ${dbr?`<div class="poster-deco-br" style="${decoStyle}">${dbr}</div>`:''}
+  `:'';
+
+  // Date & brand
+  const dateText=$('inDate').value.trim();
+  const brand=$('inBrand').value.trim();
+
+  poster.innerHTML=`
+    <div class="poster-bg ${bgCls}" style="background-color:${bg};"></div>
+    <div class="poster-border ${borderCls}" style="border-color:${borderCol};color:${borderCol};outline-color:${borderCol}30;"></div>
+    ${wmHTML}
+    ${decoHTML}
+    ${logoHTML}
+    ${stampHTML}
+    <div class="poster-content ${numCls}">
+      <div class="poster-header">
+        <div class="school-name" style="color:${text};font-family:${bodyFont};">${$('inSchool').value}</div>
+        <div class="main-title" style="color:${accent};font-family:${titleFont};font-size:${titleSize}px;">${$('inTitle').value}</div>
+        ${$('inSubtitle').value?`<div class="sub-title" style="color:${text};font-family:${bodyFont};">${$('inSubtitle').value}</div>`:''}
+        ${$('inClass').value?`<div class="class-info" style="color:${text};font-family:${bodyFont};">${$('inClass').value}</div>`:''}
+        <div class="deco-line" style="background:${decoCol};"></div>
+      </div>
+      <div class="rules-list" style="gap:${gap}px;">
+        ${rulesHTML}
+      </div>
+      <div class="poster-footer" style="color:${text};font-family:${bodyFont};">
+        ${pledgeHTML}
+        ${signHTML}
+        ${dateText?`<div class="date-text" style="color:${text};">${dateText}</div>`:''}
+        ${brand?`<div class="brand" style="color:${text};">${brand}</div>`:''}
+      </div>
+    </div>
+  `;
+
+  // Auto-scale if too many rules overflow
+  autoScale();
+}
+
+function autoScale(){
+  const wrap=$('a4Wrap');
+  const poster=$('poster');
+  // Reset scale
+  wrap.style.transform='';
+  // Check overflow
+  const contentH=poster.scrollHeight;
+  const wrapH=842;
+  if(contentH>wrapH){
+    const scale=Math.max(0.7,wrapH/contentH);
+    wrap.style.transform=`scale(${scale})`;
+    wrap.style.transformOrigin='top center';
+    // Adjust wrap visual size
+    wrap.style.marginBottom=`${-(842*(1-scale))}px`;
+  } else {
+    wrap.style.marginBottom='0';
+  }
+}
+
+function doPrint(){
+  // Reset scale for print
+  $('a4Wrap').style.transform='none';
+  $('a4Wrap').style.marginBottom='0';
+  window.print();
+  setTimeout(()=>autoScale(),500);
+}
+
+function resetAll(){
+  applyPreset(0);
+  logoData=null;stampData=null;
+  $('inLogo').value='';$('inStamp').value='';
+  render();
+}
+
+// Init
+initPresets();
+applyPreset(0);
+buildIconAssign();
+
+// Rebuild icon assign when rules change
+$('inRules').addEventListener('input',()=>{
+  // Preserve existing icons
+  const rules=getRules();
+  while(ruleIcons.length<rules.length)ruleIcons.push('');
+  ruleIcons.length=rules.length;
+  buildIconAssign();
+});
+
+// Responsive preview scaling
+function fitPreview(){
+  const area=$('previewArea');
+  const aw=area.clientWidth-40;
+  const ah=area.clientHeight-40;
+  const wrap=$('a4Wrap');
+  const sw=aw/595;
+  const sh=ah/842;
+  const s=Math.min(sw,sh,1.2);
+  wrap.style.transform=`scale(${s})`;
+  wrap.style.transformOrigin='top center';
+}
+window.addEventListener('resize',()=>{render();});
+</script>
+</body>
+</html>
