@@ -75,7 +75,7 @@
     },
     {
       "slug": "lesson1-worksheet",
-      "file": "1차시_학습.html",
+      "file": "c-economy-lesson1-worksheet.html",
       "title": "📋 1차시: 자산 관리와 금융 생활",
       "type": "학습지",
       "difficulty": "보통",
@@ -90,7 +90,7 @@
     },
     {
       "slug": "lesson2-worksheet",
-      "file": "2차시_학습지.html",
+      "file": "c-economy-lesson2-worksheet.html",
       "title": "📋 2차시: 자산 관리 원칙과 포트폴리오",
       "type": "학습지",
       "difficulty": "보통",
@@ -105,7 +105,7 @@
     },
     {
       "slug": "lesson3-ai-diagnosis",
-      "file": "3차시_학습지.html",
+      "file": "c-economy-lesson3-ai-diagnosis.html",
       "title": "🤖 3차시: AI 6대 자산 정밀 진단",
       "type": "웹교구",
       "difficulty": "심화",
@@ -120,7 +120,7 @@
     },
     {
       "slug": "lesson4-investment-game",
-      "file": "4차시_학습지.html",
+      "file": "c-economy-lesson4-investment-game.html",
       "title": "🎲 4차시: 10년 투자 서바이벌",
       "type": "웹교구",
       "difficulty": "심화",

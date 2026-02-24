@@ -3,620 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔧 관리자 모드 — 교사 실무 자동화 센터</title>
+<title>🔧 관리자 모드</title>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#0f1117;--surface:#1a1d27;--surface2:#242836;--border:#2e3345;
-  --text:#e2e5f0;--sub:#8b90a5;--primary:#6366f1;--primary-lt:#818cf820;
-  --green:#22c55e;--red:#ef4444;--yellow:#eab308;--blue:#3b82f6;
-  --radius:12px;--font:'Pretendard','Noto Sans KR',sans-serif;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
-button{font-family:var(--font);cursor:pointer}
-input,select,textarea{font-family:var(--font);background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:.9rem;width:100%;outline:none;transition:border .2s}
-input:focus,select:focus,textarea:focus{border-color:var(--primary)}
-textarea{resize:vertical;min-height:60px}
-
-/* 로그인 */
-.login-overlay{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px}
-.login-overlay .logo{font-size:3rem}
-.login-overlay h2{font-weight:800;font-size:1.4rem}
-.login-overlay input{max-width:280px;text-align:center;font-size:1.1rem;letter-spacing:4px}
-.login-overlay .login-btn{padding:12px 40px;background:var(--primary);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;transition:transform .2s}
-.login-overlay .login-btn:hover{transform:scale(1.03)}
-.login-overlay .login-err{color:var(--red);font-size:.85rem;min-height:20px}
-
-/* 레이아웃 */
-.top-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.top-bar h1{font-size:1.1rem;font-weight:800;display:flex;align-items:center;gap:8px}
-.top-bar .actions{display:flex;gap:8px}
-.main{max-width:960px;margin:0 auto;padding:24px 16px 80px}
-
-/* 탭 */
-.tabs{display:flex;gap:4px;margin-bottom:24px;border-bottom:2px solid var(--border);padding-bottom:0}
-.tab{padding:12px 20px;background:none;border:none;color:var(--sub);font-size:.9rem;font-weight:600;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
-.tab.active{color:var(--primary);border-bottom-color:var(--primary)}
-.tab:hover{color:var(--text)}
-.tab-panel{display:none}
-.tab-panel.active{display:block}
-
-/* 버튼 */
-.btn{padding:8px 18px;border:1px solid var(--border);border-radius:8px;background:var(--surface2);color:var(--text);font-size:.85rem;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
-.btn:hover{background:var(--border)}
-.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff}
-.btn-primary:hover{opacity:.9}
-.btn-danger{background:var(--red);border-color:var(--red);color:#fff}
-.btn-danger:hover{opacity:.9}
-.btn-success{background:var(--green);border-color:var(--green);color:#fff}
-.btn-success:hover{opacity:.9}
-.btn-sm{padding:6px 12px;font-size:.8rem}
-
-/* 카드 */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:12px;transition:border .2s}
-.card:hover{border-color:var(--primary)}
-.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
-.card-header h3{font-size:1rem;font-weight:700}
-.card-header .badge{font-size:.75rem;padding:3px 10px;border-radius:20px;background:var(--primary-lt);color:var(--primary)}
-.card-body{font-size:.88rem;color:var(--sub);line-height:1.6}
-.card-actions{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
-
-/* 폼 */
-.form-group{margin-bottom:16px}
-.form-group label{display:block;font-size:.82rem;font-weight:600;color:var(--sub);margin-bottom:6px}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-
-/* 모달 */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:center;justify-content:center;padding:16px}
-.modal-overlay.show{display:flex}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:560px;width:100%;max-height:85vh;overflow-y:auto}
-.modal h2{font-size:1.15rem;font-weight:800;margin-bottom:20px;display:flex;align-items:center;gap:8px}
-.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:24px}
-
-/* 다운로드 영역 */
-.download-zone{background:var(--surface);border:2px dashed var(--border);border-radius:16px;padding:32px;text-align:center;margin-top:20px}
-.download-zone h3{font-size:1.1rem;font-weight:700;margin-bottom:12px}
-.download-zone p{color:var(--sub);font-size:.88rem;margin-bottom:16px;line-height:1.5}
-.download-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-
-/* 상태 */
-.empty{text-align:center;padding:40px;color:var(--sub)}
-.empty .icon{font-size:2.5rem;margin-bottom:12px}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--green);color:#fff;padding:12px 28px;border-radius:10px;font-weight:600;font-size:.9rem;transition:transform .3s;z-index:999}
-.toast.show{transform:translateX(-50%) translateY(0)}
-.tag{display:inline-block;font-size:.72rem;padding:2px 8px;border-radius:10px;background:var(--surface2);color:var(--sub);margin-right:4px}
-
-/* 안내 스텝 */
-.steps{display:flex;gap:16px;margin-top:16px;flex-wrap:wrap}
-.step{flex:1;min-width:140px;background:var(--surface2);border-radius:10px;padding:16px;text-align:center}
-.step .num{width:28px;height:28px;border-radius:50%;background:var(--primary);color:#fff;font-size:.8rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-bottom:8px}
-.step p{font-size:.82rem;color:var(--sub);line-height:1.4}
-.step strong{display:block;font-size:.9rem;color:var(--text);margin-bottom:4px}
-
-@media(max-width:640px){
-  .form-row,.form-row-3{grid-template-columns:1fr}
-  .steps{flex-direction:column}
-  .top-bar{flex-direction:column;gap:10px;align-items:flex-start}
-}
+:root{--bg:#0f1117;--sf:#1a1d27;--sf2:#242836;--bd:#2e3345;--tx:#e2e5f0;--sub:#8b90a5;--pr:#6366f1;--prl:#818cf820;--gr:#22c55e;--rd:#ef4444;--yw:#eab308;--r:12px;--f:'Pretendard','Noto Sans KR',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:var(--f);background:var(--bg);color:var(--tx);min-height:100vh}button{font-family:var(--f);cursor:pointer}
+input,select,textarea{font-family:var(--f);background:var(--sf2);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:10px 14px;font-size:.9rem;width:100%;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--pr)}textarea{resize:vertical;min-height:60px}code{background:var(--sf2);padding:2px 6px;border-radius:4px;font-size:.85em;color:var(--yw)}
+.login{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px}.login .logo{font-size:3rem}.login h2{font-weight:800}.login input{max-width:280px;text-align:center;font-size:1.1rem;letter-spacing:4px}.login .lb{padding:12px 40px;background:var(--pr);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700}.login .err{color:var(--rd);font-size:.85rem;min-height:20px}
+.top{background:var(--sf);border-bottom:1px solid var(--bd);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}.top h1{font-size:1.05rem;font-weight:800}.top .act{display:flex;gap:8px}.main{max-width:1000px;margin:0 auto;padding:24px 16px 80px}
+.tabs{display:flex;gap:2px;margin-bottom:24px;border-bottom:2px solid var(--bd);overflow-x:auto}.tb{padding:12px 16px;background:none;border:none;color:var(--sub);font-size:.85rem;font-weight:600;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap}.tb.on{color:var(--pr);border-bottom-color:var(--pr)}.tb:hover{color:var(--tx)}.tp{display:none}.tp.on{display:block}
+.b{padding:8px 18px;border:1px solid var(--bd);border-radius:8px;background:var(--sf2);color:var(--tx);font-size:.85rem;font-weight:600;display:inline-flex;align-items:center;gap:6px}.b:hover{background:var(--bd)}.bp{background:var(--pr);border-color:var(--pr);color:#fff}.bd{background:var(--rd);border-color:var(--rd);color:#fff}.bg{background:var(--gr);border-color:var(--gr);color:#fff}.bs{padding:6px 12px;font-size:.8rem}.by{background:var(--yw);border-color:var(--yw);color:#000}
+.cd{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:18px;margin-bottom:12px}.cd:hover{border-color:var(--pr)}.ch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:8px}.ch h3{font-size:1rem;font-weight:700}.badge{font-size:.75rem;padding:3px 10px;border-radius:20px;background:var(--prl);color:var(--pr);white-space:nowrap}.cb{font-size:.88rem;color:var(--sub);line-height:1.6}.ca{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}.tag{display:inline-block;font-size:.72rem;padding:2px 8px;border-radius:10px;background:var(--sf2);color:var(--sub);margin-right:4px}
+.dz{border:2px dashed var(--bd);border-radius:16px;padding:40px 20px;text-align:center;cursor:pointer;margin-bottom:20px;transition:all .3s}.dz.over{border-color:var(--pr);background:var(--prl)}.dz .di{font-size:3rem;margin-bottom:12px}.dz .dt{font-size:1.05rem;font-weight:700;margin-bottom:6px}.dz .ds{font-size:.85rem;color:var(--sub)}.dz input{display:none}
+.qi{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:10px}.qh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.qo{font-size:.8rem;color:var(--sub)}.qa{color:var(--pr);font-size:.8rem;margin:0 6px}.qn{font-size:.85rem;color:var(--gr);font-weight:600}.qr{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.qr input,.qr select{padding:8px 10px;font-size:.83rem}.qr label{font-size:.75rem;color:var(--sub);display:block;margin-bottom:3px}
+.fg{margin-bottom:16px}.fg label{display:block;font-size:.82rem;font-weight:600;color:var(--sub);margin-bottom:6px}.fr{display:grid;grid-template-columns:1fr 1fr;gap:12px}.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:center;justify-content:center;padding:16px}.mo.show{display:flex}.ml{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:28px;max-width:560px;width:100%;max-height:85vh;overflow-y:auto}.ml h2{font-size:1.15rem;font-weight:800;margin-bottom:20px}.ma{display:flex;justify-content:flex-end;gap:8px;margin-top:24px}
+.dlz{background:var(--sf);border:2px dashed var(--bd);border-radius:16px;padding:32px;text-align:center;margin-top:20px}.dlz h3{font-size:1.1rem;font-weight:700;margin-bottom:12px}.dlz p{color:var(--sub);font-size:.88rem;margin-bottom:16px;line-height:1.5}.dlb{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.empty{text-align:center;padding:40px;color:var(--sub)}.empty .icon{font-size:2.5rem;margin-bottom:12px}.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--gr);color:#fff;padding:12px 28px;border-radius:10px;font-weight:600;font-size:.9rem;transition:transform .3s;z-index:999}.toast.show{transform:translateX(-50%) translateY(0)}
+.sb{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}.si{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:12px 18px;flex:1;min-width:100px;text-align:center}.sn{font-size:1.5rem;font-weight:800;color:var(--pr)}.sl{font-size:.75rem;color:var(--sub);margin-top:2px}
+.steps{display:flex;gap:16px;margin-top:16px;flex-wrap:wrap}.step{flex:1;min-width:130px;background:var(--sf2);border-radius:10px;padding:16px;text-align:center}.step .num{width:28px;height:28px;border-radius:50%;background:var(--pr);color:#fff;font-size:.8rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-bottom:8px}.step p{font-size:.82rem;color:var(--sub);line-height:1.4}.step strong{display:block;font-size:.88rem;color:var(--tx);margin-bottom:4px}
+@media(max-width:640px){.fr,.fr3,.qr{grid-template-columns:1fr}.steps{flex-direction:column}.top{flex-direction:column;gap:10px;align-items:flex-start}.sb{flex-direction:column}}
 </style>
 </head>
 <body>
-
-<!-- ===== 로그인 ===== -->
-<div class="login-overlay" id="login-overlay">
-  <div class="logo">🔧</div>
-  <h2>관리자 모드</h2>
-  <input type="password" id="pw-input" placeholder="비밀번호" maxlength="20" autofocus>
-  <button class="login-btn" onclick="tryLogin()">로그인</button>
-  <div class="login-err" id="login-err"></div>
+<div class="login" id="LG"><div class="logo">🔧</div><h2>관리자 모드</h2><input type="password" id="pw" placeholder="비밀번호" maxlength="20" autofocus><button class="lb" onclick="doLogin()">로그인</button><div class="err" id="lerr"></div></div>
+<div class="top" id="TB" style="display:none"><h1>🔧 관리자 모드</h1><div class="act"><button class="b bs" onclick="window.open('index.html','_blank')">🏠 사이트</button><button class="b bs bd" onclick="location.reload()">로그아웃</button></div></div>
+<div class="main" id="MA" style="display:none">
+<div class="sb" id="SB"></div>
+<div class="tabs">
+<button class="tb on" data-t="upload" onclick="tab('upload')">📤 업로드</button>
+<button class="tb" data-t="cat" onclick="tab('cat')">🏷️ 카테고리</button>
+<button class="tb" data-t="unit" onclick="tab('unit')">📚 단원</button>
+<button class="tb" data-t="cont" onclick="tab('cont')">📄 콘텐츠</button>
+<button class="tb" data-t="exp" onclick="tab('exp')">📦 내보내기</button>
+<button class="tb" data-t="help" onclick="tab('help')">❓ 도움말</button>
 </div>
-
-<!-- ===== 상단 바 ===== -->
-<div class="top-bar" id="top-bar" style="display:none">
-  <h1>🔧 교사 실무 자동화 센터 — 관리자</h1>
-  <div class="actions">
-    <button class="btn" onclick="location.href='index.html'">🏠 사이트 보기</button>
-    <button class="btn btn-danger btn-sm" onclick="logout()">로그아웃</button>
-  </div>
+<div class="tp on" id="p-upload">
+<div class="dz" id="DZ"><div class="di">📁</div><div class="dt">HTML 파일을 여기에 드래그하세요</div><div class="ds">또는 클릭 · 한글 파일명 자동 영문 변환</div><input type="file" id="FI" accept=".html,.htm" multiple></div>
+<div id="UQ"></div>
+<div id="UA" style="display:none;text-align:center;margin-top:16px"><button class="b bg" onclick="regAll()" style="padding:14px 40px;font-size:1rem">✅ 전부 등록</button> <button class="b bs" onclick="clrQ()">🗑 초기화</button></div>
 </div>
-
-<!-- ===== 메인 ===== -->
-<div class="main" id="main-app" style="display:none">
-
-  <div class="tabs">
-    <button class="tab active" data-tab="units" onclick="switchTab('units')">📚 단원 관리</button>
-    <button class="tab" data-tab="contents" onclick="switchTab('contents')">📄 콘텐츠 관리</button>
-    <button class="tab" data-tab="export" onclick="switchTab('export')">📦 내보내기</button>
-    <button class="tab" data-tab="guide" onclick="switchTab('guide')">❓ 사용법</button>
-  </div>
-
-  <!-- ===== 탭1: 단원 관리 ===== -->
-  <div class="tab-panel active" id="panel-units">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <h2 style="font-size:1rem;font-weight:700">등록된 단원</h2>
-      <button class="btn btn-primary" onclick="openUnitModal()">+ 단원 추가</button>
-    </div>
-    <div id="unit-list"></div>
-  </div>
-
-  <!-- ===== 탭2: 콘텐츠 관리 ===== -->
-  <div class="tab-panel" id="panel-contents">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <h2 style="font-size:1rem;font-weight:700">콘텐츠 목록</h2>
-        <select id="content-unit-filter" onchange="renderContents()" style="width:auto;padding:6px 12px;font-size:.85rem">
-          <option value="">전체 단원</option>
-        </select>
-      </div>
-      <button class="btn btn-primary" onclick="openContentModal()">+ 콘텐츠 추가</button>
-    </div>
-    <div id="content-list"></div>
-  </div>
-
-  <!-- ===== 탭3: 내보내기 ===== -->
-  <div class="tab-panel" id="panel-export">
-    <div class="download-zone">
-      <h3>📦 JSON 파일 내보내기</h3>
-      <p>아래 버튼으로 JSON을 다운로드한 후,<br>새로 추가한 HTML 파일과 함께 GitHub에 업로드하세요.</p>
-      <div class="download-btns">
-        <button class="btn btn-primary" onclick="downloadUnitsJSON()">📥 units.json</button>
-        <button class="btn btn-primary" onclick="downloadAllUnitJSONs()">📥 전체 unit-*.json</button>
-        <button class="btn btn-success" onclick="downloadAllAsZip()">📥 전부 ZIP으로</button>
-      </div>
-    </div>
-    <div class="download-zone" style="margin-top:16px;border-color:var(--yellow)">
-      <h3>🔄 JSON 가져오기</h3>
-      <p>기존 GitHub 레포에서 JSON 파일을 불러와 관리자 데이터를 복원합니다.</p>
-      <div class="download-btns">
-        <button class="btn" onclick="importFromSite()">🌐 사이트에서 자동 불러오기</button>
-        <button class="btn" onclick="document.getElementById('import-file').click()">📁 파일 직접 업로드</button>
-        <input type="file" id="import-file" accept=".json" multiple style="display:none" onchange="importFiles(event)">
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== 탭4: 사용법 ===== -->
-  <div class="tab-panel" id="panel-guide">
-    <div class="card" style="border-color:var(--primary)">
-      <h3 style="font-weight:800;margin-bottom:16px">📖 사용 방법</h3>
-      <div class="steps">
-        <div class="step"><div class="num">1</div><strong>단원 추가</strong><p>📚 탭에서 단원 이름, 코드, 태그 입력</p></div>
-        <div class="step"><div class="num">2</div><strong>콘텐츠 등록</strong><p>📄 탭에서 파일명, 제목, 유형 입력</p></div>
-        <div class="step"><div class="num">3</div><strong>JSON 내보내기</strong><p>📦 탭에서 ZIP 다운로드</p></div>
-        <div class="step"><div class="num">4</div><strong>GitHub 업로드</strong><p>JSON + HTML 파일을 레포에 드래그</p></div>
-      </div>
-    </div>
-    <div class="card" style="margin-top:12px">
-      <h3 style="font-weight:800;margin-bottom:12px">📂 파일 이름 규칙</h3>
-      <div class="card-body">
-        <p>• <b>단원 허브:</b> <code>hub-unit-{slug}.html</code> (자동 생성됨)</p>
-        <p>• <b>단원 JSON:</b> <code>unit-{slug}.json</code> (자동 생성됨)</p>
-        <p>• <b>콘텐츠:</b> <code>c-{unit-slug}-{content-slug}.html</code></p>
-        <p>• <b>웹교구:</b> <code>w-{이름}.html</code> (독립 실행형)</p>
-        <p style="margin-top:8px;color:var(--yellow)">⚠ 허브 HTML은 한 번만 만들면 됩니다. 이후 JSON만 업데이트하면 콘텐츠가 자동 반영됩니다.</p>
-      </div>
-    </div>
-    <div class="card" style="margin-top:12px">
-      <h3 style="font-weight:800;margin-bottom:12px">🔑 비밀번호 변경</h3>
-      <div style="display:flex;gap:8px;align-items:center">
-        <input type="password" id="new-pw" placeholder="새 비밀번호" style="max-width:200px">
-        <button class="btn btn-primary btn-sm" onclick="changePW()">변경</button>
-      </div>
-    </div>
-  </div>
-
+<div class="tp" id="p-cat"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h2 style="font-size:1rem;font-weight:700">카테고리</h2><button class="b bp" onclick="openCM()">+ 추가</button></div><div id="CL"></div></div>
+<div class="tp" id="p-unit"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h2 style="font-size:1rem;font-weight:700">단원</h2><button class="b bp" onclick="openUM()">+ 추가</button></div><div id="UL"></div></div>
+<div class="tp" id="p-cont"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px"><div style="display:flex;align-items:center;gap:10px"><h2 style="font-size:1rem;font-weight:700">콘텐츠</h2><select id="CF" onchange="rCont()" style="width:auto;padding:6px 12px;font-size:.85rem"><option value="">전체</option></select></div><button class="b bp" onclick="openCoM()">+ 수동 추가</button></div><div id="CoL"></div></div>
+<div class="tp" id="p-exp">
+<div class="dlz"><h3>📦 JSON 내보내기</h3><p>다운로드 후 HTML과 함께 GitHub 업로드</p><div class="dlb"><button class="b bp" onclick="dlAll()">📥 전체 JSON 다운로드</button></div></div>
+<div class="dlz" style="margin-top:16px;border-color:var(--yw)"><h3>🔄 가져오기</h3><p>GitHub Pages에서 기존 데이터 복원</p><div class="dlb"><button class="b by" onclick="impSite()">🌐 사이트에서 불러오기</button><button class="b" onclick="document.getElementById('IF').click()">📁 파일 업로드</button><input type="file" id="IF" accept=".json" multiple style="display:none" onchange="impF(event)"></div></div>
 </div>
-
-<!-- ===== 단원 모달 ===== -->
-<div class="modal-overlay" id="unit-modal">
-  <div class="modal">
-    <h2 id="unit-modal-title">📚 단원 추가</h2>
-    <input type="hidden" id="unit-edit-idx" value="-1">
-    <div class="form-row">
-      <div class="form-group"><label>단원 코드 (I, II, III...)</label><input id="u-code" placeholder="I"></div>
-      <div class="form-group"><label>slug (영문소문자-하이픈)</label><input id="u-slug" placeholder="integrated-perspective"></div>
-    </div>
-    <div class="form-group"><label>단원명</label><input id="u-title" placeholder="통합적 관점으로 바라보는 사회"></div>
-    <div class="form-group"><label>부제</label><input id="u-subtitle" placeholder="시간·공간·사회·윤리적 관점의 통합"></div>
-    <div class="form-group"><label>성취기준</label><textarea id="u-achievement" placeholder="[10통사1-01-01] 시간적, 공간적..."></textarea></div>
-    <div class="form-group"><label>태그 (쉼표 구분)</label><input id="u-tags" placeholder="통사1, 기초"></div>
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal('unit-modal')">취소</button>
-      <button class="btn btn-primary" onclick="saveUnit()">저장</button>
-    </div>
-  </div>
+<div class="tp" id="p-help">
+<div class="cd" style="border-color:var(--pr)"><h3 style="font-weight:800;margin-bottom:16px">📖 사용 방법</h3><div class="steps"><div class="step"><div class="num">1</div><strong>파일 업로드</strong><p>📤탭에 HTML 드래그→자동 영문 변환</p></div><div class="step"><div class="num">2</div><strong>정보 입력</strong><p>단원, 제목, 유형</p></div><div class="step"><div class="num">3</div><strong>JSON 내보내기</strong><p>📦탭에서 다운로드</p></div><div class="step"><div class="num">4</div><strong>GitHub 업로드</strong><p>JSON+HTML 레포 드래그</p></div></div></div>
+<div class="cd" style="margin-top:12px"><h3 style="font-weight:800;margin-bottom:12px">🔑 비밀번호 변경</h3><div style="display:flex;gap:8px"><input type="password" id="NP" placeholder="새 비밀번호" style="max-width:200px"><button class="b bp bs" onclick="chPW()">변경</button></div></div>
 </div>
-
-<!-- ===== 콘텐츠 모달 ===== -->
-<div class="modal-overlay" id="content-modal">
-  <div class="modal">
-    <h2 id="content-modal-title">📄 콘텐츠 추가</h2>
-    <input type="hidden" id="c-edit-unit" value="">
-    <input type="hidden" id="c-edit-idx" value="-1">
-    <div class="form-group"><label>소속 단원</label>
-      <select id="c-unit" style="width:100%"><option value="">단원 선택</option></select>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label>콘텐츠 slug</label><input id="c-slug" placeholder="lesson-flow"></div>
-      <div class="form-group"><label>파일명 (.html)</label><input id="c-file" placeholder="c-economy-lesson-flow.html"></div>
-    </div>
-    <div class="form-group"><label>제목</label><input id="c-title" placeholder="1차시 수업 흐름"></div>
-    <div class="form-group"><label>설명</label><input id="c-desc" placeholder="자산 관리 3원칙 도입부터 정리까지"></div>
-    <div class="form-row-3">
-      <div class="form-group"><label>유형</label>
-        <select id="c-type"><option>웹교구</option><option>수업자료</option><option>학습지</option><option>활동지</option><option>문항</option><option>교사용</option></select>
-      </div>
-      <div class="form-group"><label>난이도</label>
-        <select id="c-diff"><option>보통</option><option>쉬움</option><option>매우 쉬움</option><option>심화</option></select>
-      </div>
-      <div class="form-group"><label>소요시간</label><input id="c-dur" placeholder="15분"></div>
-    </div>
-    <div class="form-group"><label>태그 (쉼표 구분)</label><input id="c-tags" placeholder="퀴즈, 4관점, 통사1"></div>
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal('content-modal')">취소</button>
-      <button class="btn btn-primary" onclick="saveContent()">저장</button>
-    </div>
-  </div>
 </div>
-
-<div class="toast" id="toast"></div>
-
+<!-- 카테고리 모달 -->
+<div class="mo" id="CM"><div class="ml"><h2 id="CMT">🏷️ 카테고리</h2><input type="hidden" id="CI" value="-1">
+<div class="fr"><div class="fg"><label>ID(영문)</label><input id="ci"></div><div class="fg"><label>아이콘</label><input id="ck" style="text-align:center;font-size:1.5rem"></div></div>
+<div class="fg"><label>이름</label><input id="ct"></div><div class="fg"><label>설명</label><input id="cd"></div>
+<div class="fr"><div class="fg"><label>색상</label><input id="cc" type="color" value="#2563eb" style="height:42px;padding:4px"></div><div class="fg"><label>링크</label><input id="cl" placeholder="hub-social.html"></div></div>
+<div class="ma"><button class="b" onclick="clM('CM')">취소</button><button class="b bp" onclick="svC()">저장</button></div></div></div>
+<!-- 단원 모달 -->
+<div class="mo" id="UM"><div class="ml"><h2 id="UMT">📚 단원</h2><input type="hidden" id="UI" value="-1">
+<div class="fg"><label>카테고리</label><select id="uca"><option value="">선택</option></select></div>
+<div class="fr"><div class="fg"><label>코드</label><input id="uco"></div><div class="fg"><label>slug</label><input id="usl"></div></div>
+<div class="fg"><label>단원명</label><input id="uti"></div><div class="fg"><label>부제</label><input id="usb"></div>
+<div class="fg"><label>성취기준</label><textarea id="uac"></textarea></div>
+<div class="fg"><label>태그(쉼표)</label><input id="utg"></div>
+<div class="ma"><button class="b" onclick="clM('UM')">취소</button><button class="b bp" onclick="svU()">저장</button></div></div></div>
+<!-- 콘텐츠 모달 -->
+<div class="mo" id="CoM"><div class="ml"><h2 id="CoMT">📄 콘텐츠</h2><input type="hidden" id="ceu" value=""><input type="hidden" id="cei" value="-1">
+<div class="fg"><label>단원</label><select id="cun"><option value="">선택</option></select></div>
+<div class="fr"><div class="fg"><label>slug</label><input id="csl"></div><div class="fg"><label>파일명</label><input id="cfi"></div></div>
+<div class="fg"><label>제목</label><input id="ctt"></div><div class="fg"><label>설명</label><input id="cde"></div>
+<div class="fr3"><div class="fg"><label>유형</label><select id="cty"><option>웹교구</option><option>수업자료</option><option>학습지</option><option>활동지</option><option>문항</option><option>교사용</option></select></div><div class="fg"><label>난이도</label><select id="cdi"><option>보통</option><option>쉬움</option><option>심화</option></select></div><div class="fg"><label>소요시간</label><input id="cdu" placeholder="15분"></div></div>
+<div class="fg"><label>태그(쉼표)</label><input id="ctg"></div>
+<div class="ma"><button class="b" onclick="clM('CoM')">취소</button><button class="b bp" onclick="svCo()">저장</button></div></div></div>
+<div class="toast" id="T"></div>
 <script>
-// ===== 데이터 =====
-const STORAGE_KEY = 'admin_blog_tools_v1';
-const DEFAULT_PW = '1234';
-let DATA = { pw: DEFAULT_PW, units: [], unitContents: {} }; // unitContents: {slug: {unit,unitSlug,achievementStandard,contents:[]}}
-
-function loadData(){
-  try{ const d = localStorage.getItem(STORAGE_KEY); if(d) DATA = JSON.parse(d); } catch(e){}
-  if(!DATA.pw) DATA.pw = DEFAULT_PW;
-  if(!DATA.units) DATA.units = [];
-  if(!DATA.unitContents) DATA.unitContents = {};
-}
-function saveData(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(DATA)); }
-
-// ===== 로그인 =====
-function tryLogin(){
-  const pw = document.getElementById('pw-input').value;
-  if(pw === DATA.pw){
-    document.getElementById('login-overlay').style.display='none';
-    document.getElementById('top-bar').style.display='';
-    document.getElementById('main-app').style.display='';
-    renderAll();
-  } else {
-    document.getElementById('login-err').textContent='비밀번호가 틀렸습니다';
-  }
-}
-function logout(){ location.reload(); }
-function changePW(){
-  const v = document.getElementById('new-pw').value.trim();
-  if(v.length < 2){ toast('2자 이상 입력하세요','red'); return; }
-  DATA.pw = v;
-  saveData();
-  toast('비밀번호가 변경되었습니다');
-}
-document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin()});
-
-// ===== 탭 =====
-function switchTab(tab){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===tab));
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id==='panel-'+tab));
-  if(tab==='contents') renderContents();
-}
-
-// ===== 렌더 =====
-function renderAll(){ renderUnits(); renderContents(); renderUnitSelectors(); }
-
-function renderUnits(){
-  const el = document.getElementById('unit-list');
-  if(!DATA.units.length){ el.innerHTML='<div class="empty"><div class="icon">📭</div><p>등록된 단원이 없습니다. + 단원 추가를 눌러보세요.</p></div>'; return; }
-  el.innerHTML = DATA.units.map((u,i)=>{
-    const cc = (DATA.unitContents[u.slug]?.contents||[]).length;
-    return `<div class="card">
-      <div class="card-header">
-        <h3>${u.code}. ${u.title}</h3>
-        <span class="badge">콘텐츠 ${cc}개</span>
-      </div>
-      <div class="card-body">
-        <p>${u.subtitle}</p>
-        <p style="margin-top:4px">${u.tags.map(t=>'<span class="tag">'+t+'</span>').join('')} <span class="tag" style="background:var(--primary-lt);color:var(--primary)">slug: ${u.slug}</span></p>
-      </div>
-      <div class="card-actions">
-        <button class="btn btn-sm" onclick="editUnit(${i})">✏️ 수정</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteUnit(${i})">🗑 삭제</button>
-        <button class="btn btn-sm" onclick="switchTab('contents');document.getElementById('content-unit-filter').value='${u.slug}';renderContents()">📄 콘텐츠 보기</button>
-      </div>
-    </div>`}).join('');
-}
-
-function renderContents(){
-  const el = document.getElementById('content-list');
-  const filter = document.getElementById('content-unit-filter').value;
-  let items = [];
-  for(const slug in DATA.unitContents){
-    const uc = DATA.unitContents[slug];
-    if(filter && slug !== filter) continue;
-    (uc.contents||[]).forEach((c,i)=>{
-      items.push({...c, unitSlug:slug, unitTitle:uc.unit, idx:i});
-    });
-  }
-  if(!items.length){ el.innerHTML='<div class="empty"><div class="icon">📭</div><p>콘텐츠가 없습니다.</p></div>'; return; }
-  el.innerHTML = items.map(c=>`<div class="card">
-    <div class="card-header">
-      <h3>${c.title}</h3>
-      <span class="badge">${c.type}</span>
-    </div>
-    <div class="card-body">
-      <p>${c.desc}</p>
-      <p style="margin-top:4px"><span class="tag">${c.unitTitle}</span><span class="tag">${c.difficulty}</span><span class="tag">⏱${c.duration}</span><span class="tag" style="background:var(--primary-lt);color:var(--primary)">${c.file}</span></p>
-    </div>
-    <div class="card-actions">
-      <button class="btn btn-sm" onclick="editContent('${c.unitSlug}',${c.idx})">✏️ 수정</button>
-      <button class="btn btn-sm btn-danger" onclick="deleteContent('${c.unitSlug}',${c.idx})">🗑 삭제</button>
-    </div>
-  </div>`).join('');
-}
-
-function renderUnitSelectors(){
-  const opts = DATA.units.map(u=>`<option value="${u.slug}">${u.code}. ${u.title}</option>`).join('');
-  document.getElementById('content-unit-filter').innerHTML = '<option value="">전체 단원</option>' + opts;
-  document.getElementById('c-unit').innerHTML = '<option value="">단원 선택</option>' + opts;
-}
-
-// ===== 단원 CRUD =====
-function openUnitModal(){ 
-  document.getElementById('unit-edit-idx').value = -1;
-  document.getElementById('unit-modal-title').textContent = '📚 단원 추가';
-  ['u-code','u-slug','u-title','u-subtitle','u-achievement','u-tags'].forEach(id=>document.getElementById(id).value='');
-  openModal('unit-modal');
-}
-function editUnit(i){
-  const u = DATA.units[i];
-  document.getElementById('unit-edit-idx').value = i;
-  document.getElementById('unit-modal-title').textContent = '📚 단원 수정';
-  document.getElementById('u-code').value = u.code;
-  document.getElementById('u-slug').value = u.slug;
-  document.getElementById('u-title').value = u.title;
-  document.getElementById('u-subtitle').value = u.subtitle;
-  document.getElementById('u-achievement').value = DATA.unitContents[u.slug]?.achievementStandard || '';
-  document.getElementById('u-tags').value = u.tags.join(', ');
-  openModal('unit-modal');
-}
-function saveUnit(){
-  const idx = parseInt(document.getElementById('unit-edit-idx').value);
-  const slug = document.getElementById('u-slug').value.trim().toLowerCase().replace(/[^a-z0-9-]/g,'');
-  const code = document.getElementById('u-code').value.trim();
-  const title = document.getElementById('u-title').value.trim();
-  const subtitle = document.getElementById('u-subtitle').value.trim();
-  const achievement = document.getElementById('u-achievement').value.trim();
-  const tags = document.getElementById('u-tags').value.split(',').map(t=>t.trim()).filter(Boolean);
-  if(!slug||!title){ toast('slug과 단원명은 필수입니다','red'); return; }
-  
-  const unit = {slug,code,title,subtitle,tags,contentCount:0};
-  
-  if(idx === -1){
-    // 새로 추가
-    if(DATA.units.find(u=>u.slug===slug)){ toast('이미 존재하는 slug입니다','red'); return; }
-    DATA.units.push(unit);
-    DATA.unitContents[slug] = {unit:title, unitSlug:slug, achievementStandard:achievement, contents:[]};
-  } else {
-    // 수정
-    const oldSlug = DATA.units[idx].slug;
-    DATA.units[idx] = unit;
-    if(oldSlug !== slug){
-      DATA.unitContents[slug] = DATA.unitContents[oldSlug] || {unit:title,unitSlug:slug,achievementStandard:achievement,contents:[]};
-      delete DATA.unitContents[oldSlug];
-    }
-    DATA.unitContents[slug].unit = title;
-    DATA.unitContents[slug].unitSlug = slug;
-    DATA.unitContents[slug].achievementStandard = achievement;
-  }
-  updateContentCounts();
-  saveData();
-  closeModal('unit-modal');
-  renderAll();
-  toast(idx===-1?'단원이 추가되었습니다':'단원이 수정되었습니다');
-}
-function deleteUnit(i){
-  if(!confirm(`"${DATA.units[i].title}" 단원과 소속 콘텐츠를 모두 삭제합니다.\n계속하시겠습니까?`)) return;
-  const slug = DATA.units[i].slug;
-  DATA.units.splice(i,1);
-  delete DATA.unitContents[slug];
-  saveData(); renderAll();
-  toast('삭제되었습니다');
-}
-
-// ===== 콘텐츠 CRUD =====
-function openContentModal(){
-  document.getElementById('c-edit-unit').value = '';
-  document.getElementById('c-edit-idx').value = -1;
-  document.getElementById('content-modal-title').textContent = '📄 콘텐츠 추가';
-  ['c-slug','c-file','c-title','c-desc','c-dur','c-tags'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('c-unit').value = document.getElementById('content-unit-filter').value || '';
-  openModal('content-modal');
-}
-function editContent(unitSlug, idx){
-  const c = DATA.unitContents[unitSlug].contents[idx];
-  document.getElementById('c-edit-unit').value = unitSlug;
-  document.getElementById('c-edit-idx').value = idx;
-  document.getElementById('content-modal-title').textContent = '📄 콘텐츠 수정';
-  document.getElementById('c-unit').value = unitSlug;
-  document.getElementById('c-slug').value = c.slug;
-  document.getElementById('c-file').value = c.file;
-  document.getElementById('c-title').value = c.title;
-  document.getElementById('c-desc').value = c.desc;
-  document.getElementById('c-type').value = c.type;
-  document.getElementById('c-diff').value = c.difficulty;
-  document.getElementById('c-dur').value = c.duration;
-  document.getElementById('c-tags').value = c.tags.join(', ');
-  openModal('content-modal');
-}
-function saveContent(){
-  const editUnit = document.getElementById('c-edit-unit').value;
-  const editIdx = parseInt(document.getElementById('c-edit-idx').value);
-  const unitSlug = document.getElementById('c-unit').value;
-  if(!unitSlug){ toast('단원을 선택하세요','red'); return; }
-  
-  const c = {
-    slug: document.getElementById('c-slug').value.trim().toLowerCase().replace(/[^a-z0-9-]/g,''),
-    file: document.getElementById('c-file').value.trim(),
-    title: document.getElementById('c-title').value.trim(),
-    desc: document.getElementById('c-desc').value.trim(),
-    type: document.getElementById('c-type').value,
-    difficulty: document.getElementById('c-diff').value,
-    duration: document.getElementById('c-dur').value.trim(),
-    tags: document.getElementById('c-tags').value.split(',').map(t=>t.trim()).filter(Boolean)
-  };
-  if(!c.slug||!c.title||!c.file){ toast('slug, 제목, 파일명은 필수입니다','red'); return; }
-  
-  if(!DATA.unitContents[unitSlug]) DATA.unitContents[unitSlug]={unit:'',unitSlug:unitSlug,achievementStandard:'',contents:[]};
-  
-  if(editIdx === -1){
-    DATA.unitContents[unitSlug].contents.push(c);
-  } else {
-    if(editUnit && editUnit !== unitSlug){
-      DATA.unitContents[editUnit].contents.splice(editIdx,1);
-      DATA.unitContents[unitSlug].contents.push(c);
-    } else {
-      DATA.unitContents[unitSlug].contents[editIdx] = c;
-    }
-  }
-  updateContentCounts();
-  saveData();
-  closeModal('content-modal');
-  renderContents(); renderUnits();
-  toast(editIdx===-1?'콘텐츠가 추가되었습니다':'콘텐츠가 수정되었습니다');
-}
-function deleteContent(unitSlug, idx){
-  const c = DATA.unitContents[unitSlug].contents[idx];
-  if(!confirm(`"${c.title}"을(를) 삭제합니다.`)) return;
-  DATA.unitContents[unitSlug].contents.splice(idx,1);
-  updateContentCounts();
-  saveData(); renderContents(); renderUnits();
-  toast('삭제되었습니다');
-}
-
-function updateContentCounts(){
-  DATA.units.forEach(u=>{
-    u.contentCount = (DATA.unitContents[u.slug]?.contents||[]).length;
-  });
-}
-
-// ===== 모달 =====
-function openModal(id){ document.getElementById(id).classList.add('show'); }
-function closeModal(id){ document.getElementById(id).classList.remove('show'); }
-document.querySelectorAll('.modal-overlay').forEach(m=>{
-  m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('show'); });
-});
-
-// ===== 내보내기 =====
-function generateUnitsJSON(){
-  return JSON.stringify({
-    _comment: "★ admin.html에서 자동 생성된 파일입니다.",
-    subject: "통합사회",
-    curriculum: "2022 개정 교육과정",
-    units: DATA.units.map(u=>({slug:u.slug,code:u.code,title:u.title,subtitle:u.subtitle,tags:u.tags,contentCount:u.contentCount}))
-  }, null, 2);
-}
-function generateUnitJSON(slug){
-  const uc = DATA.unitContents[slug];
-  if(!uc) return null;
-  return JSON.stringify({
-    unit: uc.unit,
-    unitSlug: uc.unitSlug,
-    achievementStandard: uc.achievementStandard,
-    contents: uc.contents
-  }, null, 2);
-}
-function downloadFile(name, content){
-  const blob = new Blob([content],{type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = name;
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-function downloadUnitsJSON(){ downloadFile('units.json', generateUnitsJSON()); toast('units.json 다운로드 완료'); }
-function downloadAllUnitJSONs(){
-  DATA.units.forEach(u=>{
-    const json = generateUnitJSON(u.slug);
-    if(json) downloadFile(`unit-${u.slug}.json`, json);
-  });
-  toast(`${DATA.units.length}개 unit JSON 다운로드 완료`);
-}
-async function downloadAllAsZip(){
-  // 간단한 ZIP (JSZip CDN 없이 개별 다운로드)
-  downloadFile('units.json', generateUnitsJSON());
-  await new Promise(r=>setTimeout(r,300));
-  for(const u of DATA.units){
-    const json = generateUnitJSON(u.slug);
-    if(json){ downloadFile(`unit-${u.slug}.json`, json); await new Promise(r=>setTimeout(r,300)); }
-  }
-  toast('전체 JSON 다운로드 완료! GitHub에 업로드하세요.');
-}
-
-// ===== 가져오기 =====
-async function importFromSite(){
-  try{
-    toast('사이트에서 불러오는 중...');
-    const res = await fetch('units.json');
-    if(!res.ok) throw new Error('units.json 없음');
-    const unitsData = await res.json();
-    DATA.units = unitsData.units || [];
-    
-    for(const u of DATA.units){
-      try{
-        const r2 = await fetch(`unit-${u.slug}.json`);
-        if(r2.ok) DATA.unitContents[u.slug] = await r2.json();
-      }catch(e2){}
-    }
-    updateContentCounts();
-    saveData(); renderAll();
-    toast(`${DATA.units.length}개 단원 불러오기 완료!`);
-  }catch(e){
-    toast('불러오기 실패: '+e.message, 'red');
-  }
-}
-function importFiles(event){
-  const files = event.target.files;
-  let count = 0;
-  Array.from(files).forEach(file=>{
-    const reader = new FileReader();
-    reader.onload = function(e){
-      try{
-        const json = JSON.parse(e.target.result);
-        if(json.units){
-          // units.json
-          DATA.units = json.units;
-          count++;
-        } else if(json.unitSlug){
-          // unit-*.json
-          DATA.unitContents[json.unitSlug] = json;
-          count++;
-        }
-        updateContentCounts();
-        saveData(); renderAll();
-        toast(`${count}개 파일 가져오기 완료`);
-      }catch(err){ toast('파일 파싱 실패','red'); }
-    };
-    reader.readAsText(file);
-  });
-  event.target.value = '';
-}
-
-// ===== 토스트 =====
-function toast(msg, color){
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.style.background = color==='red' ? 'var(--red)' : 'var(--green)';
-  el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'), 2500);
-}
-
-// ===== 초기화 =====
-loadData();
+const KO2EN={'통합사회':'social','통사':'social','경제':'economy','사회':'social','문화':'culture','행복':'happiness','인권':'human-rights','환경':'env','정치':'politics','차시':'lesson','학습지':'worksheet','학습':'worksheet','활동지':'activity','수업':'class','퀴즈':'quiz','시험':'test','평가':'eval','문항':'quiz','교사용':'teacher','수업흐름':'lesson-flow','핵심개념':'key-concepts','생활사례':'life-activity','자산관리':'asset','금융':'finance','포트폴리오':'portfolio','투자':'invest','기후변화':'climate','재난':'disaster','불평등':'inequality','시뮬레이션':'sim','화성':'mars','도시':'city','범죄':'crime','수사':'investigation','게임':'game','진단':'diagnosis','서바이벌':'survival','마을':'town','법정':'court','외교관':'diplomat','레이더':'radar','소설':'novel','인생':'life'};
+function k2s(fn){let n=fn.replace(/\.(html?|htm)$/i,'').replace(/[_\s]+/g,'-');if(/^[a-z0-9-]+$/.test(n))return n;let r=n;Object.entries(KO2EN).sort((a,b)=>b[0].length-a[0].length).forEach(([k,v])=>{r=r.split(k).join(v)});return r.replace(/[^a-z0-9-]/gi,'').replace(/-+/g,'-').replace(/^-|-$/g,'').toLowerCase()||'content-'+Date.now().toString(36)}
+function autoFN(o,u){const s=k2s(o);const p=u?'c-'+u+'-':'w-';return(s.startsWith('c-')||s.startsWith('w-'))?s+'.html':p+s+'.html'}
+function exTitle(h){const m=h.match(/<title[^>]*>([^<]+)<\/title>/i);return m?m[1].replace(/\s*[\|—–].*/,'').trim():''}
+const SK='admin_v2',DP='1234';let D={pw:DP,cat:[],units:[],uc:{}},Q=[];
+function ld(){try{const d=localStorage.getItem(SK);if(d)D=JSON.parse(d)}catch(e){}if(!D.pw)D.pw=DP;if(!D.cat)D.cat=[];if(!D.units)D.units=[];if(!D.uc)D.uc={}}
+function sv(){localStorage.setItem(SK,JSON.stringify(D))}
+function doLogin(){if(document.getElementById('pw').value===D.pw){document.getElementById('LG').style.display='none';document.getElementById('TB').style.display='';document.getElementById('MA').style.display='';rAll()}else document.getElementById('lerr').textContent='비밀번호 오류'}
+function chPW(){const v=document.getElementById('NP').value.trim();if(v.length<2){toast('2자 이상','r');return}D.pw=v;sv();toast('변경 완료')}
+document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+function tab(t){document.querySelectorAll('.tb').forEach(b=>b.classList.toggle('on',b.dataset.t===t));document.querySelectorAll('.tp').forEach(p=>p.classList.toggle('on',p.id==='p-'+t))}
+function rStats(){const tc=Object.values(D.uc).reduce((s,u)=>s+(u.contents||[]).length,0);document.getElementById('SB').innerHTML='<div class="si"><div class="sn">'+D.cat.length+'</div><div class="sl">카테고리</div></div><div class="si"><div class="sn">'+D.units.length+'</div><div class="sl">단원</div></div><div class="si"><div class="sn">'+tc+'</div><div class="sl">콘텐츠</div></div>'}
+function rAll(){rStats();rCat();rUnit();rCont();rSel()}
+// 카테고리
+function rCat(){const el=document.getElementById('CL');if(!D.cat.length){el.innerHTML='<div class="empty"><div class="icon">🏷️</div><p>없음</p></div>';return}el.innerHTML=D.cat.map((c,i)=>'<div class="cd"><div class="ch"><h3>'+c.icon+' '+c.title+'</h3><span class="badge">'+c.link+'</span></div><div class="cb">'+c.desc+'</div><div class="ca"><button class="b bs" onclick="eC('+i+')">✏️</button><button class="b bs bd" onclick="dC('+i+')">🗑</button></div></div>').join('')}
+function openCM(){document.getElementById('CI').value=-1;['ci','ck','ct','cd','cl'].forEach(x=>document.getElementById(x).value='');document.getElementById('cc').value='#2563eb';opM('CM')}
+function eC(i){const c=D.cat[i];document.getElementById('CI').value=i;document.getElementById('ci').value=c.id;document.getElementById('ck').value=c.icon;document.getElementById('ct').value=c.title;document.getElementById('cd').value=c.desc;document.getElementById('cc').value=c.color;document.getElementById('cl').value=c.link;opM('CM')}
+function svC(){const i=+document.getElementById('CI').value;const c={id:document.getElementById('ci').value.trim(),icon:document.getElementById('ck').value.trim(),title:document.getElementById('ct').value.trim(),desc:document.getElementById('cd').value.trim(),color:document.getElementById('cc').value,link:document.getElementById('cl').value.trim()||'#'};if(!c.title){toast('이름 필수','r');return}if(!c.id)c.id=k2s(c.title);if(i===-1)D.cat.push(c);else D.cat[i]=c;sv();clM('CM');rAll();toast('저장')}
+function dC(i){if(!confirm('삭제?'))return;D.cat.splice(i,1);sv();rAll();toast('삭제')}
+// 단원
+function rUnit(){const el=document.getElementById('UL');if(!D.units.length){el.innerHTML='<div class="empty"><div class="icon">📚</div><p>없음</p></div>';return}el.innerHTML=D.units.map((u,i)=>{const cc=(D.uc[u.slug]?.contents||[]).length;return'<div class="cd"><div class="ch"><h3>'+u.code+'. '+u.title+'</h3><span class="badge">'+cc+'개</span></div><div class="cb">'+(u.subtitle||'')+' '+u.tags.map(t=>'<span class="tag">'+t+'</span>').join('')+'</div><div class="ca"><button class="b bs" onclick="eU('+i+')">✏️</button><button class="b bs bd" onclick="dU('+i+')">🗑</button></div></div>'}).join('')}
+function openUM(){document.getElementById('UI').value=-1;['uco','usl','uti','usb','uac','utg'].forEach(x=>document.getElementById(x).value='');opM('UM')}
+function eU(i){const u=D.units[i];document.getElementById('UI').value=i;document.getElementById('uco').value=u.code;document.getElementById('usl').value=u.slug;document.getElementById('uti').value=u.title;document.getElementById('usb').value=u.subtitle||'';document.getElementById('uac').value=D.uc[u.slug]?.achievementStandard||'';document.getElementById('utg').value=u.tags.join(', ');if(u.categoryId)document.getElementById('uca').value=u.categoryId;opM('UM')}
+function svU(){const i=+document.getElementById('UI').value;const sl=document.getElementById('usl').value.trim().toLowerCase().replace(/[^a-z0-9-]/g,'');const ti=document.getElementById('uti').value.trim();if(!sl||!ti){toast('slug/이름 필수','r');return}const u={slug:sl,code:document.getElementById('uco').value.trim(),title:ti,subtitle:document.getElementById('usb').value.trim(),tags:document.getElementById('utg').value.split(',').map(t=>t.trim()).filter(Boolean),contentCount:0,categoryId:document.getElementById('uca').value};const ac=document.getElementById('uac').value.trim();if(i===-1){if(D.units.find(x=>x.slug===sl)){toast('slug 중복','r');return}D.units.push(u);D.uc[sl]={unit:ti,unitSlug:sl,achievementStandard:ac,contents:[]}}else{const old=D.units[i].slug;D.units[i]=u;if(old!==sl){D.uc[sl]=D.uc[old]||{unit:ti,unitSlug:sl,achievementStandard:ac,contents:[]};delete D.uc[old]}D.uc[sl].unit=ti;D.uc[sl].unitSlug=sl;D.uc[sl].achievementStandard=ac}uCnt();sv();clM('UM');rAll();toast('저장')}
+function dU(i){if(!confirm('삭제?'))return;delete D.uc[D.units[i].slug];D.units.splice(i,1);sv();rAll();toast('삭제')}
+// 콘텐츠
+function rCont(){const el=document.getElementById('CoL');const f=document.getElementById('CF').value;let items=[];for(const s in D.uc){if(f&&s!==f)continue;(D.uc[s].contents||[]).forEach((c,i)=>items.push({...c,us:s,ut:D.uc[s].unit,idx:i}))}if(!items.length){el.innerHTML='<div class="empty"><div class="icon">📄</div><p>없음</p></div>';return}el.innerHTML=items.map(c=>'<div class="cd"><div class="ch"><h3>'+c.title+'</h3><span class="badge">'+c.type+'</span></div><div class="cb"><span class="tag">'+c.ut+'</span><span class="tag">'+c.difficulty+'</span><span class="tag">⏱'+c.duration+'</span> <code>'+c.file+'</code></div><div class="ca"><button class="b bs" onclick="eCo(\''+c.us+'\','+c.idx+')">✏️</button><button class="b bs bd" onclick="dCo(\''+c.us+'\','+c.idx+')">🗑</button></div></div>').join('')}
+function openCoM(){document.getElementById('ceu').value='';document.getElementById('cei').value=-1;['csl','cfi','ctt','cde','cdu','ctg'].forEach(x=>document.getElementById(x).value='');document.getElementById('cun').value=document.getElementById('CF').value||'';opM('CoM')}
+function eCo(us,i){const c=D.uc[us].contents[i];document.getElementById('ceu').value=us;document.getElementById('cei').value=i;document.getElementById('cun').value=us;document.getElementById('csl').value=c.slug;document.getElementById('cfi').value=c.file;document.getElementById('ctt').value=c.title;document.getElementById('cde').value=c.desc||'';document.getElementById('cty').value=c.type;document.getElementById('cdi').value=c.difficulty;document.getElementById('cdu').value=c.duration;document.getElementById('ctg').value=(c.tags||[]).join(', ');opM('CoM')}
+function svCo(){const eu=document.getElementById('ceu').value;const ei=+document.getElementById('cei').value;const us=document.getElementById('cun').value;if(!us){toast('단원 선택','r');return}const c={slug:document.getElementById('csl').value.trim().toLowerCase().replace(/[^a-z0-9-]/g,''),file:document.getElementById('cfi').value.trim(),title:document.getElementById('ctt').value.trim(),desc:document.getElementById('cde').value.trim(),type:document.getElementById('cty').value,difficulty:document.getElementById('cdi').value,duration:document.getElementById('cdu').value.trim(),tags:document.getElementById('ctg').value.split(',').map(t=>t.trim()).filter(Boolean)};if(!c.slug||!c.title||!c.file){toast('필수값','r');return}if(!D.uc[us])D.uc[us]={unit:'',unitSlug:us,achievementStandard:'',contents:[]};if(ei===-1)D.uc[us].contents.push(c);else{if(eu&&eu!==us){D.uc[eu].contents.splice(ei,1);D.uc[us].contents.push(c)}else D.uc[us].contents[ei]=c}uCnt();sv();clM('CoM');rAll();toast('저장')}
+function dCo(us,i){if(!confirm('삭제?'))return;D.uc[us].contents.splice(i,1);uCnt();sv();rAll();toast('삭제')}
+function uCnt(){D.units.forEach(u=>{u.contentCount=(D.uc[u.slug]?.contents||[]).length})}
+function rSel(){const o=D.units.map(u=>'<option value="'+u.slug+'">'+u.code+'. '+u.title+'</option>').join('');document.getElementById('CF').innerHTML='<option value="">전체</option>'+o;document.getElementById('cun').innerHTML='<option value="">선택</option>'+o;document.getElementById('uca').innerHTML='<option value="">선택</option>'+D.cat.map(c=>'<option value="'+c.id+'">'+c.icon+' '+c.title+'</option>').join('')}
+// 업로드
+const dz=document.getElementById('DZ'),fi=document.getElementById('FI');
+dz.addEventListener('click',()=>fi.click());dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over')});dz.addEventListener('dragleave',()=>dz.classList.remove('over'));dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');hFiles(e.dataTransfer.files)});fi.addEventListener('change',e=>hFiles(e.target.files));
+function hFiles(fs){Array.from(fs).forEach(f=>{if(!f.name.match(/\.html?$/i))return;const r=new FileReader();r.onload=function(e){const t=exTitle(e.target.result)||f.name.replace(/\.html?$/i,'');const du=D.units.length?D.units[0].slug:'';Q.push({on:f.name,nn:autoFN(f.name,du),title:t,us:du,type:'웹교구',diff:'보통',dur:'15분',desc:'',tags:''});rQ()};r.readAsText(f)})}
+function rQ(){const el=document.getElementById('UQ');document.getElementById('UA').style.display=Q.length?'':'none';if(!Q.length){el.innerHTML='';return}el.innerHTML=Q.map((q,i)=>{const uo=D.units.map(u=>'<option value="'+u.slug+'" '+(u.slug===q.us?'selected':'')+'>'+u.code+'. '+u.title+'</option>').join('');return'<div class="qi"><div class="qh"><div><span class="qo">'+q.on+'</span><span class="qa">→</span><span class="qn">'+q.nn+'</span></div><button class="b bs bd" onclick="Q.splice('+i+',1);rQ()">✕</button></div><div class="qr"><div><label>단원</label><select onchange="Q['+i+'].us=this.value;Q['+i+'].nn=autoFN(Q['+i+'].on,this.value);rQ()"><option value="">선택</option>'+uo+'</select></div><div><label>파일명</label><input value="'+q.nn+'" onchange="Q['+i+'].nn=this.value"></div></div><div class="qr"><div><label>제목</label><input value="'+q.title+'" onchange="Q['+i+'].title=this.value"></div><div><label>설명</label><input value="'+q.desc+'" onchange="Q['+i+'].desc=this.value"></div></div><div class="qr" style="grid-template-columns:1fr 1fr 1fr"><div><label>유형</label><select onchange="Q['+i+'].type=this.value">'+['웹교구','수업자료','학습지','활동지','문항','교사용'].map(t=>'<option '+(t===q.type?'selected':'')+'>'+t+'</option>').join('')+'</select></div><div><label>난이도</label><select onchange="Q['+i+'].diff=this.value">'+['보통','쉬움','심화'].map(t=>'<option '+(t===q.diff?'selected':'')+'>'+t+'</option>').join('')+'</select></div><div><label>소요시간</label><input value="'+q.dur+'" onchange="Q['+i+'].dur=this.value"></div></div><div style="margin-top:8px"><label style="font-size:.75rem;color:var(--sub)">태그(쉼표)</label><input value="'+q.tags+'" onchange="Q['+i+'].tags=this.value"></div></div>'}).join('')}
+function regAll(){let c=0;Q.forEach(q=>{if(!q.us)return;if(!D.uc[q.us])D.uc[q.us]={unit:'',unitSlug:q.us,achievementStandard:'',contents:[]};const sl=q.nn.replace(/\.html?$/i,'').replace(/^(c|w)-[a-z-]+-/,'');D.uc[q.us].contents.push({slug:sl||'item',file:q.nn,title:q.title,desc:q.desc,type:q.type,difficulty:q.diff,duration:q.dur,tags:q.tags?q.tags.split(',').map(t=>t.trim()).filter(Boolean):[]});c++});uCnt();sv();Q=[];rQ();rAll();toast(c+'개 등록! 📦탭에서 JSON 다운로드')}
+function clrQ(){Q=[];rQ()}
+// 모달
+function opM(id){document.getElementById(id).classList.add('show')}
+function clM(id){document.getElementById(id).classList.remove('show')}
+document.querySelectorAll('.mo').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')})});
+// 내보내기
+function gSite(){return JSON.stringify({siteName:"교사 실무 자동화 센터",categories:D.cat},null,2)}
+function gUnits(){return JSON.stringify({_comment:"admin 자동생성",subject:"통합사회",curriculum:"2022 개정 교육과정",units:D.units.map(u=>({slug:u.slug,code:u.code,title:u.title,subtitle:u.subtitle,tags:u.tags,contentCount:u.contentCount}))},null,2)}
+function gUnit(s){const u=D.uc[s];if(!u)return null;return JSON.stringify({unit:u.unit,unitSlug:u.unitSlug,achievementStandard:u.achievementStandard,contents:u.contents},null,2)}
+function dlF(n,c){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'application/json'}));a.download=n;a.click();URL.revokeObjectURL(a.href)}
+function dl(ms){return new Promise(r=>setTimeout(r,ms))}
+async function dlAll(){dlF('site.json',gSite());await dl(200);dlF('units.json',gUnits());for(const u of D.units){await dl(200);const j=gUnit(u.slug);if(j)dlF('unit-'+u.slug+'.json',j)}toast('전체 JSON 다운로드 완료!')}
+async function impSite(){try{toast('불러오는 중...');try{const r=await fetch('site.json');if(r.ok){const d=await r.json();D.cat=d.categories||[]}}catch(e){}const r2=await fetch('units.json');if(!r2.ok)throw new Error('units.json 없음');const ud=await r2.json();D.units=ud.units||[];for(const u of D.units){try{const r3=await fetch('unit-'+u.slug+'.json');if(r3.ok)D.uc[u.slug]=await r3.json()}catch(e){}}uCnt();sv();rAll();toast('완료! '+D.cat.length+'카테고리, '+D.units.length+'단원')}catch(e){toast('실패: '+e.message,'r')}}
+function impF(e){let c=0;Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=function(ev){try{const j=JSON.parse(ev.target.result);if(j.categories){D.cat=j.categories;c++}else if(j.units){D.units=j.units;c++}else if(j.unitSlug){D.uc[j.unitSlug]=j;c++}uCnt();sv();rAll();toast(c+'개 가져오기 완료')}catch(err){toast('실패','r')}};r.readAsText(f)});e.target.value=''}
+function toast(m,c){const el=document.getElementById('T');el.textContent=m;el.style.background=c==='r'?'var(--rd)':'var(--gr)';el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3000)}
+ld();
 </script>
 </body>
 </html>
