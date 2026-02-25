@@ -38,6 +38,16 @@
       "difficulty": "보통",
       "duration": "15분",
       "tags": []
+    },
+    {
+      "slug": "seat",
+      "file": "c-class-mgmt-seat.html",
+      "title": "티처스 갓 - 학급 자리배치 및 운영 올인원 도구",
+      "desc": "",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "15분",
+      "tags": []
     }
   ]
 }
