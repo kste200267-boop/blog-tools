@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>티처스 갓 - 학급 자리배치 및 운영 올인원 도구</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            /* 테마 변수 (기본 블루) */
+            --primary: #4A90E2;
+            --secondary: #E3F2FD;
+            --accent: #FF6B6B;
+            --text: #333;
+            --bg: #f5f7fa;
+            --desk: #ffffff;
+            --desk-border: #bbdefb;
+            --font-main: 'Noto Sans KR', sans-serif;
+            --font-hand: 'Jua', sans-serif;
+        }
+
+        /* 테마별 오버라이드 */
+        body.theme-pink { --primary: #FF8BA7; --secondary: #FFEEF3; --desk-border: #ffcdd2; }
+        body.theme-summer { --primary: #26A69A; --secondary: #E0F2F1; --desk-border: #b2dfdb; }
+        body.theme-chalk { 
+            --primary: #5D4037; --secondary: #3E4E50; --accent: #FFD54F; 
+            --text: #eee; --bg: #2b2b2b; --desk: #3E4E50; --desk-border: #8d6e63;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-main); background: var(--bg); color: var(--text); padding-bottom: 50px; transition: 0.3s; }
+        
+        /* 레이아웃 구조 */
+        .app-container { max-width: 1400px; margin: 0 auto; display: flex; gap: 20px; padding: 20px; }
+        .main-content { flex: 1; }
+        .sidebar { width: 300px; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: fit-content; position: sticky; top: 20px; color: #333; }
+        
+        /* 컨트롤 패널 */
+        .control-panel { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; color: #333; }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .brand { font-family: var(--font-hand); font-size: 1.5rem; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        
+        .input-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: var(--font-main); }
+        input:focus, textarea:focus { outline: 2px solid var(--primary); border-color: transparent; }
+        
+        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+        button { cursor: pointer; padding: 10px 18px; border: none; border-radius: 8px; font-weight: bold; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-family: var(--font-hand); }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { filter: brightness(0.9); transform: translateY(-2px); }
+        .btn-outline { background: white; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-danger { background: #ff5252; color: white; }
+        
+        /* A4 캔버스 (교실 화면) */
+        .classroom-wrapper {
+            width: 100%;
+            background: #ccc;
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        #classroom-canvas {
+            width: 297mm; /* A4 가로 */
+            height: 210mm;
+            background: white;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            transform-origin: top center; 
+            /* 화면에 맞게 스케일 조정은 JS로 처리 */
+        }
+
+        /* 배경 이미지 오버레이 */
+        .bg-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; background-size: cover; background-position: center; pointer-events: none; }
+
+        /* 교실 내부 요소 */
+        .canvas-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; position: relative; z-index: 1; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
+        .class-info h1 { font-family: var(--font-hand); font-size: 2.5rem; color: var(--primary); }
+        .class-info h2 { font-size: 1.2rem; color: #666; }
+        
+        .teacher-desk { 
+            width: 200px; height: 60px; background: var(--primary); color: white; 
+            border-radius: 10px; display: flex; justify-content: center; align-items: center; 
+            font-family: var(--font-hand); font-size: 1.2rem; margin: 0 auto 30px auto; 
+            position: relative; z-index: 1; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .seating-area { flex: 1; display: flex; justify-content: center; gap: 40px; position: relative; z-index: 1; align-items: flex-start; flex-wrap: wrap; align-content: flex-start; }
+        
+        .seat-group { display: grid; gap: 15px; } /* 분단 */
+
+        .seat {
+            width: 100px; height: 70px;
+            background: var(--desk);
+            border: 2px solid var(--desk-border);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: grab;
+            position: relative;
+            transition: 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .seat.dragging { opacity: 0.5; border: 2px dashed var(--primary); }
+        .seat:hover { transform: scale(1.05); z-index: 10; }
+        
+        .seat-num { font-size: 0.8rem; color: #888; position: absolute; top: 5px; left: 8px; }
+        .seat-name { font-family: var(--font-hand); font-size: 1.2rem; font-weight: bold; color: var(--text); }
+        
+        .lock-btn { 
+            position: absolute; top: 5px; right: 8px; cursor: pointer; color: #ccc; font-size: 0.9rem; 
+        }
+        .seat.locked { border-color: var(--accent); background: #fff5f5; }
+        .seat.locked .lock-btn { color: var(--accent); }
+        
+        .memo-box {
+            margin-top: auto; border: 2px dashed #ccc; border-radius: 10px; padding: 15px;
+            position: relative; z-index: 1; min-height: 80px; background: rgba(255,255,255,0.8);
+        }
+        .memo-title { font-family: var(--font-hand); color: var(--primary); margin-bottom: 5px; }
+        .memo-content { white-space: pre-wrap; font-size: 0.95rem; }
+
+        /* 모달 */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000;
+        }
+        .modal { background: white; padding: 25px; border-radius: 15px; width: 400px; max-width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.2); animation: popIn 0.3s; color: #333; }
+        .modal h3 { font-family: var(--font-hand); margin-bottom: 15px; color: var(--primary); font-size: 1.5rem; }
+        .modal-options { display: grid; gap: 10px; margin-bottom: 20px; }
+        .option-btn { padding: 10px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; text-align: left; }
+        .option-btn:hover, .option-btn.selected { background: var(--secondary); border-color: var(--primary); color: var(--primary); font-weight: bold; }
+        
+        /* 기록 리스트 */
+        .history-list { max-height: 150px; overflow-y: auto; background: #f9f9f9; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 0.9rem; }
+        .history-item { border-bottom: 1px solid #eee; padding: 5px 0; display: flex; justify-content: space-between; }
+
+        /* 푸터 */
+        .footer { text-align: center; margin-top: 30px; font-size: 0.9rem; color: #888; }
+        .footer a { color: var(--primary); text-decoration: none; font-weight: bold; }
+
+        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* 인쇄 설정 */
+        @media print {
+            body { background: white; -webkit-print-color-adjust: exact; padding: 0; }
+            .sidebar, .control-panel, .btn-group, .footer, .modal-overlay, .classroom-wrapper { display: none !important; }
+            .classroom-wrapper { display: block !important; padding: 0; background: white; }
+            #classroom-canvas { 
+                width: 100%; height: 100vh; box-shadow: none; margin: 0; padding: 20px; transform: none !important; 
+                page-break-after: always;
+            }
+            /* 인쇄 시 텍스트 색상 강제 */
+            .seat-name, .class-info h1, .teacher-desk { color: black !important; -webkit-text-fill-color: black; }
+            .teacher-desk { background: #eee !important; border: 1px solid #000; }
+            .seat { border: 1px solid #000; background: white !important; }
+            .seat.locked { background: #eee !important; }
+            /* 링크 숨김 */
+            a[href]:after { content: none !important; }
+            
+            @page { size: A4 landscape; margin: 0; }
+        }
+
+        /* 헬퍼 클래스 */
+        .hidden { display: none; }
+        .text-sm { font-size: 0.85rem; color: #666; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="main-content">
+        <div class="control-panel">
+            <div class="panel-header">
+                <div class="brand"><i class="fas fa-chalkboard-teacher"></i> 티처스 갓</div>
+                <select id="themeSelect" onchange="changeTheme(this.value)">
+                    <option value="blue">블루 테마</option>
+                    <option value="pink">핑크 테마</option>
+                    <option value="summer">썸머 테마</option>
+                    <option value="chalk">칠판 테마</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="schoolName" placeholder="학교명 (예: 대한초등학교)" oninput="updateUI()">
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="gradeClass" placeholder="학년 반 (예: 6학년 1반)" oninput="updateUI()">
+                    <input type="text" id="teacherName" placeholder="담임 성함" oninput="updateUI()">
+                </div>
+                <input type="text" id="layoutConfig" placeholder="분단 배치 (예: 2, 2, 2)" value="2, 2, 2" onchange="renderSeats()">
+            </div>
+            
+            <textarea id="studentList" rows="3" placeholder="학생 명단 입력 (예: 김철수(1), 이영희(2), 박민수...)" onchange="parseStudents()"></textarea>
+            <div class="text-sm" style="margin-top: 5px; margin-bottom: 15px;">* "이름(번호)" 형식으로 쉼표(,)로 구분하여 입력해주세요.</div>
+
+            <div class="input-group" style="align-items: center; background: #f8f9fa; padding: 10px; border-radius: 8px;">
+                <label style="font-size: 0.9rem; font-weight: bold;"><i class="fas fa-image"></i> 배경 이미지:</label>
+                <input type="file" id="bgUpload" accept="image/*" style="width: auto;">
+                <label style="font-size: 0.9rem; margin-left: 10px;">투명도:</label>
+                <input type="range" id="bgOpacity" min="0" max="1" step="0.1" value="0.3" oninput="updateBgOpacity()">
+            </div>
+
+            <div class="input-group">
+                <textarea id="memoInput" rows="2" placeholder="전달사항 입력 (예: 교과 선생님께 - 3번 학생은 시력이 좋지 않아 앞자리에 배치했습니다.)" oninput="updateUI()"></textarea>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn-primary" onclick="shuffleSeats()"><i class="fas fa-random"></i> 자리 섞기</button>
+                <button class="btn-outline" onclick="openModal('pickerModal')"><i class="fas fa-hand-pointer"></i> 발표자 뽑기</button>
+                <button class="btn-outline" onclick="openModal('groupModal')"><i class="fas fa-users"></i> 모둠 편성</button>
+                <button class="btn-outline" onclick="printCanvas()"><i class="fas fa-print"></i> 인쇄하기</button>
+                <button class="btn-outline" onclick="saveAsImage()"><i class="fas fa-download"></i> 이미지 저장</button>
+                <button class="btn-danger" style="margin-left: auto;" onclick="resetData()"><i class="fas fa-trash-alt"></i> 초기화</button>
+            </div>
+        </div>
+
+        <div class="classroom-wrapper">
+            <div id="classroom-canvas">
+                <div class="bg-overlay" id="canvasBg"></div>
+                
+                <div class="canvas-header">
+                    <div class="class-info">
+                        <h1 id="displayTitle">0학년 0반</h1>
+                        <h2 id="displaySchool">학교명</h2>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-size: 1.2rem; font-family: var(--font-hand);" id="displayTeacher">담임: 000 선생님</span>
+                    </div>
+                </div>
+
+                <div class="teacher-desk">교탁</div>
+
+                <div class="seating-area" id="seatContainer">
+                    </div>
+
+                <div class="memo-box">
+                    <div class="memo-title"><i class="fas fa-bullhorn"></i> 전달사항</div>
+                    <div class="memo-content" id="displayMemo">내용이 없습니다.</div>
+                </div>
+                
+                <div class="footer" style="position: absolute; bottom: 10px; width: 100%; left: 0; text-align: center;">
+                    Created by <a href="https://www.google.com/search?q=kstephullab.com" target="_blank">풀어쓰는 사회학</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <h3 style="margin-bottom: 15px; font-family: var(--font-hand); color: var(--primary);"><i class="fas fa-lightbulb"></i> 사용 꿀팁</h3>
+        <ul style="padding-left: 20px; line-height: 1.6; font-size: 0.95rem;">
+            <li><strong>자동 저장:</strong> 모든 내용은 입력 즉시 저장됩니다.</li>
+            <li><strong>명단 입력:</strong> '홍길동(1)'처럼 입력하면 이름과 번호가 자동 분리됩니다.</li>
+            <li><strong>알박기(고정):</strong> 자리의 자물쇠(<i class="fas fa-lock-open"></i>)를 누르면 해당 학생은 섞기에서 제외됩니다.</li>
+            <li><strong>드래그:</strong> 학생을 끌어서 다른 자리와 맞교환할 수 있습니다.</li>
+            <li><strong>인쇄:</strong> 인쇄 버튼을 누르면 A4 가로 꽉 찬 화면으로 출력됩니다.</li>
+        </ul>
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+        <div style="font-size: 0.85rem; color: #888;">
+            * 브라우저 [설정] > [인쇄]에서 '배경 그래픽' 옵션을 체크해야 배경색이 나옵니다.
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="lockModal">
+    <div class="modal">
+        <h3><i class="fas fa-lock"></i> 자리 고정 사유</h3>
+        <div class="modal-options" id="lockOptions">
+            <div class="option-btn" onclick="selectLockReason('시력 보호')">👀 시력 보호</div>
+            <div class="option-btn" onclick="selectLockReason('키/체격 고려')">📏 키/체격 고려</div>
+            <div class="option-btn" onclick="selectLockReason('행동/학습 지원')">🤝 행동/학습 지원</div>
+            <input type="text" id="customLockReason" placeholder="직접 입력" class="option-btn" style="width: 100%; cursor: text;">
+        </div>
+        <div class="btn-group" style="justify-content: flex-end;">
+            <button class="btn-outline" onclick="closeModal('lockModal')">취소</button>
+            <button class="btn-primary" onclick="applyLock()">확인</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="pickerModal">
+    <div class="modal">
+        <h3><i class="fas fa-dice"></i> 발표자 뽑기</h3>
+        <div style="margin-bottom: 15px;">
+            <label>뽑을 인원:</label>
+            <input type="number" id="pickCount" value="1" min="1" max="10" style="width: 60px;">
+        </div>
+        <div id="pickerResult" style="padding: 15px; background: var(--secondary); border-radius: 8px; text-align: center; font-size: 1.5rem; font-family: var(--font-hand); min-height: 60px; display: flex; align-items: center; justify-content: center;">
+            두구두구...
+        </div>
+        <div class="btn-group" style="margin-top: 15px;">
+            <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="runPicker()">뽑기!</button>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <strong style="font-size: 0.9rem;">기록 (History)</strong>
+                <button style="padding: 2px 8px; font-size: 0.8rem;" onclick="clearHistory()">기록 삭제</button>
+            </div>
+            <div class="history-list" id="pickerHistory">
+                </div>
+        </div>
+        <button class="btn-outline" style="margin-top: 15px; width: 100%;" onclick="closeModal('pickerModal')">닫기</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="groupModal">
+    <div class="modal">
+        <h3><i class="fas fa-users"></i> 랜덤 모둠 편성</h3>
+        <div style="margin-bottom: 15px;">
+            <label>한 모둠당 인원:</label>
+            <input type="number" id="groupSize" value="4" min="2" style="width: 60px;">
+        </div>
+        <div id="groupResult" style="max-height: 200px; overflow-y: auto; font-size: 0.9rem; white-space: pre-wrap;"></div>
+        <div class="btn-group">
+            <button class="btn-primary" onclick="makeGroups()">편성하기</button>
+            <button class="btn-outline" onclick="closeModal('groupModal')">닫기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 상태 관리 객체
+    let state = {
+        schoolName: '',
+        gradeClass: '',
+        teacherName: '',
+        layoutConfig: '2, 2, 2',
+        studentListRaw: '',
+        students: [], // {id, name, number, locked, lockReason}
+        memo: '',
+        theme: 'blue',
+        pickerHistory: [],
+        bgOpacity: 0.3
+    };
+
+    let currentLockIndex = null;
+    let draggedIndex = null;
+
+    // 초기화
+    document.addEventListener('DOMContentLoaded', () => {
+        loadData();
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+    });
+
+    // 데이터 로드
+    function loadData() {
+        const saved = localStorage.getItem('teachersGodData');
+        if (saved) {
+            state = JSON.parse(saved);
+            // UI 복원
+            document.getElementById('schoolName').value = state.schoolName;
+            document.getElementById('gradeClass').value = state.gradeClass;
+            document.getElementById('teacherName').value = state.teacherName;
+            document.getElementById('layoutConfig').value = state.layoutConfig;
+            document.getElementById('studentList').value = state.studentListRaw;
+            document.getElementById('memoInput').value = state.memo;
+            document.getElementById('themeSelect').value = state.theme;
+            document.getElementById('bgOpacity').value = state.bgOpacity;
+            
+            // 배경 이미지 복원 (localStorage 용량 제한으로 인해 base64가 너무 크면 저장 안될 수 있음, 여기서는 생략하고 UI설정만)
+            changeTheme(state.theme);
+            updateBgOpacity();
+            updateHistoryUI();
+        }
+        updateUI();
+        renderSeats();
+    }
+
+    // 데이터 저장
+    function saveData() {
+        localStorage.setItem('teachersGodData', JSON.stringify(state));
+    }
+
+    // UI 업데이트 (텍스트)
+    function updateUI() {
+        state.schoolName = document.getElementById('schoolName').value;
+        state.gradeClass = document.getElementById('gradeClass').value;
+        state.teacherName = document.getElementById('teacherName').value;
+        state.memo = document.getElementById('memoInput').value;
+
+        document.getElementById('displaySchool').innerText = state.schoolName || '학교명';
+        document.getElementById('displayTitle').innerText = state.gradeClass || '0학년 0반';
+        document.getElementById('displayTeacher').innerText = state.teacherName ? `담임: ${state.teacherName} 선생님` : '담임: 000 선생님';
+        document.getElementById('displayMemo').innerText = state.memo || '내용이 없습니다.';
+        
+        saveData();
+    }
+
+    // 학생 명단 파싱
+    function parseStudents() {
+        state.studentListRaw = document.getElementById('studentList').value;
+        const rawList = state.studentListRaw.split(',').map(s => s.trim()).filter(s => s);
+        
+        // 기존 잠금 상태 유지를 위해 임시 맵 생성
+        const lockMap = {};
+        state.students.forEach(s => {
+            if(s.locked) lockMap[s.name] = s;
+        });
+
+        state.students = rawList.map((str, idx) => {
+            // 이름(번호) 정규식 파싱
+            const match = str.match(/(.+)\((\d+)\)/);
+            let name = str;
+            let num = '';
+            
+            if (match) {
+                name = match[1].trim();
+                num = match[2].trim();
+            }
+
+            // 기존 잠금 정보가 있으면 유지
+            const prev = lockMap[name];
+            return {
+                id: idx,
+                name: name,
+                number: num,
+                locked: prev ? prev.locked : false,
+                lockReason: prev ? prev.lockReason : ''
+            };
+        });
+
+        saveData();
+        renderSeats();
+    }
+
+    // 좌석 렌더링 (핵심 로직)
+    function renderSeats() {
+        state.layoutConfig = document.getElementById('layoutConfig').value;
+        const container = document.getElementById('seatContainer');
+        container.innerHTML = '';
+
+        const config = state.layoutConfig.split(',').map(Number); // [2, 2, 2]
+        let studentIdx = 0;
+
+        // 분단 별로 그룹 생성
+        config.forEach(colsInGroup => {
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'seat-group';
+            // 분단 내 그리드 설정 (열 개수)
+            groupDiv.style.gridTemplateColumns = `repeat(${colsInGroup}, 1fr)`;
+
+            // 해당 분단에 들어갈 학생 수 계산 (화면 꽉 채우기 위해 전체 학생을 분단 비율로 나누거나 순서대로 배치)
+            // 여기서는 단순하게 전체 학생을 순서대로 배치하되, 줄바꿈은 CSS Grid가 알아서 처리
+            // 하지만 "줄" 개념을 맞추기 위해, 현재 남은 학생들을 배치.
+            // 현실적인 교실 배치를 위해: 전체 학생을 앞에서 뒤로 채우기보다, 책상 배열을 먼저 만듦.
+            
+            // 그러나 사용성을 위해 단순히 2,2,2는 가로에 3개의 덩어리가 있고 각 덩어리가 2열이라는 뜻으로 해석
+            // 학생들을 배치할 때는 좌->우, 앞->뒤 순서로 채움.
+            
+            // 여기서는 시각적 배치를 위해 모든 학생 카드를 렌더링하고, 
+            // CSS flex wrap과 margin을 이용해 분단을 시각적으로만 분리하는 방식 대신
+            // 분단별 div를 만들고 그 안에 학생을 넣으면 이동이 복잡해짐.
+            // 따라서 **단일 컨테이너**에 넣되, CSS Grid/Flex gap을 이용하거나
+            // 빈 '통로' 요소를 삽입하는 방식을 사용.
+            
+        });
+
+        // 심플한 접근: 전체를 하나의 Flex 컨테이너로 쓰고, 분단 구분을 위해 margin을 가진 div로 감싸는게 아니라
+        // 렌더링 시 "분단" 단위로 끊어서 그림.
+        
+        // 총 학생 수에 맞춰 빈 자리까지 포함할지 여부 -> 학생 수만큼만 표시
+        
+        // 분단 구조 재설계: UI상 드래그앤드롭이 쉬우려면 평면적 구조가 좋음.
+        // 분단 설정(2,2,2)에 따라 분단 Div들을 생성하고 그 안에 학생을 순서대로 배분?
+        // 아니면 학생 리스트 순서대로 그냥 뿌리되, 분단 사이 간격만 띄우기? -> 후자가 맞음.
+        
+        // 수정: 2,2,2라면 한 줄에 6명. 
+        // 시각적으로 분단을 나누기 위해 container를 여러개 두지 않고,
+        // display: flex; flex-wrap: wrap; 하고
+        // 각 분단(Group) div를 만들어서 그 안에 학생들을 넣자.
+        
+        let currentStudentIndex = 0;
+        
+        // 분단 갯수만큼 반복하여 분단 컨테이너 생성
+        // 하지만 줄(Row) 수를 알아야 함. 학생 수 / 전체 열 수.
+        const totalCols = config.reduce((a, b) => a + b, 0);
+        const totalStudents = state.students.length;
+        const totalRows = Math.ceil(totalStudents / totalCols);
+
+        // 시각적 구현:
+        // 각 분단(Column Group)을 세로로 긴 div로 만들고 그 안에 그리드를 넣는게 아니라,
+        // 전체를 감싸는 FlexBox 안에 "분단 Div"들을 배치.
+        
+        config.forEach((cols) => {
+            const groupEl = document.createElement('div');
+            groupEl.className = 'seat-group';
+            groupEl.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            
+            // 이 분단에 할당될 학생들을 계산해야 하는데,
+            // 보통 교실은 "가로 줄"이 맞아야 하므로, 
+            // 1분단 1열 1행, 1분단 2열 1행 ... 식임.
+            // 데이터 구조(Array)는 1차원이므로 이를 시각적 위치로 매핑하는게 까다로움.
+            
+            // 해결책: 그냥 1차원 배열 순서대로 렌더링하되,
+            // 분단 설정은 "시각적 그룹핑"용으로만 사용하지 않고
+            // 그냥 전체를 하나의 Grid로 하고 gap을 조절하는게 나을수도 있으나
+            // 2, 2, 2 사이의 통로를 구현해야 함.
+            
+            // 가장 쉬운 방법: 분단별로 수직 컨테이너를 만듦.
+            // 하지만 학생은 가로(행) 우선으로 채워짐.
+            
+            // 따라서 1차원 배열을 렌더링 할 때,
+            // index % totalCols 를 통해 현재 어느 분단에 속하는지 계산 불가 (분단 크기가 다르므로).
+            
+            // 접근 변경: 전체 학생을 렌더링 하되,
+            // 학생 하나하나를 그리는게 아니라 "자리(Slot)"를 먼저 그림.
+            // 2,2,2 면 한 줄에 6개의 슬롯. 통로는 margin-right로 처리.
+            
+            // 그냥 Group Div 방식 포기하고, 전체 단일 Grid로 하되
+            // nth-child를 이용해 margin을 주는건 동적이지 않음.
+            
+            // 최종 접근: Flex 컨테이너 안에 "분단 컨테이너"들을 배치.
+            // 학생 배열을 재정렬하여 각 분단에 밀어넣어야 함? -> NO. 드래그앤드롭 인덱스가 꼬임.
+            
+            // 결론: "분단 배치" 설정은 무시하고 단순 Grid로 가거나, 
+            // 또는 사용자가 입력한 2,2,2에 맞춰 3개의 큰 Div를 만들고
+            // 학생들을 앞에서부터 채워넣는데, "가로 우선"이 되게 하려면
+            // 1번학생: 1분단, 2번: 1분단, 3번: 2분단... 이렇게 가야함.
+            // 이게 복잡하므로, 화면상 보여지는건 그냥
+            // [분단1] [분단2] [분단3] 형태로 하되
+            // 학생 리스트의 순서를 세로 우선(Column Major)이 아니라 가로 우선(Row Major)으로 분배.
+            
+            container.appendChild(groupEl);
+        });
+
+        // 분단 컨테이너 다시 선택
+        const groups = document.querySelectorAll('.seat-group');
+        
+        // 학생 배치 로직 (Row Major)
+        // 총 열 개수(totalCols)를 기준으로 행(row)을 돔.
+        for (let r = 0; r < totalRows; r++) {
+            let colOffset = 0;
+            config.forEach((cols, groupIdx) => {
+                const groupEl = groups[groupIdx];
+                for (let c = 0; c < cols; c++) {
+                    // 현재 처리중인 전체 그리드 상의 인덱스
+                    const globalIndex = (r * totalCols) + colOffset + c;
+                    
+                    if (globalIndex < state.students.length) {
+                        const student = state.students[globalIndex];
+                        const seatEl = createSeatElement(student, globalIndex);
+                        groupEl.appendChild(seatEl);
+                    } else {
+                        // 빈 책상 (학생 수 부족 시)
+                        // const emptySeat = document.createElement('div');
+                        // emptySeat.className = 'seat';
+                        // emptySeat.style.opacity = 0.5;
+                        // groupEl.appendChild(emptySeat);
+                    }
+                }
+                colOffset += cols;
+            });
+        }
+    }
+
+    function createSeatElement(student, index) {
+        const el = document.createElement('div');
+        el.className = `seat ${student.locked ? 'locked' : ''}`;
+        el.draggable = true;
+        el.dataset.index = index;
+
+        // 드래그 이벤트
+        el.addEventListener('dragstart', handleDragStart);
+        el.addEventListener('dragover', handleDragOver);
+        el.addEventListener('drop', handleDrop);
+        el.addEventListener('dragend', handleDragEnd);
+        
+        // 모바일 터치 대응 (심플하게 클릭 스왑은 구현 복잡하므로 생략, 데스크탑 위주)
+
+        el.innerHTML = `
+            <span class="seat-num">${student.number || ''}</span>
+            <span class="seat-name">${student.name}</span>
+            <i class="fas fa-${student.locked ? 'lock' : 'lock-open'} lock-btn" onclick="toggleLock(${index})"></i>
+        `;
+        
+        if(student.locked && student.lockReason) {
+            el.title = `고정 사유: ${student.lockReason}`;
+        }
+
+        return el;
+    }
+
+    // 드래그 앤 드롭 핸들러
+    function handleDragStart(e) {
+        draggedIndex = +this.dataset.index;
+        this.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+    }
+    function handleDragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        return false;
+    }
+    function handleDrop(e) {
+        e.stopPropagation();
+        const targetIndex = +this.dataset.index;
+        
+        if (draggedIndex !== targetIndex) {
+            // 데이터 교환
+            const temp = state.students[draggedIndex];
+            state.students[draggedIndex] = state.students[targetIndex];
+            state.students[targetIndex] = temp;
+            
+            saveData();
+            renderSeats();
+        }
+        return false;
+    }
+    function handleDragEnd(e) {
+        this.classList.remove('dragging');
+    }
+
+    // 잠금 기능
+    function toggleLock(index) {
+        if (state.students[index].locked) {
+            state.students[index].locked = false;
+            state.students[index].lockReason = '';
+            saveData();
+            renderSeats();
+        } else {
+            currentLockIndex = index;
+            openModal('lockModal');
+        }
+    }
+
+    function selectLockReason(reason) {
+        document.getElementById('customLockReason').value = reason;
+        const opts = document.querySelectorAll('.option-btn');
+        opts.forEach(o => o.classList.remove('selected'));
+        event.target.classList.add('selected');
+    }
+
+    function applyLock() {
+        const reason = document.getElementById('customLockReason').value || '기타';
+        if (currentLockIndex !== null) {
+            state.students[currentLockIndex].locked = true;
+            state.students[currentLockIndex].lockReason = reason;
+            saveData();
+            renderSeats();
+        }
+        closeModal('lockModal');
+        document.getElementById('customLockReason').value = '';
+    }
+
+    // 자리 섞기 (Fisher-Yates)
+    function shuffleSeats() {
+        const indicesToShuffle = [];
+        state.students.forEach((s, i) => {
+            if (!s.locked) indicesToShuffle.push(i);
+        });
+
+        // 셔플 로직
+        for (let i = indicesToShuffle.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const idxA = indicesToShuffle[i];
+            const idxB = indicesToShuffle[j];
+            
+            // 배열 내 객체 교환
+            [state.students[idxA], state.students[idxB]] = [state.students[idxB], state.students[idxA]];
+        }
+
+        saveData();
+        renderSeats();
+    }
+
+    // 배경 이미지 업로드
+    document.getElementById('bgUpload').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const bgDiv = document.getElementById('canvasBg');
+                bgDiv.style.backgroundImage = `url(${evt.target.result})`;
+                // 실제로는 로컬스토리지에 이미지 데이터 저장이 용량 문제로 어려울 수 있음
+                // 여기서는 세션 동안만 유지되도록 함
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function updateBgOpacity() {
+        const val = document.getElementById('bgOpacity').value;
+        document.getElementById('canvasBg').style.opacity = val;
+        state.bgOpacity = val;
+    }
+
+    // 모달 공통
+    function openModal(id) {
+        document.getElementById(id).style.display = 'flex';
+    }
+    function closeModal(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+
+    // 발표자 뽑기
+    function runPicker() {
+        const count = document.getElementById('pickCount').value;
+        const candidates = state.students.map(s => s.name);
+        if (candidates.length === 0) return;
+
+        // 애니메이션 효과
+        const resBox = document.getElementById('pickerResult');
+        let counter = 0;
+        const interval = setInterval(() => {
+            resBox.innerText = candidates[Math.floor(Math.random() * candidates.length)];
+            counter++;
+            if(counter > 10) {
+                clearInterval(interval);
+                // 실제 뽑기
+                const shuffled = candidates.sort(() => 0.5 - Math.random());
+                const picked = shuffled.slice(0, count);
+                resBox.innerText = picked.join(', ');
+                
+                // 기록 저장
+                const log = `[${new Date().toLocaleTimeString()}] ${picked.join(', ')}`;
+                state.pickerHistory.unshift(log);
+                updateHistoryUI();
+                saveData();
+            }
+        }, 100);
+    }
+
+    function updateHistoryUI() {
+        const list = document.getElementById('pickerHistory');
+        list.innerHTML = state.pickerHistory.map(h => `<div class="history-item"><span>${h}</span></div>`).join('');
+    }
+    
+    function clearHistory() {
+        state.pickerHistory = [];
+        updateHistoryUI();
+        saveData();
+    }
+
+    // 모둠 편성
+    function makeGroups() {
+        const size = parseInt(document.getElementById('groupSize').value);
+        const names = state.students.map(s => s.name).sort(() => 0.5 - Math.random());
+        let resultText = '';
+        
+        let groupNum = 1;
+        for(let i=0; i<names.length; i+=size) {
+            const group = names.slice(i, i+size);
+            resultText += `[${groupNum}모둠] ${group.join(', ')}\n`;
+            groupNum++;
+        }
+        
+        document.getElementById('groupResult').innerText = resultText;
+    }
+
+    // 유틸리티
+    function changeTheme(theme) {
+        document.body.className = `theme-${theme}`;
+        state.theme = theme;
+        saveData();
+    }
+
+    function resetData() {
+        if(confirm('모든 데이터를 삭제하고 초기화하시겠습니까?')) {
+            localStorage.removeItem('teachersGodData');
+            location.reload();
+        }
+    }
+
+    // 이미지 저장 (html2canvas)
+    function saveAsImage() {
+        const element = document.getElementById('classroom-canvas');
+        // 스케일 조정을 잠시 해제하고 캡쳐해야 깔끔함
+        html2canvas(element, { scale: 2 }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `${state.gradeClass}_자리배치.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+    }
+
+    // 캔버스 사이즈 조정 (반응형 뷰)
+    function resizeCanvas() {
+        const wrapper = document.querySelector('.classroom-wrapper');
+        const canvas = document.getElementById('classroom-canvas');
+        const wrapperWidth = wrapper.clientWidth - 40; // padding
+        const a4WidthStr = getComputedStyle(canvas).width; // 297mm
+        
+        // mm를 px로 변환 (브라우저마다 다르지만 대략 96DPI 기준 1mm = 3.78px)
+        // 여기서는 offsetWidth를 씁니다.
+        const baseWidth = 1122; // A4 landscape @ 96dpi approx
+        
+        const scale = wrapperWidth / baseWidth;
+        
+        if(scale < 1) {
+            canvas.style.transform = `scale(${scale})`;
+            wrapper.style.height = `${(794 * scale) + 40}px`; // A4 height approx
+        } else {
+            canvas.style.transform = 'scale(1)';
+            wrapper.style.height = 'auto';
+        }
+    }
+    
+    function printCanvas() {
+        window.print();
+    }
+
+</script>
+</body>
+</html>
