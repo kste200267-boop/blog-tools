@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프리미엄 시간표 마스터 V6 (최종판) | 풀어쓰는 사회학</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #f5f6fa; --card-bg: #ffffff; --text-color: #2d3436;
+            --primary: #74b9ff; --secondary: #a29bfe; --accent: #ff7675;
+        }
+
+        /* [Themes] */
+        body.theme-blue { --bg-color: #ebf5fb; --primary: #3498db; --secondary: #85c1e9; --accent: #f1948a; }
+        body.theme-mint { --primary: #55efc4; --secondary: #81ecec; --accent: #fab1a0; }
+        body.theme-dark { --bg-color: #2d3436; --card-bg: #353b48; --text-color: #f5f6fa; --primary: #00d2d3; --secondary: #54a0ff; }
+        body.theme-pink { --primary: #ffaad4; --secondary: #fdcb6e; --accent: #e17055; }
+        body.theme-modern { --primary: #636e72; --secondary: #b2bec3; --accent: #2d3436; }
+        body.theme-yellow { --primary: #ffeaa7; --secondary: #fab1a0; --accent: #ff7675; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        h1, h2, h3, .jua { font-family: 'Jua', sans-serif; }
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        /* 설정창 (인쇄 시 숨김) */
+        .config-panel {
+            background: var(--card-bg);
+            padding: 25px; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            border-top: 8px solid var(--primary);
+            color: #2d3436;
+        }
+
+        /* 친절한 가이드 박스 */
+        .friendly-guide {
+            background: #f0f7ff;
+            border-left: 5px solid var(--primary);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 12px 12px 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .friendly-guide b { color: var(--primary); }
+
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .input-box label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; color: #636e72; }
+        .input-box input, .input-box select, .input-box textarea {
+            width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 12px; font-family: inherit; outline: none;
+        }
+        #smartInput { height: 160px; background: #fff; border: 2px solid var(--primary); font-size: 0.9rem; }
+
+        /* 시간표 본체 */
+        .timetable-paper {
+            position: relative; background: white; border-radius: 30px;
+            padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden; min-height: 1000px;
+            -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
+        }
+
+        #bgLayer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center; z-index: 0; pointer-events: none;
+        }
+
+        .content-layer { position: relative; z-index: 1; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 3.5rem; color: var(--text-color); margin: 0 15px; display: inline-block; vertical-align: middle; }
+        .header .emoji { font-size: 3rem; vertical-align: middle; }
+        .class-meta { font-size: 1.3rem; opacity: 0.8; margin-bottom: 5px; }
+
+        table { width: 100%; border-collapse: separate; border-spacing: 6px; table-layout: fixed; }
+        th {
+            background: var(--primary) !important; color: white !important; padding: 15px;
+            border-radius: 15px; font-family: 'Jua'; font-size: 1.5rem;
+            -webkit-print-color-adjust: exact !important;
+        }
+
+        td {
+            background: rgba(255, 255, 255, 0.85) !important; height: 95px; border-radius: 15px;
+            padding: 8px; text-align: center; vertical-align: middle;
+            border: 1px solid rgba(0,0,0,0.05); backdrop-filter: blur(5px);
+            -webkit-print-color-adjust: exact !important;
+        }
+
+        .time-label { background: rgba(0,0,0,0.03) !important; width: 130px; font-family: 'Jua'; border: none !important; }
+        .time-label span { color: var(--primary); font-size: 1.2rem; }
+        .time-label small { display: block; font-size: 0.75rem; color: #999; }
+
+        .lunch-row td {
+            height: 50px !important; background: rgba(255, 118, 117, 0.15) !important;
+            font-family: 'Jua'; color: var(--accent); font-size: 1.2rem; letter-spacing: 2px;
+        }
+
+        .subj { display: block; font-family: 'Jua'; font-size: 1.6rem; color: #2d3436; margin-bottom: 3px; line-height: 1.1; }
+        .prof { display: inline-block; background: var(--secondary); color: white; padding: 2px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+        button {
+            flex: 1; padding: 15px; border-radius: 15px; border: none; cursor: pointer;
+            font-family: 'Jua'; font-size: 1.2rem; transition: 0.3s;
+        }
+        .btn-apply { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .btn-apply:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn-print { background: var(--text-color); color: white; }
+
+        /* [Branding Footer] */
+        footer {
+            text-align: center; margin-top: 50px; padding: 30px; font-size: 0.85rem; color: #888;
+        }
+        footer a { color: #555; text-decoration: none; font-weight: bold; border-bottom: 2px solid #ddd; }
+        footer a:hover { color: var(--primary); border-color: var(--primary); }
+
+        @media print {
+            .config-panel, footer { display: none !important; }
+            body { padding: 0; background: white; }
+            .timetable-paper { box-shadow: none; border-radius: 0; padding: 10px; width: 100%; }
+        }
+    </style>
+</head>
+<body class="theme-blue">
+
+<div class="container">
+    <div class="config-panel">
+        <h2 class="jua" style="color: var(--primary); margin-bottom:15px; font-size: 1.8rem;">
+            <i class="fas fa-edit"></i> 풀사 시간표 메이커
+        </h2>
+        
+        <div class="friendly-guide">
+            <i class="fas fa-info-circle"></i> <b>친절한 사용 가이드:</b><br>
+            1. <b>[데이터 입력]</b> 칸에 과목을 쉼표(,)로 구분해 적으세요. 과목을 7개 적으면 7교시, 9개 적으면 9교시가 <b>자동으로 생성</b>됩니다.<br>
+            2. <b>[과목/교사]</b> 형식을 사용하면 담당 선생님 이름이 예쁜 박스 안에 쏙 들어갑니다. (예: 국어/김선생)<br>
+            3. 점심시간은 설정한 교시 뒤에 자동으로 한 줄이 추가됩니다. (예: 4교시 후 점심)
+        </div>
+        
+        <div class="grid-3">
+            <div class="input-box">
+                <label><i class="fas fa-school"></i> 우리 반 정보</label>
+                <div style="display: flex; gap: 5px;">
+                    <input type="text" id="classInfo" value="5학년 1반" placeholder="학년/반">
+                    <input type="text" id="teacherName" value="박사랑" placeholder="선생님 성함">
+                </div>
+            </div>
+            <div class="input-box">
+                <label><i class="fas fa-palette"></i> 디자인 테마</label>
+                <select id="themeSelect" onchange="changeTheme(this.value)">
+                    <option value="theme-blue" selected>💙 편안한 오션 블루</option>
+                    <option value="theme-mint">🌿 파스텔 민트</option>
+                    <option value="theme-dark">🎓 클래식 칠판</option>
+                    <option value="theme-pink">🌸 벚꽃 핑크</option>
+                    <option value="theme-modern">🩶 모던 미니멀</option>
+                    <option value="theme-yellow">☀️ 썬샤인 옐로우</option>
+                </select>
+            </div>
+            <div class="input-box">
+                <label><i class="fas fa-icons"></i> 좌우 이모지 (기분따라!)</label>
+                <div style="display: flex; gap: 5px;">
+                    <input type="text" id="emojiL" value="🌊">
+                    <input type="text" id="emojiR" value="🐬">
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-3">
+            <div class="input-box">
+                <label><i class="fas fa-clock"></i> 시간 자동 계산 설정</label>
+                <div style="display: flex; gap: 4px;">
+                    <input type="time" id="startTime" value="09:00" title="수업 시작 시간">
+                    <input type="number" id="lesson" value="40" title="수업 시간(분)">
+                    <input type="number" id="break" value="10" title="쉬는 시간(분)">
+                    <input type="number" id="lunch" value="50" title="점심 시간(분)">
+                </div>
+            </div>
+            <div class="input-box">
+                <label><i class="fas fa-utensils"></i> 점심시간 위치 (교시 후)</label>
+                <input type="number" id="lunchAfter" value="4" min="1" max="10">
+            </div>
+            <div class="input-box">
+                <label><i class="fas fa-image"></i> 배경 이미지 & 투명도</label>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <input type="file" id="bgFile" accept="image/*" style="font-size: 0.7rem;">
+                    <input type="range" id="bgOpacity" min="0" max="1" step="0.1" value="0.2" style="width: 70px;">
+                </div>
+            </div>
+        </div>
+
+        <div class="input-box">
+            <label><i class="fas fa-keyboard"></i> 시간표 데이터 (요일당 한 줄, 쉼표로 과목 구분)</label>
+            <textarea id="smartInput" placeholder="(월) 국어/박샘, 수학, 사회, 과학/이샘, 체육, 음악, 미술, 창체"></textarea>
+            <p style="font-size:0.75rem; color:#888; margin-top:5px;">* 예시: (월) 국어, 수학, 사회 ... (화) 체육, 음악 ...</p>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn-apply" onclick="update()"><i class="fas fa-magic"></i> 디자인 및 데이터 적용</button>
+            <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> 풀컬러 인쇄 / PDF 저장</button>
+        </div>
+    </div>
+
+    <div class="timetable-paper">
+        <div id="bgLayer"></div>
+        <div class="content-layer">
+            <div class="header">
+                <div class="class-meta" id="outMeta">5학년 1반 | 담임 선생님: 박사랑</div>
+                <div>
+                    <span class="emoji" id="outEmojiL">🌊</span>
+                    <h1 class="jua">주간 시간표</h1>
+                    <span class="emoji" id="outEmojiR">🐬</span>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 140px;">시간/교시</th>
+                        <th>월</th><th>화</th><th>수</th><th>목</th><th>금</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer>
+    Created by <a href="https://www.google.com/search?q=kstephullab.com" target="_blank">풀어쓰는 사회학</a>
+</footer>
+
+<script>
+    let db = JSON.parse(localStorage.getItem('v6_final_data')) || {
+        class: "5학년 1반", teacher: "박사랑", emojiL: "🌊", emojiR: "🐬", theme: "theme-blue",
+        start: "09:00", lesson: 40, break: 10, lunch: 50, lunchAfter: 4, opacity: 0.2, bg: "",
+        raw: "(월) 국어/박샘, 수학, 사회, 과학/이샘, 체육, 음악, 미술, 창체\n(화) 수학, 국어, 영어, 도덕, 실과, 실과, 창체, 창체\n(수) 영어, 수학, 국어, 체육, 사회, 창체\n(목) 국어, 수학, 사회, 과학, 영어, 창체, 창체, 동아리\n(금) 수학, 국어, 체육, 음악, 미술, 미술"
+    };
+
+    window.onload = () => {
+        initInputs();
+        update();
+
+        document.getElementById('bgFile').onchange = (e) => {
+            const reader = new FileReader();
+            reader.onload = (ev) => { db.bg = ev.target.result; update(); };
+            reader.readAsDataURL(e.target.files[0]);
+        };
+
+        document.getElementById('bgOpacity').oninput = (e) => {
+            db.opacity = e.target.value;
+            document.getElementById('bgLayer').style.opacity = db.opacity;
+            document.getElementById('opacityVal')?.innerText && (document.getElementById('opacityVal').innerText = db.opacity);
+        };
+    };
+
+    function initInputs() {
+        document.getElementById('classInfo').value = db.class;
+        document.getElementById('teacherName').value = db.teacher;
+        document.getElementById('emojiL').value = db.emojiL;
+        document.getElementById('emojiR').value = db.emojiR;
+        document.getElementById('themeSelect').value = db.theme;
+        document.getElementById('startTime').value = db.start;
+        document.getElementById('lesson').value = db.lesson;
+        document.getElementById('break').value = db.break;
+        document.getElementById('lunch').value = db.lunch;
+        document.getElementById('lunchAfter').value = db.lunchAfter;
+        document.getElementById('smartInput').value = db.raw;
+        document.getElementById('bgOpacity').value = db.opacity;
+        changeTheme(db.theme);
+    }
+
+    function changeTheme(val) {
+        document.body.className = val;
+        db.theme = val;
+    }
+
+    function update() {
+        db.class = document.getElementById('classInfo').value;
+        db.teacher = document.getElementById('teacherName').value;
+        db.emojiL = document.getElementById('emojiL').value;
+        db.emojiR = document.getElementById('emojiR').value;
+        db.start = document.getElementById('startTime').value;
+        db.lesson = parseInt(document.getElementById('lesson').value);
+        db.break = parseInt(document.getElementById('break').value);
+        db.lunch = parseInt(document.getElementById('lunch').value);
+        db.lunchAfter = parseInt(document.getElementById('lunchAfter').value);
+        db.raw = document.getElementById('smartInput').value;
+
+        document.getElementById('outMeta').textContent = `${db.class} | 담임 선생님: ${db.teacher}`;
+        document.getElementById('outEmojiL').textContent = db.emojiL;
+        document.getElementById('outEmojiR').textContent = db.emojiR;
+        if(db.bg) document.getElementById('bgLayer').style.backgroundImage = `url(${db.bg})`;
+        document.getElementById('bgLayer').style.opacity = db.opacity;
+
+        render();
+        localStorage.setItem('v6_final_data', JSON.stringify(db));
+    }
+
+    function render() {
+        const lines = db.raw.split('\n');
+        const week = [[], [], [], [], []];
+        lines.forEach(line => {
+            let idx = -1;
+            if(line.includes('(월)')) idx = 0; 
+else if(line.includes('(화)')) idx = 1;
+else if(line.includes('(수)')) idx = 2; 
+else if(line.includes('(목)')) idx = 3; 
+else if(line.includes('(금)')) idx = 4;
+            if(idx !== -1) {
+                const parts = line.split(')');
+                if(parts.length > 1) {
+                    week[idx] = parts[1].split(',').map(s => s.trim());
+                }
+            }
+        });
+
+        const maxRows = Math.min(10, Math.max(...week.map(d => d.length)));
+        const body = document.getElementById('tableBody');
+        body.innerHTML = '';
+        let curr = new Date(`2026-01-01T${db.start}:00`);
+
+        for(let i=0; i < maxRows; i++) {
+            // 점심시간 행 삽입 로직
+            if(i === db.lunchAfter) {
+                const ltr = document.createElement('tr');
+                ltr.className = 'lunch-row';
+                const lStart = formatTime(curr);
+                curr = new Date(curr.getTime() + db.lunch * 60000);
+                ltr.innerHTML = `<td class="time-label"><span>식사</span><small>${lStart}~${formatTime(curr)}</small></td><td colspan="5">🍴 맛있는 점심시간</td>`;
+                body.appendChild(ltr);
+            }
+
+            const tr = document.createElement('tr');
+            const sTime = formatTime(curr);
+            curr = new Date(curr.getTime() + db.lesson * 60000);
+            const eTime = formatTime(curr);
+
+            const timeTd = document.createElement('td');
+            timeTd.className = 'time-label';
+            timeTd.innerHTML = `<span>${i+1}교시</span><small>${sTime}-${eTime}</small>`;
+            tr.appendChild(timeTd);
+
+            for(let d=0; d<5; d++) {
+                const td = document.createElement('td');
+                const data = week[d][i] || '';
+                if(data) {
+                    const [s, t] = data.split('/');
+                    td.innerHTML = `<span class="subj">${s}</span>${t ? `<span class="prof">${t}</span>` : ''}`;
+                }
+                tr.appendChild(td);
+            }
+            body.appendChild(tr);
+            curr = new Date(curr.getTime() + db.break * 60000);
+        }
+        confetti({ particleCount: 80, spread: 60, origin: { y: 0.8 } });
+    }
+
+    function formatTime(d) { return d.toTimeString().substring(0, 5); }
+</script>
+</body>
+</html>

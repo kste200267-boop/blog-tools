@@ -132,16 +132,6 @@
         "통사2"
       ],
       "desc": "10년간 투자 의사결정을 하며 자산을 불리는 서바이벌 게임"
-    },
-    {
-      "slug": "eccc",
-      "file": "c-economy-eccc.html",
-      "title": "수요·공급 그래프 생성기 PRO (교사용)",
-      "desc": "",
-      "type": "웹교구",
-      "difficulty": "보통",
-      "duration": "15분",
-      "tags": []
     }
   ]
 }
