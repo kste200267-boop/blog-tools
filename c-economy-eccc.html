@@ -1,0 +1,1137 @@
+
+<html lang="ko">
+<head>
+  <meta charset="utf-8"></meta>
+  <meta content="width=device-width,initial-scale=1" name="viewport"></meta>
+  <title>수요·공급 그래프 생성기 PRO (교사용) | PNG 저장</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&amp;family=Noto+Sans+KR:wght@300;400;600;700&amp;display=swap" rel="stylesheet"></link>
+  <style>
+    :root{
+      --bg:#0b1220; --panel:#101a33; --card:#0f172a; --line:rgba(255,255,255,.10);
+      --text:rgba(255,255,255,.92); --muted:rgba(255,255,255,.70);
+      --primary:#7dd3fc; --accent:#a78bfa; --ok:#22c55e; --warn:#f59e0b; --danger:#fb7185;
+      --chip:rgba(255,255,255,.08);
+      --radius:18px;
+
+      --ink:#111827;
+      --grid:rgba(17,24,39,.10);
+      --gridLight:rgba(17,24,39,.06);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:"Noto Sans KR",system-ui,Segoe UI,Arial,sans-serif;
+      background:radial-gradient(1100px 700px at 20% 10%, rgba(125,211,252,.18), transparent 55%),
+                 radial-gradient(900px 600px at 80% 20%, rgba(167,139,250,.16), transparent 60%),
+                 var(--bg);
+      color:var(--text);
+    }
+    header{
+      padding:18px 18px 10px;
+      display:flex; gap:12px; align-items:flex-end; justify-content:space-between;
+      border-bottom:1px solid var(--line);
+      position:sticky; top:0; background:rgba(11,18,32,.72); backdrop-filter: blur(10px);
+      z-index:10;
+    }
+    .title{display:flex; flex-direction:column; gap:2px;}
+    .title h1{margin:0; font-family:"Jua",sans-serif; font-weight:400; letter-spacing:.2px; font-size:22px;}
+    .title small{color:var(--muted)}
+    .top-actions{display:flex; gap:10px; flex-wrap:wrap}
+    button, select, input[type="number"], input[type="text"], input[type="color"]{font:inherit;}
+
+    .btn{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:14px;
+      cursor:pointer;
+      display:inline-flex; gap:8px; align-items:center; justify-content:center;
+      box-shadow:0 10px 26px rgba(0,0,0,.22);
+      transition:.15s transform, .15s filter;
+      user-select:none;
+    }
+    .btn:hover{filter:brightness(1.06)}
+    .btn:active{transform:translateY(1px)}
+    .btn.primary{border-color:rgba(125,211,252,.35); background:linear-gradient(180deg, rgba(125,211,252,.22), rgba(125,211,252,.12));}
+    .btn.ok{border-color:rgba(34,197,94,.35); background:linear-gradient(180deg, rgba(34,197,94,.18), rgba(34,197,94,.10));}
+
+    .wrap{
+      display:grid;
+      grid-template-columns: 420px 1fr;
+      gap:14px;
+      padding:14px;
+      max-width:1400px;
+      margin:0 auto;
+    }
+    @media (max-width: 1100px){
+      .wrap{grid-template-columns:1fr;}
+      header{position:relative}
+    }
+
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:14px;
+      box-shadow:0 18px 40px rgba(0,0,0,.28);
+    }
+    .panel h2{
+      margin:0 0 10px; font-family:"Jua",sans-serif; font-weight:400;
+      font-size:16px; letter-spacing:.2px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+
+    .grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+    label{font-size:12px; color:var(--muted); display:flex; flex-direction:column; gap:6px; width:100%;}
+    .field{
+      display:flex; align-items:center; gap:8px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 10px;
+      position:relative;
+    }
+    .field > span{color:var(--muted); font-size:12px; white-space:nowrap}
+    input[type="number"], input[type="text"]{
+      width:100%;
+      border:none; outline:none;
+      background:transparent;
+      color:var(--text);
+      font-size:14px;
+    }
+
+    /* ✅ 셀렉트/옵션 글자 안보임 해결 */
+    .selectWrap{width:100%; position:relative;}
+    .selectWrap::after{
+      content:"▾";
+      position:absolute;
+      right:12px; top:50%;
+      transform:translateY(-50%);
+      color:rgba(255,255,255,.75);
+      pointer-events:none;
+      font-size:12px;
+    }
+    select{
+      width:100%;
+      border:none; outline:none;
+      background:transparent;
+      color:var(--text);
+      font-size:14px;
+      appearance:none; -webkit-appearance:none; -moz-appearance:none;
+      padding-right:28px;
+    }
+    option{background-color:#0f172a; color:rgba(255,255,255,.92);}
+    select:focus{outline:2px solid rgba(125,211,252,.35); outline-offset:2px; border-radius:10px;}
+
+    input[type="color"]{width:40px; height:28px; border:none; background:transparent; padding:0; cursor:pointer;}
+
+    .chip{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:7px 10px; border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.08);
+      font-size:12px; color:var(--muted);
+    }
+
+    .canvasWrap{display:flex; flex-direction:column; gap:10px;}
+    .canvasCard{
+      background:#ffffff;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+      box-shadow:0 18px 45px rgba(0,0,0,.35);
+    }
+    .canvasTop{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:10px 12px;
+      background:rgba(0,0,0,.68);
+      color:#fff;
+      font-size:12px;
+    }
+    .canvasTop .left{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+    .kbd{
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:11px; padding:3px 6px; border-radius:8px;
+      background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.20)
+    }
+    canvas{display:block; width:100%; height:auto; background:transparent;}
+
+    .note{color:var(--muted); font-size:12px; line-height:1.45; white-space:pre-line;}
+    .divider{height:1px; background:var(--line); margin:10px 0}
+    .miniActions{display:flex; gap:10px; flex-wrap:wrap}
+    .toast{
+      position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+      background:rgba(15,23,42,.92);
+      border:1px solid rgba(255,255,255,.12);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:14px;
+      box-shadow:0 20px 55px rgba(0,0,0,.45);
+      font-size:13px;
+      display:none;
+      z-index:999;
+      max-width:min(720px, calc(100% - 28px));
+      white-space:pre-line;
+    }
+    .toast.show{display:block}
+    .badge{
+      display:inline-flex; align-items:center; gap:6px;
+      padding:6px 10px; border-radius:999px;
+      border:1px solid var(--line); background:rgba(255,255,255,.05);
+      font-size:12px; color:var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title">
+      <h1>수요·공급 그래프 생성기 PRO (교사용)</h1>
+      <small>정부 개입(상한·하한·세금·보조금) + 배경(흰/투명) + 선 색상 + CS/PS 잉여(면적) + 정사각/가로 PNG 저장</small>
+    </div>
+    <div class="top-actions">
+      <button class="btn primary" id="btnRender">🧠 계산·그리기</button>
+      <button class="btn ok" id="btnDownload">🖼️ PNG 저장</button>
+      <button class="btn" id="btnReset">↩️ 기본값</button>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <section class="panel">
+      <h2>① 곡선(직선) 설정 <span class="badge">P = a + bQ</span></h2>
+
+      <div class="grid">
+        <label>수요(D) 식
+          <div class="field">
+            <span>a</span><input id="Da" step="0.1" type="number" />
+            <span>b</span><input id="Db" step="0.1" type="number" />
+          </div>
+          <div class="note">예) D: P = 100 - 2Q → a=100, b=-2</div>
+        </label>
+
+        <label>공급(S) 식
+          <div class="field">
+            <span>a</span><input id="Sa" step="0.1" type="number" />
+            <span>b</span><input id="Sb" step="0.1" type="number" />
+          </div>
+          <div class="note">예) S: P = 10 + 1Q → a=10, b=1</div>
+        </label>
+
+        <label>축 범위(표시용)
+          <div class="field">
+            <span>Qmax</span><input id="Qmax" step="1" type="number" />
+            <span>Pmax</span><input id="Pmax" step="1" type="number" />
+          </div>
+          <div class="note">시험 문제용: 범위 고정하면 그림이 “깔끔”</div>
+        </label>
+
+        <label>눈금(격자)
+          <div class="field">
+            <span>Q step</span><input id="Qstep" step="1" type="number" />
+            <span>P step</span><input id="Pstep" step="1" type="number" />
+          </div>
+          <div class="note">보통 5~10 추천</div>
+        </label>
+      </div>
+
+      <div class="divider"></div>
+
+      <h2>② 시각 설정 <span class="badge">시험지 스타일</span></h2>
+      <div class="grid">
+        <label>배경
+          <div class="field"><div class="selectWrap">
+            <select id="bgMode">
+              <option value="white">흰 배경 (시험지/프린트)</option>
+              <option value="transparent">투명 배경 (문서/슬라이드 합성)</option>
+            </select>
+          </div></div>
+        </label>
+
+        <label>표시 요소
+          <div class="field"><div class="selectWrap">
+            <select id="showPack">
+              <option value="minimal">미니멀(축+곡선+균형점)</option>
+              <option value="standard">표준(격자+라벨+균형선)</option>
+              <option value="exam">시험용(격자 최소+라벨 최소)</option>
+            </select>
+          </div></div>
+        </label>
+
+        <label>선 색상(수요/공급/정부선)
+          <div class="row">
+            <span class="chip">D <input id="colD" type="color" /></span>
+            <span class="chip">S <input id="colS" type="color" /></span>
+            <span class="chip">정부 <input id="colGov" type="color" /></span>
+          </div>
+        </label>
+
+        <label>선 굵기/라벨
+          <div class="field">
+            <span>굵기</span><input id="lineW" step="0.5" type="number" />
+            <span>글자</span>
+            <div class="selectWrap" style="max-width: 110px;">
+              <select id="fontSize">
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option selected="" value="14">14</option>
+                <option value="16">16</option>
+              </select>
+            </div>
+          </div>
+        </label>
+      </div>
+
+      <div class="divider"></div>
+
+      <h2>③ 정부 개입(경제학적 경우) <span class="badge">상한·하한·세금·보조금</span></h2>
+
+      <label>개입 종류
+        <div class="field"><div class="selectWrap">
+          <select id="policyType">
+            <option value="none">없음(자유시장)</option>
+            <option value="ceiling">가격 상한제(Price Ceiling)</option>
+            <option value="floor">가격 하한제(Price Floor)</option>
+            <option value="tax">단위당 세금(Per-unit Tax)</option>
+            <option value="subsidy">단위당 보조금(Per-unit Subsidy)</option>
+          </select>
+        </div></div>
+      </label>
+
+      <div class="grid" style="margin-top: 10px;">
+        <label id="policyPriceWrap">정부가격(상한/하한)
+          <div class="field"><span>P<sub>g</sub></span><input id="policyPrice" step="0.1" type="number" /></div>
+          <div class="note">상한: P<sub>g</sub> &lt; P* → 초과수요 / 하한: P<sub>g</sub> &gt; P* → 초과공급</div>
+        </label>
+
+        <label id="policyDeltaWrap">세금/보조금 크기(단위당)
+          <div class="field"><span>t / s</span><input id="policyDelta" step="0.1" type="number" /></div>
+          <div class="note">세금: 공급곡선 ↑ / 보조금: 공급곡선 ↓</div>
+        </label>
+
+        <label>표시 옵션
+          <div class="field"><div class="selectWrap">
+            <select id="policyShow">
+              <option value="auto">자동(의미 있을 때만)</option>
+              <option value="always">항상 표시</option>
+              <option value="off">표시 안 함</option>
+            </select>
+          </div></div>
+        </label>
+
+        <label>영역 음영/수치
+          <div class="field"><div class="selectWrap">
+            <select id="shadeMode">
+              <option value="off">없음(시험 그림용)</option>
+              <option value="csps">CS/PS(잉여) 표시 + 수치</option>
+              <option value="dwltax">세수/보조금 밴드(간단)</option>
+            </select>
+          </div></div>
+          <div class="note">※ 잉여 수치는 “직선” 기준 삼각형 면적</div>
+        </label>
+      </div>
+
+      <div class="divider"></div>
+
+      <h2>④ PNG 저장 설정 <span class="badge">정사각/가로형</span></h2>
+      <div class="grid">
+        <label>저장 비율/크기
+          <div class="field"><div class="selectWrap">
+            <select id="exportPreset">
+              <option value="square_1024">정사각 1024×1024</option>
+              <option value="square_1500">정사각 1500×1500</option>
+              <option selected="" value="land_1280">가로형 1280×720</option>
+              <option value="land_1600">가로형 1600×900</option>
+              <option value="land_1920">가로형 1920×1080</option>
+            </select>
+          </div></div>
+        </label>
+
+        <label>파일명(자동 생성 가능)
+          <div class="field"><input id="fileName" placeholder="예: demand_supply_csps" type="text" /></div>
+          <div class="note">비우면 자동 생성</div>
+        </label>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="miniActions">
+        <button class="btn" id="btnCopySummary">📋 결과 요약 복사</button>
+        <button class="btn" id="btnExamHide">🧪 시험용 모드(힌트 최소화)</button>
+      </div>
+    </section>
+
+    <section class="canvasWrap">
+      <div class="canvasCard">
+        <div class="canvasTop">
+          <div class="left">
+            <span class="kbd">미리보기</span>
+            <span class="kbd" id="badgePolicy">자유시장</span>
+            <span class="kbd" id="badgeEQ">P*=?, Q*=?</span>
+            <span class="kbd" id="badgeSurplus">CS=?, PS=?</span>
+          </div>
+          <div class="right">
+            <span class="kbd">축: P(가격) · Q(수량)</span>
+          </div>
+        </div>
+        <canvas height="760" id="preview" width="1100"></canvas>
+      </div>
+
+      <div class="panel">
+        <h2>결과(자동 계산)</h2>
+        <div class="row" style="gap: 8px; margin-bottom: 8px;">
+          <span class="chip" id="outEq">균형: P*=?, Q*=?</span>
+          <span class="chip" id="outPolicy">정부개입: -</span>
+          <span class="chip" id="outQty">거래량(개입 시): -</span>
+          <span class="chip" id="outSurplus">잉여: CS=?, PS=?</span>
+        </div>
+        <div class="note" id="outText">“계산·그리기”를 누르면 결과가 정리됩니다.</div>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  const $ = (id)=>document.getElementById(id);
+  const toastEl = $("toast");
+  const toast = (msg) => {
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    clearTimeout(toastEl._t);
+    toastEl._t = setTimeout(()=>toastEl.classList.remove("show"), 1800);
+  };
+
+  const clamp = (v,min,max)=>Math.max(min,Math.min(max,v));
+  const isFiniteNum = (x)=>Number.isFinite(x) && !Number.isNaN(x);
+
+  function solveIntersection(a1,b1,a2,b2){
+    const denom = (b1 - b2);
+    if (Math.abs(denom) < 1e-9) return null;
+    const Q = (a2 - a1) / denom;
+    const P = a1 + b1*Q;
+    return {Q, P};
+  }
+  function QatP(a,b,P){
+    if (Math.abs(b) < 1e-9) return null;
+    return (P - a)/b;
+  }
+  const PatQ = (a,b,Q)=> a + b*Q;
+
+  // ✅ 잉여(직선 기준 삼각형 면적)
+  // CS = 1/2 * Q* * (P_dIntercept - P*)
+  // PS = 1/2 * Q* * (P* - P_sIntercept)
+  function calcCSPS(Da,Db,Sa,Sb,Qe,Pe){
+    const Pd0 = PatQ(Da,Db,0); // demand intercept at Q=0
+    const Ps0 = PatQ(Sa,Sb,0); // supply intercept at Q=0
+    const Q = Math.max(0, Qe);
+    const CS = 0.5 * Q * Math.max(0, (Pd0 - Pe));
+    const PS = 0.5 * Q * Math.max(0, (Pe - Ps0));
+    return {CS, PS, Pd0, Ps0};
+  }
+
+  const defaults = {
+    Da: 100, Db: -2,
+    Sa: 10,  Sb:  1,
+    Qmax: 60, Pmax: 120,
+    Qstep: 10, Pstep: 20,
+    bgMode: "white",
+    showPack: "standard",
+    colD: "#2563eb",
+    colS: "#dc2626",
+    colGov:"#111827",
+    lineW: 3,
+    fontSize: 14,
+    policyType: "none",
+    policyPrice: 60,
+    policyDelta: 15,
+    policyShow: "auto",
+    shadeMode: "off",
+    exportPreset: "land_1280",
+    fileName: ""
+  };
+
+  const inputs = {
+    Da:$("Da"), Db:$("Db"), Sa:$("Sa"), Sb:$("Sb"),
+    Qmax:$("Qmax"), Pmax:$("Pmax"), Qstep:$("Qstep"), Pstep:$("Pstep"),
+    bgMode:$("bgMode"), showPack:$("showPack"),
+    colD:$("colD"), colS:$("colS"), colGov:$("colGov"),
+    lineW:$("lineW"), fontSize:$("fontSize"),
+    policyType:$("policyType"), policyPrice:$("policyPrice"), policyDelta:$("policyDelta"),
+    policyShow:$("policyShow"), shadeMode:$("shadeMode"),
+    exportPreset:$("exportPreset"), fileName:$("fileName")
+  };
+
+  function setDefaults(){
+    for (const k in defaults){
+      if (!inputs[k]) continue;
+      inputs[k].value = defaults[k];
+    }
+    policyUI();
+  }
+
+  function policyUI(){
+    const t = inputs.policyType.value;
+    $("policyPriceWrap").style.display = (t==="ceiling" || t==="floor") ? "" : "none";
+    $("policyDeltaWrap").style.display = (t==="tax" || t==="subsidy") ? "" : "none";
+  }
+
+  inputs.policyType.addEventListener("change", ()=>{policyUI(); render();});
+  inputs.bgMode.addEventListener("change", ()=>{render();});
+  inputs.showPack.addEventListener("change", ()=>{render();});
+
+  [
+    "Da","Db","Sa","Sb","Qmax","Pmax","Qstep","Pstep",
+    "colD","colS","colGov","lineW","fontSize",
+    "policyPrice","policyDelta","policyShow","shadeMode"
+  ].forEach(id=>{
+    $(id).addEventListener("input", ()=>render());
+  });
+
+  const canvas = $("preview");
+  const ctx = canvas.getContext("2d");
+
+  function drawAll(targetCtx, W, H, opts){
+    const {
+      bgMode, showPack, fontSize, lineW,
+      colD, colS, colGov,
+      Qmax, Pmax, Qstep, Pstep,
+      Da, Db, Sa, Sb,
+      policyType, policyPrice, policyDelta,
+      policyShow, shadeMode
+    } = opts;
+
+    const pad = Math.round(Math.min(W,H)*0.10);
+    const left = pad, top = pad, right = W - pad, bottom = H - pad;
+    const plotW = right - left, plotH = bottom - top;
+
+    const x = (Q)=> left + (Q / Qmax) * plotW;
+    const y = (P)=> bottom - (P / Pmax) * plotH;
+
+    targetCtx.clearRect(0,0,W,H);
+    if (bgMode === "white"){
+      targetCtx.save();
+      targetCtx.fillStyle = "#ffffff";
+      targetCtx.fillRect(0,0,W,H);
+      targetCtx.restore();
+    }
+
+    const fs = parseInt(fontSize,10);
+    const ink = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim() || "#111827";
+    const grid = getComputedStyle(document.documentElement).getPropertyValue("--grid").trim() || "rgba(17,24,39,.10)";
+    const gridLight = getComputedStyle(document.documentElement).getPropertyValue("--gridLight").trim() || "rgba(17,24,39,.06)";
+
+    const pack = showPack;
+    const showGrid = (pack==="standard");
+    const showFewGrid = (pack==="exam");
+    const showLabels = (pack!=="exam");
+    const showEqGuides = (pack==="standard");
+
+    const drawGrid = () => {
+      targetCtx.save();
+      targetCtx.strokeStyle = grid;
+      targetCtx.lineWidth = 1;
+      for (let q=0; q<=Qmax+1e-9; q+=Qstep){
+        const xx = x(q);
+        targetCtx.beginPath(); targetCtx.moveTo(xx, top); targetCtx.lineTo(xx, bottom); targetCtx.stroke();
+      }
+      for (let p=0; p<=Pmax+1e-9; p+=Pstep){
+        const yy = y(p);
+        targetCtx.beginPath(); targetCtx.moveTo(left, yy); targetCtx.lineTo(right, yy); targetCtx.stroke();
+      }
+      targetCtx.restore();
+    };
+
+    const drawFewGrid = () => {
+      targetCtx.save();
+      targetCtx.strokeStyle = gridLight;
+      targetCtx.lineWidth = 1;
+      const qs = [0, Math.round(Qmax/2), Qmax].filter((v,i,a)=>a.indexOf(v)===i);
+      const ps = [0, Math.round(Pmax/2), Pmax].filter((v,i,a)=>a.indexOf(v)===i);
+      qs.forEach(q=>{
+        const xx = x(q);
+        targetCtx.beginPath(); targetCtx.moveTo(xx, top); targetCtx.lineTo(xx, bottom); targetCtx.stroke();
+      });
+      ps.forEach(p=>{
+        const yy = y(p);
+        targetCtx.beginPath(); targetCtx.moveTo(left, yy); targetCtx.lineTo(right, yy); targetCtx.stroke();
+      });
+      targetCtx.restore();
+    };
+
+    if (showGrid) drawGrid();
+    else if (showFewGrid) drawFewGrid();
+
+    // axes
+    targetCtx.save();
+    targetCtx.strokeStyle = ink;
+    targetCtx.lineWidth = 2;
+    targetCtx.beginPath();
+    targetCtx.moveTo(left, top);
+    targetCtx.lineTo(left, bottom);
+    targetCtx.lineTo(right, bottom);
+    targetCtx.stroke();
+    targetCtx.restore();
+
+    // axis labels
+    targetCtx.save();
+    targetCtx.fillStyle = ink;
+    targetCtx.font = `${fs+1}px "Noto Sans KR", sans-serif`;
+    targetCtx.fillText("P(가격)", left - 6, top - 12);
+    targetCtx.fillText("Q(수량)", right - 52, bottom + 28);
+    targetCtx.restore();
+
+    // ticks
+    const drawTicks = () => {
+      targetCtx.save();
+      targetCtx.fillStyle = "rgba(17,24,39,.75)";
+      targetCtx.font = `${fs-1}px "Noto Sans KR", sans-serif`;
+      for (let q=0; q<=Qmax+1e-9; q+=Qstep){
+        const xx = x(q);
+        targetCtx.beginPath(); targetCtx.moveTo(xx, bottom); targetCtx.lineTo(xx, bottom+6);
+        targetCtx.strokeStyle = "rgba(17,24,39,.65)";
+        targetCtx.lineWidth = 1.5;
+        targetCtx.stroke();
+        if (showLabels){
+          const s = String(q);
+          targetCtx.fillText(s, xx - (s.length*3), bottom + 22);
+        }
+      }
+      for (let p=0; p<=Pmax+1e-9; p+=Pstep){
+        const yy = y(p);
+        targetCtx.beginPath(); targetCtx.moveTo(left-6, yy); targetCtx.lineTo(left, yy);
+        targetCtx.strokeStyle = "rgba(17,24,39,.65)";
+        targetCtx.lineWidth = 1.5;
+        targetCtx.stroke();
+        if (showLabels){
+          const s = String(p);
+          targetCtx.fillText(s, left - 28 - (s.length-1)*3, yy + 4);
+        }
+      }
+      targetCtx.restore();
+    };
+    if (pack!=="minimal") drawTicks();
+
+    const eq0 = solveIntersection(Da,Db,Sa,Sb);
+
+    let effectiveSa = Sa, effectiveSb = Sb;
+    let eq1 = eq0;
+    let policyInfo = {type:policyType, binding:false, Qtrade:null, Ptrade:null, shortage:null, surplus:null, taxRevenue:null};
+
+    if (policyType==="tax"){
+      effectiveSa = Sa + policyDelta;
+      eq1 = solveIntersection(Da,Db,effectiveSa,Sb);
+      policyInfo.taxRevenue = (eq1 && isFiniteNum(eq1.Q)) ? Math.max(0, eq1.Q) * policyDelta : null;
+    } else if (policyType==="subsidy"){
+      effectiveSa = Sa - policyDelta;
+      eq1 = solveIntersection(Da,Db,effectiveSa,Sb);
+    }
+
+    if ((policyType==="ceiling" || policyType==="floor") && eq0){
+      const Pg = policyPrice;
+      if (policyType==="ceiling"){
+        policyInfo.binding = (Pg < eq0.P);
+        if (policyInfo.binding){
+          const Qd = QatP(Da,Db,Pg);
+          const Qs = QatP(Sa,Sb,Pg);
+          if (isFiniteNum(Qd) && isFiniteNum(Qs)){
+            policyInfo.shortage = Math.max(0, Qd - Qs);
+            policyInfo.Qtrade = Math.max(0, Math.min(Qd, Qs));
+            policyInfo.Ptrade = Pg;
+          }
+        }
+      } else {
+        policyInfo.binding = (Pg > eq0.P);
+        if (policyInfo.binding){
+          const Qd = QatP(Da,Db,Pg);
+          const Qs = QatP(Sa,Sb,Pg);
+          if (isFiniteNum(Qd) && isFiniteNum(Qs)){
+            policyInfo.surplus = Math.max(0, Qs - Qd);
+            policyInfo.Qtrade = Math.max(0, Math.min(Qd, Qs));
+            policyInfo.Ptrade = Pg;
+          }
+        }
+      }
+    }
+
+    function drawLine(a,b,color,label){
+      const P0 = PatQ(a,b,0);
+      const P1 = PatQ(a,b,Qmax);
+      targetCtx.save();
+      targetCtx.strokeStyle = color;
+      targetCtx.lineWidth = lineW;
+      targetCtx.lineCap="round"; targetCtx.lineJoin="round";
+      targetCtx.beginPath();
+      targetCtx.moveTo(x(0), y(P0));
+      targetCtx.lineTo(x(Qmax), y(P1));
+      targetCtx.stroke();
+      if (pack!=="exam"){
+        const qLab = Qmax*0.72;
+        const pLab = PatQ(a,b,qLab);
+        targetCtx.fillStyle = color;
+        targetCtx.font = `${fs}px "Noto Sans KR", sans-serif`;
+        targetCtx.fillText(label, x(qLab)+8, y(pLab)-8);
+      }
+      targetCtx.restore();
+    }
+
+    drawLine(Da,Db,colD,"D");
+
+    if (policyType==="tax" || policyType==="subsidy"){
+      const show = (policyShow==="always") || (policyShow==="auto");
+      if (show){
+        targetCtx.save();
+        targetCtx.globalAlpha = 0.35;
+        targetCtx.setLineDash([6,6]);
+        drawLine(Sa,Sb,colS,"S(원)");
+        targetCtx.restore();
+      }
+      drawLine(effectiveSa,Sb,colS,"S");
+    } else {
+      drawLine(Sa,Sb,colS,"S");
+    }
+
+    const eq = (policyType==="tax" || policyType==="subsidy") ? eq1 : eq0;
+    const inPlot = (Q,P)=> isFiniteNum(Q)&&isFiniteNum(P) && Q>=-1e-6 && Q<=Qmax+1e-6 && P>=-1e-6 && P<=Pmax+1e-6;
+
+    function drawPoint(Q,P,label){
+      targetCtx.save();
+      targetCtx.fillStyle = ink;
+      const r = Math.max(4, Math.round(lineW*1.2));
+      targetCtx.beginPath();
+      targetCtx.arc(x(Q), y(P), r, 0, Math.PI*2);
+      targetCtx.fill();
+      targetCtx.restore();
+
+      if (pack!=="exam"){
+        targetCtx.save();
+        targetCtx.fillStyle = ink;
+        targetCtx.font = `${fs}px "Noto Sans KR", sans-serif`;
+        targetCtx.fillText(label, x(Q)+10, y(P)-10);
+        targetCtx.restore();
+      }
+    }
+
+    if (eq && inPlot(eq.Q, eq.P)){
+      drawPoint(eq.Q, eq.P, "E");
+      if (showEqGuides){
+        targetCtx.save();
+        targetCtx.strokeStyle = "rgba(17,24,39,.35)";
+        targetCtx.lineWidth = 1.5;
+        targetCtx.setLineDash([4,4]);
+        targetCtx.beginPath(); targetCtx.moveTo(x(eq.Q), bottom); targetCtx.lineTo(x(eq.Q), y(eq.P)); targetCtx.stroke();
+        targetCtx.beginPath(); targetCtx.moveTo(left, y(eq.P)); targetCtx.lineTo(x(eq.Q), y(eq.P)); targetCtx.stroke();
+        targetCtx.restore();
+      }
+    }
+
+    const shouldShowGovLine = (() => {
+      if (policyType!=="ceiling" && policyType!=="floor") return false;
+      if (policyShow==="off") return false;
+      if (policyShow==="always") return true;
+      return policyInfo.binding;
+    })();
+
+    if (shouldShowGovLine){
+      targetCtx.save();
+      targetCtx.strokeStyle = colGov;
+      targetCtx.lineWidth = 2;
+      targetCtx.setLineDash([10,6]);
+      const Pg = policyPrice;
+      targetCtx.beginPath();
+      targetCtx.moveTo(left, y(Pg));
+      targetCtx.lineTo(right, y(Pg));
+      targetCtx.stroke();
+      targetCtx.setLineDash([]);
+      if (pack!=="exam"){
+        targetCtx.fillStyle = colGov;
+        targetCtx.fillText(policyType==="ceiling" ? "Pᶜ" : "Pᶠ", right-36, y(Pg)-6);
+      }
+      targetCtx.restore();
+    }
+
+    // ✅ 잉여 계산 & 음영(선택)
+    let CS=null, PS=null, Pd0=null, Ps0=null;
+    if (eq && isFiniteNum(eq.Q) && isFiniteNum(eq.P)){
+      const sur = calcCSPS(Da,Db,effectiveSa,effectiveSb,eq.Q,eq.P);
+      CS = sur.CS; PS = sur.PS; Pd0=sur.Pd0; Ps0=sur.Ps0;
+
+      function fillPoly(points, alpha, color){
+        targetCtx.save();
+        targetCtx.globalAlpha = alpha;
+        targetCtx.fillStyle = color;
+        targetCtx.beginPath();
+        points.forEach((pt,i)=>{
+          const [Q,P] = pt;
+          if (i===0) targetCtx.moveTo(x(Q), y(P));
+          else targetCtx.lineTo(x(Q), y(P));
+        });
+        targetCtx.closePath();
+        targetCtx.fill();
+        targetCtx.restore();
+      }
+
+      if (shadeMode==="csps" && inPlot(eq.Q, eq.P)){
+        const Qe = clamp(eq.Q, 0, Qmax);
+        const Pe = clamp(eq.P, 0, Pmax);
+        const Pd0c = clamp(Pd0, 0, Pmax);
+        const Ps0c = clamp(Ps0, 0, Pmax);
+
+        // CS triangle: (0,Pd0) - (Qe,Pe) - (0,Pe)
+        fillPoly([[0,Pd0c],[Qe,Pe],[0,Pe]], 0.12, "#60a5fa");
+        // PS triangle: (0,Ps0) - (Qe,Pe) - (0,Pe)
+        fillPoly([[0,Ps0c],[Qe,Pe],[0,Pe]], 0.12, "#fb7185");
+
+        if (pack!=="exam"){
+          targetCtx.save();
+          targetCtx.fillStyle = "rgba(17,24,39,.70)";
+          targetCtx.font = `${fs}px "Noto Sans KR", sans-serif`;
+          targetCtx.fillText("CS", x(Qe*0.30), y((Pd0c+Pe)/2));
+          targetCtx.fillText("PS", x(Qe*0.30), y((Ps0c+Pe)/2));
+          targetCtx.restore();
+        }
+      }
+    }
+
+    if (pack==="standard"){
+      targetCtx.save();
+      targetCtx.fillStyle = "rgba(17,24,39,.85)";
+      targetCtx.font = `${fs+2}px "Noto Sans KR", sans-serif`;
+      targetCtx.fillText("수요·공급", left, top - 34);
+      targetCtx.restore();
+    }
+
+    return {eq0, eq1, effectiveSa, effectiveSb, policyInfo, eqActive:eq, CS, PS};
+  }
+
+  function getOpts(){
+    const toN = (el)=> Number(el.value);
+    const opts = {
+      Da: toN(inputs.Da), Db: toN(inputs.Db),
+      Sa: toN(inputs.Sa), Sb: toN(inputs.Sb),
+      Qmax: toN(inputs.Qmax), Pmax: toN(inputs.Pmax),
+      Qstep: toN(inputs.Qstep), Pstep: toN(inputs.Pstep),
+      bgMode: inputs.bgMode.value,
+      showPack: inputs.showPack.value,
+      colD: inputs.colD.value,
+      colS: inputs.colS.value,
+      colGov: inputs.colGov.value,
+      lineW: toN(inputs.lineW),
+      fontSize: inputs.fontSize.value,
+      policyType: inputs.policyType.value,
+      policyPrice: toN(inputs.policyPrice),
+      policyDelta: toN(inputs.policyDelta),
+      policyShow: inputs.policyShow.value,
+      shadeMode: inputs.shadeMode.value
+    };
+    if (!isFiniteNum(opts.Qmax) || opts.Qmax<=0) opts.Qmax = 50;
+    if (!isFiniteNum(opts.Pmax) || opts.Pmax<=0) opts.Pmax = 100;
+    if (!isFiniteNum(opts.Qstep) || opts.Qstep<=0) opts.Qstep = Math.max(5, Math.round(opts.Qmax/5));
+    if (!isFiniteNum(opts.Pstep) || opts.Pstep<=0) opts.Pstep = Math.max(5, Math.round(opts.Pmax/5));
+    if (!isFiniteNum(opts.lineW) || opts.lineW<=0) opts.lineW = 3;
+    return opts;
+  }
+
+  function fmt(n){
+    if (!isFiniteNum(n)) return "?";
+    const a = Math.abs(n);
+    if (a>=1000) return n.toFixed(0);
+    if (a>=100) return n.toFixed(1);
+    if (a>=10) return n.toFixed(2);
+    return n.toFixed(2);
+  }
+
+  function updateOutputs(drawRes, opts){
+    const {eq0, eq1, policyInfo, eqActive, CS, PS} = drawRes;
+
+    const typeLabel = {
+      none:"자유시장", ceiling:"가격 상한제", floor:"가격 하한제", tax:"단위당 세금", subsidy:"단위당 보조금"
+    }[opts.policyType] || "자유시장";
+    $("badgePolicy").textContent = typeLabel;
+
+    const eqShow = eqActive;
+    const eqText = (eqShow && isFiniteNum(eqShow.P) && isFiniteNum(eqShow.Q))
+      ? `P*=${fmt(eqShow.P)}, Q*=${fmt(eqShow.Q)}`
+      : `P*=?, Q*=?`;
+    $("badgeEQ").textContent = eqText;
+    $("outEq").textContent = `균형: ${eqText}`;
+
+    // 잉여
+    const cspsText = (opts.shadeMode==="csps" && isFiniteNum(CS) && isFiniteNum(PS))
+      ? `CS=${fmt(CS)}, PS=${fmt(PS)}`
+      : `CS=?, PS=?`;
+    $("badgeSurplus").textContent = cspsText;
+    $("outSurplus").textContent = `잉여: ${cspsText}`;
+
+    let policyText = "정부개입: 없음";
+    let tradeText = "거래량(개입 시): -";
+
+    if (opts.policyType==="ceiling" || opts.policyType==="floor"){
+      const Pg = opts.policyPrice;
+      if (!eq0){
+        policyText = `${typeLabel}: 교점 없음(평행)`;
+      } else {
+        const bind = policyInfo.binding;
+        policyText = `${typeLabel}: P_g=${fmt(Pg)} (${bind ? "구속" : "비구속"})`;
+      }
+    }
+
+    if (opts.policyType==="tax" || opts.policyType==="subsidy"){
+      const d = opts.policyDelta;
+      const eq = eq1;
+      policyText = `${typeLabel}: ${opts.policyType==="tax" ? "t" : "s"}=${fmt(d)}`;
+      if (eq && isFiniteNum(eq.Q) && isFiniteNum(eq.P)){
+        tradeText = `새 균형: P=${fmt(eq.P)}, Q=${fmt(eq.Q)}`;
+      }
+      if (opts.policyType==="tax" && isFiniteNum(policyInfo.taxRevenue)){
+        tradeText += ` · 세수≈${fmt(policyInfo.taxRevenue)}`;
+      }
+    }
+
+    $("outPolicy").textContent = policyText;
+    $("outQty").textContent = tradeText;
+
+    $("outText").textContent =
+`• 잉여(CS/PS) 수치는 “직선 수요·공급” 기준 삼각형 면적입니다.
+• 시험 그림이면: 표시 요소=시험용 + 영역 음영=없음(힌트 최소화) 추천.
+• 수업 설명이면: 영역 음영=CS/PS로 바꾸면 시각적으로 바로 잡힙니다.`;
+
+    const summary = [
+      `D: P = ${fmt(opts.Da)} + (${fmt(opts.Db)})Q`,
+      `S: P = ${fmt(opts.Sa)} + (${fmt(opts.Sb)})Q`,
+      `범위: Qmax=${fmt(opts.Qmax)}, Pmax=${fmt(opts.Pmax)}`,
+      `균형: ${eqText}`,
+      policyText,
+      tradeText,
+      (opts.shadeMode==="csps" ? `잉여: ${cspsText}` : `잉여: (표시 안 함)`)
+    ].join("\n");
+    $("btnCopySummary").dataset.summary = summary;
+  }
+
+  function render(){
+    const opts = getOpts();
+    const res = drawAll(ctx, canvas.width, canvas.height, opts);
+    updateOutputs(res, opts);
+  }
+
+  function parsePreset(p){
+    const [shape,size] = p.split("_");
+    if (shape==="square"){
+      const s = parseInt(size,10);
+      return {w:s, h:s, label:`${s}x${s}`};
+    }
+    if (shape==="land"){
+      const w = parseInt(size,10);
+      const map = {1280:720, 1600:900, 1920:1080};
+      const h = map[w] || Math.round(w*9/16);
+      return {w, h, label:`${w}x${h}`};
+    }
+    return {w:1280, h:720, label:"1280x720"};
+  }
+
+  function buildFileName(opts){
+    const base = inputs.fileName.value.trim();
+    if (base) return base.replace(/[\\/:*?"<>|]/g,"-");
+    const t = opts.policyType;
+    const d = new Date();
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth()+1).padStart(2,"0");
+    const dd = String(d.getDate()).padStart(2,"0");
+    return `수요공급_${t}_${yyyy}-${mm}-${dd}`;
+  }
+
+  function downloadPNG(){
+    const opts = getOpts();
+    const {w,h,label} = parsePreset(inputs.exportPreset.value);
+
+    const off = document.createElement("canvas");
+    off.width = w; off.height = h;
+    const octx = off.getContext("2d");
+
+    drawAll(octx, w, h, opts);
+
+    const url = off.toDataURL("image/png");
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = buildFileName(opts) + `_${label}` + (opts.bgMode==="transparent" ? "_투명" : "_흰배경") + ".png";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    toast(`PNG 저장 완료\n${a.download}`);
+  }
+
+  $("btnRender").addEventListener("click", ()=>{ render(); toast("계산·그리기 완료"); });
+  $("btnDownload").addEventListener("click", ()=>{
+    const opts = getOpts();
+    if (Math.abs(opts.Db - opts.Sb) < 1e-9){
+      toast("⚠️ D와 S가 평행일 수 있어요(교점 없음).\n그래도 저장은 가능합니다.");
+    }
+    downloadPNG();
+  });
+  $("btnReset").addEventListener("click", ()=>{ setDefaults(); render(); toast("기본값으로 초기화"); });
+
+  $("btnCopySummary").addEventListener("click", async ()=>{
+    const txt = $("btnCopySummary").dataset.summary || "";
+    if (!txt){ toast("요약이 아직 없어요. 먼저 그려주세요."); return; }
+    try{
+      await navigator.clipboard.writeText(txt);
+      toast("결과 요약 복사됨");
+    }catch(e){
+      const ta = document.createElement("textarea");
+      ta.value = txt; document.body.appendChild(ta);
+      ta.select(); document.execCommand("copy"); ta.remove();
+      toast("결과 요약 복사됨");
+    }
+  });
+
+  $("btnExamHide").addEventListener("click", ()=>{
+    $("showPack").value = "exam";
+    $("shadeMode").value = "off";
+    $("policyShow").value = "off";
+    render();
+    toast("시험용 모드 적용(힌트 최소화)");
+  });
+
+  window.addEventListener("keydown", (e)=>{
+    const isMac = navigator.platform.toUpperCase().includes("MAC");
+    if ((isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase()==="s"){
+      e.preventDefault();
+      downloadPNG();
+    }
+  });
+
+  setDefaults();
+  render();
+})();
+</script>
+</body>
+</html>
+<button id="btnOpenGuide" style="
+  position: fixed; bottom: 20px; right: 20px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white; border: 1px solid rgba(255,255,255,0.2);
+  padding: 12px 20px; border-radius: 30px;
+  font-family: 'Jua', sans-serif; font-size: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  cursor: pointer; z-index: 2000;
+  display: flex; align-items: center; gap: 8px;
+  transition: transform 0.2s, filter 0.2s;
+">
+  📘 가이드 & 제작 동기
+</button>
+
+<div id="guideModal" style="
+  display: none; opacity: 0; transition: opacity 0.3s ease;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
+  z-index: 3000; align-items: center; justify-content: center;
+  padding: 20px;
+">
+  <div style="
+    background: #1e293b; border: 1px solid rgba(255,255,255,0.1);
+    width: 100%; max-width: 800px; max-height: 90vh;
+    border-radius: 20px; box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    display: flex; flex-direction: column; overflow: hidden;
+    transform: translateY(20px); transition: transform 0.3s ease;
+    animation: slideUp 0.3s forwards;
+  ">
+    <div style="
+      padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(255,255,255,0.03);
+    ">
+      <h2 style="margin:0; font-family:'Jua'; color:white; font-size:20px;">
+        🎓 제작 동기 및 교육적 활용 가이드
+      </h2>
+      <button id="btnCloseGuide" style="
+        background: transparent; border: none; color: rgba(255,255,255,0.6);
+        font-size: 24px; cursor: pointer; line-height: 1;
+      ">×</button>
+    </div>
+
+    <div style="
+      padding: 24px; overflow-y: auto; color: rgba(255,255,255,0.9);
+      font-size: 15px; line-height: 1.7; font-weight: 300;
+    ">
+      
+      <h3 style="color:#7dd3fc; font-family:'Jua'; margin-top:0;">1. 제작 동기: "보이지 않는 손을 보이게 만들기"</h3>
+      <p>
+        경제학 수업 현장에서 교사들이 겪는 가장 큰 어려움 중 하나는 '정확한 그래프'의 부재입니다. 칠판에 손으로 그린 그래프는 곡선의 기울기나 교차점이 부정확하여, 학생들이 <strong>'수학적 균형'</strong>과 <strong>'경제적 직관'</strong>을 연결하는 데 방해가 되곤 합니다. 또한, 시중의 교과서나 문제집의 그림은 고정되어 있어, "수요가 증가하면?", "세금이 부과되면?"과 같은 동적인 변화(Comparative Statics)를 즉각적으로 보여주기 어렵습니다.
+      </p>
+      <p>
+        이 <strong>[수요·공급 그래프 생성기 PRO]</strong>는 이러한 갈증을 해소하기 위해 제작되었습니다. 선생님들께서는 복잡한 드로잉 툴 없이도 수식만 입력하면 1초 만에 논문급 품질의 벡터 그래프를 얻을 수 있습니다. 특히 <strong>시험 출제용(흰 배경, 힌트 제거)</strong>과 <strong>수업 설명용(어두운 배경, 잉여 표시)</strong>을 자유롭게 오갈 수 있도록 설계하여, 교무실과 교실 양쪽에서 실질적인 도움이 되고자 합니다.
+      </p>
+
+      <div style="height:1px; background:rgba(255,255,255,0.1); margin: 20px 0;"></div>
+
+      <h3 style="color:#a78bfa; font-family:'Jua';">2. 사용 방법: 3단계 마스터</h3>
+      <ul style="padding-left: 20px; margin-bottom: 0;">
+        <li><strong>STEP 1. 수식 설정 (모델링)</strong>
+          <br>가장 먼저 수요(D)와 공급(S)의 절편(a)과 기울기(b)를 입력합니다. 시장의 상황을 수식으로 정의하는 단계입니다. 축 범위(Qmax, Pmax)를 고정하면 여러 그래프를 비교할 때 스케일이 달라지는 혼란을 막을 수 있습니다.
+        </li>
+        <li style="margin-top:10px;"><strong>STEP 2. 시각화 옵션 (스타일링)</strong>
+          <br>'배경'을 [투명]으로 설정하면 PPT나 학습지 위에 자연스럽게 합성할 수 있습니다. 시험 문제를 출제할 때는 <strong>[🧪 시험용 모드]</strong> 버튼을 눌러보세요. 불필요한 라벨과 힌트가 사라지고 문제 풀이에 필요한 핵심 선만 남습니다.
+        </li>
+        <li style="margin-top:10px;"><strong>STEP 3. 정책 시뮬레이션 (심화 학습)</strong>
+          <br>단순 균형을 넘어 정부의 개입을 실험합니다. '가격 상한제'나 '단위당 세금'을 선택하면 그래프가 자동으로 변형되며, <strong>자중손실(Deadweight Loss)</strong>과 <strong>세수</strong>의 변화를 눈으로 확인할 수 있습니다.
+        </li>
+      </ul>
+
+      <div style="height:1px; background:rgba(255,255,255,0.1); margin: 20px 0;"></div>
+
+      <h3 style="color:#34d399; font-family:'Jua';">3. 학생을 위한 교육적 방향 (Guidance)</h3>
+      <p>
+        이 도구를 활용할 때 학생들에게 강조해야 할 핵심은 <strong>"그래프는 단순한 그림이 아니라, 수식의 시각적 언어"</strong>라는 점입니다.
+      </p>
+      <ul style="padding-left: 20px;">
+        <li><strong>직관과 논리의 결합:</strong> 학생들이 "수요가 늘면 가격이 오른다"를 직관적으로 알더라도, 그래프상에서 곡선이 우측으로 이동하여 새로운 교점을 형성하는 과정을 논리적으로 추적하게 하십시오.</li>
+        <li><strong>잉여(Surplus)의 재발견:</strong> [영역 음영] 기능을 켜고 소비자 잉여(CS)와 생산자 잉여(PS)가 삼각형의 면적으로 계산됨을 보여주십시오. 이는 적분 개념의 기초이자, 시장 효율성을 정량적으로 평가하는 첫걸음입니다.</li>
+        <li><strong>정책의 양면성 탐구:</strong> 가격 통제나 조세 부과가 의도치 않은 '거래량 감소'나 '비효율(자중손실)'을 초래함을 시각적으로 확인시켜 주십시오. 이를 통해 학생들은 경제 정책이 선의만으로 완성되지 않으며, 정밀한 설계가 필요함을 깨닫게 될 것입니다.</li>
+      </ul>
+      <p style="background:rgba(255,255,255,0.05); padding:12px; border-radius:8px; border-left:4px solid #34d399; margin-top:15px;">
+        💡 <strong>Tip:</strong> 학생들에게 직접 이 페이지를 열어주고, "세금이 10만큼 부과될 때, 소비자와 생산자가 각각 얼마만큼의 부담을 지는지(조세의 귀착) 수치를 조절하며 찾아보라"는 탐구 과제를 제시해 보십시오.
+      </p>
+
+      <div style="text-align:center; margin-top:40px; color:rgba(255,255,255,0.4); font-size:12px;">
+        Developed for Economic Education Excellence
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+</style>
+
+<script>
+(() => {
+  const btnOpen = document.getElementById("btnOpenGuide");
+  const btnClose = document.getElementById("btnCloseGuide");
+  const modal = document.getElementById("guideModal");
+
+  // 열기
+  btnOpen.addEventListener("click", () => {
+    modal.style.display = "flex";
+    // 약간의 지연 후 opacity 적용 (transition 효과 위해)
+    setTimeout(() => {
+      modal.style.opacity = "1";
+    }, 10);
+  });
+
+  // 닫기 함수
+  const closeModal = () => {
+    modal.style.opacity = "0";
+    setTimeout(() => {
+      modal.style.display = "none";
+    }, 300);
+  };
+
+  btnClose.addEventListener("click", closeModal);
+
+  // 배경 클릭 시 닫기
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+})();
+</script>
