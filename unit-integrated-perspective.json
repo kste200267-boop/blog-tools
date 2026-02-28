@@ -44,6 +44,16 @@
         "통사1"
       ],
       "desc": "범죄 사건을 4가지 관점으로 분석하며 통합적 사고력을 기르는 수사 게임"
+    },
+    {
+      "slug": "v2",
+      "file": "c-integrated-perspective-integrated-society-v2.html",
+      "title": "통합사회 · 통합적 관점 자기소개 슬라이드",
+      "desc": "",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "15분",
+      "tags": []
     }
   ]
 }

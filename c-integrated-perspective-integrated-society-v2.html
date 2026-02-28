@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>통합사회 · 통합적 관점 자기소개 슬라이드</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Black+Han+Sans&display=swap" rel="stylesheet">
+
+<style>
+/* ========================================
+   CSS 변수 & 리셋
+======================================== */
+:root {
+  --c-bg: #F5F0E8;
+  --c-card: #FFFFFF;
+  --c-primary: #2D5A27;
+  --c-primary-light: #4A8C3F;
+  --c-accent: #E8673C;
+  --c-accent-light: #FF8F6B;
+  --c-time: #1B4965;
+  --c-space: #6B4C8A;
+  --c-social: #C4552D;
+  --c-ethics: #2D7D6E;
+  --c-integrate: #2D5A27;
+  --c-text: #1A1A1A;
+  --c-text-light: #666;
+  --c-text-muted: #999;
+  --c-border: #D5CFC3;
+  --c-hint: #B0A89C;
+  --font-display: 'Black Han Sans', sans-serif;
+  --font-body: 'Noto Sans KR', sans-serif;
+  --slide-w: 210mm;
+  --slide-h: 297mm;
+  --radius: 16px;
+  --shadow: 0 4px 24px rgba(0,0,0,.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--c-bg);
+  color: var(--c-text);
+  line-height: 1.7;
+}
+
+/* ========================================
+   입력 패널 (화면용)
+======================================== */
+.editor-panel {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 32px 20px 80px;
+}
+
+.editor-header {
+  text-align: center;
+  padding: 40px 0 20px;
+}
+.editor-header h1 {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  color: var(--c-primary);
+  letter-spacing: -1px;
+}
+.editor-header .subtitle {
+  margin-top: 6px;
+  color: var(--c-text-light);
+  font-size: .92rem;
+}
+.editor-header .edu-info {
+  margin-top: 12px;
+  padding: 10px 20px;
+  background: rgba(45,90,39,.06);
+  border-radius: 10px;
+  font-size: .82rem;
+  color: var(--c-text-light);
+  line-height: 1.6;
+  display: inline-block;
+}
+
+/* 모드 토글 */
+.mode-toggle-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0 20px;
+  gap: 0;
+}
+.mode-btn {
+  padding: 12px 32px;
+  border: 2px solid var(--c-primary);
+  background: transparent;
+  color: var(--c-primary);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: .95rem;
+  cursor: pointer;
+  transition: all .2s;
+}
+.mode-btn:first-child { border-radius: 10px 0 0 10px; }
+.mode-btn:last-child { border-radius: 0 10px 10px 0; }
+.mode-btn.active {
+  background: var(--c-primary);
+  color: #fff;
+}
+
+/* 모드 설명 */
+.mode-desc {
+  text-align: center;
+  font-size: .83rem;
+  color: var(--c-text-muted);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* 자동 채우기 버튼 */
+.autofill-bar {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.autofill-btn {
+  padding: 10px 22px;
+  border: 2px dashed var(--c-accent);
+  border-radius: 10px;
+  background: rgba(232,103,60,.05);
+  color: var(--c-accent);
+  font-weight: 700;
+  font-size: .88rem;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: var(--font-body);
+}
+.autofill-btn:hover {
+  background: var(--c-accent);
+  color: #fff;
+  border-style: solid;
+}
+.autofill-btn.green {
+  border-color: var(--c-primary);
+  color: var(--c-primary);
+  background: rgba(45,90,39,.04);
+}
+.autofill-btn.green:hover {
+  background: var(--c-primary);
+  color: #fff;
+}
+
+/* 섹션 카드 */
+.section-card {
+  background: var(--c-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  border-left: 5px solid var(--c-border);
+  transition: border-color .3s;
+}
+.section-card[data-section="cover"] { border-left-color: var(--c-primary); }
+.section-card[data-section="time"] { border-left-color: var(--c-time); }
+.section-card[data-section="space"] { border-left-color: var(--c-space); }
+.section-card[data-section="social"] { border-left-color: var(--c-social); }
+.section-card[data-section="ethics"] { border-left-color: var(--c-ethics); }
+.section-card[data-section="integrate"] { border-left-color: var(--c-integrate); }
+
+.section-card h2 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+}
+.section-card .section-desc {
+  font-size: .82rem;
+  color: var(--c-text-light);
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+/* 교과서 개념 박스 */
+.concept-box {
+  background: #F0F7EE;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: .82rem;
+  line-height: 1.6;
+  color: #3A5A34;
+  border: 1px solid #D4E8D0;
+}
+.concept-box strong {
+  color: #2D5A27;
+}
+.concept-box.time-box { background: #EDF3F7; border-color: #C8D9E6; color: #1B4965; }
+.concept-box.time-box strong { color: #1B4965; }
+.concept-box.space-box { background: #F2EFF6; border-color: #D8D0E6; color: #5A4178; }
+.concept-box.space-box strong { color: #6B4C8A; }
+.concept-box.social-box { background: #FBF0EC; border-color: #E8D0C4; color: #8B3D1F; }
+.concept-box.social-box strong { color: #C4552D; }
+.concept-box.ethics-box { background: #EDF5F3; border-color: #C4E0DA; color: #256B5E; }
+.concept-box.ethics-box strong { color: #2D7D6E; }
+
+label {
+  display: block;
+  font-weight: 600;
+  font-size: .86rem;
+  margin-bottom: 5px;
+  margin-top: 14px;
+  color: var(--c-text);
+}
+label:first-of-type { margin-top: 0; }
+
+/* 안내 힌트 텍스트 */
+.field-hint {
+  font-size: .78rem;
+  color: var(--c-hint);
+  margin-bottom: 5px;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+input[type="text"], textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 2px solid var(--c-border);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: .9rem;
+  line-height: 1.6;
+  transition: border-color .2s;
+  background: #FAFAF7;
+}
+input[type="text"]:focus, textarea:focus {
+  outline: none;
+  border-color: var(--c-primary-light);
+  background: #fff;
+}
+textarea { resize: vertical; min-height: 68px; }
+
+/* placeholder 스타일 */
+input::placeholder, textarea::placeholder {
+  color: #C0B8AC;
+  font-size: .85rem;
+}
+
+.keywords-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.img-upload-zone {
+  margin-top: 10px;
+  border: 2px dashed var(--c-border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+  overflow: hidden;
+  font-size: .85rem;
+  color: var(--c-text-muted);
+}
+.img-upload-zone:hover { border-color: var(--c-primary-light); background: rgba(45,90,39,.03); }
+.img-upload-zone img {
+  max-width: 180px;
+  max-height: 120px;
+  border-radius: 8px;
+  margin-top: 6px;
+}
+.img-upload-zone input[type="file"] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer;
+}
+
+/* 예시 출력 미리보기 텍스트 */
+.example-preview {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: #FFFCF5;
+  border: 1px dashed #E0D8C8;
+  border-radius: 8px;
+  font-size: .78rem;
+  color: var(--c-text-muted);
+  line-height: 1.5;
+}
+.example-preview strong {
+  color: var(--c-text-light);
+  font-weight: 600;
+}
+
+/* 최종 버튼 */
+.action-bar {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 36px;
+}
+.print-btn {
+  padding: 16px 44px;
+  border: none;
+  border-radius: 12px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.02rem;
+  cursor: pointer;
+  transition: all .25s;
+}
+.print-btn.primary {
+  background: var(--c-primary);
+  color: #fff;
+}
+.print-btn.primary:hover { background: var(--c-primary-light); transform: translateY(-2px); }
+.print-btn.secondary {
+  background: transparent;
+  color: var(--c-primary);
+  border: 2px solid var(--c-primary);
+}
+.print-btn.secondary:hover { background: rgba(45,90,39,.06); }
+
+/* ========================================
+   슬라이드 영역
+======================================== */
+.slides-container { display: none; }
+
+.slide {
+  width: var(--slide-w);
+  height: var(--slide-h);
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  page-break-inside: avoid;
+}
+
+.slide-inner {
+  width: 100%;
+  height: 100%;
+  padding: 36px 44px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+/* 슬라이드 상단 바 */
+.slide-topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 3px solid currentColor;
+  margin-bottom: 20px;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+.slide-topbar .icon {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.15rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+/* 관점 설명 박스 (슬라이드 내) */
+.slide-concept {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: .82rem;
+  line-height: 1.55;
+  margin-bottom: 16px;
+}
+.slide-concept.time { background: #EDF3F7; color: #1B4965; }
+.slide-concept.space { background: #F2EFF6; color: #5A4178; }
+.slide-concept.social { background: #FBF0EC; color: #8B3D1F; }
+.slide-concept.ethics { background: #EDF5F3; color: #256B5E; }
+
+/* 질문 영역 */
+.slide-question {
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  color: inherit;
+}
+
+/* 키워드 태그 */
+.slide-keywords {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.slide-keywords .tag {
+  padding: 7px 18px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: .95rem;
+  color: #fff;
+}
+
+/* 본문 */
+.slide-body {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  flex: 1;
+  white-space: pre-wrap;
+}
+
+/* 이미지 */
+.slide-image-wrap {
+  margin-top: 14px;
+  text-align: center;
+}
+.slide-image-wrap img {
+  max-width: 260px;
+  max-height: 180px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 4px 16px rgba(0,0,0,.1);
+}
+
+/* 하단 */
+.slide-footer {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 2px solid rgba(0,0,0,.07);
+  display: flex;
+  justify-content: space-between;
+  font-size: .78rem;
+  color: #aaa;
+}
+
+/* ========================================
+   표지
+======================================== */
+.slide-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(155deg, #2D5A27 0%, #1B4965 45%, #6B4C8A 100%);
+  color: #fff;
+}
+.slide-cover .cover-badge {
+  display: inline-block;
+  padding: 7px 26px;
+  border: 2px solid rgba(255,255,255,.35);
+  border-radius: 50px;
+  font-size: .9rem;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+  font-weight: 400;
+}
+.slide-cover h1 {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  line-height: 1.35;
+  margin-bottom: 14px;
+}
+.slide-cover .cover-subtitle {
+  font-size: 1.1rem;
+  opacity: .85;
+  margin-bottom: 28px;
+  line-height: 1.65;
+}
+.slide-cover .cover-name {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  padding: 10px 36px;
+  background: rgba(255,255,255,.13);
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+}
+.slide-cover .cover-image {
+  margin-top: 24px;
+  width: 130px; height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid rgba(255,255,255,.45);
+}
+.slide-cover .cover-perspectives {
+  margin-top: 28px;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.slide-cover .cover-perspectives .cp {
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: .82rem;
+  font-weight: 500;
+  background: rgba(255,255,255,.15);
+  backdrop-filter: blur(2px);
+}
+.slide-cover .cover-footer {
+  position: absolute;
+  bottom: 28px;
+  font-size: .82rem;
+  opacity: .5;
+}
+
+/* ========================================
+   통합 정리
+======================================== */
+.slide-integrate {
+  background: linear-gradient(160deg, #F8F6F1 0%, #E8F0E6 100%);
+}
+.integrate-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.integrate-card {
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+}
+.integrate-card .ic-icon { font-size: 1.1rem; margin-bottom: 2px; }
+.integrate-card .ic-label {
+  font-weight: 700;
+  font-size: .82rem;
+  margin-bottom: 3px;
+}
+.integrate-card .ic-keywords {
+  font-size: .8rem;
+  color: var(--c-text-light);
+  margin-bottom: 2px;
+}
+.integrate-card .ic-text {
+  font-size: .78rem;
+  line-height: 1.45;
+  color: var(--c-text-muted);
+}
+.integrate-summary {
+  padding: 18px 22px;
+  background: var(--c-primary);
+  color: #fff;
+  border-radius: 14px;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+/* 색상 */
+.slide-time .slide-topbar { color: var(--c-time); }
+.slide-time .slide-topbar .icon { background: var(--c-time); }
+.slide-time .tag { background: var(--c-time); }
+
+.slide-space .slide-topbar { color: var(--c-space); }
+.slide-space .slide-topbar .icon { background: var(--c-space); }
+.slide-space .tag { background: var(--c-space); }
+
+.slide-social .slide-topbar { color: var(--c-social); }
+.slide-social .slide-topbar .icon { background: var(--c-social); }
+.slide-social .tag { background: var(--c-social); }
+
+.slide-ethics .slide-topbar { color: var(--c-ethics); }
+.slide-ethics .slide-topbar .icon { background: var(--c-ethics); }
+.slide-ethics .tag { background: var(--c-ethics); }
+
+/* ========================================
+   인쇄
+======================================== */
+@media print {
+  @page { size: A4 portrait; margin: 0; }
+  body { background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .editor-panel { display: none !important; }
+  .slides-container { display: block !important; }
+  .slide {
+    width: 210mm; height: 297mm;
+    page-break-after: always; page-break-inside: avoid;
+    break-after: page; break-inside: avoid;
+  }
+  .slide:last-child { page-break-after: auto; }
+}
+
+/* 프리뷰 */
+body.preview-mode .editor-panel { display: none; }
+body.preview-mode .slides-container {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 32px; padding: 32px 0; background: #333;
+}
+body.preview-mode .slide { box-shadow: 0 8px 40px rgba(0,0,0,.3); flex-shrink: 0; }
+
+.back-to-edit, .print-from-preview {
+  position: fixed; top: 20px; z-index: 999;
+  padding: 12px 26px; border: none; border-radius: 10px;
+  font-weight: 700; font-size: .93rem; cursor: pointer;
+  display: none; font-family: var(--font-body);
+}
+.back-to-edit { right: 20px; background: var(--c-accent); color: #fff; box-shadow: 0 4px 16px rgba(232,103,60,.3); }
+.print-from-preview { right: 150px; background: var(--c-primary); color: #fff; box-shadow: 0 4px 16px rgba(45,90,39,.3); }
+body.preview-mode .back-to-edit, body.preview-mode .print-from-preview { display: block; }
+
+/* 반응형 */
+@media (max-width: 600px) {
+  .editor-panel { padding: 14px 10px 60px; }
+  .section-card { padding: 18px 16px; }
+  .keywords-row { grid-template-columns: 1fr; }
+  .editor-header h1 { font-size: 1.5rem; }
+  .mode-btn { padding: 10px 16px; font-size: .84rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- 프리뷰 모드 버튼 -->
+<button class="print-from-preview" onclick="doPrint()">🖨️ PDF 저장</button>
+<button class="back-to-edit" onclick="exitPreview()">← 편집으로</button>
+
+<!-- ============================================
+     입력 패널
+============================================= -->
+<div class="editor-panel">
+
+  <div class="editor-header">
+    <h1>📘 통합적 관점으로 나를 소개하기</h1>
+    <p class="subtitle">통합사회 1단원 · 아이스브레이크 슬라이드 생성기</p>
+    <div class="edu-info">
+      📖 성취기준: 인간, 사회, 환경을 바라보는 시간적·공간적·사회적·윤리적 관점의 의미와 특징을 사례를 통해 파악한다.
+    </div>
+  </div>
+
+  <!-- 모드 토글 -->
+  <div class="mode-toggle-wrap">
+    <button class="mode-btn active" data-mode="teacher" onclick="setMode('teacher')">👩‍🏫 교사용</button>
+    <button class="mode-btn" data-mode="student" onclick="setMode('student')">🎒 학생 수행평가용</button>
+  </div>
+  <div class="mode-desc" id="mode-desc">
+    교사용: 수업 첫 시간에 선생님을 소개하며 통합적 관점을 자연스럽게 안내하는 용도예요.
+  </div>
+
+  <!-- 자동 채우기 -->
+  <div class="autofill-bar">
+    <button class="autofill-btn" onclick="autofillAll()">✨ 기본 문장 자동 채우기</button>
+    <button class="autofill-btn green" onclick="autofillExample()">📝 작성 예시 보기</button>
+    <button class="autofill-btn" style="border-color:#999;color:#999;" onclick="clearAll()">🗑️ 전체 초기화</button>
+  </div>
+
+  <!-- ===== 표지 ===== -->
+  <div class="section-card" data-section="cover">
+    <h2>📌 표지 정보</h2>
+    <p class="section-desc">슬라이드 첫 장에 들어갈 기본 정보예요.</p>
+
+    <label id="label-name">이름 (선생님 성함 또는 별명)</label>
+    <div class="field-hint" id="hint-name">예: 김통합 선생님 / 사회 좋아하는 지훈이</div>
+    <input type="text" id="cover-name" placeholder="여기에 이름을 입력하세요">
+
+    <label>소속 / 학교</label>
+    <div class="field-hint">예: ○○고등학교 사회과 / ○○고 1학년 3반</div>
+    <input type="text" id="cover-school" placeholder="소속을 입력하세요">
+
+    <label>한 줄 인사</label>
+    <div class="field-hint" id="hint-greeting">슬라이드 표지에 크게 들어가는 인사말이에요.</div>
+    <input type="text" id="cover-greeting" placeholder="예: 함께 세상을 여러 각도로 바라봐요!">
+
+    <label>프로필 이미지 (선택)</label>
+    <div class="field-hint">얼굴 사진, 캐릭터, 좋아하는 이미지 등 자유롭게 올려 주세요.</div>
+    <div class="img-upload-zone" id="cover-img-zone">
+      <input type="file" accept="image/*" onchange="handleImage(event, 'cover')">
+      <div id="cover-img-placeholder">📷 클릭하거나 드래그해서 이미지 추가</div>
+      <img id="cover-img-preview" style="display:none;">
+    </div>
+  </div>
+
+  <!-- ===== 시간적 관점 ===== -->
+  <div class="section-card" data-section="time">
+    <h2>⏳ 시간적 관점</h2>
+    <p class="section-desc">과거·현재·미래의 흐름 속에서 나를 돌아보는 관점이에요.</p>
+    <div class="concept-box time-box">
+      <strong>📖 교과서 속 개념:</strong> 시간적 관점은 어떤 현상이 나타나기까지의 <strong>역사적 배경</strong>과 <strong>시대적 맥락</strong>에 초점을 두고 인간과 세상을 이해하는 관점이에요. 과거 사례를 통해 현재를 이해하고, 미래를 예측하는 데 도움을 줘요.
+    </div>
+
+    <label id="label-time-q">질문 (슬라이드에 크게 표시돼요)</label>
+    <div class="field-hint" id="hint-time-q">💡 과거 경험 → 현재 모습 → 미래 꿈 흐름으로 질문을 만들어 보세요.</div>
+    <textarea id="time-question" rows="2" placeholder="예: 지금의 선생님을 만든 과거의 경험은 무엇인가요?"></textarea>
+
+    <label>핵심 키워드 3개</label>
+    <div class="field-hint">나를 시간 순서로 설명하는 단어 3개! 슬라이드에 태그로 들어가요.</div>
+    <div class="keywords-row">
+      <input type="text" id="time-kw1" placeholder="예: 어린 시절 독서">
+      <input type="text" id="time-kw2" placeholder="예: 사회과 교사">
+      <input type="text" id="time-kw3" placeholder="예: 교육 혁신의 꿈">
+    </div>
+
+    <label>짧은 설명 (1~3줄)</label>
+    <div class="field-hint" id="hint-time-body">✍️ "과거에 이런 경험을 했고, 지금은 이런 모습이고, 앞으로는 이렇게 하고 싶다"는 흐름으로 써 보세요.</div>
+    <textarea id="time-body" rows="3" placeholder="예: 어릴 때 역사 다큐멘터리를 즐겨 보며 '왜?'라는 질문을 달고 살았어요. 그 궁금증이 쌓여 사회 교사가 되었고, 앞으로는 학생들과 함께 세상의 변화를 읽어가고 싶어요."></textarea>
+
+    <label>이미지 (선택)</label>
+    <div class="field-hint">과거 사진, 미래 꿈 이미지, 시간의 흐름을 보여주는 사진 등</div>
+    <div class="img-upload-zone" id="time-img-zone">
+      <input type="file" accept="image/*" onchange="handleImage(event, 'time')">
+      <div id="time-img-placeholder">📷 이미지 추가</div>
+      <img id="time-img-preview" style="display:none;">
+    </div>
+
+    <div class="example-preview" id="ex-time">
+      <strong>💬 이렇게 슬라이드에 나와요:</strong> 질문이 크게 → 키워드 3개가 태그로 → 설명이 본문으로 → 이미지가 옆에 배치
+    </div>
+  </div>
+
+  <!-- ===== 공간적 관점 ===== -->
+  <div class="section-card" data-section="space">
+    <h2>🌍 공간적 관점</h2>
+    <p class="section-desc">장소·지역·공간적 상호 작용으로 나를 표현해요.</p>
+    <div class="concept-box space-box">
+      <strong>📖 교과서 속 개념:</strong> 공간적 관점은 <strong>장소와 지역</strong>, <strong>공간적 상호 작용</strong>에 중점을 두고 인간과 세상을 이해하는 관점이에요. 어디에 있고, 왜 그곳에 있으며, 그 공간이 삶에 어떤 영향을 미치는지 탐구해요.
+    </div>
+
+    <label id="label-space-q">질문</label>
+    <div class="field-hint" id="hint-space-q">💡 나에게 의미 있는 장소, 지역의 특성, 공간 간의 연결을 떠올려 보세요.</div>
+    <textarea id="space-question" rows="2" placeholder="예: 나에게 의미 있는 장소는 어디이고, 그곳은 나에게 어떤 의미인가요?"></textarea>
+
+    <label>핵심 키워드 3개</label>
+    <div class="field-hint">장소, 지역, 공간과 관련된 단어로! (고향, 학교, 여행지, 카페 등)</div>
+    <div class="keywords-row">
+      <input type="text" id="space-kw1" placeholder="예: 부산 바닷가">
+      <input type="text" id="space-kw2" placeholder="예: 우리 교실">
+      <input type="text" id="space-kw3" placeholder="예: 제주도 올레길">
+    </div>
+
+    <label>짧은 설명 (1~3줄)</label>
+    <div class="field-hint" id="hint-space-body">✍️ "이 장소가 나에게 어떤 의미인지, 그 지역의 특성이 나에게 어떤 영향을 주었는지" 써 보세요.</div>
+    <textarea id="space-body" rows="3" placeholder="예: 부산 바닷가에서 자란 덕분에 넓은 시야를 갖게 됐어요. 지금은 서울 ○○고에서 학생들과 함께 새로운 공간의 의미를 만들어 가고 있어요."></textarea>
+
+    <label>이미지 (선택)</label>
+    <div class="field-hint">좋아하는 장소 사진, 지도, 동네 풍경 등</div>
+    <div class="img-upload-zone" id="space-img-zone">
+      <input type="file" accept="image/*" onchange="handleImage(event, 'space')">
+      <div id="space-img-placeholder">📷 이미지 추가</div>
+      <img id="space-img-preview" style="display:none;">
+    </div>
+  </div>
+
+  <!-- ===== 사회적 관점 ===== -->
+  <div class="section-card" data-section="social">
+    <h2>🤝 사회적 관점</h2>
+    <p class="section-desc">관계·구조·제도 속에서 나의 역할을 이야기해요.</p>
+    <div class="concept-box social-box">
+      <strong>📖 교과서 속 개념:</strong> 사회적 관점은 <strong>사회 구조 및 제도</strong>의 영향력에 초점을 두고 인간과 세상을 이해하는 관점이에요. 사회 구조는 관계의 정형화된 틀이고, 사회 제도는 공동체 문제를 해결하기 위한 공식화된 방법과 절차예요.
+    </div>
+
+    <label id="label-social-q">질문</label>
+    <div class="field-hint" id="hint-social-q">💡 내가 속한 집단(가족, 학교, 동아리)에서 어떤 역할을 하는지, 어떤 제도의 영향을 받는지 생각해 보세요.</div>
+    <textarea id="social-question" rows="2" placeholder="예: 나는 어떤 관계 속에서 어떤 역할을 하고 있나요?"></textarea>
+
+    <label>핵심 키워드 3개</label>
+    <div class="field-hint">관계, 역할, 소속, 제도와 관련된 단어로!</div>
+    <div class="keywords-row">
+      <input type="text" id="social-kw1" placeholder="예: 사회과 교사">
+      <input type="text" id="social-kw2" placeholder="예: 가족의 막내">
+      <input type="text" id="social-kw3" placeholder="예: 독서 모임 회원">
+    </div>
+
+    <label>짧은 설명 (1~3줄)</label>
+    <div class="field-hint" id="hint-social-body">✍️ "어떤 집단에 속해 있고, 거기서 어떤 역할을 하며, 그 관계가 나에게 어떤 영향을 주는지" 써 보세요.</div>
+    <textarea id="social-body" rows="3" placeholder="예: 교실에서는 통합사회를 가르치는 교사이고, 집에서는 두 아이의 부모예요. 학교라는 제도 속에서 학생들이 세상을 넓게 보도록 돕는 역할을 하고 있어요."></textarea>
+
+    <label>이미지 (선택)</label>
+    <div class="field-hint">단체 사진, 활동 사진, 소속 로고 등</div>
+    <div class="img-upload-zone" id="social-img-zone">
+      <input type="file" accept="image/*" onchange="handleImage(event, 'social')">
+      <div id="social-img-placeholder">📷 이미지 추가</div>
+      <img id="social-img-preview" style="display:none;">
+    </div>
+  </div>
+
+  <!-- ===== 윤리적 관점 ===== -->
+  <div class="section-card" data-section="ethics">
+    <h2>⚖️ 윤리적 관점</h2>
+    <p class="section-desc">내가 소중히 여기는 가치, 옳고 그름의 기준을 나눠요.</p>
+    <div class="concept-box ethics-box">
+      <strong>📖 교과서 속 개념:</strong> 윤리적 관점은 <strong>도덕적 가치</strong>(성실, 배려, 정의, 책임 등)와 <strong>윤리적 규범</strong>을 중심으로 인간을 이해하고, 세상의 다양한 문제를 탐구하여 성찰하는 관점이에요. 더 행복하고 바람직한 삶을 위해 어떤 가치를 추구해야 할지 고민해요.
+    </div>
+
+    <label id="label-ethics-q">질문</label>
+    <div class="field-hint" id="hint-ethics-q">💡 내 삶에서 중요하게 여기는 가치(정직, 우정, 공정, 존중 등)를 떠올려 보세요. 가치가 충돌할 때 어떻게 판단하는지도 좋아요.</div>
+    <textarea id="ethics-question" rows="2" placeholder="예: 내가 가장 중요하게 생각하는 가치는 무엇이고, 왜 그런가요?"></textarea>
+
+    <label>핵심 키워드 3개</label>
+    <div class="field-hint">내가 중요하게 여기는 가치·태도·신념 단어 3개!</div>
+    <div class="keywords-row">
+      <input type="text" id="ethics-kw1" placeholder="예: 공정함">
+      <input type="text" id="ethics-kw2" placeholder="예: 존중">
+      <input type="text" id="ethics-kw3" placeholder="예: 끊임없는 성장">
+    </div>
+
+    <label>짧은 설명 (1~3줄)</label>
+    <div class="field-hint" id="hint-ethics-body">✍️ "나는 이런 가치를 중요하게 여기고, 그래서 일상에서 이렇게 실천하려 노력한다"는 식으로 써 보세요.</div>
+    <textarea id="ethics-body" rows="3" placeholder="예: 수업에서 가장 중요하게 여기는 건 '공정함'이에요. 모든 학생의 목소리가 동등하게 존중받는 교실을 만들고 싶어요. 작은 실천이 세상을 바꿀 수 있다고 믿어요."></textarea>
+
+    <label>이미지 (선택)</label>
+    <div class="field-hint">가치를 상징하는 이미지, 좌우명 이미지, 봉사 활동 사진 등</div>
+    <div class="img-upload-zone" id="ethics-img-zone">
+      <input type="file" accept="image/*" onchange="handleImage(event, 'ethics')">
+      <div id="ethics-img-placeholder">📷 이미지 추가</div>
+      <img id="ethics-img-preview" style="display:none;">
+    </div>
+  </div>
+
+  <!-- ===== 통합적 관점 정리 ===== -->
+  <div class="section-card" data-section="integrate">
+    <h2>🔗 통합적 관점 정리</h2>
+    <p class="section-desc">네 가지 관점을 하나로 엮어, 나를 종합적으로 소개하는 마무리예요.</p>
+    <div class="concept-box">
+      <strong>📖 교과서 속 개념:</strong> 통합적 관점은 시간적·공간적·사회적·윤리적 관점을 <strong>함께 고려</strong>하여 인간과 세상을 이해하는 것이에요. 한쪽 면만 보면 건물의 입체적인 구조를 알 수 없듯, 다양한 관점을 통합적으로 바라볼 때 사회현상을 종합적으로 올바르게 이해할 수 있어요.
+    </div>
+
+    <label id="label-integrate">통합 정리 문장 (2~3줄)</label>
+    <div class="field-hint" id="hint-integrate">✍️ 앞의 네 관점을 자연스럽게 연결해서, "이런 과거와 장소와 관계와 가치를 가진 내가 여러분 앞에 있습니다"라는 느낌으로 마무리해 보세요.</div>
+    <textarea id="integrate-body" rows="4" placeholder="예: 과거의 궁금증(시간), 바닷가 고향(공간), 교사라는 역할(사회), 공정함이라는 가치(윤리) — 이 모든 관점이 모여 지금의 저를 만들었어요. 이번 학기, 우리도 세상을 이렇게 다양한 눈으로 함께 바라봐요!"></textarea>
+  </div>
+
+  <!-- 버튼 -->
+  <div class="action-bar">
+    <button class="print-btn secondary" onclick="showPreview()">👁️ 미리보기</button>
+    <button class="print-btn primary" onclick="doPrint()">🖨️ PDF로 저장</button>
+  </div>
+
+</div><!-- /editor-panel -->
+
+
+<!-- ============================================
+     슬라이드 출력
+============================================= -->
+<div class="slides-container" id="slides-container"></div>
+
+
+<script>
+/* ========================================
+   상태
+======================================== */
+let currentMode = 'teacher';
+const imageDataMap = {};
+
+/* ========================================
+   모드별 텍스트
+======================================== */
+const modeText = {
+  teacher: {
+    nameLabel: '이름 (선생님 성함 또는 별명)',
+    nameHint: '예: 김통합 선생님 / 통합이 선생님',
+    greetingHint: '슬라이드 표지에 크게 들어가는 인사말이에요.',
+    modeDesc: '교사용: 수업 첫 시간에 선생님을 소개하며 통합적 관점을 자연스럽게 안내하는 용도예요.',
+    coverBadge: '통합사회 1단원 · 통합적 관점',
+    coverTitle: '통합적 관점으로\n선생님을 소개합니다',
+    coverSub: '여러 각도에서 바라보면,\n한 사람을 더 깊이 이해할 수 있어요.',
+    slideLabel: '선생님의',
+    footerLeft: '통합사회 · 교사 자기소개',
+    integrateQ: '을 네 가지 관점으로 바라보면?',
+  },
+  student: {
+    nameLabel: '이름 (내 이름 또는 별명)',
+    nameHint: '예: 사회 좋아하는 지훈이 / 김민지',
+    greetingHint: '친구들에게 건네는 첫 인사를 적어 보세요!',
+    modeDesc: '학생 수행평가용: 자기소개를 통해 통합적 관점 개념을 직접 적용해 보는 활동이에요. 아래 안내를 참고하면 쉽게 작성할 수 있어요!',
+    coverBadge: '통합사회 1단원 · 통합적 관점',
+    coverTitle: '통합적 관점으로\n나를 소개합니다',
+    coverSub: '여러 각도에서 바라보면,\n나를 더 깊이 이해할 수 있어요.',
+    slideLabel: '나의',
+    footerLeft: '통합사회 · 수행평가',
+    integrateQ: '를 네 가지 관점으로 바라보면?',
+  }
+};
+
+/* ========================================
+   관점별 개념 설명 (슬라이드용)
+======================================== */
+const conceptSlide = {
+  time: '시간적 관점은 역사적 배경과 시대적 맥락에 초점을 두고 인간, 사회, 환경을 바라보는 관점이에요.',
+  space: '공간적 관점은 장소와 지역, 공간적 상호 작용에 중점을 두고 인간, 사회, 환경을 바라보는 관점이에요.',
+  social: '사회적 관점은 사회 구조 및 제도의 영향력에 초점을 두고 인간, 사회, 환경을 바라보는 관점이에요.',
+  ethics: '윤리적 관점은 도덕적 가치와 윤리적 규범을 고려하여 인간, 사회, 환경을 바라보는 관점이에요.',
+};
+
+/* ========================================
+   자동 추천 문장 (교과서 기반)
+======================================== */
+const defaults = {
+  teacher: {
+    time: {
+      question: '지금의 선생님을 만든 과거의 경험은 무엇이고, 앞으로 어떤 교사가 되고 싶나요?',
+      kw: ['학창시절 경험', '현재 수업 철학', '미래 교육의 꿈'],
+      body: '어릴 때 "왜?"라는 질문을 달고 살았어요.\n그 호기심이 사회 교사의 길로 이끌었고, 지금은 학생들과 함께 세상의 변화를 읽어가고 있어요.\n앞으로도 과거에서 배우고, 현재를 이해하며, 미래를 함께 그리는 수업을 만들고 싶어요.'
+    },
+    space: {
+      question: '선생님에게 의미 있는 장소는 어디이고, 그곳은 어떤 의미인가요?',
+      kw: ['고향의 풍경', '우리 학교', '가보고 싶은 곳'],
+      body: '고향의 넓은 자연 속에서 세상을 바라보는 시야가 넓어졌어요.\n지금은 이 학교 교실이 저에게 가장 의미 있는 공간이에요.\n같은 공간이라도 누구와 함께하느냐에 따라 전혀 다른 이야기가 만들어지니까요.'
+    },
+    social: {
+      question: '선생님은 어떤 관계 속에서 어떤 역할을 하고 있나요?',
+      kw: ['사회과 교사', '가족 구성원', '학습 공동체'],
+      body: '교실에서는 통합사회를 함께 탐구하는 안내자이고, 집에서는 가족의 한 사람이에요.\n학교라는 제도 속에서 학생들이 다양한 관점으로 세상을 바라보도록 돕는 역할을 하고 있어요.\n사회 구조와 제도가 우리 삶에 어떤 영향을 미치는지, 함께 알아가요.'
+    },
+    ethics: {
+      question: '선생님이 가장 중요하게 생각하는 가치는 무엇인가요?',
+      kw: ['공정한 수업', '서로 존중', '성장하는 삶'],
+      body: '수업에서 가장 중요하게 여기는 건 "모든 학생의 목소리가 동등하게 존중받는 것"이에요.\n옳고 그름을 판단하는 기준이 되는 도덕적 가치와 규범 — 이것이 윤리적 관점의 핵심이에요.\n작은 배려와 책임감이 모여 더 나은 교실, 더 나은 사회를 만든다고 믿어요.'
+    },
+    integrate: '과거의 호기심(시간), 고향과 교실(공간), 교사라는 역할과 관계(사회), 공정함과 존중이라는 가치(윤리)\n— 이 네 가지 관점이 모여 지금의 저를 만들었어요.\n한쪽 면만 봐서는 알 수 없는 것들이, 통합적 관점으로 바라보면 비로소 보여요.\n이번 학기, 우리도 세상을 이렇게 다양한 눈으로 함께 바라봐요! 🌟',
+    greeting: '함께 세상을 여러 각도로 바라봐요!'
+  },
+  student: {
+    time: {
+      question: '지금의 나를 만든 과거의 경험은 무엇이고, 앞으로 어떤 사람이 되고 싶나요?',
+      kw: ['어린 시절 추억', '요즘 관심사', '미래의 꿈'],
+      body: '초등학교 때 우연히 본 다큐멘터리가 세상에 대한 궁금증을 키워줬어요.\n지금은 사회 현상에 관심이 많고, 뉴스를 챙겨 보는 게 취미가 됐어요.\n앞으로는 사회 문제를 해결하는 데 기여하는 사람이 되고 싶어요.'
+    },
+    space: {
+      question: '나에게 의미 있는 장소는 어디이고, 그곳은 나에게 어떤 의미인가요?',
+      kw: ['우리 동네 공원', '학교 도서관', '가보고 싶은 나라'],
+      body: '동네 공원 벤치에 앉아 생각을 정리하는 시간을 좋아해요.\n학교 도서관은 새로운 세계를 만나는 공간이에요.\n같은 장소라도 나에게는 특별한 의미가 있듯, 공간은 경험에 따라 다르게 느껴져요.'
+    },
+    social: {
+      question: '나는 어떤 관계 속에서 어떤 역할을 하고 있나요?',
+      kw: ['친구들의 상담사', '가족의 막내', '반 학급 회장'],
+      body: '친구들 사이에서는 고민 상담을 잘 들어주는 역할을 해요.\n집에서는 막내로서 가족에게 웃음을 주는 존재이고요.\n학교라는 제도, 가족이라는 구조 — 이런 관계의 틀 속에서 나의 역할이 만들어져요.'
+    },
+    ethics: {
+      question: '내가 가장 중요하게 생각하는 가치는 무엇이고, 왜 그런가요?',
+      kw: ['정직함', '우정의 소중함', '도전 정신'],
+      body: '거짓말하지 않는 것, 약속을 지키는 것이 제가 가장 중요하게 여기는 가치예요.\n친구 관계에서도 정직이 신뢰의 바탕이 되니까요.\n도덕적 가치와 규범이 우리의 선택을 이끌어 준다는 걸, 일상에서 느끼고 있어요.'
+    },
+    integrate: '어린 시절의 호기심(시간), 동네 공원과 도서관(공간), 친구·가족·학교 속 역할(사회), 정직과 우정이라는 가치(윤리)\n— 이 모든 관점이 모여 지금의 "나"를 만들었어요.\n한쪽 면만 보면 알 수 없었던 나 자신이, 통합적 관점으로 바라보니 훨씬 입체적으로 보여요!\n나를 이해하는 것이 세상을 이해하는 첫걸음이에요. 😊',
+    greeting: '여러 각도에서 나를 알아가 봐요!'
+  }
+};
+
+/* ========================================
+   작성 예시 (구체적)
+======================================== */
+const examples = {
+  teacher: {
+    name: '김통합 선생님',
+    school: '○○고등학교 사회과',
+    greeting: '함께 세상을 여러 각도로 바라봐요!',
+    time: {
+      question: '지금의 김통합 선생님을 만든 과거의 경험은 무엇인가요?',
+      kw: ['할머니의 옛이야기', '대학 시절 배낭여행', '10년차 교사'],
+      body: '할머니가 들려주신 옛이야기 속에서 "역사는 반복된다"는 걸 느꼈어요.\n대학 시절 유럽 배낭여행에서 다른 문화를 직접 경험하며 사회를 가르치고 싶다는 꿈을 키웠고,\n올해로 교직 10년차, 여전히 매 수업이 새로운 발견이에요.'
+    },
+    space: {
+      question: '김통합 선생님에게 특별한 의미가 있는 장소는 어디인가요?',
+      kw: ['전남 순천', '3학년 5반 교실', '북한산 둘레길'],
+      body: '순천에서 자라며 자연의 소중함을 배웠어요.\n지금 3학년 5반 교실은 학생들과 세상을 함께 탐구하는, 저에게 가장 소중한 공간이에요.\n주말마다 걷는 북한산 둘레길에서 수업 아이디어를 얻곤 해요.'
+    },
+    social: {
+      question: '김통합 선생님은 어떤 관계와 역할 속에서 살아가고 있나요?',
+      kw: ['통합사회 담당', '두 아이 아빠', '교사 연구회 회원'],
+      body: '학교에서는 통합사회를 가르치는 교사, 집에서는 초등학생 두 아이의 아빠예요.\n교사 연구회에서 동료들과 수업을 고민하는 시간도 저에게 큰 힘이 돼요.\n사회 구조와 제도 속에서 여러 역할을 동시에 수행하고 있답니다.'
+    },
+    ethics: {
+      question: '김통합 선생님이 수업에서 가장 중요하게 여기는 가치는 무엇인가요?',
+      kw: ['공정한 평가', '다양성 존중', '성장 마인드'],
+      body: '모든 학생이 동등하게 발언 기회를 갖는 "공정한 교실"을 만들고 싶어요.\n서로 다른 의견을 존중하는 태도가 민주시민의 출발이라고 믿거든요.\n완벽하지 않아도 괜찮아요 — 함께 성장하면 되니까요.'
+    },
+    integrate: '할머니의 이야기에서 시작된 호기심(시간), 순천의 자연과 교실이라는 공간(공간),\n교사·아빠·연구회원이라는 다양한 역할(사회), 공정과 존중이라는 가치(윤리)\n— 네 가지 관점이 만나 지금의 "김통합 선생님"이 되었어요.\n이번 학기, 여러분도 통합적 관점으로 세상을 바라보는 연습을 함께 해요! 🌿'
+  },
+  student: {
+    name: '박민지',
+    school: '○○고등학교 1학년 3반',
+    greeting: '반가워요! 나를 여러 각도로 소개합니다 😊',
+    time: {
+      question: '지금의 민지를 만든 경험은 무엇이고, 앞으로 어떤 사람이 되고 싶나요?',
+      kw: ['초등 독서왕', '요즘 관심사: 환경', '환경 변호사 꿈'],
+      body: '초등학교 때 도서관에서 살다시피 했어요. 책 속 이야기가 세상을 보는 눈을 넓혀줬거든요.\n요즘은 기후변화 뉴스를 챙겨 보면서 환경 문제에 관심이 커졌어요.\n미래에는 환경 문제를 법으로 해결하는 환경 변호사가 되고 싶어요!'
+    },
+    space: {
+      question: '민지에게 특별한 의미가 있는 장소는 어디인가요?',
+      kw: ['동네 카페', '학교 운동장', '할머니 댁 마당'],
+      body: '동네 카페에서 공부하는 시간이 가장 집중이 잘 돼요.\n학교 운동장 벤치에서 친구들과 수다 떠는 것도 소중한 시간이고요.\n방학마다 가는 할머니 댁 마당은 어린 시절 추억이 가득한 곳이에요.'
+    },
+    social: {
+      question: '민지는 어떤 관계 속에서 어떤 역할을 하고 있나요?',
+      kw: ['반 환경지킴이', '언니 역할', '환경 동아리 부장'],
+      body: '우리 반에서는 환경지킴이로 분리수거를 챙기고 있어요.\n집에서는 동생에게 숙제를 도와주는 언니이고요.\n환경 동아리에서 부장을 맡아 캠페인을 기획하는 역할도 해요.'
+    },
+    ethics: {
+      question: '민지가 가장 중요하게 생각하는 가치는 무엇인가요?',
+      kw: ['환경 책임감', '약속 지키기', '다름을 인정하기'],
+      body: '일회용품 안 쓰기 같은 작은 실천이라도 환경에 대한 책임을 다하고 싶어요.\n친구와의 약속을 꼭 지키는 것도 중요하게 생각해요.\n사람마다 생각이 다를 수 있다는 걸 인정하는 것 — 이게 진짜 존중이라고 믿어요.'
+    },
+    integrate: '책에서 키운 호기심(시간), 카페와 운동장과 할머니 댁(공간),\n환경지킴이·언니·동아리 부장이라는 역할들(사회),\n환경 책임감과 존중이라는 가치(윤리)\n— 이 네 관점이 모여 지금의 "민지"가 되었어요.\n나를 이해하는 것이 세상을 이해하는 첫걸음! 🌱'
+  }
+};
+
+/* ========================================
+   모드 전환
+======================================== */
+function setMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.mode === mode);
+  });
+  const mt = modeText[mode];
+  document.getElementById('label-name').textContent = mt.nameLabel;
+  document.getElementById('hint-name').textContent = mt.nameHint;
+  document.getElementById('hint-greeting').textContent = mt.greetingHint;
+  document.getElementById('mode-desc').textContent = mt.modeDesc;
+
+  // placeholder 업데이트
+  const ph = mode === 'teacher' ? '선생님' : '나';
+  document.getElementById('time-question').placeholder = `예: 지금의 ${ph}을 만든 과거의 경험은 무엇인가요?`;
+  document.getElementById('space-question').placeholder = `예: ${ph}에게 의미 있는 장소는 어디인가요?`;
+  document.getElementById('social-question').placeholder = `예: ${ph}는 어떤 관계 속에서 어떤 역할을 하고 있나요?`;
+  document.getElementById('ethics-question').placeholder = `예: ${ph}가 가장 중요하게 생각하는 가치는 무엇인가요?`;
+}
+
+/* ========================================
+   자동 채우기 / 예시 / 초기화
+======================================== */
+function autofillAll() {
+  const d = defaults[currentMode];
+  ['time','space','social','ethics'].forEach(p => {
+    document.getElementById(`${p}-question`).value = d[p].question;
+    document.getElementById(`${p}-kw1`).value = d[p].kw[0];
+    document.getElementById(`${p}-kw2`).value = d[p].kw[1];
+    document.getElementById(`${p}-kw3`).value = d[p].kw[2];
+    document.getElementById(`${p}-body`).value = d[p].body;
+  });
+  document.getElementById('integrate-body').value = d.integrate;
+  if (!document.getElementById('cover-greeting').value)
+    document.getElementById('cover-greeting').value = d.greeting;
+}
+
+function autofillExample() {
+  const ex = examples[currentMode];
+  document.getElementById('cover-name').value = ex.name;
+  document.getElementById('cover-school').value = ex.school;
+  document.getElementById('cover-greeting').value = ex.greeting;
+  ['time','space','social','ethics'].forEach(p => {
+    document.getElementById(`${p}-question`).value = ex[p].question;
+    document.getElementById(`${p}-kw1`).value = ex[p].kw[0];
+    document.getElementById(`${p}-kw2`).value = ex[p].kw[1];
+    document.getElementById(`${p}-kw3`).value = ex[p].kw[2];
+    document.getElementById(`${p}-body`).value = ex[p].body;
+  });
+  document.getElementById('integrate-body').value = ex.integrate;
+}
+
+function clearAll() {
+  document.querySelectorAll('input[type="text"], textarea').forEach(el => el.value = '');
+  ['cover','time','space','social','ethics'].forEach(key => {
+    const preview = document.getElementById(`${key}-img-preview`);
+    const placeholder = document.getElementById(`${key}-img-placeholder`);
+    if (preview) { preview.style.display = 'none'; preview.src = ''; }
+    if (placeholder) placeholder.style.display = 'block';
+    delete imageDataMap[key];
+  });
+}
+
+/* ========================================
+   이미지
+======================================== */
+function handleImage(event, key) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    imageDataMap[key] = e.target.result;
+    const preview = document.getElementById(`${key}-img-preview`);
+    const placeholder = document.getElementById(`${key}-img-placeholder`);
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+    placeholder.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ========================================
+   슬라이드 생성
+======================================== */
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function buildSlides() {
+  const mt = modeText[currentMode];
+  const name = document.getElementById('cover-name').value || (currentMode === 'teacher' ? '선생님' : '나');
+  const school = document.getElementById('cover-school').value || '';
+  const greeting = document.getElementById('cover-greeting').value || '';
+  const v = (id) => document.getElementById(id).value;
+
+  /* 관점 슬라이드 */
+  function perspectiveSlide(cls, icon, conceptClass, label, pageNum) {
+    const key = cls.replace('slide-','');
+    const question = v(`${key}-question`) || '';
+    const kw = [v(`${key}-kw1`), v(`${key}-kw2`), v(`${key}-kw3`)].filter(Boolean);
+    const body = v(`${key}-body`) || '';
+    const imgSrc = imageDataMap[key] || '';
+    const concept = conceptSlide[key];
+    return `
+    <div class="slide ${cls}">
+      <div class="slide-inner">
+        <div class="slide-topbar">
+          <div class="icon">${icon}</div>
+          <span>${mt.slideLabel} ${label}</span>
+        </div>
+        <div class="slide-concept ${conceptClass}">${concept}</div>
+        <div class="slide-question">${escapeHtml(question)}</div>
+        <div class="slide-keywords">
+          ${kw.map(k => `<span class="tag">${escapeHtml(k)}</span>`).join('')}
+        </div>
+        <div class="slide-body">${escapeHtml(body)}</div>
+        ${imgSrc ? `<div class="slide-image-wrap"><img src="${imgSrc}"></div>` : ''}
+        <div class="slide-footer">
+          <span>${mt.footerLeft}</span>
+          <span>${pageNum} / 6</span>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  /* 표지 */
+  const coverImg = imageDataMap['cover']
+    ? `<img class="cover-image" src="${imageDataMap['cover']}">`
+    : '';
+
+  const coverSlide = `
+  <div class="slide slide-cover">
+    <div class="cover-badge">${mt.coverBadge}</div>
+    <h1>${escapeHtml(mt.coverTitle).replace(/\n/g,'<br>')}</h1>
+    <div class="cover-subtitle">${escapeHtml(mt.coverSub).replace(/\n/g,'<br>')}</div>
+    <div class="cover-name">${escapeHtml(name)}</div>
+    ${school ? `<div style="margin-top:10px;font-size:.95rem;opacity:.8">${escapeHtml(school)}</div>` : ''}
+    ${greeting ? `<div style="margin-top:14px;font-size:1rem;opacity:.9;font-style:italic">"${escapeHtml(greeting)}"</div>` : ''}
+    ${coverImg}
+    <div class="cover-perspectives">
+      <span class="cp">⏳ 시간적</span>
+      <span class="cp">🌍 공간적</span>
+      <span class="cp">🤝 사회적</span>
+      <span class="cp">⚖️ 윤리적</span>
+    </div>
+    <div class="cover-footer">1 / 6</div>
+  </div>`;
+
+  /* 통합 정리 */
+  const integrateBody = v('integrate-body') || '';
+  const summaryItems = [
+    { icon: '⏳', label: '시간적 관점', color: 'var(--c-time)', kw: [v('time-kw1'),v('time-kw2'),v('time-kw3')].filter(Boolean).join(' · '), body: (v('time-body')||'').split('\n')[0] || '' },
+    { icon: '🌍', label: '공간적 관점', color: 'var(--c-space)', kw: [v('space-kw1'),v('space-kw2'),v('space-kw3')].filter(Boolean).join(' · '), body: (v('space-body')||'').split('\n')[0] || '' },
+    { icon: '🤝', label: '사회적 관점', color: 'var(--c-social)', kw: [v('social-kw1'),v('social-kw2'),v('social-kw3')].filter(Boolean).join(' · '), body: (v('social-body')||'').split('\n')[0] || '' },
+    { icon: '⚖️', label: '윤리적 관점', color: 'var(--c-ethics)', kw: [v('ethics-kw1'),v('ethics-kw2'),v('ethics-kw3')].filter(Boolean).join(' · '), body: (v('ethics-body')||'').split('\n')[0] || '' },
+  ];
+
+  const integrateSlide = `
+  <div class="slide slide-integrate">
+    <div class="slide-inner">
+      <div class="slide-topbar" style="color:var(--c-integrate);">
+        <div class="icon" style="background:var(--c-integrate);">🔗</div>
+        <span>통합적 관점 정리</span>
+      </div>
+      <div class="slide-question">${escapeHtml(name)}${mt.integrateQ}</div>
+      <div class="integrate-grid">
+        ${summaryItems.map(item => `
+          <div class="integrate-card" style="border-top:4px solid ${item.color}">
+            <div class="ic-icon">${item.icon}</div>
+            <div class="ic-label" style="color:${item.color}">${item.label}</div>
+            <div class="ic-keywords">${escapeHtml(item.kw) || '-'}</div>
+            <div class="ic-text">${escapeHtml(item.body)}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="integrate-summary">${escapeHtml(integrateBody).replace(/\n/g,'<br>')}</div>
+      <div class="slide-footer">
+        <span>${mt.footerLeft}</span>
+        <span>6 / 6</span>
+      </div>
+    </div>
+  </div>`;
+
+  return coverSlide
+    + perspectiveSlide('slide-time','⏳','time','시간적 관점','2 / 6')
+    + perspectiveSlide('slide-space','🌍','space','공간적 관점','3 / 6')
+    + perspectiveSlide('slide-social','🤝','social','사회적 관점','4 / 6')
+    + perspectiveSlide('slide-ethics','⚖️','ethics','윤리적 관점','5 / 6')
+    + integrateSlide;
+}
+
+/* ========================================
+   미리보기 / 인쇄
+======================================== */
+function showPreview() {
+  document.getElementById('slides-container').innerHTML = buildSlides();
+  document.body.classList.add('preview-mode');
+  window.scrollTo(0,0);
+}
+function exitPreview() { document.body.classList.remove('preview-mode'); }
+function doPrint() {
+  document.getElementById('slides-container').innerHTML = buildSlides();
+  const c = document.getElementById('slides-container');
+  c.style.display = 'block';
+  setTimeout(() => {
+    window.print();
+    if (!document.body.classList.contains('preview-mode')) c.style.display = 'none';
+  }, 300);
+}
+</script>
+</body>
+</html>
