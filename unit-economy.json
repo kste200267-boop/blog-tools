@@ -132,6 +132,21 @@
         "통사2"
       ],
       "desc": "10년간 투자 의사결정을 하며 자산을 불리는 서바이벌 게임"
+          },
+    {
+      "slug": "lesson4-investment-game",
+      "file": "c-economy-eccc.html",
+      "title": "수요와공급 그래프 생성기",
+      "type": "웹교구",
+      "difficulty": "심화",
+      "duration": "45분",
+      "tags": [
+        "4차시",
+        "투자게임",
+        "도파민에디션",
+        "통사2"
+      ],
+      "desc": "수요와공급 그래프 생성기"
     }
   ]
 }
