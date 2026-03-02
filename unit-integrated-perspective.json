@@ -68,6 +68,16 @@
       "difficulty": "보통",
       "duration": "15분",
       "tags": []
+          },
+    {
+      "slug": "intro",
+      "file": "dilema.html",
+      "title": "윤리적 딜레마",
+      "desc": "",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "15분",
+      "tags": []
     }
   ]
 }
