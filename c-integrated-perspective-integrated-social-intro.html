@@ -963,9 +963,14 @@ startBtn.addEventListener('click', () => {
 });
 
 function tryFullscreen() {
-  const el = document.documentElement;
-  if (el.requestFullscreen) el.requestFullscreen().catch(()=>{});
-  else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  try {
+    const el = document.documentElement;
+    if (el.requestFullscreen) {
+      el.requestFullscreen().catch(function(){});
+    } else if (el.webkitRequestFullscreen) {
+      el.webkitRequestFullscreen();
+    }
+  } catch(e) {}
 }
 
 // ===== SPLASH =====
@@ -1166,15 +1171,6 @@ restartBtn.addEventListener('click', () => {
   switchScreen(resultScreen, startScreen);
 });
 
-// Prevent zoom on double tap
-document.addEventListener('touchend', (e) => {
-  e.preventDefault();
-}, { passive: false });
-
-// Re-enable default for inputs
-document.querySelectorAll('input, textarea').forEach(el => {
-  el.addEventListener('touchend', (e) => e.stopPropagation());
-});
 </script>
 </body>
 </html>
