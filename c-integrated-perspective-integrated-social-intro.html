@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>나를 소개합니다 | 통합사회 첫 시간</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Bagel+Fat+One&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #faf9f7;
+  --card-bg: #ffffff;
+  --accent: #f5576c;
+  --accent2: #ff9a76;
+  --text: #1a1a1a;
+  --text-sub: #888;
+  --glass: rgba(0,0,0,0.04);
+  --radius: 20px;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== THEMES ===== */
+.theme-sunset {
+  --card-bg: linear-gradient(160deg, #1a0a2e 0%, #2d1b4e 30%, #4a1942 60%, #6b2040 80%, #8b3a3a 100%);
+  --accent: #ff6b6b;
+  --accent2: #c44569;
+  --card-border: rgba(255,107,107,0.3);
+}
+.theme-ocean {
+  --card-bg: linear-gradient(160deg, #0a1628 0%, #0d2137 30%, #0f3460 60%, #1a5276 80%, #1e6f8e 100%);
+  --accent: #48dbfb;
+  --accent2: #0abde3;
+  --card-border: rgba(72,219,251,0.3);
+}
+.theme-forest {
+  --card-bg: linear-gradient(160deg, #0a1a0a 0%, #1a2e1a 30%, #2d4a2d 60%, #1e3a2f 80%, #2d5a3d 100%);
+  --accent: #55efc4;
+  --accent2: #00b894;
+  --card-border: rgba(85,239,196,0.3);
+}
+.theme-cosmos {
+  --card-bg: linear-gradient(160deg, #0d0221 0%, #150734 30%, #1a0a3e 60%, #2d1b69 80%, #341f97 100%);
+  --accent: #a29bfe;
+  --accent2: #6c5ce7;
+  --card-border: rgba(162,155,254,0.3);
+}
+.theme-cherry {
+  --card-bg: linear-gradient(160deg, #1a0a14 0%, #2d1525 30%, #4a1f3d 60%, #6b2f55 80%, #8b3f6e 100%);
+  --accent: #fd79a8;
+  --accent2: #e84393;
+  --card-border: rgba(253,121,168,0.3);
+}
+
+/* ===== SCREENS ===== */
+.screen {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  opacity: 0;
+  transform: translateY(30px);
+  pointer-events: none;
+  padding: 20px;
+  overflow-y: auto;
+}
+.screen.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ===== START SCREEN ===== */
+#startScreen {
+  background: var(--bg);
+  position: relative;
+}
+#startScreen::before {
+  content: '';
+  position: absolute;
+  top: -30%; right: -20%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(240,147,251,0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+#startScreen::after {
+  content: '';
+  position: absolute;
+  bottom: -20%; left: -15%;
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(79,172,254,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.start-title {
+  font-family: 'Bagel Fat One', cursive;
+  font-size: clamp(2.2rem, 7vw, 3.5rem);
+  text-align: center;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #f093fb, #f5576c 50%, #ff9a76);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s ease-in-out infinite;
+  position: relative; z-index: 1;
+}
+@keyframes shimmer {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.3); }
+}
+.start-sub {
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
+  color: var(--text-sub);
+  text-align: center;
+  margin-bottom: 40px;
+  font-weight: 300;
+  line-height: 1.6;
+}
+.start-sub em {
+  color: var(--accent);
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* ===== NAME INPUT ===== */
+.name-input-wrap {
+  position: relative;
+  width: min(320px, 85vw);
+  margin-bottom: 24px;
+}
+.name-input {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 1.1rem;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #fff;
+  border: 2px solid rgba(0,0,0,0.08);
+  border-radius: 14px;
+  color: var(--text);
+  outline: none;
+  text-align: center;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+.name-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(245,87,108,0.08);
+}
+.name-input::placeholder {
+  color: #ccc;
+}
+
+/* ===== PHOTO UPLOAD ===== */
+.photo-upload-area {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, #f093fb, #f5576c, #ff9a76);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-bottom: 20px;
+  overflow: hidden;
+  transition: transform 0.2s;
+  position: relative;
+}
+.photo-upload-area:hover, .photo-upload-area:active {
+  transform: scale(1.05);
+}
+.photo-upload-area img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.photo-placeholder {
+  width: 94px; height: 94px;
+  border-radius: 50%;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--text-sub);
+  line-height: 1.4;
+}
+.photo-placeholder .icon {
+  font-size: 1.8rem;
+  display: block;
+  margin-bottom: 4px;
+  opacity: 0.4;
+}
+
+/* ===== THEME SELECT ===== */
+.theme-selector {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.theme-dot {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: transform 0.2s, border-color 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+.theme-dot:hover { transform: translateY(-2px); }
+.theme-dot.selected { border-color: var(--text); box-shadow: 0 3px 12px rgba(0,0,0,0.1); }
+.theme-dot[data-theme="sunset"] { background: linear-gradient(135deg, #ffecd2, #fcb69f); }
+.theme-dot[data-theme="ocean"] { background: linear-gradient(135deg, #e0c3fc, #8ec5fc); }
+.theme-dot[data-theme="forest"] { background: linear-gradient(135deg, #d4fc79, #96e6a1); }
+.theme-dot[data-theme="cosmos"] { background: linear-gradient(135deg, #89f7fe, #66a6ff); }
+.theme-dot[data-theme="cherry"] { background: linear-gradient(135deg, #fbc2eb, #f5576c); }
+
+/* ===== BUTTONS ===== */
+.btn-main {
+  padding: 16px 48px;
+  font-size: 1.1rem;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 700;
+  background: var(--text);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
+  letter-spacing: 1px;
+  position: relative; z-index: 1;
+}
+.btn-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.btn-main:active { transform: scale(0.97); }
+.btn-main:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ===== QUESTION SCREEN ===== */
+#questionScreen {
+  background: var(--bg);
+}
+.q-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #f093fb, #f5576c, #ff9a76);
+  transition: width 0.4s ease;
+  z-index: 100;
+  border-radius: 0 2px 2px 0;
+}
+.q-counter {
+  position: fixed;
+  top: 16px; right: 20px;
+  font-size: 0.85rem;
+  color: #ccc;
+  font-weight: 500;
+  z-index: 100;
+}
+.q-category-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  color: var(--text-sub);
+}
+.q-text {
+  font-family: 'Bagel Fat One', cursive;
+  font-size: clamp(1.4rem, 5vw, 2rem);
+  text-align: center;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  max-width: 340px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.q-hint {
+  font-size: 0.8rem;
+  color: var(--text-sub);
+  margin-bottom: 28px;
+  text-align: center;
+}
+.q-textarea {
+  width: min(340px, 85vw);
+  height: 120px;
+  padding: 16px;
+  font-size: 1rem;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #fff;
+  border: 2px solid rgba(0,0,0,0.06);
+  border-radius: 16px;
+  color: var(--text);
+  resize: none;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  line-height: 1.6;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+.q-textarea:focus {
+  border-color: rgba(245,87,108,0.35);
+  box-shadow: 0 0 0 4px rgba(245,87,108,0.07);
+}
+.q-textarea::placeholder {
+  color: #ccc;
+}
+.q-char-count {
+  font-size: 0.75rem;
+  color: var(--text-sub);
+  margin-top: 8px;
+  text-align: right;
+  width: min(340px, 85vw);
+}
+.btn-next {
+  margin-top: 24px;
+  padding: 14px 40px;
+  font-size: 1rem;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 700;
+  background: var(--text);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.3s;
+}
+.btn-next:disabled { opacity: 0.15; cursor: not-allowed; }
+.btn-next:not(:disabled):hover { transform: translateY(-2px); }
+
+/* ===== RESULT SCREEN ===== */
+#resultScreen {
+  background: var(--bg);
+  padding: 20px;
+}
+/* CARD */
+.card-container {
+  width: min(360px, 90vw);
+  position: relative;
+}
+.story-card {
+  width: 100%;
+  aspect-ratio: 9/16;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.10);
+}
+.card-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.theme-sunset .card-bg { background: linear-gradient(155deg, #fff5ee 0%, #ffecd2 25%, #fcb69f 55%, #f5876e 80%, #e86c5a 100%); }
+.theme-ocean .card-bg { background: linear-gradient(155deg, #f3edff 0%, #e0c3fc 25%, #c9a8f4 55%, #8ec5fc 80%, #66a6ff 100%); }
+.theme-forest .card-bg { background: linear-gradient(155deg, #f0fff4 0%, #d4fc79 25%, #96e6a1 55%, #5bc4a0 80%, #38b2a0 100%); }
+.theme-cosmos .card-bg { background: linear-gradient(155deg, #eef7ff 0%, #89f7fe 25%, #66a6ff 55%, #5271ff 80%, #4855db 100%); }
+.theme-cherry .card-bg { background: linear-gradient(155deg, #fff0f6 0%, #fbc2eb 25%, #f5a0c0 55%, #f5576c 80%, #e84060 100%); }
+
+.card-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+}
+.card-glass-orb {
+  position: absolute; border-radius: 50%;
+  background: rgba(255,255,255,0.18); filter: blur(40px); z-index: 1;
+}
+.card-glass-orb:first-of-type { width: 180px; height: 180px; top: -40px; right: -30px; }
+.card-glass-orb:last-of-type { width: 140px; height: 140px; bottom: 18%; left: -25px; background: rgba(255,255,255,0.12); }
+
+.card-content {
+  position: relative;
+  z-index: 2;
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 24px;
+}
+
+/* Card header */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+.card-avatar {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.65);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+}
+.card-avatar img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.card-avatar .avatar-emoji {
+  font-size: 1.8rem;
+}
+.card-name {
+  font-family: 'Bagel Fat One', cursive;
+  font-size: clamp(1.3rem, 5vw, 1.7rem);
+  line-height: 1.2;
+  color: rgba(0,0,0,0.72);
+  text-shadow: 0 1px 2px rgba(255,255,255,0.3);
+}
+.card-label {
+  font-size: 0.7rem;
+  color: rgba(0,0,0,0.25);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 16px;
+  padding-left: 70px;
+}
+
+.card-divider {
+  width: 40px;
+  height: 3px;
+  background: rgba(0,0,0,0.1);
+  border-radius: 2px;
+  margin-bottom: 16px;
+  opacity: 0.7;
+}
+
+/* Card answers */
+.card-answers {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.card-answers::-webkit-scrollbar { width: 2px; }
+.card-answers::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 2px; }
+
+.answer-block {
+  position: relative;
+  padding: 10px 14px;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.9);
+  border-left: 3px solid rgba(0,0,0,0.08);
+  transition: all 0.4s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.answer-q {
+  font-size: 0.68rem;
+  color: rgba(0,0,0,0.35);
+  margin-bottom: 4px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.answer-a {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  font-weight: 500;
+  word-break: keep-all;
+  color: rgba(0,0,0,0.68);
+}
+
+/* Perspective reveal */
+.perspective-tag {
+  display: none;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-top: 6px;
+  width: fit-content;
+}
+.answer-block.revealed .perspective-tag {
+  display: inline-block;
+  animation: tagPop 0.4s ease;
+}
+@keyframes tagPop {
+  0% { opacity: 0; transform: scale(0.7); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.perspective-time .perspective-tag { background: rgba(255,160,0,0.18); color: #e65100; }
+.perspective-space .perspective-tag { background: rgba(46,125,50,0.13); color: #2e7d32; }
+.perspective-social .perspective-tag { background: rgba(21,101,192,0.13); color: #1565c0; }
+.perspective-ethics .perspective-tag { background: rgba(173,20,87,0.13); color: #ad1457; }
+
+.answer-block.revealed.perspective-time { border-left-color: #ff9800; background: rgba(255,152,0,0.08); }
+.answer-block.revealed.perspective-space { border-left-color: #4caf50; background: rgba(76,175,80,0.08); }
+.answer-block.revealed.perspective-social { border-left-color: #2196f3; background: rgba(33,150,243,0.08); }
+.answer-block.revealed.perspective-ethics { border-left-color: #e91e63; background: rgba(233,30,99,0.08); }
+
+/* Card footer */
+.card-footer {
+  margin-top: auto;
+  padding-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card-footer-text {
+  font-size: 0.65rem;
+  color: rgba(0,0,0,0.18);
+  letter-spacing: 1px;
+}
+.card-footer-logo {
+  font-family: 'Bagel Fat One', cursive;
+  font-size: 0.7rem;
+  color: rgba(0,0,0,0.13);
+}
+
+/* ===== REVEAL BUTTON ===== */
+.reveal-section {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+}
+.btn-reveal {
+  padding: 14px 32px;
+  font-size: 0.95rem;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 700;
+  background: #fff;
+  color: var(--text);
+  border: 2px solid rgba(0,0,0,0.08);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.btn-reveal:hover {
+  border-color: rgba(245,87,108,0.3);
+  box-shadow: 0 4px 16px rgba(245,87,108,0.1);
+}
+.btn-reveal.revealed-state {
+  background: var(--text);
+  color: #fff;
+  border-color: var(--text);
+  pointer-events: none;
+}
+
+.reveal-message {
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.06);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--text-sub);
+  display: none;
+  animation: msgFade 0.6s ease;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.reveal-message.show { display: block; }
+@keyframes msgFade {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.reveal-message strong {
+  color: var(--text);
+}
+.reveal-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+}
+
+/* Save button */
+.btn-save {
+  margin-top: 16px;
+  padding: 14px 32px;
+  font-size: 0.95rem;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 700;
+  background: var(--text);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-save:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+.btn-restart {
+  margin-top: 10px;
+  padding: 10px 24px;
+  font-size: 0.8rem;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  color: var(--text-sub);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-restart:hover {
+  border-color: rgba(0,0,0,0.15);
+  color: var(--text);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-height: 700px) {
+  .story-card { aspect-ratio: 9/15; }
+  .card-content { padding: 20px 18px; }
+  .answer-block { padding: 8px 12px; }
+  .card-answers { gap: 8px; }
+}
+
+/* ===== FULLSCREEN OVERLAY ===== */
+.fullscreen-hint {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  color: var(--text-sub);
+  opacity: 0.5;
+  z-index: 1000;
+  text-align: center;
+}
+
+/* ===== TRANSITION SPLASH ===== */
+.splash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.splash-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.splash-text {
+  font-family: 'Bagel Fat One', cursive;
+  font-size: clamp(1.2rem, 5vw, 1.8rem);
+  text-align: center;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.5s ease;
+  line-height: 1.6;
+  background: linear-gradient(135deg, #f093fb, #f5576c, #ff9a76);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.splash-overlay.active .splash-text {
+  opacity: 1;
+  transform: scale(1);
+}
+</style>
+</head>
+<body>
+
+<!-- SPLASH OVERLAY -->
+<div class="splash-overlay" id="splashOverlay">
+  <div class="splash-text" id="splashText"></div>
+</div>
+
+<!-- ===== SCREEN 1: START ===== -->
+<div class="screen active" id="startScreen">
+  <div class="start-title">나를 소개합니다</div>
+  <div class="start-sub">
+    8개의 질문에 답하면<br>
+    <em>나만의 소개 카드</em>가 완성돼요 ✨
+  </div>
+  
+  <div class="photo-upload-area" id="photoUpload" onclick="document.getElementById('photoInput').click()">
+    <div class="photo-placeholder" id="photoPlaceholder">
+      <span class="icon">📷</span>
+      프로필 사진
+    </div>
+    <img id="photoPreview" style="display:none;" alt="프로필">
+  </div>
+  <input type="file" id="photoInput" accept="image/*" style="display:none">
+  
+  <div class="name-input-wrap">
+    <input type="text" class="name-input" id="nameInput" placeholder="이름을 입력하세요" maxlength="10" autocomplete="off">
+  </div>
+  
+  <div style="font-size:0.8rem; color:var(--text-sub); margin-bottom:12px; font-weight:500;">카드 테마</div>
+  <div class="theme-selector">
+    <div class="theme-dot selected" data-theme="sunset" title="노을"></div>
+    <div class="theme-dot" data-theme="ocean" title="바다"></div>
+    <div class="theme-dot" data-theme="forest" title="숲"></div>
+    <div class="theme-dot" data-theme="cosmos" title="우주"></div>
+    <div class="theme-dot" data-theme="cherry" title="벚꽃"></div>
+  </div>
+  
+  <button class="btn-main" id="startBtn" disabled>소개 작성 시작하기</button>
+</div>
+
+<!-- ===== SCREEN 2: QUESTIONS ===== -->
+<div class="screen" id="questionScreen">
+  <div class="q-progress" id="qProgress"></div>
+  <div class="q-counter" id="qCounter"></div>
+  <div class="q-category-badge" id="qCategory"></div>
+  <div class="q-text" id="qText"></div>
+  <div class="q-hint" id="qHint"></div>
+  <textarea class="q-textarea" id="qTextarea" placeholder="자유롭게 작성해주세요" maxlength="100"></textarea>
+  <div class="q-char-count" id="qCharCount">0 / 100</div>
+  <button class="btn-next" id="nextBtn" disabled>다음</button>
+</div>
+
+<!-- ===== SCREEN 3: RESULT ===== -->
+<div class="screen" id="resultScreen">
+  <div class="card-container" id="cardContainer">
+    <div class="story-card" id="storyCard">
+      <div class="card-bg"></div>
+      <div class="card-noise"></div>
+      <div class="card-glass-orb"></div>
+      <div class="card-glass-orb"></div>
+      <div class="card-content">
+        <div class="card-header">
+          <div class="card-avatar" id="cardAvatar">
+            <span class="avatar-emoji">😊</span>
+          </div>
+          <div class="card-name" id="cardName"></div>
+        </div>
+        <div class="card-label">SELF INTRODUCTION</div>
+        <div class="card-divider"></div>
+        <div class="card-answers" id="cardAnswers"></div>
+        <div class="card-footer">
+          <div class="card-footer-text">통합사회 첫 시간</div>
+          <div class="card-footer-logo">통사</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="reveal-section">
+    <button class="btn-reveal" id="revealBtn">🔍 숨겨진 비밀 확인하기</button>
+    <div class="reveal-message" id="revealMessage">
+      <strong>사실, 여러분은 이미 '통합적 관점'으로 자신을 소개했습니다!</strong><br><br>
+      우리가 무언가를 이해하려면 하나의 시선만으로는 부족해요.<br>
+      여러분이 답한 8개의 질문은 각각 <strong>시간</strong>, <strong>공간</strong>, <strong>사회</strong>, <strong>윤리</strong>적 관점에서 나를 바라본 것이었습니다.<br><br>
+      이렇게 다양한 관점으로 바라보는 것, 그게 바로 <strong>통합적 관점</strong>이에요. 🎯
+      <div class="reveal-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#ff9800"></div> 시간적 관점</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4caf50"></div> 공간적 관점</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#2196f3"></div> 사회적 관점</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e91e63"></div> 윤리적 관점</div>
+      </div>
+    </div>
+  </div>
+  
+  <button class="btn-save" id="saveBtn">📱 이미지로 저장하기</button>
+  <button class="btn-restart" id="restartBtn">↺ 처음부터 다시하기</button>
+</div>
+
+<!-- html2canvas CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script>
+// ===== DATA =====
+const QUESTIONS = [
+  {
+    category: '나의 이야기',
+    perspective: 'time',
+    perspectiveLabel: '시간적 관점',
+    text: '과거의 나와\n지금의 나,\n가장 달라진 점은?',
+    hint: '예전엔 이랬는데 지금은...',
+    icon: '⏳'
+  },
+  {
+    category: '나의 이야기',
+    perspective: 'time',
+    perspectiveLabel: '시간적 관점',
+    text: '10년 뒤의 나는\n어떤 모습일까?',
+    hint: '상상해봐요, 미래의 나!',
+    icon: '🔮'
+  },
+  {
+    category: '나의 공간',
+    perspective: 'space',
+    perspectiveLabel: '공간적 관점',
+    text: '세상에서\n가장 좋아하는\n장소는 어디?',
+    hint: '집, 학교, 어디든 좋아요',
+    icon: '📍'
+  },
+  {
+    category: '나의 공간',
+    perspective: 'space',
+    perspectiveLabel: '공간적 관점',
+    text: '어디서든 살 수 있다면\n어디에서 살고 싶어?',
+    hint: '도시? 시골? 해외?',
+    icon: '🌏'
+  },
+  {
+    category: '나의 관계',
+    perspective: 'social',
+    perspectiveLabel: '사회적 관점',
+    text: '나에게 가장\n큰 영향을 준\n사람은 누구?',
+    hint: '가족, 친구, 선생님, 유명인...',
+    icon: '👥'
+  },
+  {
+    category: '나의 관계',
+    perspective: 'social',
+    perspectiveLabel: '사회적 관점',
+    text: '친구들 사이에서\n나의 역할은?',
+    hint: '분위기 메이커? 해결사? 리더?',
+    icon: '🤝'
+  },
+  {
+    category: '나의 가치관',
+    perspective: 'ethics',
+    perspectiveLabel: '윤리적 관점',
+    text: '절대 하고 싶지\n않은 일이 있다면?',
+    hint: '나만의 기준이 있을 거예요',
+    icon: '🚫'
+  },
+  {
+    category: '나의 가치관',
+    perspective: 'ethics',
+    perspectiveLabel: '윤리적 관점',
+    text: '내가 생각하는\n"좋은 사람"이란?',
+    hint: '한 문장으로 표현해보세요',
+    icon: '💫'
+  }
+];
+
+const SPLASH_MESSAGES = [
+  '좋아요! 이제 나를 소개해볼까요? ✨',
+  '나의 과거와 미래 🕰️',
+  '',
+  '나만의 특별한 공간 🗺️',
+  '',
+  '소중한 관계들 💛',
+  '',
+  '나의 가치관 🌟',
+  ''
+];
+
+// ===== STATE =====
+let currentQ = 0;
+let answers = [];
+let userName = '';
+let selectedTheme = 'sunset';
+let photoDataURL = null;
+let isRevealed = false;
+
+// ===== ELEMENTS =====
+const startScreen = document.getElementById('startScreen');
+const questionScreen = document.getElementById('questionScreen');
+const resultScreen = document.getElementById('resultScreen');
+const nameInput = document.getElementById('nameInput');
+const startBtn = document.getElementById('startBtn');
+const photoUpload = document.getElementById('photoUpload');
+const photoInput = document.getElementById('photoInput');
+const photoPreview = document.getElementById('photoPreview');
+const photoPlaceholder = document.getElementById('photoPlaceholder');
+const qProgress = document.getElementById('qProgress');
+const qCounter = document.getElementById('qCounter');
+const qCategory = document.getElementById('qCategory');
+const qText = document.getElementById('qText');
+const qHint = document.getElementById('qHint');
+const qTextarea = document.getElementById('qTextarea');
+const qCharCount = document.getElementById('qCharCount');
+const nextBtn = document.getElementById('nextBtn');
+const cardName = document.getElementById('cardName');
+const cardAvatar = document.getElementById('cardAvatar');
+const cardAnswers = document.getElementById('cardAnswers');
+const storyCard = document.getElementById('storyCard');
+const revealBtn = document.getElementById('revealBtn');
+const revealMessage = document.getElementById('revealMessage');
+const saveBtn = document.getElementById('saveBtn');
+const restartBtn = document.getElementById('restartBtn');
+const splashOverlay = document.getElementById('splashOverlay');
+const splashText = document.getElementById('splashText');
+
+// ===== THEME =====
+document.querySelectorAll('.theme-dot').forEach(dot => {
+  dot.addEventListener('click', () => {
+    document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('selected'));
+    dot.classList.add('selected');
+    selectedTheme = dot.dataset.theme;
+  });
+});
+
+// ===== PHOTO =====
+photoInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    photoDataURL = ev.target.result;
+    photoPreview.src = photoDataURL;
+    photoPreview.style.display = 'block';
+    photoPlaceholder.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+});
+
+// ===== NAME =====
+nameInput.addEventListener('input', () => {
+  startBtn.disabled = nameInput.value.trim().length === 0;
+});
+
+// ===== START =====
+startBtn.addEventListener('click', () => {
+  userName = nameInput.value.trim();
+  // Try fullscreen
+  tryFullscreen();
+  showSplash(SPLASH_MESSAGES[0], () => {
+    switchScreen(startScreen, questionScreen);
+    loadQuestion(0);
+  });
+});
+
+function tryFullscreen() {
+  const el = document.documentElement;
+  if (el.requestFullscreen) el.requestFullscreen().catch(()=>{});
+  else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+}
+
+// ===== SPLASH =====
+function showSplash(msg, callback) {
+  if (!msg) { callback(); return; }
+  splashText.textContent = msg;
+  splashOverlay.classList.add('active');
+  setTimeout(() => {
+    splashOverlay.classList.remove('active');
+    setTimeout(callback, 300);
+  }, 1200);
+}
+
+// ===== SCREEN SWITCH =====
+function switchScreen(from, to) {
+  from.classList.remove('active');
+  setTimeout(() => to.classList.add('active'), 50);
+}
+
+// ===== QUESTIONS =====
+function loadQuestion(idx) {
+  const q = QUESTIONS[idx];
+  qProgress.style.width = ((idx + 1) / QUESTIONS.length * 100) + '%';
+  qCounter.textContent = `${idx + 1} / ${QUESTIONS.length}`;
+  qCategory.textContent = q.icon + ' ' + q.category;
+  qText.textContent = q.text;
+  qHint.textContent = q.hint;
+  qTextarea.value = answers[idx] || '';
+  updateCharCount();
+  updateNextBtn();
+  qTextarea.focus();
+}
+
+qTextarea.addEventListener('input', () => {
+  updateCharCount();
+  updateNextBtn();
+});
+
+function updateCharCount() {
+  const len = qTextarea.value.length;
+  qCharCount.textContent = `${len} / 100`;
+}
+
+function updateNextBtn() {
+  nextBtn.disabled = qTextarea.value.trim().length === 0;
+  nextBtn.textContent = currentQ === QUESTIONS.length - 1 ? '완성하기 🎉' : '다음';
+}
+
+nextBtn.addEventListener('click', () => {
+  answers[currentQ] = qTextarea.value.trim();
+  
+  if (currentQ < QUESTIONS.length - 1) {
+    currentQ++;
+    const splashMsg = SPLASH_MESSAGES[currentQ];
+    if (splashMsg) {
+      showSplash(splashMsg, () => loadQuestion(currentQ));
+    } else {
+      // Smooth transition
+      qText.style.opacity = 0;
+      qTextarea.style.opacity = 0;
+      setTimeout(() => {
+        loadQuestion(currentQ);
+        qText.style.opacity = 1;
+        qTextarea.style.opacity = 1;
+      }, 200);
+    }
+  } else {
+    // Complete
+    showSplash('카드가 완성되었어요! 🎉', () => {
+      buildCard();
+      switchScreen(questionScreen, resultScreen);
+      // Exit fullscreen
+      if (document.exitFullscreen) document.exitFullscreen().catch(()=>{});
+    });
+  }
+});
+
+// ===== BUILD CARD =====
+function buildCard() {
+  // Apply theme
+  storyCard.className = 'story-card theme-' + selectedTheme;
+  
+  // Name
+  cardName.textContent = userName;
+  
+  // Avatar
+  cardAvatar.innerHTML = '';
+  if (photoDataURL) {
+    const img = document.createElement('img');
+    img.src = photoDataURL;
+    img.alt = userName;
+    cardAvatar.appendChild(img);
+  } else {
+    const emoji = document.createElement('span');
+    emoji.className = 'avatar-emoji';
+    emoji.textContent = '😊';
+    cardAvatar.appendChild(emoji);
+  }
+  
+  // Answers
+  cardAnswers.innerHTML = '';
+  QUESTIONS.forEach((q, i) => {
+    const block = document.createElement('div');
+    block.className = `answer-block perspective-${q.perspective}`;
+    block.innerHTML = `
+      <div class="answer-q">${q.icon} ${q.text.replace(/\n/g, ' ')}</div>
+      <div class="answer-a">${answers[i] || ''}</div>
+      <div class="perspective-tag">${q.perspectiveLabel}</div>
+    `;
+    cardAnswers.appendChild(block);
+  });
+  
+  isRevealed = false;
+  revealBtn.classList.remove('revealed-state');
+  revealBtn.textContent = '🔍 숨겨진 비밀 확인하기';
+  revealMessage.classList.remove('show');
+}
+
+// ===== REVEAL =====
+revealBtn.addEventListener('click', () => {
+  isRevealed = true;
+  revealBtn.classList.add('revealed-state');
+  revealBtn.textContent = '✅ 비밀이 공개되었습니다!';
+  
+  // Animate blocks
+  const blocks = document.querySelectorAll('.answer-block');
+  blocks.forEach((block, i) => {
+    setTimeout(() => {
+      block.classList.add('revealed');
+    }, i * 150);
+  });
+  
+  // Show message
+  setTimeout(() => {
+    revealMessage.classList.add('show');
+    revealMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, blocks.length * 150 + 300);
+});
+
+// ===== SAVE =====
+saveBtn.addEventListener('click', async () => {
+  saveBtn.textContent = '저장 중...';
+  saveBtn.disabled = true;
+  
+  try {
+    const card = document.getElementById('storyCard');
+    const answersEl = document.querySelector('.card-answers');
+    
+    // 1) 저장 전: 카드를 고정 비율에서 해제하고 전체 펼침
+    const origCardAR = card.style.aspectRatio;
+    const origCardH = card.style.height;
+    const origAnswersOF = answersEl.style.overflow;
+    const origAnswersFlex = answersEl.style.flex;
+    
+    card.style.aspectRatio = 'auto';
+    card.style.height = 'auto';
+    answersEl.style.overflow = 'visible';
+    answersEl.style.flex = 'none';
+    
+    // 약간의 렌더링 대기
+    await new Promise(r => setTimeout(r, 100));
+    
+    const canvas = await html2canvas(card, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: null,
+      logging: false
+    });
+    
+    // 2) 원래 스타일 복원
+    card.style.aspectRatio = origCardAR;
+    card.style.height = origCardH;
+    answersEl.style.overflow = origAnswersOF;
+    answersEl.style.flex = origAnswersFlex;
+    
+    const link = document.createElement('a');
+    link.download = `나의소개카드_${userName}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  } catch (err) {
+    alert('저장에 실패했어요. 스크린샷으로 저장해주세요!');
+    console.error(err);
+  }
+  
+  saveBtn.textContent = '📱 이미지로 저장하기';
+  saveBtn.disabled = false;
+});
+
+// ===== RESTART =====
+restartBtn.addEventListener('click', () => {
+  currentQ = 0;
+  answers = [];
+  nameInput.value = '';
+  photoDataURL = null;
+  photoPreview.style.display = 'none';
+  photoPlaceholder.style.display = '';
+  startBtn.disabled = true;
+  switchScreen(resultScreen, startScreen);
+});
+
+// Prevent zoom on double tap
+document.addEventListener('touchend', (e) => {
+  e.preventDefault();
+}, { passive: false });
+
+// Re-enable default for inputs
+document.querySelectorAll('input, textarea').forEach(el => {
+  el.addEventListener('touchend', (e) => e.stopPropagation());
+});
+</script>
+</body>
+</html>

@@ -58,6 +58,16 @@
         "4관점",
         "통사1"
       ]
+    },
+    {
+      "slug": "intro",
+      "file": "c-integrated-perspective-integrated-social-intro.html",
+      "title": "나를 소개합니다",
+      "desc": "",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "15분",
+      "tags": []
     }
   ]
 }
