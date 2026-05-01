@@ -1,150 +1,165 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>📊 7단원 사회 정의와 불평등 — 수업 슬라이드</title>
-<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-*{box-sizing:border-box}body{font-family:'Noto Sans KR',sans-serif;background:#1e3a8a;color:#f1f5f9;margin:0;overflow:hidden}
-.fjua{font-family:'Jua',sans-serif}
-.slide{width:100vw;height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:5vh 5vw;text-align:center}
-.slide.active{display:flex;animation:fi .4s ease-out}
-@keyframes fi{from{opacity:0;transform:scale(.97)}to{opacity:1}}
-.slide h1{font-family:'Jua',sans-serif;font-size:clamp(2rem,5vw,4rem);margin-bottom:1.5rem}
-.slide h2{font-family:'Jua',sans-serif;font-size:clamp(1.5rem,4vw,3rem);margin-bottom:1rem}
-.slide p,.slide li{font-size:clamp(1rem,2vw,1.5rem);line-height:1.7}
-.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(10px);padding:10px 20px;border-radius:99px;z-index:100;display:flex;gap:10px;align-items:center}
-.nav button{background:#3b82f6;color:#fff;border:0;width:40px;height:40px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}
-.nav button:disabled{background:#475569;color:#94a3b8;cursor:not-allowed}
-.counter{color:#60a5fa;font-weight:bold;min-width:60px;text-align:center}
-.cover{background:linear-gradient(135deg,#1e3a8a 0%,#1e1b4b 100%)}
-.intro{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
-.concept{background:linear-gradient(135deg,#1e40af 0%,#1e3a8a 100%)}
-.summary{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
-@media print{.slide{display:flex!important;page-break-after:always;height:auto;min-height:100vh}.nav{display:none}body{background:#fff;color:#000;overflow:visible}}
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>정의 — 100을 5명에게</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;700;900&family=Noto+Serif+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script><style>
+*{box-sizing:border-box;margin:0;padding:0}html,body{overflow:hidden;width:100vw;height:100vh}body{font-family:'Noto Sans KR',sans-serif;background:#000;color:#fff}
+.bhs{font-family:'Black Han Sans',sans-serif;letter-spacing:-1px}
+.slide{width:100vw;height:100vh;display:none;position:relative;overflow:hidden}.slide.active{display:flex}
+.slide.active>*{animation:in .6s cubic-bezier(.2,.8,.2,1)}@keyframes in{from{opacity:0;transform:translateY(20px)}to{opacity:1}}
+.nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);backdrop-filter:blur(20px);padding:12px 24px;border-radius:99px;z-index:100;display:flex;gap:12px;align-items:center}
+.nav button{background:#fff;color:#000;border:0;width:44px;height:44px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}.nav button:disabled{background:#333;color:#666}
+.counter{color:#3b82f6;font-weight:900;min-width:64px;text-align:center;font-size:.9rem}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#3b82f6,#ec4899,#fbbf24);z-index:100;transition:width .4s}
+@media print{.nav,.progress{display:none}.slide{display:flex!important;page-break-after:always}}
+
+.s-cover{background:radial-gradient(circle at 70% 30%,#1e3a8a 0%,#000 70%);align-items:center;justify-content:center;text-align:center;flex-direction:column;padding:5vh 5vw}
+.s-cover .label{color:#3b82f6;letter-spacing:8px;font-weight:700;margin-bottom:24px;border:1px solid rgba(59,130,246,.4);padding:8px 24px;border-radius:99px;font-size:clamp(.8rem,1.2vw,1rem)}
+.s-cover h1{font-size:clamp(3rem,11vw,9rem);line-height:.9;margin-bottom:24px;background:linear-gradient(135deg,#fff,#3b82f6);-webkit-background-clip:text;color:transparent;font-weight:900}
+.s-cover .sub{font-size:clamp(1.2rem,2.5vw,1.8rem);color:rgba(255,255,255,.7);font-weight:300;letter-spacing:4px}
+
+.s-game{background:linear-gradient(135deg,#0c0a09 0%,#1c1917 100%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw;gap:32px}
+.s-game .pre{color:#fbbf24;letter-spacing:6px;font-size:clamp(.85rem,1.3vw,1rem)}
+.s-game h2{font-size:clamp(2rem,4.5vw,3.5rem);font-weight:900;line-height:1.1;font-family:'Black Han Sans',sans-serif}
+.s-game .num100{font-size:clamp(8rem,18vw,15rem);font-weight:900;line-height:.85;background:linear-gradient(180deg,#fff,#3b82f6);-webkit-background-clip:text;color:transparent;font-family:'Black Han Sans',sans-serif}
+.s-game .ways{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1100px;width:100%}
+.s-game .way{padding:20px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1);border-radius:12px;font-size:clamp(.9rem,1.3vw,1rem)}
+.s-game .way b{color:#3b82f6;display:block;margin-bottom:4px}
+
+.s-principles{background:linear-gradient(135deg,#1e3a8a 0%,#0c1e2e 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch;justify-content:center}
+.s-principles h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:32px;text-align:center}
+.s-principles .four{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.s-principles .p{padding:24px;border-radius:16px;display:flex;gap:20px;align-items:center;transition:.3s}
+.s-principles .p:hover{transform:translateY(-4px)}
+.s-principles .p1{background:rgba(245,158,11,.1);border:1px solid #f59e0b}
+.s-principles .p2{background:rgba(16,185,129,.1);border:1px solid #10b981}
+.s-principles .p3{background:rgba(167,139,250,.1);border:1px solid #a78bfa}
+.s-principles .p4{background:rgba(236,72,153,.1);border:1px solid #ec4899}
+.s-principles .p .icon{font-size:3.5rem;flex-shrink:0}
+.s-principles .p h3{font-size:clamp(1.2rem,1.8vw,1.5rem);font-weight:900;margin-bottom:6px}
+.s-principles .p1 h3{color:#f59e0b}.s-principles .p2 h3{color:#10b981}.s-principles .p3 h3{color:#a78bfa}.s-principles .p4 h3{color:#ec4899}
+.s-principles .p p{font-size:clamp(.9rem,1.3vw,1rem);color:rgba(255,255,255,.85);line-height:1.5}
+
+.s-rawls-nozick{background:#0a0a0a;display:grid;grid-template-columns:1fr 1fr}
+.s-rawls-nozick .col{padding:8vh 5vw;display:flex;flex-direction:column;justify-content:center;gap:16px}
+.s-rawls-nozick .left{background:linear-gradient(135deg,#1e3a8a 0%,#0c1e2e 100%)}
+.s-rawls-nozick .right{background:linear-gradient(135deg,#7f1d1d 0%,#1c1917 100%)}
+.s-rawls-nozick .icon{font-size:5rem}
+.s-rawls-nozick .name{font-size:clamp(2rem,4vw,3rem);font-family:'Black Han Sans',sans-serif;line-height:1}
+.s-rawls-nozick .left .name{color:#60a5fa}.s-rawls-nozick .right .name{color:#ef4444}
+.s-rawls-nozick .school{font-size:clamp(.9rem,1.4vw,1.1rem);color:rgba(255,255,255,.6);font-style:italic}
+.s-rawls-nozick ul{list-style:none;margin-top:16px}
+.s-rawls-nozick li{padding:8px 0;font-size:clamp(.95rem,1.4vw,1.1rem);border-bottom:1px solid rgba(255,255,255,.08);display:flex;gap:8px}
+.s-rawls-nozick li:last-child{border:0}
+.s-rawls-nozick li::before{content:'•';flex-shrink:0}
+.s-rawls-nozick .left li::before{color:#60a5fa}.s-rawls-nozick .right li::before{color:#ef4444}
+
+.s-chart{background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch}
+.s-chart h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:8px}
+.s-chart .subtitle{color:#94a3b8;margin-bottom:24px;font-size:clamp(.9rem,1.4vw,1.1rem)}
+.s-chart .chart-wrap{flex:1;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:24px;position:relative}
+.s-chart .insight{margin-top:16px;padding:16px;background:rgba(239,68,68,.1);border-left:4px solid #ef4444;border-radius:0 12px 12px 0;font-size:clamp(.9rem,1.3vw,1rem)}
+.s-chart .insight b{color:#ef4444}
+
+.s-quote{background:linear-gradient(135deg,#1e1b4b 0%,#000 100%);align-items:center;justify-content:center;padding:8vh 8vw;flex-direction:column;text-align:center;gap:32px}
+.s-quote .marks{font-size:clamp(4rem,8vw,7rem);color:rgba(167,139,250,.3);font-family:Georgia,serif;line-height:.5}
+.s-quote blockquote{font-size:clamp(1.6rem,3.5vw,3rem);line-height:1.4;font-weight:300;max-width:1200px;font-family:'Noto Serif KR',serif}
+.s-quote blockquote em{color:#a78bfa;font-style:normal;font-weight:700}
+.s-quote cite{font-size:clamp(.9rem,1.4vw,1.1rem);color:rgba(255,255,255,.5);font-style:normal;letter-spacing:2px}.s-quote cite::before{content:'— '}
+
+.s-end{background:radial-gradient(circle at 50% 50%,#1e3a8a 0%,#000 80%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw;gap:24px}
+.s-end .key{color:#3b82f6;letter-spacing:6px;font-weight:700;font-size:clamp(.85rem,1.3vw,1rem)}
+.s-end h2{font-size:clamp(2.5rem,6vw,5.5rem);line-height:1;font-weight:900;background:linear-gradient(180deg,#fff,#3b82f6);-webkit-background-clip:text;color:transparent}
+.s-end .takeaways{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:1000px;width:100%;margin-top:32px}
+.s-end .ta{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px;text-align:left;font-size:clamp(.9rem,1.3vw,1.1rem)}
+.s-end .ta b{color:#3b82f6}
+
+@media (max-width:768px){.s-game .ways,.s-principles .four,.s-rawls-nozick,.s-end .takeaways{grid-template-columns:1fr}.s-game .ways{grid-template-columns:repeat(2,1fr)}}
 </style></head><body>
+<div class="progress" id="prog" style="width:0%"></div>
 
-<div class="slide cover active">
-<div class="text-xs text-blue-200 font-bold mb-2">통합사회 2 · 7단원</div>
-<h1>⚖️ 사회 정의와 불평등</h1>
-<p class="mt-4 text-blue-100">공정한 분배는 무엇인가</p>
-<div class="mt-8 text-base text-blue-200">[10통사2-02] 분배 정의의 관점, 불평등 양상, 사회적 약자 보호</div>
-</div>
+<section class="slide s-cover active">
+<span class="label">통합사회 2 · 7단원</span>
+<h1 class="bhs">공정한 분배는<br>무엇인가</h1>
+<p class="sub">사회 정의와 불평등</p>
+</section>
 
-<div class="slide intro">
-<h2>🤔 100을 5명에게 나눈다면?</h2>
-<div class="mt-6 max-w-3xl bg-white/10 rounded-xl p-6 text-left">
-<ul class="text-base space-y-2">
-<li>똑같이 20씩? (평등 분배)</li>
-<li>능력대로 더 많이? (능력 분배)</li>
-<li>가장 어려운 사람에게 더? (필요 분배)</li>
-<li>기여한 만큼? (업적 분배)</li>
-</ul>
-<p class="mt-4 text-amber-300">→ 어느 게 "정의"인가? 이게 7단원의 질문</p>
+<section class="slide s-game">
+<div class="pre">사고실험</div>
+<h2>100을 5명에게</h2>
+<div class="num100">100</div>
+<p style="font-family:'Noto Serif KR',serif;font-size:clamp(1rem,1.5vw,1.3rem);color:rgba(255,255,255,.7);max-width:900px">"5명에게 100을 나눠야 한다.<br>어떻게 나누는 게 정의인가?"</p>
+<div class="ways">
+<div class="way"><b>🟰 평등</b>똑같이 20씩</div>
+<div class="way"><b>💪 능력</b>능력대로 더 많이</div>
+<div class="way"><b>🤝 필요</b>가장 어려운 이에게</div>
+<div class="way"><b>🏆 업적</b>기여한 만큼</div>
 </div>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>📖 4가지 분배 원칙</h2>
-<div class="mt-6 grid grid-cols-2 gap-4 max-w-4xl">
-<div class="bg-white/10 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">💪</div><b class="text-blue-200">능력 분배</b>
-<p class="text-sm mt-1">효율 ↑, 사회적 약자 소외</p>
+<section class="slide s-principles">
+<h2 class="bhs">📖 4가지 분배 원칙</h2>
+<div class="four">
+<div class="p p1"><div class="icon">💪</div><div><h3>능력에 따라</h3><p>능력이 큰 사람에게 더 많이. 효율 ↑, but 약자 소외.</p></div></div>
+<div class="p p2"><div class="icon">🤝</div><div><h3>필요에 따라</h3><p>가장 절실한 사람부터. 약자 보호, but 동기 약화.</p></div></div>
+<div class="p p3"><div class="icon">🏆</div><div><h3>업적에 따라</h3><p>기여한 만큼. 동기 부여, but 출발선 차이 무시.</p></div></div>
+<div class="p p4"><div class="icon">🟰</div><div><h3>평등 분배</h3><p>똑같이. 단순·공정, but 동기 약화.</p></div></div>
 </div>
-<div class="bg-white/10 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">🤝</div><b class="text-blue-200">필요 분배</b>
-<p class="text-sm mt-1">약자 보호, 동기 약화 가능</p>
-</div>
-<div class="bg-white/10 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">🏆</div><b class="text-blue-200">업적 분배</b>
-<p class="text-sm mt-1">동기 부여, 출발선 차이 무시</p>
-</div>
-<div class="bg-white/10 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">🟰</div><b class="text-blue-200">평등 분배</b>
-<p class="text-sm mt-1">단순·공정, 동기 약화</p>
-</div>
-</div>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>🤝 롤스 vs 노직</h2>
-<div class="mt-6 grid grid-cols-2 gap-4 max-w-4xl text-left">
-<div class="bg-blue-500/20 border-2 border-blue-400 rounded-xl p-5">
-<div class="text-3xl">🏛</div><b class="text-blue-200 text-xl">롤스 (평등 자유주의)</b>
-<ul class="text-base mt-2 space-y-1">
-<li>• 무지의 베일</li>
-<li>• 차등의 원칙</li>
-<li>• 최소수혜자 우선</li>
-<li>• 재분배 정당화</li>
+<section class="slide s-rawls-nozick">
+<div class="col left">
+<div class="icon">🏛</div>
+<h2 class="name">롤스</h2>
+<div class="school">평등 자유주의 (1971)</div>
+<ul>
+<li>무지의 베일에서의 합의</li>
+<li>차등의 원칙</li>
+<li>최소수혜자 우선</li>
+<li>재분배는 정의롭다</li>
 </ul>
 </div>
-<div class="bg-rose-500/20 border-2 border-rose-400 rounded-xl p-5">
-<div class="text-3xl">🦅</div><b class="text-rose-200 text-xl">노직 (자유지상주의)</b>
-<ul class="text-base mt-2 space-y-1">
-<li>• 정당한 취득·이전</li>
-<li>• 재분배 = 강제 노동</li>
-<li>• 최소국가가 이상</li>
-<li>• 개인 자유 우선</li>
+<div class="col right">
+<div class="icon">🦅</div>
+<h2 class="name">노직</h2>
+<div class="school">자유지상주의 (1974)</div>
+<ul>
+<li>정당한 취득·이전</li>
+<li>재분배 = 강제 노동</li>
+<li>최소국가가 이상</li>
+<li>개인의 자유가 최우선</li>
 </ul>
 </div>
-</div>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>📊 한국의 불평등 — 현황</h2>
-<div class="mt-6 grid grid-cols-3 gap-3 max-w-4xl text-left">
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">💰 소득</b><p class="text-sm mt-1">상위10% 소득점유 45%</p></div>
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🏠 자산</b><p class="text-sm mt-1">상위10% 자산점유 60%+</p></div>
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">📚 교육</b><p class="text-sm mt-1">사교육비 격차</p></div>
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">⚧ 성</b><p class="text-sm mt-1">남녀 임금 격차 31%</p></div>
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🌍 지역</b><p class="text-sm mt-1">수도권 vs 지방</p></div>
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">👥 세대</b><p class="text-sm mt-1">청년 빈곤율 ↑</p></div>
-</div>
-</div>
+<section class="slide s-chart">
+<h2 class="bhs">📊 한국의 6가지 불평등</h2>
+<div class="subtitle">상위 10% vs 하위 50% 점유율 (2024)</div>
+<div class="chart-wrap" style="height:50vh"><canvas id="ineqC"></canvas></div>
+<div class="insight"><b>📌 핵심:</b> 자산은 상위 10%가 60%+를 점유. OECD 평균보다 격차가 크다.</div>
+</section>
 
-<div class="slide concept">
-<h2>🛡 사회적 약자 보호 제도</h2>
-<ul class="text-left mt-6 space-y-3 max-w-3xl" style="list-style:none">
-<li class="bg-white/10 rounded-xl p-4">📜 <b>사회 보장 제도</b> — 국민연금·건강보험·고용보험·산재보험</li>
-<li class="bg-white/10 rounded-xl p-4">💰 <b>공공 부조</b> — 기초생활보장·의료급여</li>
-<li class="bg-white/10 rounded-xl p-4">🏥 <b>사회 서비스</b> — 노인·장애인·아동 복지</li>
-<li class="bg-white/10 rounded-xl p-4">⚖️ <b>적극적 우대 조치</b> — 어퍼머티브 액션</li>
-</ul>
-</div>
+<section class="slide s-quote">
+<div class="marks">"</div>
+<blockquote>사회 제도가 가져야 할 첫 번째 덕목은<br><em>정의</em>다.</blockquote>
+<cite>존 롤스 · A Theory of Justice (1971)</cite>
+</section>
 
-<div class="slide concept">
-<h2>🛠 단원 웹교구 (3종)</h2>
-<div class="mt-6 grid grid-cols-3 gap-3 max-w-4xl">
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🎲 인생게임</b><p class="text-sm">출발선 다른 게임</p></div>
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">⚖️ 롤스 vs 노직</b><p class="text-sm">5사례 정의관 진단</p></div>
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🎯 분배 게임</b><p class="text-sm">100을 5명에게 분배</p></div>
+<section class="slide s-end">
+<div class="key">CORE TAKEAWAYS</div>
+<h2 class="bhs">기억해야 할<br>5가지</h2>
+<div class="takeaways">
+<div class="ta"><b>① 4가지 분배 원칙</b> — 능력·필요·업적·평등</div>
+<div class="ta"><b>② 롤스 (평등 자유)</b> — 약자 보호 = 정의</div>
+<div class="ta"><b>③ 노직 (자유지상)</b> — 개인 자유 = 정의</div>
+<div class="ta"><b>④ 한국의 불평등</b> 6영역에서 심각</div>
+<div class="ta" style="grid-column:1/-1;text-align:center;border-color:#3b82f6"><b>⑤ 사회 보장</b> + <b>적극적 우대 조치</b>로 약자 보호</div>
 </div>
-</div>
+</section>
 
-<div class="slide summary">
-<h2>🎯 오늘의 핵심</h2>
-<ul class="text-left mt-6 space-y-3 text-violet-100" style="list-style:none">
-<li>✅ 분배 원칙 4가지: 능력·필요·업적·평등</li>
-<li>✅ 롤스(평등 자유주의) vs 노직(자유지상주의)</li>
-<li>✅ 한국 불평등: 소득·자산·교육·성·지역·세대</li>
-<li>✅ 사회 보장 + 적극적 우대로 약자 보호</li>
-</ul>
-<div class="mt-10 bg-amber-500/20 rounded-xl p-5">
-<b class="text-amber-300">📌 다음 단원</b>
-<p class="text-base text-amber-100 mt-2">8단원 시장 경제와 지속가능발전 — 자산 관리</p>
-</div>
-</div>
-
-<div class="nav">
-<button id="prev">←</button><span class="counter" id="counter">1 / 8</span><button id="next">→</button>
-<button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button>
-</div>
-
-<script>
-const slides=document.querySelectorAll('.slide');let cur=0;
-function show(i){slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+slides.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===slides.length-1;}
-document.getElementById('prev').onclick=()=>{if(cur>0){cur--;show(cur);}};
-document.getElementById('next').onclick=()=>{if(cur<slides.length-1){cur++;show(cur);}};
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(cur<slides.length-1){cur++;show(cur);}}else if(e.key==='ArrowLeft'){if(cur>0){cur--;show(cur);}}});
-show(0);
-</script>
-</body></html>
+<div class="nav"><button id="prev">←</button><span class="counter" id="counter">1 / 7</span><button id="next">→</button><button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button></div>
+<script>const sl=document.querySelectorAll('.slide');let c=0;
+function s(i){sl.forEach(x=>x.classList.remove('active'));sl[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+sl.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===sl.length-1;document.getElementById('prog').style.width=(((i+1)/sl.length)*100)+'%';if(i===4&&!window.iD){drawI();window.iD=1;}}
+function drawI(){const ctx=document.getElementById('ineqC');if(!ctx)return;new Chart(ctx,{type:'bar',data:{labels:['소득','자산','교육비','임금(성)','주거','일자리'],datasets:[{label:'상위 10% 점유율 (%)',data:[45,60,55,135,50,42],backgroundColor:'#3b82f6',borderRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#fff'}}},scales:{x:{ticks:{color:'#94a3b8'},grid:{color:'rgba(255,255,255,.05)'}},y:{ticks:{color:'#94a3b8',callback:v=>v+'%'},grid:{color:'rgba(255,255,255,.05)'},beginAtZero:true}}}});}
+document.getElementById('prev').onclick=()=>{if(c>0){c--;s(c);}};document.getElementById('next').onclick=()=>{if(c<sl.length-1){c++;s(c);}};
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(c<sl.length-1){c++;s(c);}}else if(e.key==='ArrowLeft'){if(c>0){c--;s(c);}}});
+let tx=0;document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){if(dx<0&&c<sl.length-1){c++;s(c);}else if(dx>0&&c>0){c--;s(c);}}});s(0);</script></body></html>

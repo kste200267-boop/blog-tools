@@ -1,155 +1,149 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>📊 10단원 미래와 지속가능한 삶 — 수업 슬라이드</title>
-<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-*{box-sizing:border-box}body{font-family:'Noto Sans KR',sans-serif;background:#064e3b;color:#f1f5f9;margin:0;overflow:hidden}
-.fjua{font-family:'Jua',sans-serif}
-.slide{width:100vw;height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:5vh 5vw;text-align:center}
-.slide.active{display:flex;animation:fi .4s ease-out}
-@keyframes fi{from{opacity:0;transform:scale(.97)}to{opacity:1}}
-.slide h1{font-family:'Jua',sans-serif;font-size:clamp(2rem,5vw,4rem);margin-bottom:1.5rem}
-.slide h2{font-family:'Jua',sans-serif;font-size:clamp(1.5rem,4vw,3rem);margin-bottom:1rem}
-.slide p,.slide li{font-size:clamp(1rem,2vw,1.5rem);line-height:1.7}
-.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(10px);padding:10px 20px;border-radius:99px;z-index:100;display:flex;gap:10px;align-items:center}
-.nav button{background:#10b981;color:#022c22;border:0;width:40px;height:40px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}
-.nav button:disabled{background:#475569;color:#94a3b8;cursor:not-allowed}
-.counter{color:#10b981;font-weight:bold;min-width:60px;text-align:center}
-.cover{background:linear-gradient(135deg,#064e3b 0%,#022c22 100%)}
-.intro{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
-.concept{background:linear-gradient(135deg,#065f46 0%,#064e3b 100%)}
-.summary{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
-@media print{.slide{display:flex!important;page-break-after:always;height:auto;min-height:100vh}.nav{display:none}body{background:#fff;color:#000;overflow:visible}}
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>미래 — 우리 세대 + 다음 세대</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;700;900&family=Noto+Serif+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script><style>
+*{box-sizing:border-box;margin:0;padding:0}html,body{overflow:hidden;width:100vw;height:100vh}body{font-family:'Noto Sans KR',sans-serif;background:#000;color:#fff}
+.bhs{font-family:'Black Han Sans',sans-serif;letter-spacing:-1px}
+.slide{width:100vw;height:100vh;display:none;position:relative;overflow:hidden}.slide.active{display:flex}
+.slide.active>*{animation:in .6s cubic-bezier(.2,.8,.2,1)}@keyframes in{from{opacity:0;transform:translateY(20px)}to{opacity:1}}
+.nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);backdrop-filter:blur(20px);padding:12px 24px;border-radius:99px;z-index:100;display:flex;gap:12px;align-items:center}
+.nav button{background:#fff;color:#000;border:0;width:44px;height:44px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}.nav button:disabled{background:#333;color:#666}
+.counter{color:#10b981;font-weight:900;min-width:64px;text-align:center;font-size:.9rem}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#10b981,#fbbf24,#ef4444);z-index:100;transition:width .4s}
+@media print{.nav,.progress{display:none}.slide{display:flex!important;page-break-after:always}}
+
+.s-cover{background:radial-gradient(circle at 50% 70%,#064e3b 0%,#000 70%);align-items:center;justify-content:center;text-align:center;flex-direction:column;padding:5vh 5vw}
+.s-cover .label{color:#10b981;letter-spacing:8px;font-weight:700;margin-bottom:24px;border:1px solid rgba(16,185,129,.4);padding:8px 24px;border-radius:99px;font-size:clamp(.8rem,1.2vw,1rem)}
+.s-cover h1{font-size:clamp(3rem,11vw,9rem);line-height:.9;margin-bottom:24px;background:linear-gradient(135deg,#fff,#10b981,#fbbf24);-webkit-background-clip:text;color:transparent;font-weight:900}
+.s-cover .sub{font-size:clamp(1.2rem,2.5vw,1.8rem);color:rgba(255,255,255,.7);font-weight:300;letter-spacing:4px}
+
+.s-future{background:linear-gradient(135deg,#0c0a09 0%,#1c1917 100%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw;gap:24px}
+.s-future .pre{color:#10b981;letter-spacing:6px;font-size:clamp(.85rem,1.3vw,1rem)}
+.s-future h2{font-size:clamp(1.8rem,4.5vw,3.5rem);font-weight:900;line-height:1.1;font-family:'Black Han Sans',sans-serif}
+.s-future .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1100px;width:100%}
+.s-future .stat{padding:24px 16px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1);border-radius:16px;text-align:center}
+.s-future .num{font-size:clamp(2.5rem,5vw,4rem);font-weight:900;color:#ef4444;line-height:1;margin-bottom:6px;font-family:'Black Han Sans',sans-serif}
+.s-future .lab{font-size:clamp(.85rem,1.2vw,1rem);color:rgba(255,255,255,.85);font-weight:700}
+.s-future .det{font-size:.75rem;color:rgba(255,255,255,.5);margin-top:4px}
+
+.s-sdgs{background:linear-gradient(135deg,#022c22 0%,#0c0a09 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch;justify-content:center}
+.s-sdgs h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:8px;text-align:center}
+.s-sdgs .lead{color:rgba(255,255,255,.7);text-align:center;margin-bottom:24px;font-size:clamp(.9rem,1.4vw,1.1rem)}
+.s-sdgs .grid17{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;flex:1;max-height:60vh}
+.s-sdgs .g{padding:12px 8px;border-radius:8px;text-align:center;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:clamp(.7rem,.95vw,.85rem);font-weight:900;line-height:1.2;transition:.3s}
+.s-sdgs .g:hover{transform:scale(1.05);z-index:1}
+.s-sdgs .g .gi{font-size:1.5rem;margin-bottom:4px}
+
+.s-chart{background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch}
+.s-chart h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:8px}
+.s-chart .subtitle{color:#94a3b8;margin-bottom:24px;font-size:clamp(.9rem,1.4vw,1.1rem)}
+.s-chart .chart-wrap{flex:1;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:24px;position:relative}
+.s-chart .insight{margin-top:16px;padding:16px;background:rgba(239,68,68,.1);border-left:4px solid #ef4444;border-radius:0 12px 12px 0;font-size:clamp(.9rem,1.3vw,1rem)}
+.s-chart .insight b{color:#ef4444}
+
+.s-tech{background:linear-gradient(135deg,#0c0a09 0%,#1c1917 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch;justify-content:center}
+.s-tech h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:32px;text-align:center}
+.s-tech .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.s-tech .t{padding:32px 20px;border-radius:16px;text-align:center;display:flex;flex-direction:column;gap:12px;transition:.3s}
+.s-tech .t:hover{transform:translateY(-8px)}
+.s-tech .t1{background:linear-gradient(180deg,#1e3a8a 0%,#0c1e2e 100%);border:1px solid #3b82f6}
+.s-tech .t2{background:linear-gradient(180deg,#7c2d12 0%,#451a03 100%);border:1px solid #f97316}
+.s-tech .t3{background:linear-gradient(180deg,#581c87 0%,#3b0764 100%);border:1px solid #a78bfa}
+.s-tech .t4{background:linear-gradient(180deg,#064e3b 0%,#022c22 100%);border:1px solid #10b981}
+.s-tech .t .icon{font-size:4rem}
+.s-tech .t h3{font-size:clamp(1.1rem,1.6vw,1.3rem);font-weight:900}
+.s-tech .t p{font-size:clamp(.85rem,1.2vw,.95rem);color:rgba(255,255,255,.7);line-height:1.5}
+
+.s-quote{background:linear-gradient(135deg,#064e3b 0%,#022c22 100%);align-items:center;justify-content:center;padding:8vh 8vw;flex-direction:column;text-align:center;gap:32px}
+.s-quote .marks{font-size:clamp(4rem,8vw,7rem);color:rgba(16,185,129,.3);font-family:Georgia,serif;line-height:.5}
+.s-quote blockquote{font-size:clamp(1.6rem,3.5vw,3rem);line-height:1.4;font-weight:300;max-width:1200px;font-family:'Noto Serif KR',serif}
+.s-quote blockquote em{color:#10b981;font-style:normal;font-weight:700}
+.s-quote cite{font-size:clamp(.9rem,1.4vw,1.1rem);color:rgba(255,255,255,.5);font-style:normal;letter-spacing:2px}.s-quote cite::before{content:'— '}
+
+.s-end{background:radial-gradient(circle at 50% 30%,#064e3b 0%,#000 80%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw;gap:24px}
+.s-end .key{color:#10b981;letter-spacing:6px;font-weight:700;font-size:clamp(.85rem,1.3vw,1rem)}
+.s-end h2{font-size:clamp(2.5rem,7vw,6rem);line-height:1;font-weight:900;background:linear-gradient(180deg,#fff,#10b981);-webkit-background-clip:text;color:transparent}
+.s-end .center-msg{font-family:'Noto Serif KR',serif;font-size:clamp(1.2rem,2vw,1.6rem);color:rgba(255,255,255,.85);font-style:italic;max-width:900px;line-height:1.6;margin-top:32px;border-left:4px solid #10b981;padding-left:24px;text-align:left}
+.s-end .center-msg em{color:#10b981;font-style:normal;font-weight:900;font-family:'Black Han Sans',sans-serif}
+
+@media (max-width:768px){.s-future .stats,.s-tech .grid4{grid-template-columns:repeat(2,1fr)}.s-sdgs .grid17{grid-template-columns:repeat(3,1fr)}}
 </style></head><body>
+<div class="progress" id="prog" style="width:0%"></div>
 
-<div class="slide cover active">
-<div class="text-xs text-emerald-200 font-bold mb-2">통합사회 2 · 10단원</div>
-<h1>🌍 미래와 지속가능한 삶</h1>
-<p class="mt-4 text-emerald-100">우리 세대 + 미래 세대 함께 살 지구</p>
-<div class="mt-8 text-base text-emerald-200">[10통사2-05] SDGs, 인구 문제, 미래 사회 변화와 지속가능</div>
-</div>
+<section class="slide s-cover active">
+<span class="label">통합사회 2 · 10단원</span>
+<h1 class="bhs">미래는<br>우리가 만든다</h1>
+<p class="sub">우리 세대 + 다음 세대 함께 살 지구</p>
+</section>
 
-<div class="slide intro">
-<h2>🤔 100년 후 한국은?</h2>
-<div class="mt-6 max-w-3xl bg-white/10 rounded-xl p-6 text-left">
-<ul class="text-base space-y-2">
-<li>👶 출산율 0.7 → 인구 감소</li>
-<li>👴 고령화율 40%+ → 부양 부담</li>
-<li>🌡 평균 기온 +2°C → 폭염·해수면</li>
-<li>🤖 AI·로봇 → 일자리 변화</li>
-</ul>
-<p class="mt-4 text-amber-300">→ 지속가능한 미래는 어떻게 만들까?</p>
+<section class="slide s-future">
+<div class="pre">100년 후 한국</div>
+<h2>2125년의 한국,<br>어떤 모습일까?</h2>
+<div class="stats">
+<div class="stat"><div class="num">0.7</div><div class="lab">출산율</div><div class="det">세계 최저</div></div>
+<div class="stat"><div class="num">40%+</div><div class="lab">고령화율</div><div class="det">2050년 전망</div></div>
+<div class="stat"><div class="num">+2°C</div><div class="lab">평균 기온</div><div class="det">기후 위기</div></div>
+<div class="stat"><div class="num">3,800</div><div class="lab">총인구 (만)</div><div class="det">현재 5,150 → 감소</div></div>
 </div>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>🌟 SDGs (지속가능발전목표)</h2>
-<p class="mt-4 text-emerald-100">UN이 2030년까지 추진하는 17가지 목표</p>
-<div class="mt-6 grid grid-cols-4 gap-2 max-w-5xl text-xs">
-<div class="bg-white/10 rounded p-2">1. 빈곤 종식</div>
-<div class="bg-white/10 rounded p-2">2. 기아 종식</div>
-<div class="bg-white/10 rounded p-2">3. 건강한 삶</div>
-<div class="bg-white/10 rounded p-2">4. 양질 교육</div>
-<div class="bg-white/10 rounded p-2">5. 성평등</div>
-<div class="bg-white/10 rounded p-2">6. 깨끗한 물</div>
-<div class="bg-white/10 rounded p-2">7. 청정 에너지</div>
-<div class="bg-white/10 rounded p-2">8. 양질 일자리</div>
-<div class="bg-white/10 rounded p-2">9. 산업·혁신</div>
-<div class="bg-white/10 rounded p-2">10. 불평등 감소</div>
-<div class="bg-white/10 rounded p-2">11. 지속가능 도시</div>
-<div class="bg-white/10 rounded p-2">12. 책임 소비</div>
-<div class="bg-white/10 rounded p-2">13. 기후 행동</div>
-<div class="bg-white/10 rounded p-2">14. 해양 보호</div>
-<div class="bg-white/10 rounded p-2">15. 육상 생태계</div>
-<div class="bg-white/10 rounded p-2">16. 평화·정의</div>
-<div class="bg-white/10 rounded p-2 col-span-4">17. 파트너십</div>
+<section class="slide s-sdgs">
+<h2 class="bhs">🌟 SDGs — UN의 17가지 약속</h2>
+<p class="lead">2030년까지 인류가 해결해야 할 17개 목표</p>
+<div class="grid17">
+<div class="g" style="background:#e5243b"><div class="gi">🚫</div>1.빈곤</div>
+<div class="g" style="background:#dda63a"><div class="gi">🌾</div>2.기아</div>
+<div class="g" style="background:#4c9f38"><div class="gi">❤️</div>3.건강</div>
+<div class="g" style="background:#c5192d"><div class="gi">🎓</div>4.교육</div>
+<div class="g" style="background:#ff3a21"><div class="gi">⚖️</div>5.성평등</div>
+<div class="g" style="background:#26bde2"><div class="gi">💧</div>6.물</div>
+<div class="g" style="background:#fcc30b;color:#000"><div class="gi">⚡</div>7.에너지</div>
+<div class="g" style="background:#a21942"><div class="gi">💼</div>8.일자리</div>
+<div class="g" style="background:#fd6925"><div class="gi">🏭</div>9.산업</div>
+<div class="g" style="background:#dd1367"><div class="gi">🤝</div>10.불평등</div>
+<div class="g" style="background:#fd9d24"><div class="gi">🏙</div>11.도시</div>
+<div class="g" style="background:#bf8b2e"><div class="gi">♻️</div>12.소비</div>
+<div class="g" style="background:#3f7e44"><div class="gi">🌍</div>13.기후</div>
+<div class="g" style="background:#0a97d9"><div class="gi">🌊</div>14.해양</div>
+<div class="g" style="background:#56c02b"><div class="gi">🌳</div>15.생태계</div>
+<div class="g" style="background:#00689d"><div class="gi">🕊</div>16.평화</div>
+<div class="g" style="background:#19486a;grid-column:span 2"><div class="gi">🌐</div>17.파트너십</div>
 </div>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>👶 한국의 인구 문제</h2>
-<div class="mt-6 grid grid-cols-3 gap-3 max-w-4xl">
-<div class="bg-white/10 rounded-xl p-4 text-center">
-<div class="fjua text-3xl text-amber-300">0.72</div>
-<p class="text-sm mt-1">합계출산율 (2025)</p>
-<p class="text-xs text-emerald-200 mt-1">세계 최저 수준</p>
-</div>
-<div class="bg-white/10 rounded-xl p-4 text-center">
-<div class="fjua text-3xl text-amber-300">19%</div>
-<p class="text-sm mt-1">고령화율 (2025)</p>
-<p class="text-xs text-emerald-200 mt-1">2050년 40%+</p>
-</div>
-<div class="bg-white/10 rounded-xl p-4 text-center">
-<div class="fjua text-3xl text-amber-300">5,150만</div>
-<p class="text-sm mt-1">총인구</p>
-<p class="text-xs text-emerald-200 mt-1">2050년 4,200만 예상</p>
-</div>
-</div>
-<p class="mt-6 text-base text-amber-300">⚠️ 노동력 감소·연금 부담·지방 소멸 가속</p>
-</div>
+<section class="slide s-chart">
+<h2 class="bhs">📊 한국의 인구 절벽</h2>
+<div class="subtitle">2026 → 2055 인구 변화 예측</div>
+<div class="chart-wrap" style="height:50vh"><canvas id="popC"></canvas></div>
+<div class="insight"><b>📌 핵심:</b> 30년 만에 인구 1,300만 감소 예상. 노동력·연금·지방 소멸 위기 동시 진행.</div>
+</section>
 
-<div class="slide concept">
-<h2>🌡 기후 위기와 한국</h2>
-<ul class="text-left mt-6 space-y-3 max-w-3xl" style="list-style:none">
-<li class="bg-white/10 rounded-xl p-4">🌡 한국 평균 기온 +1.6°C (1912~2020, 세계 평균의 2배)</li>
-<li class="bg-white/10 rounded-xl p-4">🌊 해수면 상승으로 인천공항·부산 위협</li>
-<li class="bg-white/10 rounded-xl p-4">🔥 폭염·산불·수해 빈도 ↑</li>
-<li class="bg-white/10 rounded-xl p-4">🎯 2050 탄소중립 목표 (넷제로)</li>
-</ul>
+<section class="slide s-tech">
+<h2 class="bhs">🤖 미래 사회 변화 4영역</h2>
+<div class="grid4">
+<div class="t t1"><div class="icon">🤖</div><h3>AI·자동화</h3><p>단순 반복 → AI<br>창의·공감 → 인간</p></div>
+<div class="t t2"><div class="icon">🧬</div><h3>바이오·의료</h3><p>유전자 치료<br>맞춤 의학</p></div>
+<div class="t t3"><div class="icon">🌐</div><h3>메타버스</h3><p>가상 공간 일·교육<br>새로운 사회</p></div>
+<div class="t t4"><div class="icon">🚀</div><h3>우주·신소재</h3><p>민간 우주 시대<br>새로운 자원</p></div>
 </div>
+</section>
 
-<div class="slide concept">
-<h2>🤖 미래 사회 변화</h2>
-<div class="mt-6 grid grid-cols-2 gap-4 max-w-4xl">
-<div class="bg-white/10 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">🤖</div><b class="text-emerald-300">AI·자동화</b>
-<p class="text-sm mt-1">단순 반복 → AI / 창의·공감 → 인간</p>
-</div>
-<div class="bg-white/10 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">🧬</div><b class="text-emerald-300">바이오·의료</b>
-<p class="text-sm mt-1">유전자 치료·맞춤 의학</p>
-</div>
-<div class="bg-white/10 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">🌐</div><b class="text-emerald-300">메타버스·디지털</b>
-<p class="text-sm mt-1">가상 공간 일·교육</p>
-</div>
-<div class="bg-white/10 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">🚀</div><b class="text-emerald-300">우주·신소재</b>
-<p class="text-sm mt-1">민간 우주 시대</p>
-</div>
-</div>
-</div>
+<section class="slide s-quote">
+<div class="marks">"</div>
+<blockquote>지구는 부모로부터 물려받은 것이 아니라<br><em>자녀에게 빌려 쓰는 것</em>이다.</blockquote>
+<cite>아메리카 원주민 속담</cite>
+</section>
 
-<div class="slide concept">
-<h2>🛠 단원 웹교구 (4종)</h2>
-<div class="mt-6 grid grid-cols-2 gap-3 max-w-4xl">
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🌊 기후 시뮬</b><p class="text-sm">기후 정책 선택</p></div>
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🏘 재난 시장</b><p class="text-sm">재난 대응</p></div>
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🎯 SDGs 17 카드</b><p class="text-sm">우선순위 + 실천</p></div>
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">👶 인구 정책 시뮬</b><p class="text-sm">30년 후 예측</p></div>
-</div>
-</div>
+<section class="slide s-end">
+<div class="key">UNIT FINAL MESSAGE</div>
+<h2 class="bhs">미래는<br>우리가 만든다</h2>
+<div class="center-msg">"SDGs 17개 목표<br>+ 인구·기후·기술 변화에 능동적으로 참여하는 시민<br><br>그것이 <em>지속가능한 삶</em>의 시작이다."</div>
+</section>
 
-<div class="slide summary">
-<h2>🎯 단원 마지막 메시지</h2>
-<div class="mt-6 bg-white/10 rounded-2xl p-8 max-w-3xl">
-<p class="text-2xl text-emerald-300 mb-4">"미래는 우리가 만든다."</p>
-<p class="text-base text-violet-100">SDGs 17개 목표<br>+ 인구·기후·기술 변화에<br>능동적으로 참여하는 시민<br><br>그것이 지속가능한 삶의 시작</p>
-</div>
-</div>
-
-<div class="nav">
-<button id="prev">←</button><span class="counter" id="counter">1 / 8</span><button id="next">→</button>
-<button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button>
-</div>
-
-<script>
-const slides=document.querySelectorAll('.slide');let cur=0;
-function show(i){slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+slides.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===slides.length-1;}
-document.getElementById('prev').onclick=()=>{if(cur>0){cur--;show(cur);}};
-document.getElementById('next').onclick=()=>{if(cur<slides.length-1){cur++;show(cur);}};
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(cur<slides.length-1){cur++;show(cur);}}else if(e.key==='ArrowLeft'){if(cur>0){cur--;show(cur);}}});
-show(0);
-</script>
-</body></html>
+<div class="nav"><button id="prev">←</button><span class="counter" id="counter">1 / 7</span><button id="next">→</button><button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button></div>
+<script>const sl=document.querySelectorAll('.slide');let c=0;
+function s(i){sl.forEach(x=>x.classList.remove('active'));sl[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+sl.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===sl.length-1;document.getElementById('prog').style.width=(((i+1)/sl.length)*100)+'%';if(i===3&&!window.pD){drawP();window.pD=1;}}
+function drawP(){const ctx=document.getElementById('popC');if(!ctx)return;new Chart(ctx,{type:'line',data:{labels:['2026','2030','2035','2040','2045','2050','2055'],datasets:[{label:'예측 인구 (만)',data:[5150,5050,4850,4500,4200,3900,3800],borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.15)',fill:true,borderWidth:3,pointRadius:6,tension:.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#fff'}}},scales:{x:{ticks:{color:'#94a3b8'},grid:{color:'rgba(255,255,255,.05)'}},y:{ticks:{color:'#94a3b8',callback:v=>v+'만'},grid:{color:'rgba(255,255,255,.05)'}}}}});}
+document.getElementById('prev').onclick=()=>{if(c>0){c--;s(c);}};document.getElementById('next').onclick=()=>{if(c<sl.length-1){c++;s(c);}};
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(c<sl.length-1){c++;s(c);}}else if(e.key==='ArrowLeft'){if(c>0){c--;s(c);}}});
+let tx=0;document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){if(dx<0&&c<sl.length-1){c++;s(c);}else if(dx>0&&c>0){c--;s(c);}}});s(0);</script></body></html>

@@ -1,153 +1,165 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>📊 9단원 세계화와 평화 — 수업 슬라이드</title>
-<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-*{box-sizing:border-box}body{font-family:'Noto Sans KR',sans-serif;background:#0c4a6e;color:#f1f5f9;margin:0;overflow:hidden}
-.fjua{font-family:'Jua',sans-serif}
-.slide{width:100vw;height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:5vh 5vw;text-align:center}
-.slide.active{display:flex;animation:fi .4s ease-out}
-@keyframes fi{from{opacity:0;transform:scale(.97)}to{opacity:1}}
-.slide h1{font-family:'Jua',sans-serif;font-size:clamp(2rem,5vw,4rem);margin-bottom:1.5rem}
-.slide h2{font-family:'Jua',sans-serif;font-size:clamp(1.5rem,4vw,3rem);margin-bottom:1rem}
-.slide p,.slide li{font-size:clamp(1rem,2vw,1.5rem);line-height:1.7}
-.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(10px);padding:10px 20px;border-radius:99px;z-index:100;display:flex;gap:10px;align-items:center}
-.nav button{background:#0ea5e9;color:#fff;border:0;width:40px;height:40px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}
-.nav button:disabled{background:#475569;color:#94a3b8;cursor:not-allowed}
-.counter{color:#7dd3fc;font-weight:bold;min-width:60px;text-align:center}
-.cover{background:linear-gradient(135deg,#0c4a6e 0%,#082f49 100%)}
-.intro{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
-.concept{background:linear-gradient(135deg,#075985 0%,#0c4a6e 100%)}
-.summary{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
-@media print{.slide{display:flex!important;page-break-after:always;height:auto;min-height:100vh}.nav{display:none}body{background:#fff;color:#000;overflow:visible}}
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>세계화 — 지구 한편이 흔들리면</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;700;900&family=Noto+Serif+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script><style>
+*{box-sizing:border-box;margin:0;padding:0}html,body{overflow:hidden;width:100vw;height:100vh}body{font-family:'Noto Sans KR',sans-serif;background:#000;color:#fff}
+.bhs{font-family:'Black Han Sans',sans-serif;letter-spacing:-1px}
+.slide{width:100vw;height:100vh;display:none;position:relative;overflow:hidden}.slide.active{display:flex}
+.slide.active>*{animation:in .6s cubic-bezier(.2,.8,.2,1)}@keyframes in{from{opacity:0;transform:translateY(20px)}to{opacity:1}}
+.nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);backdrop-filter:blur(20px);padding:12px 24px;border-radius:99px;z-index:100;display:flex;gap:12px;align-items:center}
+.nav button{background:#fff;color:#000;border:0;width:44px;height:44px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}.nav button:disabled{background:#333;color:#666}
+.counter{color:#06b6d4;font-weight:900;min-width:64px;text-align:center;font-size:.9rem}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#06b6d4,#3b82f6,#10b981);z-index:100;transition:width .4s}
+@media print{.nav,.progress{display:none}.slide{display:flex!important;page-break-after:always}}
+
+.s-cover{background:radial-gradient(circle at 50% 50%,#0c4a6e 0%,#000 70%);align-items:center;justify-content:center;text-align:center;flex-direction:column;padding:5vh 5vw}
+.s-cover .label{color:#06b6d4;letter-spacing:8px;font-weight:700;margin-bottom:24px;border:1px solid rgba(6,182,212,.4);padding:8px 24px;border-radius:99px;font-size:clamp(.8rem,1.2vw,1rem)}
+.s-cover h1{font-size:clamp(3rem,11vw,9rem);line-height:.9;margin-bottom:24px;background:linear-gradient(135deg,#fff,#06b6d4,#10b981);-webkit-background-clip:text;color:transparent;font-weight:900}
+.s-cover .sub{font-size:clamp(1.2rem,2.5vw,1.8rem);color:rgba(255,255,255,.7);font-weight:300;letter-spacing:4px}
+
+.s-life{background:linear-gradient(135deg,#0c0a09 0%,#1c1917 100%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw;gap:24px}
+.s-life .pre{color:#06b6d4;letter-spacing:6px;font-size:clamp(.85rem,1.3vw,1rem)}
+.s-life h2{font-size:clamp(2rem,4.5vw,3.5rem);font-weight:900;line-height:1.1;font-family:'Black Han Sans',sans-serif}
+.s-life .day{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:1100px;width:100%}
+.s-life .item{padding:16px 24px;background:rgba(0,0,0,.4);border-left:4px solid #06b6d4;border-radius:0 12px 12px 0;text-align:left;display:flex;gap:16px;align-items:center}
+.s-life .item .icon{font-size:2.5rem;flex-shrink:0}
+.s-life .item .text{font-size:clamp(.95rem,1.4vw,1.1rem)}
+.s-life .item b{color:#fbbf24;display:block;font-size:.9em;margin-bottom:2px}
+
+.s-domains{background:linear-gradient(135deg,#0c4a6e 0%,#0c1e2e 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch;justify-content:center}
+.s-domains h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:32px;text-align:center}
+.s-domains .four{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.s-domains .d{padding:32px 24px;border-radius:16px;display:flex;gap:20px;align-items:center;transition:.3s}
+.s-domains .d:hover{transform:translateY(-4px)}
+.s-domains .d1{background:rgba(245,158,11,.1);border:1px solid #f59e0b}
+.s-domains .d2{background:rgba(167,139,250,.1);border:1px solid #a78bfa}
+.s-domains .d3{background:rgba(16,185,129,.1);border:1px solid #10b981}
+.s-domains .d4{background:rgba(6,182,212,.1);border:1px solid #06b6d4}
+.s-domains .d .icon{font-size:3.5rem;flex-shrink:0}
+.s-domains .d h3{font-size:clamp(1.2rem,1.8vw,1.5rem);font-weight:900;margin-bottom:6px}
+.s-domains .d1 h3{color:#f59e0b}.s-domains .d2 h3{color:#a78bfa}.s-domains .d3 h3{color:#10b981}.s-domains .d4 h3{color:#06b6d4}
+.s-domains .d p{font-size:clamp(.9rem,1.3vw,1rem);color:rgba(255,255,255,.85);line-height:1.5}
+
+.s-vs{background:#0a0a0a;display:grid;grid-template-columns:1fr 1fr}
+.s-vs .col{padding:8vh 5vw;display:flex;flex-direction:column;justify-content:center;gap:12px}
+.s-vs .light{background:linear-gradient(135deg,#064e3b 0%,#022c22 100%)}
+.s-vs .shadow{background:linear-gradient(135deg,#7f1d1d 0%,#1c1917 100%)}
+.s-vs h2{font-size:clamp(2rem,4vw,3rem);font-family:'Black Han Sans',sans-serif;line-height:1;margin-bottom:8px}
+.s-vs .light h2{color:#10b981}.s-vs .shadow h2{color:#ef4444}
+.s-vs .icon{font-size:4rem;margin-bottom:8px}
+.s-vs ul{list-style:none}
+.s-vs li{padding:8px 0;font-size:clamp(.95rem,1.4vw,1.1rem);display:flex;gap:8px;border-bottom:1px solid rgba(255,255,255,.08)}
+.s-vs li:last-child{border:0}
+.s-vs li b{color:#fbbf24;flex-shrink:0}
+
+.s-peace{background:linear-gradient(135deg,#0c4a6e 0%,#0c1e2e 100%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw;gap:32px}
+.s-peace .pre{color:#06b6d4;letter-spacing:6px;font-size:clamp(.85rem,1.3vw,1rem)}
+.s-peace h2{font-size:clamp(2rem,4.5vw,3.5rem);font-weight:900}
+.s-peace .grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1100px;width:100%}
+.s-peace .card{padding:32px;border-radius:16px}
+.s-peace .neg{background:rgba(59,130,246,.15);border:2px solid #3b82f6}
+.s-peace .pos{background:rgba(16,185,129,.15);border:2px solid #10b981}
+.s-peace .card .icon{font-size:4rem;margin-bottom:16px}
+.s-peace .card h3{font-size:clamp(1.4rem,2.2vw,1.8rem);font-weight:900;margin-bottom:8px}
+.s-peace .neg h3{color:#60a5fa}.s-peace .pos h3{color:#10b981}
+.s-peace .card .def{font-size:clamp(.95rem,1.4vw,1.1rem);color:rgba(255,255,255,.85);line-height:1.5}
+.s-peace .insight{margin-top:16px;font-size:clamp(1rem,1.5vw,1.3rem);color:rgba(255,255,255,.8);font-family:'Noto Serif KR',serif;font-style:italic}
+.s-peace .insight em{color:#10b981;font-style:normal;font-weight:900;font-family:'Black Han Sans',sans-serif}
+
+.s-quote{background:linear-gradient(135deg,#0c4a6e 0%,#000 100%);align-items:center;justify-content:center;padding:8vh 8vw;flex-direction:column;text-align:center;gap:32px}
+.s-quote .marks{font-size:clamp(4rem,8vw,7rem);color:rgba(6,182,212,.3);font-family:Georgia,serif;line-height:.5}
+.s-quote blockquote{font-size:clamp(1.6rem,3.5vw,3rem);line-height:1.4;font-weight:300;max-width:1200px;font-family:'Noto Serif KR',serif}
+.s-quote blockquote em{color:#06b6d4;font-style:normal;font-weight:700}
+
+.s-end{background:radial-gradient(circle at 30% 70%,#0c4a6e 0%,#000 80%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw;gap:24px}
+.s-end .key{color:#06b6d4;letter-spacing:6px;font-weight:700;font-size:clamp(.85rem,1.3vw,1rem)}
+.s-end h2{font-size:clamp(2.5rem,6vw,5.5rem);line-height:1;font-weight:900;background:linear-gradient(180deg,#fff,#06b6d4);-webkit-background-clip:text;color:transparent}
+.s-end .takeaways{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:1000px;width:100%;margin-top:32px}
+.s-end .ta{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px;text-align:left;font-size:clamp(.9rem,1.3vw,1.1rem)}
+.s-end .ta b{color:#06b6d4}
+
+@media (max-width:768px){.s-life .day,.s-domains .four,.s-vs,.s-peace .grid2,.s-end .takeaways{grid-template-columns:1fr}}
 </style></head><body>
+<div class="progress" id="prog" style="width:0%"></div>
 
-<div class="slide cover active">
-<div class="text-xs text-cyan-200 font-bold mb-2">통합사회 2 · 9단원</div>
-<h1>🌐 세계화와 평화</h1>
-<p class="mt-4 text-cyan-100">국경을 넘는 문제, 함께 해결할 수 있을까</p>
-<div class="mt-8 text-base text-cyan-200">[10통사2-04] 세계화의 양상, 국제 협력, 평화의 의미</div>
-</div>
+<section class="slide s-cover active">
+<span class="label">통합사회 2 · 9단원</span>
+<h1 class="bhs">지구 한편이<br>흔들리면</h1>
+<p class="sub">세계화와 평화</p>
+</section>
 
-<div class="slide intro">
-<h2>🤔 우리 일상에 세계화가 있다?</h2>
-<div class="mt-6 max-w-3xl bg-white/10 rounded-xl p-6 text-left">
-<ul class="text-base space-y-2">
-<li>🍔 점심: 미국 햄버거</li>
-<li>📱 폰: 미국 디자인 + 중국 제조 + 한국 부품</li>
-<li>🎬 저녁: 일본 애니 + 미국 영화</li>
-<li>👕 옷: 베트남에서 만든 한국 브랜드</li>
-</ul>
-<p class="mt-4 text-amber-300">→ 우리는 이미 세계화 속에서 살고 있다</p>
+<section class="slide s-life">
+<div class="pre">우리 일상에 이미 — 세계화</div>
+<h2>오늘 하루,<br>몇 번이나 세계와 만났는가?</h2>
+<div class="day">
+<div class="item"><div class="icon">🍔</div><div class="text"><b>점심</b>미국 햄버거 + 베트남 쌀국수</div></div>
+<div class="item"><div class="icon">📱</div><div class="text"><b>스마트폰</b>미국 디자인 + 중국 제조 + 한국 부품</div></div>
+<div class="item"><div class="icon">🎬</div><div class="text"><b>저녁</b>일본 애니 + 미국 영화</div></div>
+<div class="item"><div class="icon">👕</div><div class="text"><b>옷</b>베트남 제조 + 한국 브랜드</div></div>
 </div>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>🌍 세계화의 양상</h2>
-<div class="mt-6 grid grid-cols-2 gap-4 max-w-4xl">
-<div class="bg-white/10 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">💼</div><b class="text-cyan-300">경제적 세계화</b>
-<p class="text-sm mt-1">FTA·다국적기업·글로벌 분업</p>
+<section class="slide s-domains">
+<h2 class="bhs">🌍 세계화의 4가지 영역</h2>
+<div class="four">
+<div class="d d1"><div class="icon">💼</div><div><h3>경제적 세계화</h3><p>FTA · 다국적기업 · 글로벌 분업. 한 제품이 여러 나라에서 만들어진다.</p></div></div>
+<div class="d d2"><div class="icon">🎬</div><div><h3>문화적 세계화</h3><p>한류 · 할리우드 · K-pop. SNS로 국경 없는 문화 교류.</p></div></div>
+<div class="d d3"><div class="icon">🏛</div><div><h3>정치적 세계화</h3><p>UN · NGO · 국제 협력. 한 나라가 결정해도 세계가 영향받는다.</p></div></div>
+<div class="d d4"><div class="icon">📡</div><div><h3>정보·기술 세계화</h3><p>인터넷 · AI · 실시간 정보. 국경이 사라진 디지털 공간.</p></div></div>
 </div>
-<div class="bg-white/10 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">🎬</div><b class="text-cyan-300">문화적 세계화</b>
-<p class="text-sm mt-1">한류·할리우드·SNS</p>
-</div>
-<div class="bg-white/10 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">🏛</div><b class="text-cyan-300">정치적 세계화</b>
-<p class="text-sm mt-1">UN·NGO·국제 협력</p>
-</div>
-<div class="bg-white/10 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">📡</div><b class="text-cyan-300">정보·기술 세계화</b>
-<p class="text-sm mt-1">인터넷·AI·국경 없는 정보</p>
-</div>
-</div>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>⚖️ 세계화의 빛과 그림자</h2>
-<div class="mt-6 grid grid-cols-2 gap-4 max-w-4xl">
-<div class="bg-emerald-500/20 border border-emerald-400 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">🌟</div><b class="text-emerald-200">빛 (긍정)</b>
-<ul class="text-sm mt-2 space-y-1">
-<li>• 경제 성장·소비자 가격 ↓</li>
-<li>• 다양한 문화 교류</li>
-<li>• 국제 협력 강화</li>
-<li>• 정보·기술 보급</li>
+<section class="slide s-vs">
+<div class="col light">
+<div class="icon">🌟</div>
+<h2 class="bhs">세계화의 빛</h2>
+<ul>
+<li><b>📈</b> 경제 성장·소비자 가격 ↓</li>
+<li><b>🌍</b> 다양한 문화 교류</li>
+<li><b>🤝</b> 국제 협력 강화</li>
+<li><b>📡</b> 정보·기술 보급</li>
 </ul>
 </div>
-<div class="bg-rose-500/20 border border-rose-400 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">⚠️</div><b class="text-rose-200">그림자 (부정)</b>
-<ul class="text-sm mt-2 space-y-1">
-<li>• 빈부 격차 확대</li>
-<li>• 자국 산업 위협</li>
-<li>• 문화 다양성 위협</li>
-<li>• 전염병·금융위기 즉시 확산</li>
+<div class="col shadow">
+<div class="icon">⚠️</div>
+<h2 class="bhs">세계화의 그림자</h2>
+<ul>
+<li><b>📉</b> 빈부 격차 확대</li>
+<li><b>🏭</b> 자국 산업 위협</li>
+<li><b>🎭</b> 문화 다양성 위협</li>
+<li><b>🦠</b> 전염병·금융위기 즉시 확산</li>
 </ul>
 </div>
-</div>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>🤝 국제 협력과 평화</h2>
-<ul class="text-left mt-6 space-y-3 max-w-3xl" style="list-style:none">
-<li class="bg-white/10 rounded-xl p-4">🇺🇳 <b>UN (국제연합)</b> — 평화 유지, 인권, 개발</li>
-<li class="bg-white/10 rounded-xl p-4">🌳 <b>국제 기구</b> — WTO, IMF, UNESCO, WHO</li>
-<li class="bg-white/10 rounded-xl p-4">🤝 <b>NGO</b> — 그린피스, 국경없는의사회 등</li>
-<li class="bg-white/10 rounded-xl p-4">📜 <b>국제 조약</b> — 파리협약, NPT (핵확산방지)</li>
-</ul>
+<section class="slide s-peace">
+<div class="pre">평화의 두 얼굴</div>
+<h2 class="bhs">🕊 평화 = 전쟁 없음?</h2>
+<div class="grid2">
+<div class="card neg"><div class="icon">🛡</div><h3>소극적 평화</h3><div class="def">전쟁·물리적 폭력의 부재.<br>"총소리가 멈춘 상태."</div></div>
+<div class="card pos"><div class="icon">🌟</div><h3>적극적 평화</h3><div class="def">+ 빈곤·차별·구조적 폭력 제거.<br>"진정한 평화."<br><span style="font-size:.8em;color:rgba(255,255,255,.6)">— 요한 갈퉁 (1969)</span></div></div>
 </div>
+<p class="insight">"진정한 평화 = <em>적극적 평화</em>"</p>
+</section>
 
-<div class="slide concept">
-<h2>🕊 평화의 두 얼굴</h2>
-<div class="mt-6 grid grid-cols-2 gap-4 max-w-4xl text-left">
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-3xl">🛡</div><b class="text-cyan-300 text-xl">소극적 평화</b>
-<p class="text-base mt-2">전쟁·물리적 폭력의 부재</p>
-</div>
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-3xl">🌟</div><b class="text-cyan-300 text-xl">적극적 평화</b>
-<p class="text-base mt-2">+ 빈곤·차별·구조적 폭력 제거 (요한 갈퉁)</p>
-</div>
-</div>
-<p class="mt-4 text-base text-amber-300">💡 진정한 평화 = 적극적 평화</p>
-</div>
+<section class="slide s-quote">
+<div class="marks">"</div>
+<blockquote>한 곳의 가난은<br><em>모든 곳의 가난</em>에<br>위협이 된다.</blockquote>
+</section>
 
-<div class="slide concept">
-<h2>🛠 단원 웹교구 (3종)</h2>
-<div class="mt-6 grid grid-cols-3 gap-3 max-w-4xl">
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🗺 문화 외교관</b><p class="text-sm">갈등 외교 시뮬</p></div>
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🌐 빛/그림자</b><p class="text-sm">7사례 분류</p></div>
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🤝 FTA 협상</b><p class="text-sm">5의제 협상</p></div>
+<section class="slide s-end">
+<div class="key">CORE TAKEAWAYS</div>
+<h2 class="bhs">기억해야 할<br>4가지</h2>
+<div class="takeaways">
+<div class="ta"><b>① 세계화 4영역</b> — 경제·문화·정치·정보</div>
+<div class="ta"><b>② 빛 ↔ 그림자</b> 동시 존재</div>
+<div class="ta"><b>③ 국제 협력</b> — UN·기구·NGO·조약</div>
+<div class="ta"><b>④ 적극적 평화</b> = 전쟁 부재 + 구조적 폭력 제거</div>
 </div>
-</div>
+</section>
 
-<div class="slide summary">
-<h2>🎯 오늘의 핵심</h2>
-<ul class="text-left mt-6 space-y-3 text-violet-100" style="list-style:none">
-<li>✅ 세계화: 경제·문화·정치·정보의 4영역 통합</li>
-<li>✅ 빛(성장·교류) ↔ 그림자(격차·문화 위협)</li>
-<li>✅ UN·국제기구·NGO·국제 조약이 협력 핵심</li>
-<li>✅ 적극적 평화 = 전쟁 부재 + 구조적 폭력 제거</li>
-</ul>
-<div class="mt-10 bg-amber-500/20 rounded-xl p-5">
-<b class="text-amber-300">📌 다음 단원</b>
-<p class="text-base text-amber-100 mt-2">10단원 미래와 지속가능한 삶 — SDGs·인구·기후</p>
-</div>
-</div>
-
-<div class="nav">
-<button id="prev">←</button><span class="counter" id="counter">1 / 8</span><button id="next">→</button>
-<button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button>
-</div>
-
-<script>
-const slides=document.querySelectorAll('.slide');let cur=0;
-function show(i){slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+slides.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===slides.length-1;}
-document.getElementById('prev').onclick=()=>{if(cur>0){cur--;show(cur);}};
-document.getElementById('next').onclick=()=>{if(cur<slides.length-1){cur++;show(cur);}};
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(cur<slides.length-1){cur++;show(cur);}}else if(e.key==='ArrowLeft'){if(cur>0){cur--;show(cur);}}});
-show(0);
-</script>
-</body></html>
+<div class="nav"><button id="prev">←</button><span class="counter" id="counter">1 / 7</span><button id="next">→</button><button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button></div>
+<script>const sl=document.querySelectorAll('.slide');let c=0;function s(i){sl.forEach(x=>x.classList.remove('active'));sl[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+sl.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===sl.length-1;document.getElementById('prog').style.width=(((i+1)/sl.length)*100)+'%';}
+document.getElementById('prev').onclick=()=>{if(c>0){c--;s(c);}};document.getElementById('next').onclick=()=>{if(c<sl.length-1){c++;s(c);}};
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(c<sl.length-1){c++;s(c);}}else if(e.key==='ArrowLeft'){if(c>0){c--;s(c);}}});
+let tx=0;document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){if(dx<0&&c<sl.length-1){c++;s(c);}else if(dx>0&&c>0){c--;s(c);}}});s(0);</script></body></html>

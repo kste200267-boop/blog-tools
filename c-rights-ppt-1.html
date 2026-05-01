@@ -1,126 +1,174 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>📊 6단원 인권 보장과 헌법 — 수업 슬라이드</title>
-<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-*{box-sizing:border-box}body{font-family:'Noto Sans KR',sans-serif;background:#451a03;color:#f1f5f9;margin:0;overflow:hidden}
-.fjua{font-family:'Jua',sans-serif}
-.slide{width:100vw;height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:5vh 5vw;text-align:center}
-.slide.active{display:flex;animation:fi .4s ease-out}
-@keyframes fi{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
-.slide h1{font-family:'Jua',sans-serif;font-size:clamp(2rem,5vw,4rem);margin-bottom:1.5rem}
-.slide h2{font-family:'Jua',sans-serif;font-size:clamp(1.5rem,4vw,3rem);margin-bottom:1rem}
-.slide p,.slide li{font-size:clamp(1rem,2vw,1.5rem);line-height:1.7}
-.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(10px);padding:10px 20px;border-radius:99px;z-index:100;display:flex;gap:10px;align-items:center}
-.nav button{background:#fbbf24;color:#451a03;border:0;width:40px;height:40px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}
-.nav button:disabled{background:#475569;color:#94a3b8;cursor:not-allowed}
-.counter{color:#fbbf24;font-weight:bold;min-width:60px;text-align:center}
-.cover{background:linear-gradient(135deg,#7c2d12 0%,#451a03 100%)}
-.intro{background:linear-gradient(135deg,#1e3a8a 0%,#0c4a6e 100%)}
-.concept{background:linear-gradient(135deg,#92400e 0%,#7c2d12 100%)}
-.summary{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
-@media print{.slide{display:flex!important;page-break-after:always;height:auto;min-height:100vh}.nav{display:none}body{background:#fff;color:#000;overflow:visible}}
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>인권 — 사람답게 살 권리</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;700;900&family=Noto+Serif+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script><style>
+*{box-sizing:border-box;margin:0;padding:0}html,body{overflow:hidden;width:100vw;height:100vh}body{font-family:'Noto Sans KR',sans-serif;background:#000;color:#fff}
+.bhs{font-family:'Black Han Sans',sans-serif;letter-spacing:-1px}
+.slide{width:100vw;height:100vh;display:none;position:relative;overflow:hidden}.slide.active{display:flex}
+.slide.active>*{animation:in .6s cubic-bezier(.2,.8,.2,1)}@keyframes in{from{opacity:0;transform:translateY(20px)}to{opacity:1}}
+.nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);backdrop-filter:blur(20px);padding:12px 24px;border-radius:99px;z-index:100;display:flex;gap:12px;align-items:center}
+.nav button{background:#fff;color:#000;border:0;width:44px;height:44px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}.nav button:disabled{background:#333;color:#666}
+.counter{color:#fbbf24;font-weight:900;min-width:64px;text-align:center;font-size:.9rem}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#fbbf24,#3b82f6,#10b981);z-index:100;transition:width .4s}
+@media print{.nav,.progress{display:none}.slide{display:flex!important;page-break-after:always}}
+
+.s-cover{background:radial-gradient(circle at 50% 50%,#7c2d12 0%,#000 70%);align-items:center;justify-content:center;text-align:center;flex-direction:column;padding:5vh 5vw}
+.s-cover .label{color:#fbbf24;letter-spacing:8px;font-weight:700;margin-bottom:24px;border:1px solid rgba(251,191,36,.4);padding:8px 24px;border-radius:99px;font-size:clamp(.8rem,1.2vw,1rem)}
+.s-cover h1{font-size:clamp(3rem,11vw,9rem);line-height:.9;margin-bottom:24px;background:linear-gradient(135deg,#fff,#fbbf24);-webkit-background-clip:text;color:transparent;font-weight:900}
+.s-cover .sub{font-size:clamp(1.2rem,2.5vw,1.8rem);color:rgba(255,255,255,.7);font-weight:300;letter-spacing:4px}
+
+.s-rights{background:linear-gradient(135deg,#0c0a09 0%,#1c1917 100%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw;gap:32px}
+.s-rights .pre{color:#fbbf24;letter-spacing:6px;font-size:clamp(.85rem,1.3vw,1rem)}
+.s-rights h2{font-size:clamp(1.8rem,4.5vw,3.5rem);font-weight:900;line-height:1.1}
+.s-rights .list{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:800px;width:100%}
+.s-rights .r{padding:16px 24px;background:rgba(0,0,0,.4);border-left:4px solid #fbbf24;border-radius:0 12px 12px 0;text-align:left;font-size:clamp(.95rem,1.4vw,1.1rem);font-weight:700}
+.s-rights .answer{font-family:'Noto Serif KR',serif;font-size:clamp(1rem,1.6vw,1.3rem);color:rgba(255,255,255,.8)}
+.s-rights .answer em{color:#fbbf24;font-style:normal;font-weight:900;font-family:'Black Han Sans',sans-serif}
+
+.s-evolution{background:linear-gradient(135deg,#451a03 0%,#0c0a09 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch;justify-content:center}
+.s-evolution h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:32px;text-align:center}
+.s-evolution .gen{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.s-evolution .g{padding:32px 24px;border-radius:16px;display:flex;flex-direction:column;gap:12px}
+.s-evolution .g1{background:rgba(245,158,11,.15);border:2px solid #f59e0b}
+.s-evolution .g2{background:rgba(59,130,246,.15);border:2px solid #3b82f6}
+.s-evolution .g3{background:rgba(16,185,129,.15);border:2px solid #10b981}
+.s-evolution .g .gnum{font-size:3.5rem;font-weight:900;line-height:1;font-family:'Black Han Sans',sans-serif}
+.s-evolution .g1 .gnum{color:#f59e0b}.s-evolution .g2 .gnum{color:#60a5fa}.s-evolution .g3 .gnum{color:#10b981}
+.s-evolution .g h3{font-size:clamp(1.1rem,1.6vw,1.3rem);font-weight:900}
+.s-evolution .g .era{font-size:.85rem;color:rgba(255,255,255,.5)}
+.s-evolution .g p{font-size:clamp(.9rem,1.3vw,1rem);color:rgba(255,255,255,.85);line-height:1.5}
+
+.s-five{background:linear-gradient(135deg,#0c0a09 0%,#1c1917 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch;justify-content:center}
+.s-five h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:32px;text-align:center}
+.s-five .grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.s-five .right{padding:24px 16px;border-radius:16px;text-align:center;display:flex;flex-direction:column;gap:8px;transition:.3s}
+.s-five .right:hover{transform:translateY(-8px)}
+.s-five .right .icon{font-size:3rem}
+.s-five .right h3{font-size:clamp(1rem,1.5vw,1.2rem);font-weight:900;font-family:'Black Han Sans',sans-serif}
+.s-five .right .art{font-size:.75rem;color:rgba(255,255,255,.6);font-weight:700}
+.s-five .right p{font-size:clamp(.75rem,1vw,.85rem);color:rgba(255,255,255,.7);line-height:1.4}
+.s-five .r1{background:linear-gradient(180deg,#1e3a8a 0%,#0c1e2e 100%);border:1px solid #3b82f6}
+.s-five .r2{background:linear-gradient(180deg,#064e3b 0%,#022c22 100%);border:1px solid #10b981}
+.s-five .r3{background:linear-gradient(180deg,#7c2d12 0%,#451a03 100%);border:1px solid #f97316}
+.s-five .r4{background:linear-gradient(180deg,#9f1239 0%,#4c0519 100%);border:1px solid #f43f5e}
+.s-five .r5{background:linear-gradient(180deg,#581c87 0%,#3b0764 100%);border:1px solid #a78bfa}
+
+.s-37{background:linear-gradient(135deg,#7f1d1d 0%,#1c1917 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch;justify-content:center}
+.s-37 .pre{color:#fbbf24;letter-spacing:6px;font-size:clamp(.85rem,1.3vw,1rem);text-align:center;margin-bottom:8px}
+.s-37 h2{font-size:clamp(2rem,4vw,3rem);font-weight:900;margin-bottom:32px;text-align:center}
+.s-37 .four-cond{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.s-37 .cond{padding:24px;background:rgba(0,0,0,.4);border:1px solid #fbbf24;border-radius:16px;display:flex;gap:16px;align-items:flex-start}
+.s-37 .cond .num{width:56px;height:56px;border-radius:50%;background:#fbbf24;color:#000;display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:900;flex-shrink:0}
+.s-37 .cond h3{font-size:clamp(1.1rem,1.6vw,1.3rem);font-weight:900;color:#fbbf24;margin-bottom:6px}
+.s-37 .cond p{font-size:clamp(.9rem,1.3vw,1rem);color:rgba(255,255,255,.85);line-height:1.5}
+.s-37 .warn{margin-top:24px;padding:16px;background:rgba(239,68,68,.1);border:1px solid #ef4444;border-radius:12px;text-align:center;font-size:clamp(.95rem,1.4vw,1.1rem);color:#fca5a5}
+.s-37 .warn b{color:#ef4444}
+
+.s-quote{background:linear-gradient(135deg,#7c2d12 0%,#451a03 100%);align-items:center;justify-content:center;padding:8vh 8vw;flex-direction:column;text-align:center;gap:32px}
+.s-quote .marks{font-size:clamp(4rem,8vw,7rem);color:rgba(251,191,36,.3);font-family:Georgia,serif;line-height:.5}
+.s-quote blockquote{font-size:clamp(1.6rem,3.5vw,3rem);line-height:1.4;font-weight:300;max-width:1200px;font-family:'Noto Serif KR',serif}
+.s-quote blockquote em{color:#fbbf24;font-style:normal;font-weight:700}
+.s-quote cite{font-size:clamp(.9rem,1.4vw,1.1rem);color:rgba(255,255,255,.5);font-style:normal;letter-spacing:2px}.s-quote cite::before{content:'— '}
+
+.s-activity{background:linear-gradient(135deg,#0c0a09 0%,#1c1917 100%);align-items:center;justify-content:center;padding:8vh 5vw;flex-direction:column;text-align:center;gap:24px}
+.s-activity .badge{color:#fbbf24;letter-spacing:6px;font-weight:700;border:1px solid rgba(251,191,36,.5);padding:8px 24px;border-radius:99px;background:rgba(0,0,0,.3);font-size:clamp(.8rem,1.2vw,1rem)}
+.s-activity h2{font-size:clamp(2rem,5vw,4rem);font-weight:900;line-height:1}
+.s-activity .panel{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1100px;width:100%}
+.s-activity .tool{padding:24px;background:rgba(0,0,0,.5);border:1px solid #fbbf24;border-radius:16px;text-align:left}
+.s-activity .tool h3{font-size:1.1rem;color:#fbbf24;margin-bottom:8px}
+.s-activity .tool p{font-size:.85rem;color:rgba(255,255,255,.7);line-height:1.5}
+
+.s-end{background:radial-gradient(circle at 50% 50%,#7c2d12 0%,#000 80%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw;gap:24px}
+.s-end .key{color:#fbbf24;letter-spacing:6px;font-weight:700;font-size:clamp(.85rem,1.3vw,1rem)}
+.s-end h2{font-size:clamp(2.5rem,6vw,5.5rem);line-height:1;font-weight:900;background:linear-gradient(180deg,#fff,#fbbf24);-webkit-background-clip:text;color:transparent}
+.s-end .takeaways{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:1000px;width:100%;margin-top:32px}
+.s-end .ta{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px;text-align:left;font-size:clamp(.9rem,1.3vw,1.1rem)}
+.s-end .ta b{color:#fbbf24}
+
+@media (max-width:768px){.s-rights .list,.s-evolution .gen,.s-five .grid5,.s-37 .four-cond,.s-end .takeaways,.s-activity .panel{grid-template-columns:1fr}.s-five .grid5{grid-template-columns:repeat(2,1fr)}}
 </style></head><body>
+<div class="progress" id="prog" style="width:0%"></div>
 
-<div class="slide cover active">
-<div class="text-xs text-amber-200 font-bold mb-2">통합사회 2 · 6단원</div>
-<h1>⚖️ 인권 보장과 헌법</h1>
-<p class="mt-4 text-amber-100">사람답게 살 권리, 어떻게 지킬 것인가</p>
-<div class="mt-8 text-base text-amber-200">[10통사2-01] 인권의 의미와 발전, 헌법 기본권, 인권 침해와 구제</div>
-</div>
+<section class="slide s-cover active">
+<span class="label">통합사회 2 · 6단원</span>
+<h1 class="bhs">사람답게<br>살 권리</h1>
+<p class="sub">인권 보장과 헌법</p>
+</section>
 
-<div class="slide intro">
-<h2>🤔 우리는 어떤 권리를 가지고 있을까?</h2>
-<div class="mt-6 max-w-3xl bg-white/10 rounded-xl p-6 text-left">
-<ul class="text-base space-y-2">
-<li>✅ 학교에서 배울 권리</li>
-<li>✅ 자유롭게 말할 권리</li>
-<li>✅ 차별받지 않을 권리</li>
-<li>✅ 공정하게 재판받을 권리</li>
-</ul>
-<p class="mt-4 text-amber-300">→ 이 모든 것이 헌법으로 보장된 "기본권"</p>
+<section class="slide s-rights">
+<div class="pre">알고 있는가?</div>
+<h2>당신은 이미<br>이런 권리를 가지고 있다</h2>
+<div class="list">
+<div class="r">✅ 학교에서 배울 권리</div>
+<div class="r">✅ 자유롭게 말할 권리</div>
+<div class="r">✅ 차별받지 않을 권리</div>
+<div class="r">✅ 공정하게 재판받을 권리</div>
 </div>
-</div>
+<p class="answer">→ 모두 헌법으로 보장된 <em>기본권</em>이다.</p>
+</section>
 
-<div class="slide concept">
-<h2>📜 인권의 발전 — 3세대 인권</h2>
-<ul class="text-left mt-6 space-y-3 max-w-3xl" style="list-style:none">
-<li class="bg-white/10 rounded-xl p-4"><b class="text-amber-300">1세대 시민·정치적 권리</b> — 자유권 (18C 시민혁명)</li>
-<li class="bg-white/10 rounded-xl p-4"><b class="text-amber-300">2세대 경제·사회·문화적 권리</b> — 사회권 (20C 산업화)</li>
-<li class="bg-white/10 rounded-xl p-4"><b class="text-amber-300">3세대 연대·집단적 권리</b> — 평화권·환경권 (현대)</li>
-</ul>
+<section class="slide s-evolution">
+<h2 class="bhs">📜 인권의 3세대 발전</h2>
+<div class="gen">
+<div class="g g1"><div class="gnum">1</div><h3>시민·정치적 권리</h3><div class="era">18세기 시민혁명</div><p>자유권 — 국가의 간섭으로부터의 해방. 천부인권론, 사회계약론.</p></div>
+<div class="g g2"><div class="gnum">2</div><h3>경제·사회·문화적</h3><div class="era">20세기 산업화</div><p>사회권 — 인간다운 생활을 국가가 적극 보장. 복지국가의 시작.</p></div>
+<div class="g g3"><div class="gnum">3</div><h3>연대·집단적 권리</h3><div class="era">현대</div><p>평화권·환경권·발전권 — 인류 공동의 권리. 국제 협력 필요.</p></div>
 </div>
+</section>
 
-<div class="slide concept">
-<h2>📚 헌법의 5대 기본권</h2>
-<div class="mt-6 grid grid-cols-2 gap-3 max-w-4xl text-left">
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🕊 자유권</b><p class="text-sm">신체·언론·종교·재산 (제12~23조)</p></div>
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">⚖️ 평등권</b><p class="text-sm">차별받지 않을 권리 (제11조)</p></div>
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🗳 참정권</b><p class="text-sm">선거·공무담임 (제24·25조)</p></div>
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">📝 청구권</b><p class="text-sm">청원·재판·국가배상 (제26~30조)</p></div>
-<div class="bg-white/10 rounded-xl p-3 col-span-2"><b class="text-amber-300">🏥 사회권</b><p class="text-sm">교육·근로·환경·인간다운 생활 (제31~36조)</p></div>
+<section class="slide s-five">
+<h2 class="bhs">📚 헌법이 보장하는 5대 기본권</h2>
+<div class="grid5">
+<div class="right r1"><div class="icon">🕊</div><h3>자유권</h3><div class="art">제12~23조</div><p>신체·언론·종교·재산</p></div>
+<div class="right r2"><div class="icon">⚖️</div><h3>평등권</h3><div class="art">제11조</div><p>차별받지 않을 권리</p></div>
+<div class="right r3"><div class="icon">🗳</div><h3>참정권</h3><div class="art">제24·25조</div><p>선거·공무담임</p></div>
+<div class="right r4"><div class="icon">📝</div><h3>청구권</h3><div class="art">제26~30조</div><p>청원·재판·국가배상</p></div>
+<div class="right r5"><div class="icon">🏥</div><h3>사회권</h3><div class="art">제31~36조</div><p>교육·근로·환경</p></div>
 </div>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>⚖️ 기본권 제한의 4요건</h2>
-<p class="mt-4 text-amber-100">헌법 제37조 ② — 기본권은 절대적이지 않다</p>
-<ul class="text-left mt-6 space-y-3 max-w-3xl" style="list-style:none">
-<li class="bg-white/10 rounded-xl p-4"><b class="text-amber-300">① 목적의 정당성</b> — 국가안전·질서·공공복리</li>
-<li class="bg-white/10 rounded-xl p-4"><b class="text-amber-300">② 방법의 적정성</b> — 효과적·적합한 수단</li>
-<li class="bg-white/10 rounded-xl p-4"><b class="text-amber-300">③ 피해의 최소성</b> — 가장 덜 침해적</li>
-<li class="bg-white/10 rounded-xl p-4"><b class="text-amber-300">④ 법익의 균형성</b> — 얻는 이익 ≥ 침해</li>
-</ul>
-<p class="mt-4 text-base text-rose-300">⚠️ 본질적 내용은 절대 침해 금지</p>
+<section class="slide s-37">
+<div class="pre">헌법 제37조 ②</div>
+<h2 class="bhs">⚖️ 기본권 제한의 4가지 조건</h2>
+<div class="four-cond">
+<div class="cond"><div class="num">1</div><div><h3>목적의 정당성</h3><p>국가안전·질서·공공복리를 위해야 함</p></div></div>
+<div class="cond"><div class="num">2</div><div><h3>방법의 적정성</h3><p>효과적이고 적합한 수단인가</p></div></div>
+<div class="cond"><div class="num">3</div><div><h3>피해의 최소성</h3><p>가장 덜 침해적인 방법인가</p></div></div>
+<div class="cond"><div class="num">4</div><div><h3>법익의 균형성</h3><p>얻는 이익이 침해되는 이익보다 큰가</p></div></div>
 </div>
+<div class="warn">⚠️ <b>본질적 내용은 어떤 경우에도 침해할 수 없다</b> (헌법 37조 ②)</div>
+</section>
 
-<div class="slide concept">
-<h2>🆘 인권 침해 구제 방법</h2>
-<ul class="text-left mt-6 space-y-3 max-w-3xl" style="list-style:none">
-<li class="bg-white/10 rounded-xl p-4">📜 <b>국가인권위원회</b> 진정</li>
-<li class="bg-white/10 rounded-xl p-4">⚖️ <b>법원</b> 재판 청구</li>
-<li class="bg-white/10 rounded-xl p-4">🏛 <b>헌법재판소</b> 헌법소원</li>
-<li class="bg-white/10 rounded-xl p-4">🚓 <b>국민권익위원회</b> 행정심판</li>
-<li class="bg-white/10 rounded-xl p-4">🤝 <b>국제기구</b> (UN 인권이사회 등)</li>
-</ul>
-</div>
+<section class="slide s-quote">
+<div class="marks">"</div>
+<blockquote>모든 인간은 태어날 때부터<br><em>자유롭고 평등한 존엄과 권리</em>를 가진다.</blockquote>
+<cite>UN 세계인권선언 제1조 (1948)</cite>
+</section>
 
-<div class="slide concept">
-<h2>🛠 단원 웹교구 (3종)</h2>
-<div class="mt-6 grid grid-cols-3 gap-3 max-w-4xl">
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">⚖️ 인권 법정</b><p class="text-sm">실제 사건 판결</p></div>
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">📜 헌법 빙고</b><p class="text-sm">5x5 기본권 빙고</p></div>
-<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">⚖️ 4요건 검증</b><p class="text-sm">기본권 제한 시뮬</p></div>
+<section class="slide s-activity">
+<div class="badge">학생 활동</div>
+<h2 class="bhs">⚖️ 인권 교실의 3가지 도구</h2>
+<div class="panel">
+<div class="tool"><h3>⚖️ 인권 법정</h3><p>실제 인권 사건을 심리·판결</p></div>
+<div class="tool"><h3>📜 헌법 빙고</h3><p>5x5 판에서 기본권 매칭 게임</p></div>
+<div class="tool"><h3>⚖️ 4요건 시뮬</h3><p>5사례 제한 정당성 검증</p></div>
 </div>
-</div>
+</section>
 
-<div class="slide summary">
-<h2>🎯 오늘의 핵심</h2>
-<ul class="text-left mt-6 space-y-3 text-violet-100" style="list-style:none">
-<li>✅ 인권은 천부적·보편적·불가침적 권리</li>
-<li>✅ 헌법 5대 기본권: 자유·평등·참정·청구·사회</li>
-<li>✅ 기본권 제한은 4요건 충족 시에만 가능</li>
-<li>✅ 본질적 내용은 절대 침해 X</li>
-<li>✅ 인권 침해 시 다양한 구제 절차 활용</li>
-</ul>
-<div class="mt-10 bg-amber-500/20 rounded-xl p-5">
-<b class="text-amber-300">📌 다음 단원</b>
-<p class="text-base text-amber-100 mt-2">7단원 사회 정의와 불평등 — 공정한 분배는 무엇인가</p>
+<section class="slide s-end">
+<div class="key">CORE TAKEAWAYS</div>
+<h2 class="bhs">기억해야 할<br>5가지</h2>
+<div class="takeaways">
+<div class="ta"><b>① 인권</b> = 천부적·보편적·불가침적</div>
+<div class="ta"><b>② 5대 기본권</b> — 자유·평등·참정·청구·사회</div>
+<div class="ta"><b>③ 4요건</b> 충족 시에만 제한 가능</div>
+<div class="ta"><b>④ 본질적 내용</b>은 절대 침해 X</div>
+<div class="ta" style="grid-column:1/-1;text-align:center;border-color:#fbbf24"><b>⑤ 침해 시 구제</b> — 인권위·법원·헌재·국제기구</div>
 </div>
-</div>
+</section>
 
-<div class="nav">
-<button id="prev">←</button><span class="counter" id="counter">1 / 8</span><button id="next">→</button>
-<button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button>
-</div>
-
-<script>
-const slides=document.querySelectorAll('.slide');let cur=0;
-function show(i){slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+slides.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===slides.length-1;}
-document.getElementById('prev').onclick=()=>{if(cur>0){cur--;show(cur);}};
-document.getElementById('next').onclick=()=>{if(cur<slides.length-1){cur++;show(cur);}};
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(cur<slides.length-1){cur++;show(cur);}}else if(e.key==='ArrowLeft'){if(cur>0){cur--;show(cur);}}});
-show(0);
-</script>
-</body></html>
+<div class="nav"><button id="prev">←</button><span class="counter" id="counter">1 / 8</span><button id="next">→</button><button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button></div>
+<script>const sl=document.querySelectorAll('.slide');let c=0;function s(i){sl.forEach(x=>x.classList.remove('active'));sl[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+sl.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===sl.length-1;document.getElementById('prog').style.width=(((i+1)/sl.length)*100)+'%';}
+document.getElementById('prev').onclick=()=>{if(c>0){c--;s(c);}};document.getElementById('next').onclick=()=>{if(c<sl.length-1){c++;s(c);}};
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(c<sl.length-1){c++;s(c);}}else if(e.key==='ArrowLeft'){if(c>0){c--;s(c);}}});
+let tx=0;document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){if(dx<0&&c<sl.length-1){c++;s(c);}else if(dx>0&&c>0){c--;s(c);}}});s(0);</script></body></html>
