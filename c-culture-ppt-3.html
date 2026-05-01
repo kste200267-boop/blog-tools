@@ -1,182 +1,155 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>📊 4-3 문화 상대주의와 보편 윤리 — 수업 슬라이드</title>
-<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-*{box-sizing:border-box}body{font-family:'Noto Sans KR',sans-serif;background:#0c0a1a;color:#f1f5f9;margin:0;overflow:hidden}
-.fjua{font-family:'Jua',sans-serif}
-.slide{width:100vw;height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:5vh 5vw;text-align:center}
-.slide.active{display:flex;animation:fi .4s ease-out}
-@keyframes fi{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
-.slide h1{font-family:'Jua',sans-serif;font-size:clamp(2rem,5vw,4rem);margin-bottom:1.5rem}
-.slide h2{font-family:'Jua',sans-serif;font-size:clamp(1.5rem,4vw,3rem);margin-bottom:1rem}
-.slide p,.slide li{font-size:clamp(1rem,2vw,1.5rem);line-height:1.7}
-.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(10px);padding:10px 20px;border-radius:99px;z-index:100;display:flex;gap:10px;align-items:center}
-.nav button{background:#3b82f6;color:#0c0a1a;border:0;width:40px;height:40px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}
-.nav button:disabled{background:#475569;color:#94a3b8;cursor:not-allowed}
-.counter{color:#3b82f6;font-weight:bold;min-width:60px;text-align:center}
-.cover{background:linear-gradient(135deg,#1e3a8a 0%,#1e1b4b 100%)}
-.intro{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
-.concept{background:linear-gradient(135deg,#1e3a8a 0%,#0c4a6e 100%)}
-.activity{background:linear-gradient(135deg,#9a3412 0%,#7c2d12 100%)}
-.summary{background:linear-gradient(135deg,#7c2d12 0%,#451a03 100%)}
-@media print{.slide{display:flex!important;page-break-after:always;height:auto;min-height:100vh}.nav{display:none}body{background:#fff;color:#000;overflow:visible}}
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>문화 상대주의 — 관용의 경계</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;700;900&family=Noto+Serif+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script><style>
+*{box-sizing:border-box;margin:0;padding:0}html,body{overflow:hidden;width:100vw;height:100vh}body{font-family:'Noto Sans KR',sans-serif;background:#000;color:#fff}
+.bhs{font-family:'Black Han Sans',sans-serif;letter-spacing:-1px}
+.slide{width:100vw;height:100vh;display:none;position:relative;overflow:hidden}.slide.active{display:flex}
+.slide.active>*{animation:in .6s cubic-bezier(.2,.8,.2,1)}@keyframes in{from{opacity:0;transform:translateY(20px)}to{opacity:1}}
+.nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);backdrop-filter:blur(20px);padding:12px 24px;border-radius:99px;z-index:100;display:flex;gap:12px;align-items:center}
+.nav button{background:#fff;color:#000;border:0;width:44px;height:44px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}.nav button:disabled{background:#333;color:#666}
+.counter{color:#a78bfa;font-weight:900;min-width:64px;text-align:center;font-size:.9rem}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#3b82f6,#a78bfa,#ef4444);z-index:100;transition:width .4s}
+@media print{.nav,.progress{display:none}.slide{display:flex!important;page-break-after:always}}
+
+.s-cover{background:radial-gradient(circle at 50% 30%,#1e1b4b 0%,#000 70%);align-items:center;justify-content:center;text-align:center;flex-direction:column;padding:5vh 5vw}
+.s-cover .label{color:#a78bfa;letter-spacing:8px;font-weight:700;margin-bottom:24px;border:1px solid rgba(167,139,250,.4);padding:8px 24px;border-radius:99px;font-size:clamp(.8rem,1.2vw,1rem)}
+.s-cover h1{font-size:clamp(3rem,11vw,9rem);line-height:.9;margin-bottom:24px;background:linear-gradient(135deg,#fff,#a78bfa);-webkit-background-clip:text;color:transparent;font-weight:900}
+.s-cover .sub{font-size:clamp(1.2rem,2.5vw,1.8rem);color:rgba(255,255,255,.7);font-weight:300;letter-spacing:4px}
+
+.s-dilemma{background:linear-gradient(135deg,#0c0a09 0%,#1c1917 100%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw;gap:24px}
+.s-dilemma .pre{color:#a78bfa;letter-spacing:6px;font-size:clamp(.85rem,1.3vw,1rem)}
+.s-dilemma h2{font-size:clamp(1.8rem,4.5vw,3.5rem);font-weight:900;line-height:1.1;font-family:'Noto Serif KR',serif;max-width:1100px}
+.s-dilemma .opinions{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1100px;width:100%}
+.s-dilemma .o{padding:24px;border-radius:16px;text-align:left}
+.s-dilemma .o1{background:rgba(239,68,68,.1);border:1px solid #ef4444}
+.s-dilemma .o2{background:rgba(16,185,129,.1);border:1px solid #10b981}
+.s-dilemma .o3{background:rgba(251,191,36,.1);border:1px solid #fbbf24}
+.s-dilemma .o b{display:block;font-size:.9rem;letter-spacing:2px;margin-bottom:8px;font-weight:900}
+.s-dilemma .o1 b{color:#ef4444}.s-dilemma .o2 b{color:#10b981}.s-dilemma .o3 b{color:#fbbf24}
+.s-dilemma .o p{font-size:clamp(.95rem,1.4vw,1.1rem);line-height:1.5}
+
+.s-three{background:linear-gradient(135deg,#0c0a09 0%,#1c1917 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch;justify-content:center}
+.s-three h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;text-align:center;margin-bottom:32px}
+.s-three .stack{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.s-three .pos{padding:32px;border-radius:16px;display:flex;flex-direction:column;gap:12px}
+.s-three .p1{background:rgba(59,130,246,.1);border:2px solid #3b82f6}
+.s-three .p2{background:rgba(16,185,129,.1);border:2px solid #10b981}
+.s-three .p3{background:rgba(239,68,68,.1);border:2px solid #ef4444}
+.s-three .pos .icon{font-size:3.5rem}
+.s-three .pos h3{font-size:clamp(1.2rem,1.8vw,1.5rem);font-weight:900}
+.s-three .p1 h3{color:#60a5fa}.s-three .p2 h3{color:#10b981}.s-three .p3 h3{color:#ef4444}
+.s-three .pos .summary{font-size:clamp(.9rem,1.3vw,1rem);color:rgba(255,255,255,.85);line-height:1.5}
+.s-three .pos .pros,.s-three .pos .cons{font-size:.85rem;color:rgba(255,255,255,.6);padding-top:8px;border-top:1px solid rgba(255,255,255,.1)}
+.s-three .pos .pros{color:#10b981}.s-three .pos .cons{color:#ef4444}
+
+.s-balance{background:linear-gradient(135deg,#0c4a6e 0%,#0c1e2e 100%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw;gap:32px}
+.s-balance h2{font-size:clamp(2rem,4.5vw,3.5rem);font-weight:900}
+.s-balance .scale{display:grid;grid-template-columns:1fr 80px 1fr;gap:0;align-items:center;max-width:1100px;width:100%}
+.s-balance .pan{padding:32px;border-radius:16px;text-align:left}
+.s-balance .l{background:rgba(16,185,129,.15);border:2px solid #10b981}
+.s-balance .r{background:rgba(251,191,36,.15);border:2px solid #fbbf24}
+.s-balance .pan .icon{font-size:3rem;margin-bottom:12px}
+.s-balance .pan h3{font-size:clamp(1.2rem,2vw,1.6rem);font-weight:900;margin-bottom:8px}
+.s-balance .l h3{color:#10b981}.s-balance .r h3{color:#fbbf24}
+.s-balance .pan p{font-size:clamp(.9rem,1.3vw,1.05rem);color:rgba(255,255,255,.85);line-height:1.5}
+.s-balance .center{font-size:3rem;color:#fff}
+.s-balance .insight{margin-top:24px;font-size:clamp(1rem,1.6vw,1.3rem);color:rgba(255,255,255,.8);font-family:'Noto Serif KR',serif;font-style:italic;max-width:900px}
+.s-balance .insight em{color:#fbbf24;font-style:normal;font-weight:900;font-family:'Black Han Sans',sans-serif}
+
+.s-quote{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%);align-items:center;justify-content:center;padding:8vh 8vw;flex-direction:column;text-align:center;gap:32px}
+.s-quote .marks{font-size:clamp(4rem,8vw,7rem);color:rgba(167,139,250,.3);font-family:Georgia,serif;line-height:.5}
+.s-quote blockquote{font-size:clamp(1.6rem,3.5vw,3rem);line-height:1.4;font-weight:300;max-width:1200px;font-family:'Noto Serif KR',serif}
+.s-quote blockquote em{color:#a78bfa;font-style:normal;font-weight:700}
+.s-quote cite{font-size:clamp(.9rem,1.4vw,1.1rem);color:rgba(255,255,255,.5);font-style:normal;letter-spacing:2px}.s-quote cite::before{content:'— '}
+
+.s-activity{background:linear-gradient(135deg,#7c2d12 0%,#451a03 100%);align-items:center;justify-content:center;padding:8vh 5vw;flex-direction:column;text-align:center;gap:24px}
+.s-activity .badge{color:#fbbf24;letter-spacing:6px;font-weight:700;border:1px solid rgba(251,191,36,.5);padding:8px 24px;border-radius:99px;background:rgba(0,0,0,.3);font-size:clamp(.8rem,1.2vw,1rem)}
+.s-activity h2{font-size:clamp(2rem,5vw,4rem);font-weight:900;line-height:1}
+.s-activity .panel{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1100px;width:100%}
+.s-activity .web,.s-activity .ws{padding:24px;border-radius:16px;text-align:left}
+.s-activity .web{background:rgba(0,0,0,.5);border:1px solid #fbbf24}
+.s-activity .ws{background:rgba(167,139,250,.15);border:1px solid #a78bfa}
+.s-activity .web h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;color:#fbbf24}
+.s-activity .ws h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;color:#a78bfa}
+
+.s-end{background:radial-gradient(circle at 50% 50%,#1e1b4b 0%,#000 80%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw;gap:24px}
+.s-end .key{color:#a78bfa;letter-spacing:6px;font-weight:700;font-size:clamp(.85rem,1.3vw,1rem)}
+.s-end h2{font-size:clamp(2.5rem,6vw,5.5rem);line-height:1;font-weight:900;background:linear-gradient(180deg,#fff,#a78bfa);-webkit-background-clip:text;color:transparent}
+.s-end .takeaways{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:1000px;width:100%;margin-top:32px}
+.s-end .ta{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px;text-align:left;font-size:clamp(.9rem,1.3vw,1.1rem)}
+.s-end .ta b{color:#a78bfa}
+.s-end .next{margin-top:32px;font-size:clamp(.85rem,1.2vw,1rem);color:rgba(255,255,255,.5)}.s-end .next b{color:#a78bfa}
+
+@media (max-width:768px){.s-three .stack,.s-balance .scale,.s-end .takeaways,.s-activity .panel,.s-dilemma .opinions{grid-template-columns:1fr}.s-balance .center{transform:rotate(90deg)}}
 </style></head><body>
+<div class="progress" id="prog" style="width:0%"></div>
 
-<div class="slide cover active">
-<div class="text-xs text-blue-300 font-bold mb-2">통합사회 1 · 4단원 · 4-3</div>
-<h1>⚖️ 문화 상대주의와 보편 윤리</h1>
-<p class="mt-4 text-blue-100">관용의 한계는 어디까지인가</p>
-<div class="mt-8 text-base text-blue-200">
-[10통사1-04-03] 문화 상대주의적 태도의 필요성을 이해하고,<br>보편 윤리의 차원에서 자문화·타문화를 성찰한다.
-</div>
-</div>
+<section class="slide s-cover active">
+<span class="label">통합사회 1 · 4단원 · 4-3</span>
+<h1 class="bhs">관용의<br>경계는<br>어디까지인가</h1>
+<p class="sub">문화 상대주의와 보편 윤리</p>
+</section>
 
-<div class="slide intro">
-<div class="text-xs text-violet-300 font-bold mb-2">도입</div>
-<h2>🤔 만약 우리 학교에…</h2>
-<p class="mt-4">무슬림 친구가 하루 5번 예배를 드리고 싶다고 한다.<br>학교는 어떻게 해야 할까?</p>
-<div class="mt-8 grid grid-cols-3 gap-3 max-w-4xl">
-<div class="bg-white/10 rounded-xl p-4"><b class="text-violet-300">A 의견</b><p class="text-base mt-2">"수업 시간을 빼서까지?"</p></div>
-<div class="bg-white/10 rounded-xl p-4"><b class="text-violet-300">B 의견</b><p class="text-base mt-2">"종교는 자유, 존중해야"</p></div>
-<div class="bg-white/10 rounded-xl p-4"><b class="text-violet-300">C 의견</b><p class="text-base mt-2">"무엇이든 그들 문화면 OK"</p></div>
+<section class="slide s-dilemma">
+<div class="pre">"무슬림 학생이 학교에서 하루 5번 예배를…"</div>
+<h2>"우리 학교 친구가<br>매일 5번 기도해야 한다면?"</h2>
+<div class="opinions">
+<div class="o o1"><b>A. 학습 우선</b><p>"수업 시간을 빼서까지 종교를 인정해야 하나?"</p></div>
+<div class="o o2"><b>B. 종교 자유</b><p>"종교는 헌법이 보장한 자유. 존중해야."</p></div>
+<div class="o o3"><b>C. 무엇이든 OK</b><p>"문화·종교라면 어떤 것이든 인정해야지."</p></div>
 </div>
-<p class="mt-6 text-base text-violet-200">→ 어느 입장이 맞을까? 왜 다 다르게 생각할까?</p>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>📐 문화 절대주의</h2>
-<p class="mt-4 text-blue-100">하나의 절대적 기준으로 모든 문화를 평가</p>
-<div class="mt-8 bg-white/10 rounded-xl p-6 max-w-3xl">
-<ul class="text-left text-base space-y-2">
-<li>✅ "옳은 문화"가 따로 있다고 봄</li>
-<li>✅ 자문화 중심주의로 빠지기 쉬움</li>
-<li>❌ 타문화 무시 · 차별 가능성</li>
-<li>❌ 식민주의의 정당화 도구로 쓰임</li>
-</ul>
+<section class="slide s-three">
+<h2 class="bhs">📊 문화를 보는 3가지 시선</h2>
+<div class="stack">
+<div class="pos p1"><div class="icon">📐</div><h3>문화 절대주의</h3><div class="summary">하나의 절대적 기준으로 모든 문화를 평가. "옳은 문화"가 따로 있다.</div><div class="pros">✅ 명확한 기준</div><div class="cons">❌ 차별·식민주의의 위험</div></div>
+<div class="pos p2"><div class="icon">🌐</div><h3>문화 상대주의</h3><div class="summary">각 문화는 그 사회의 맥락에서 이해. 다양성 존중이 우선.</div><div class="pros">✅ 다문화 시대에 필수</div><div class="cons">⚠️ 한계도 있음</div></div>
+<div class="pos p3"><div class="icon">⚠️</div><h3>극단적 상대주의</h3><div class="summary">어떤 문화든 무비판 수용. 인권 침해도 "문화"라며 인정.</div><div class="pros">— </div><div class="cons">❌ 인권 침해 정당화</div></div>
 </div>
-<p class="mt-4 text-base text-amber-200">예시: 19세기 유럽이 "미개한 문화"라며 식민지 정당화</p>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>🌐 문화 상대주의</h2>
-<p class="mt-4 text-blue-100">각 문화는 그 사회의 맥락에서 이해</p>
-<div class="mt-8 bg-white/10 rounded-xl p-6 max-w-3xl">
-<ul class="text-left text-base space-y-2">
-<li>✅ 다양성 존중 · 편견 없는 태도</li>
-<li>✅ 다른 문화도 그 자체로 가치 있음</li>
-<li>✅ 다문화 사회에 필수</li>
-<li>⚠️ 무엇이든 인정하지는 않음 (한계 있음)</li>
-</ul>
+<section class="slide s-balance">
+<h2 class="bhs">⚖️ 두 원칙의 균형</h2>
+<div class="scale">
+<div class="pan l"><div class="icon">🌐</div><h3>다양성 존중</h3><p>모든 문화는 고유한 의미가 있다. 다름을 차별의 이유로 삼지 않는다.</p></div>
+<div class="center bhs">↔</div>
+<div class="pan r"><div class="icon">🌟</div><h3>보편 윤리</h3><p>단, 인간 존엄성·생명·자유는 어떤 문화도 침해할 수 없다.</p></div>
 </div>
-<p class="mt-4 text-base text-emerald-200">📌 다문화 사회의 기본 태도</p>
-</div>
+<p class="insight">"두 원칙이 충돌할 때 — <em>보편 윤리 > 문화 상대주의</em>"</p>
+</section>
 
-<div class="slide concept">
-<h2>⚠️ 극단적 문화 상대주의</h2>
-<p class="mt-4 text-blue-100">어떤 문화든 무비판적으로 인정</p>
-<div class="mt-8 bg-white/10 rounded-xl p-6 max-w-3xl border-2 border-rose-400">
-<ul class="text-left text-base space-y-2">
-<li>❌ 인권 침해도 "문화"라며 인정</li>
-<li>❌ 사회적 약자 보호 어려움</li>
-<li>❌ 문화 발전·성찰 막음</li>
-<li>❌ 보편 가치 부정</li>
-</ul>
-</div>
-<p class="mt-4 text-base text-rose-300">⚠️ 위험: 아동 강제 노동·가정 폭력도 "문화"라며 정당화</p>
-</div>
+<section class="slide s-quote">
+<div class="marks">"</div>
+<blockquote>문화 상대주의는<br><em>인간의 존엄성을 지키는 한도 내에서</em><br>의미를 갖는다.</blockquote>
+<cite>UN 인권 선언 정신</cite>
+</section>
 
-<div class="slide concept">
-<h2>📊 세 가지 입장 비교</h2>
-<table class="mt-6 text-base bg-white/10 rounded-xl overflow-hidden text-left max-w-5xl">
-<thead><tr class="bg-white/20"><th class="p-3"></th><th class="p-3">평가 기준</th><th class="p-3">결과</th></tr></thead>
-<tbody>
-<tr><td class="p-3"><b>📐 절대주의</b></td><td class="p-3">하나의 절대 기준</td><td class="p-3 text-rose-300">차별·식민주의</td></tr>
-<tr class="bg-white/5"><td class="p-3"><b>🌐 상대주의</b></td><td class="p-3">맥락 이해</td><td class="p-3 text-emerald-300">존중·공존</td></tr>
-<tr><td class="p-3"><b>⚠️ 극단적 상대주의</b></td><td class="p-3">기준 부정</td><td class="p-3 text-rose-300">인권 침해 정당화</td></tr>
-</tbody></table>
+<section class="slide s-activity">
+<div class="badge">학생 활동</div>
+<h2 class="bhs">⚖️ 다문화 시민 법정</h2>
+<div class="panel">
+<div class="web"><h3>🌐 웹교구</h3><code style="background:rgba(0,0,0,.5);padding:4px 8px;border-radius:4px;font-size:.85rem;color:#fbbf24">c-culture-multicultural-court.html</code><p style="margin-top:12px;color:rgba(255,255,255,.8);font-size:.9rem">5사건 판결 + 입장 비교 + 균형 슬라이더 + AI 피드백</p></div>
+<div class="ws"><h3>📝 학습지 ④</h3><p style="color:rgba(255,255,255,.8);font-size:.9rem">3입장 비교표 + 5사례 매칭 + 판결문 작성</p></div>
 </div>
+</section>
 
-<div class="slide concept">
-<h2>🌟 보편 윤리</h2>
-<p class="mt-4 text-blue-100">시대·장소를 초월해 모두에게 적용되는 가치</p>
-<div class="mt-8 grid grid-cols-2 gap-4 max-w-4xl">
-<div class="bg-white/10 rounded-xl p-4">
-<div class="text-3xl mb-2">🤝</div>
-<b class="text-amber-300">인간 존엄성</b>
+<section class="slide s-end">
+<div class="key">CORE TAKEAWAYS</div>
+<h2 class="bhs">기억해야 할<br>5가지</h2>
+<div class="takeaways">
+<div class="ta"><b>① 절대주의</b> → 차별의 위험</div>
+<div class="ta"><b>② 상대주의</b> → 존중의 시작</div>
+<div class="ta"><b>③ 극단적 상대주의</b> → 인권 침해 위험</div>
+<div class="ta"><b>④ 보편 윤리</b> = 인간 존엄성의 마지노선</div>
+<div class="ta" style="grid-column:1/-1;text-align:center;border-color:#a78bfa"><b>⑤ 균형의 원칙</b> = 다양성 존중 + 보편 윤리</div>
 </div>
-<div class="bg-white/10 rounded-xl p-4">
-<div class="text-3xl mb-2">⚖️</div>
-<b class="text-amber-300">자유와 평등</b>
-</div>
-<div class="bg-white/10 rounded-xl p-4">
-<div class="text-3xl mb-2">🛡</div>
-<b class="text-amber-300">생명권·신체 안전</b>
-</div>
-<div class="bg-white/10 rounded-xl p-4">
-<div class="text-3xl mb-2">📚</div>
-<b class="text-amber-300">교육 받을 권리</b>
-</div>
-</div>
-<p class="mt-6 text-base text-emerald-200">📌 UN 인권 선언 (1948) → 국제 사회의 합의</p>
-</div>
+<p class="next">다음 차시 → <b>4-4 다문화 사회와 다양성 존중</b></p>
+</section>
 
-<div class="slide concept">
-<h2>⚖️ 균형 잡기 — 두 원칙</h2>
-<div class="mt-8 grid grid-cols-2 gap-6 max-w-4xl">
-<div class="bg-emerald-900/40 border-2 border-emerald-500 rounded-xl p-5">
-<b class="text-emerald-300 text-2xl">🌐 다양성 존중</b>
-<p class="text-base mt-2">모든 문화는 고유한 의미가 있다.<br>다름을 차별의 이유로 삼지 않는다.</p>
-</div>
-<div class="bg-amber-900/40 border-2 border-amber-500 rounded-xl p-5">
-<b class="text-amber-300 text-2xl">🌟 보편 윤리</b>
-<p class="text-base mt-2">단, 인간 존엄성·생명·자유는<br>어떤 문화도 침해할 수 없다.</p>
-</div>
-</div>
-<p class="mt-8 text-amber-200 text-base">💡 두 원칙이 충돌할 때: 보편 윤리 > 문화 상대주의</p>
-</div>
-
-<div class="slide activity">
-<div class="text-xs text-amber-300 font-bold mb-2">학생 활동</div>
-<h2>⚖️ 다문화 시민 법정 — 웹교구</h2>
-<p class="mt-4 text-amber-100">5사건 판결 + 입장 비교 + 균형 슬라이더</p>
-<div class="mt-8 bg-white/10 rounded-xl p-6 max-w-2xl">
-<b class="text-amber-300">📲 c-culture-multicultural-court.html</b>
-<p class="text-base mt-3">학교 종교 의례 / 히잡 / 급식 / 아동 노동 / 가정 폭력</p>
-</div>
-<div class="mt-6 bg-emerald-500/20 rounded-xl p-4 max-w-2xl">
-<b class="text-emerald-300">📝 학습지 ④</b>
-<p class="text-base mt-2 text-emerald-100">3입장 비교표 + 5사례 매칭 + 판결문 작성</p>
-</div>
-</div>
-
-<div class="slide summary">
-<h2>🎯 오늘의 핵심</h2>
-<ul class="text-left mt-6 space-y-3 text-amber-100" style="list-style:none">
-<li>✅ 문화 절대주의 → 차별의 위험</li>
-<li>✅ 문화 상대주의 → 존중의 시작</li>
-<li>✅ 극단적 상대주의 → 인권 침해 위험</li>
-<li>✅ 보편 윤리 = 인간 존엄성·생명·자유의 마지노선</li>
-<li>✅ 균형: 다양성 존중 + 보편 윤리</li>
-</ul>
-<div class="mt-10 bg-rose-500/20 rounded-xl p-5">
-<b class="text-rose-300">📌 다음 차시</b>
-<p class="text-base text-rose-100 mt-2">4-4 다문화 사회의 갈등과 해결 — 한국의 현실</p>
-</div>
-</div>
-
-<div class="nav">
-<button id="prev">←</button><span class="counter" id="counter">1 / 10</span><button id="next">→</button>
-<button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button>
-</div>
-
-<script>
-const slides=document.querySelectorAll('.slide');let cur=0;
-function show(i){slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+slides.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===slides.length-1;}
-document.getElementById('prev').onclick=()=>{if(cur>0){cur--;show(cur);}};
-document.getElementById('next').onclick=()=>{if(cur<slides.length-1){cur++;show(cur);}};
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(cur<slides.length-1){cur++;show(cur);}}else if(e.key==='ArrowLeft'){if(cur>0){cur--;show(cur);}}});
-show(0);
-</script>
-</body></html>
+<div class="nav"><button id="prev">←</button><span class="counter" id="counter">1 / 7</span><button id="next">→</button><button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button></div>
+<script>const sl=document.querySelectorAll('.slide');let c=0;function s(i){sl.forEach(x=>x.classList.remove('active'));sl[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+sl.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===sl.length-1;document.getElementById('prog').style.width=(((i+1)/sl.length)*100)+'%';}
+document.getElementById('prev').onclick=()=>{if(c>0){c--;s(c);}};document.getElementById('next').onclick=()=>{if(c<sl.length-1){c++;s(c);}};
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(c<sl.length-1){c++;s(c);}}else if(e.key==='ArrowLeft'){if(c>0){c--;s(c);}}});
+let tx=0;document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){if(dx<0&&c<sl.length-1){c++;s(c);}else if(dx>0&&c>0){c--;s(c);}}});s(0);</script></body></html>
