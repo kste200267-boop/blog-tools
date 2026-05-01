@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>📝 학습지 ③ 우리 동네 탐구 보고서</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:#f1f5f9;color:#1e293b}
+.fjua{font-family:'Jua',sans-serif}
+.ws{max-width:850px;margin:20px auto;background:#fff;padding:40px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.ws h1{font-family:'Jua',sans-serif;font-size:1.6rem;text-align:center;border-bottom:3px solid #1e293b;padding-bottom:10px;margin-bottom:20px}
+.info{display:flex;justify-content:space-between;font-size:.9rem;border-bottom:1px solid #cbd5e1;padding-bottom:10px;margin-bottom:20px}
+.blank{display:inline-block;border-bottom:1px solid #1e293b;min-width:120px;height:1.5em;padding:0 4px}
+.q{background:#d1fae5;border-left:4px solid #059669;padding:12px 16px;margin:16px 0;border-radius:0 8px 8px 0}
+.q-num{display:inline-block;background:#059669;color:#fff;padding:3px 10px;border-radius:99px;font-weight:bold;font-size:.8rem;margin-right:8px}
+.answer{border:1px solid #cbd5e1;border-radius:6px;min-height:50px;padding:8px;margin-top:6px;font-family:inherit;font-size:.9rem;width:100%;resize:vertical}
+.checkbox-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;font-size:.85rem}
+.cb-item{display:flex;align-items:center;gap:6px}
+@media print{body{background:#fff;padding:0;margin:0}.ws{max-width:100%;box-shadow:none;padding:25px;margin:0}.no-print{display:none!important}}
+</style></head><body>
+
+<div class="no-print" style="max-width:850px;margin:10px auto;display:flex;gap:8px;padding:0 20px;flex-wrap:wrap">
+<a href="hub.html?mode=unit&id=living-space" class="bg-white border-2 border-slate-300 rounded-lg px-4 py-2 text-sm font-bold no-underline text-slate-700">← 단원으로</a>
+<a href="c-living-space-region.html" class="bg-emerald-600 text-white rounded-lg px-4 py-2 text-sm font-bold no-underline">🗺 웹교구</a>
+<button onclick="window.print()" class="bg-slate-800 text-white rounded-lg px-4 py-2 text-sm font-bold">🖨 PDF</button>
+</div>
+
+<div class="ws">
+<h1>📝 학습지 ③ 우리 동네 탐구 보고서</h1>
+<div class="info">
+<div>학번 <span class="blank"></span> 이름 <span class="blank"></span></div>
+<div>날짜 <span class="blank"></span></div>
+</div>
+
+<p class="text-sm text-slate-600 mb-4"><b>학습 목표</b>: 자기 지역의 공간 변화를 조사·분석하고 해결 방안을 제안하는 보고서를 작성한다. <b>[10통사1-05-03]</b></p>
+
+<div class="q">
+<span class="q-num">STEP 1</span><b>우리 동네 정보</b>
+<div class="grid grid-cols-2 gap-3 mt-3 text-sm">
+<div>📍 <b>지역명</b>: <input class="answer" type="text" style="min-height:auto" placeholder="예: 서울 마포구 연남동"></div>
+<div>🏘 <b>지역 유형</b>: <select class="answer" style="min-height:auto"><option>—</option><option>대도시 도심</option><option>대도시 외곽 (신도시)</option><option>중소도시</option><option>농촌·어촌</option><option>관광·휴양지</option><option>공업·산업단지</option></select></div>
+<div>⏳ <b>관찰 기간</b>: <select class="answer" style="min-height:auto"><option>—</option><option>최근 5년</option><option>최근 10년</option><option>최근 20년</option><option>30년 이상</option></select></div>
+<div>👥 <b>거주 기간</b>: <input class="answer" type="text" style="min-height:auto" placeholder="예: 10년"></div>
+</div>
+</div>
+
+<div class="q">
+<span class="q-num">STEP 2</span><b>변화 요인 (해당되는 것 모두 체크)</b>
+<div class="checkbox-grid">
+<label class="cb-item"><input type="checkbox"> 🏗 재개발·재건축</label>
+<label class="cb-item"><input type="checkbox"> 🚇 지하철·KTX 개통</label>
+<label class="cb-item"><input type="checkbox"> 📦 온라인 쇼핑·배달</label>
+<label class="cb-item"><input type="checkbox"> 🌐 스마트시티 사업</label>
+<label class="cb-item"><input type="checkbox"> 👥 인구 유입/유출</label>
+<label class="cb-item"><input type="checkbox"> 👴 고령화</label>
+<label class="cb-item"><input type="checkbox"> 🏭 공장 이전/유치</label>
+<label class="cb-item"><input type="checkbox"> 📸 관광·축제</label>
+<label class="cb-item"><input type="checkbox"> 🎨 카페·갤러리 등 문화공간</label>
+<label class="cb-item"><input type="checkbox"> 🎓 학교 통폐합/신설</label>
+<label class="cb-item"><input type="checkbox"> 🌳 녹지·하천 정비</label>
+<label class="cb-item"><input type="checkbox"> 🚓 CCTV·치안 인프라</label>
+</div>
+</div>
+
+<div class="q">
+<span class="q-num">STEP 3</span><b>긍정/부정 변화 진단</b>
+<div class="grid grid-cols-2 gap-3 mt-3">
+<div>
+<b class="text-emerald-700">😊 긍정 변화</b>
+<textarea class="answer" rows="4" placeholder="우리 동네에서 좋아진 점 3가지"></textarea>
+</div>
+<div>
+<b class="text-rose-700">😟 부정 변화</b>
+<textarea class="answer" rows="4" placeholder="우리 동네에서 나빠진 점 3가지"></textarea>
+</div>
+</div>
+</div>
+
+<div class="q">
+<span class="q-num">STEP 4</span><b>학생 인터뷰 — 가족·이웃 어른 1명 (필수)</b>
+<div class="text-sm space-y-2 mt-3">
+<div>📌 <b>인터뷰 대상</b>: <input class="answer" type="text" style="min-height:auto" placeholder="예: 어머니(50대), 옆집 할머니(70대)"></div>
+<div>🏠 <b>사라진 것</b> (어른이 기억하는): <textarea class="answer" rows="2"></textarea></div>
+<div>✨ <b>새로 생긴 것</b>: <textarea class="answer" rows="2"></textarea></div>
+<div>👵 <b>어른의 한 마디</b>: <textarea class="answer" rows="2" placeholder="예: '예전엔 여기가 다 논밭이었지...'"></textarea></div>
+</div>
+</div>
+
+<div class="q">
+<span class="q-num">STEP 5</span><b>해결안 제안서</b>
+<div class="text-sm space-y-2 mt-3">
+<div>🎯 <b>가장 시급한 문제 1가지</b>: <input class="answer" type="text" style="min-height:auto"></div>
+<div>💡 <b>해결 방안 (행동 가능한 3가지)</b>:
+<textarea class="answer" rows="4" placeholder="① 시청에 ___ 정책 건의&#10;② 학교 동아리에서 ___ 캠페인&#10;③ 주민이 직접 ___ 모임"></textarea>
+</div>
+<div>🤝 <b>협력 주체</b>: <input class="answer" type="text" style="min-height:auto" placeholder="예: 주민자치회 + 시청 + 학교"></div>
+</div>
+</div>
+
+<div class="q">
+<span class="q-num">정리</span><b>10년 후 우리 동네는?</b>
+<p class="text-sm text-slate-500 mt-1">학생이 바라는 모습과 그 이유</p>
+<textarea class="answer" rows="4"></textarea>
+</div>
+
+<hr class="my-4">
+<div class="text-xs text-slate-500">
+<b>🛠 웹교구 연계:</b> <a href="c-living-space-region.html" class="text-blue-600 underline">🗺 우리 동네 변화 지도</a>로 동일 5단계 입력 → 자동 보고서 생성·인쇄
+</div>
+</div>
+
+<script>;(function(){var KEY="ws_living_3";function snap(){var d={};document.querySelectorAll("input,textarea,select").forEach(function(el,i){var k=el.id||el.name||("_"+i);if(el.type==="checkbox")d[k]=el.checked;else d[k]=el.value;});return d;}function save(){try{localStorage.setItem(KEY,JSON.stringify(snap()));}catch(e){}}function restore(){try{var d=JSON.parse(localStorage.getItem(KEY)||"{}");document.querySelectorAll("input,textarea,select").forEach(function(el,i){var k=el.id||el.name||("_"+i);if(!(k in d))return;if(el.type==="checkbox")el.checked=d[k];else el.value=d[k];});}catch(e){}}window.addEventListener("load",function(){restore();document.body.addEventListener("input",save);document.body.addEventListener("change",save);});})();</script>
+</body></html>
