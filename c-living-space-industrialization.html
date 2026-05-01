@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>🏗 산업화·도시화 타임머신 — 1960→2030</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#fde68a 0%,#fef3c7 50%,#fce7f3 100%);min-height:100vh;-webkit-tap-highlight-color:transparent}
+.fjua{font-family:'Jua',sans-serif}
+.year-slider{appearance:none;width:100%;height:10px;background:linear-gradient(to right,#84cc16 0%,#f59e0b 50%,#ef4444 100%);border-radius:99px;outline:none}
+.year-slider::-webkit-slider-thumb{appearance:none;width:30px;height:30px;background:#fff;border-radius:50%;cursor:pointer;border:4px solid #1e293b;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.stat-card{transition:all .3s}
+.stat-num{transition:all .5s;font-variant-numeric:tabular-nums}
+.scene{transition:all .8s}
+.problem-chip{transition:all .2s;cursor:pointer}
+.problem-chip:hover{transform:translateY(-2px)}
+.problem-chip.selected{background:#fbbf24!important;color:#1e293b!important;box-shadow:0 0 0 3px #fbbf24}
+.solution-card{transition:all .2s}
+.solution-card.checked{background:#dcfce7!important;border-color:#16a34a!important}
+.fade{animation:fi .5s ease-out}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+</style>
+</head>
+<body class="text-slate-800">
+
+<header class="bg-white/80 backdrop-blur border-b border-slate-200 sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+  <a href="hub.html?mode=unit&id=living-space" class="flex items-center gap-2 font-bold text-slate-700 hover:text-blue-600">← 단원으로</a>
+  <div class="text-xs text-slate-500">[10통사1-05-01] 산업화·도시화</div>
+  <button onclick="window.print()" class="text-sm bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg">🖨 인쇄</button>
+</div>
+</header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+
+<section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 mb-5">
+  <div class="text-xs text-amber-600 font-bold mb-1">통합사회 1 · 5단원 생활공간과 사회</div>
+  <h1 class="fjua text-3xl md:text-4xl mb-2">🏗 산업화·도시화 타임머신</h1>
+  <p class="text-slate-600 text-sm md:text-base">1960년부터 2030년까지 슬라이더를 움직이며 한국의 도시·산업·환경 변화를 직접 체험합니다.</p>
+</section>
+
+<!-- 타임머신 -->
+<section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 mb-5">
+  <div class="text-center mb-4">
+    <div class="text-sm text-slate-500 mb-1">⏰ 시간을 움직여 보세요</div>
+    <div class="fjua text-6xl text-amber-600" id="yearDisp">1960</div>
+    <div class="text-sm text-slate-500" id="eraTxt">— 산업화 이전, 농업 사회 —</div>
+  </div>
+  <input id="yearSlide" type="range" min="1960" max="2030" step="5" value="1960" class="year-slider">
+  <div class="flex justify-between text-xs text-slate-500 mt-2"><span>1960</span><span>1980</span><span>2000</span><span>2020</span><span>2030</span></div>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-5">
+    <div class="stat-card bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
+      <div class="text-xs font-bold text-blue-700">🏙 도시 인구 비율</div>
+      <div class="stat-num fjua text-3xl text-blue-800" id="sUrban">28%</div>
+    </div>
+    <div class="stat-card bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center">
+      <div class="text-xs font-bold text-emerald-700">🌾 농업 인구 비율</div>
+      <div class="stat-num fjua text-3xl text-emerald-800" id="sFarm">62%</div>
+    </div>
+    <div class="stat-card bg-rose-50 border border-rose-200 rounded-xl p-4 text-center">
+      <div class="text-xs font-bold text-rose-700">🏭 산업 비중 (제조업)</div>
+      <div class="stat-num fjua text-3xl text-rose-800" id="sFactory">14%</div>
+    </div>
+    <div class="stat-card bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
+      <div class="text-xs font-bold text-amber-700">🌫 대기 오염도</div>
+      <div class="stat-num fjua text-3xl text-amber-800" id="sPoll">낮음</div>
+    </div>
+  </div>
+
+  <!-- 풍경 -->
+  <div class="mt-5 bg-gradient-to-b from-sky-100 to-emerald-100 rounded-2xl p-5 border border-slate-200" id="scene">
+    <div class="scene fade text-center">
+      <div class="text-7xl mb-2" id="sceneEmoji">🌾</div>
+      <div class="fjua text-xl mb-1" id="sceneTitle">농업 중심 사회</div>
+      <p class="text-sm text-slate-600" id="sceneDesc">대부분 사람들이 농촌에 살며 벼농사를 지었습니다. 도시는 작고 공장은 거의 없었어요.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 문제점 발견 -->
+<section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 mb-5">
+  <h2 class="fjua text-xl mb-3">🔍 STEP 1. 문제점 찾기 (3개 이상 선택)</h2>
+  <p class="text-sm text-slate-600 mb-4">산업화·도시화로 발생한 문제 중 본인이 가장 심각하다고 생각하는 것을 골라주세요.</p>
+  <div id="probGrid" class="grid grid-cols-2 md:grid-cols-3 gap-2 mb-3"></div>
+  <div class="text-xs text-slate-500">선택: <b id="probCnt">0</b> / 9</div>
+</section>
+
+<!-- 해결방안 -->
+<section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 mb-5">
+  <h2 class="fjua text-xl mb-3">💡 STEP 2. 해결 방안 매칭</h2>
+  <p class="text-sm text-slate-600 mb-4">선택한 문제점에 어울리는 해결 방안을 체크하세요.</p>
+  <div id="solList" class="space-y-2 mb-3"></div>
+</section>
+
+<!-- 학생 의견 -->
+<section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 mb-5">
+  <h2 class="fjua text-xl mb-3">✏️ STEP 3. 나의 제안</h2>
+  <p class="text-sm text-slate-600 mb-3">위 항목 외에, 산업화·도시화 문제를 해결할 본인만의 아이디어를 적어보세요.</p>
+  <textarea id="myIdea" rows="4" class="w-full bg-slate-50 border-2 border-slate-300 rounded-lg p-3 text-sm" placeholder="예: '도시 농업 활성화 정책', '공유 모빌리티 확대' 등"></textarea>
+</section>
+
+<!-- 산출물 -->
+<section class="bg-gradient-to-r from-amber-200 to-rose-200 border-2 border-amber-400 rounded-2xl p-6 shadow-sm">
+  <h2 class="fjua text-2xl mb-3">📄 학습 결과물</h2>
+  <div class="bg-white rounded-xl p-4 mb-4">
+    <h3 class="font-bold mb-2">📊 시간 변화 비교 (1960 vs 2020)</h3>
+    <canvas id="chartCmp" height="180"></canvas>
+  </div>
+  <button id="genResult" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-5 py-2.5 rounded-lg mr-2">📋 결과 정리</button>
+  <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-5 py-2.5 rounded-lg">🖨 PDF/인쇄</button>
+  <div id="resultPanel" class="hidden mt-4 bg-white rounded-xl p-5 fade">
+    <h3 class="fjua text-xl mb-3 border-b-2 border-slate-800 pb-1">📝 산업화·도시화 분석 보고서</h3>
+    <div class="text-sm space-y-2">
+      <div><b>이름:</b> _________ <span class="ml-4"><b>날짜:</b> _________</span></div>
+      <div><b>인식한 주요 문제점:</b><ul id="rProb" class="ml-4 list-disc"></ul></div>
+      <div><b>제안한 해결책:</b><ul id="rSol" class="ml-4 list-disc"></ul></div>
+      <div><b>나의 추가 아이디어:</b> <span id="rIdea"></span></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="text-center text-xs text-slate-400 py-6">풀어쓰는 사회학 정보부 · 통합사회 1 · 5단원</footer>
+
+<script>
+// 연도별 데이터
+const ERA_DATA = {
+  1960:{urban:28,farm:62,factory:14,poll:'낮음',emoji:'🌾',title:'농업 중심 사회',desc:'대부분 사람들이 농촌에 살며 벼농사를 지었습니다. 도시는 작고 공장은 거의 없었어요.',era:'산업화 이전, 농업 사회'},
+  1970:{urban:41,farm:50,factory:21,poll:'낮음',emoji:'🚜',title:'경제 개발 시작',desc:'경부고속도로 건설, 새마을운동 시작. 농촌→도시 이주가 본격화되기 시작합니다.',era:'산업화 도입기'},
+  1980:{urban:57,farm:34,factory:28,poll:'중간',emoji:'🏭',title:'중화학공업 시대',desc:'울산·포항 공단이 대규모로 발전. 도시 인구가 농촌을 추월합니다.',era:'산업화 본격화'},
+  1990:{urban:74,farm:18,factory:30,poll:'중간',emoji:'🏙',title:'도시화 가속',desc:'서울·수도권 인구 폭증. 아파트 단지가 급격히 늘어나고 교외화도 시작됩니다.',era:'고도 도시화'},
+  2000:{urban:80,farm:11,factory:30,poll:'중간',emoji:'🏢',title:'서비스업 성장',desc:'IT·금융 등 서비스업이 주력으로 부상. 도심 재개발이 활발해집니다.',era:'탈산업화 진입'},
+  2010:{urban:82,farm:7,factory:27,poll:'높음',emoji:'🚗',title:'대도시 집중',desc:'수도권 집중 심화. 미세먼지·교통체증·주거비 문제가 본격 부각됩니다.',era:'대도시권 시대'},
+  2020:{urban:91,farm:5,factory:24,poll:'높음',emoji:'🌆',title:'초도시화·고령화',desc:'농촌 공동화, 지방 소멸 위기. 도시는 과밀, 농촌은 인구 감소로 양극화.',era:'초도시화'},
+  2025:{urban:92,farm:4,factory:22,poll:'높음',emoji:'🌃',title:'스마트시티 확산',desc:'IoT·자율주행 도입으로 도시 운영 방식 변화. 환경·복지 정책이 도시 경쟁력의 핵심.',era:'스마트도시 시대'},
+  2030:{urban:93,farm:4,factory:20,poll:'중간',emoji:'🌳',title:'지속가능 도시',desc:'친환경 도시 정책, 분산 거주, 그린뉴딜로 환경 회복 시도. 농촌 회복도 과제.',era:'지속가능 도시'}
+};
+
+const slide = document.getElementById('yearSlide');
+function update(year){
+  const y = ERA_DATA[year]||ERA_DATA[2020];
+  document.getElementById('yearDisp').textContent = year;
+  document.getElementById('eraTxt').textContent = '— '+y.era+' —';
+  document.getElementById('sUrban').textContent = y.urban+'%';
+  document.getElementById('sFarm').textContent = y.farm+'%';
+  document.getElementById('sFactory').textContent = y.factory+'%';
+  document.getElementById('sPoll').textContent = y.poll;
+  const sc = document.getElementById('scene').querySelector('.scene');
+  sc.classList.remove('fade');void sc.offsetWidth;sc.classList.add('fade');
+  document.getElementById('sceneEmoji').textContent = y.emoji;
+  document.getElementById('sceneTitle').textContent = y.title;
+  document.getElementById('sceneDesc').textContent = y.desc;
+}
+slide.addEventListener('input',e=>update(+e.target.value));
+update(1960);
+
+// 문제점
+const PROBS = [
+  {id:'pop',icon:'👥',name:'인구 집중',desc:'수도권 50% 이상 집중'},
+  {id:'env',icon:'🌫',name:'환경오염',desc:'미세먼지·수질·소음'},
+  {id:'house',icon:'🏠',name:'주거 문제',desc:'집값 폭등, 주거난'},
+  {id:'traffic',icon:'🚗',name:'교통 혼잡',desc:'출퇴근 시간 폭증'},
+  {id:'rural',icon:'🌾',name:'농촌 공동화',desc:'지방 소멸 위기'},
+  {id:'gap',icon:'⚖️',name:'지역 격차',desc:'수도권/비수도권 양극화'},
+  {id:'fam',icon:'👨‍👩‍👧',name:'공동체 약화',desc:'대가족→핵가족·1인 가구'},
+  {id:'culture',icon:'🎭',name:'전통 약화',desc:'공동체 문화 단절'},
+  {id:'job',icon:'💼',name:'일자리 불균형',desc:'직종·지역 양극화'}
+];
+const probSel = new Set();
+
+function buildProbs(){
+  document.getElementById('probGrid').innerHTML = PROBS.map(p=>`
+    <div class="problem-chip bg-slate-100 border border-slate-300 rounded-xl p-3 text-center text-xs" data-id="${p.id}">
+      <div class="text-2xl">${p.icon}</div>
+      <div class="font-bold mt-1">${p.name}</div>
+      <div class="text-slate-500 mt-1">${p.desc}</div>
+    </div>
+  `).join('');
+  document.querySelectorAll('.problem-chip').forEach(c=>{
+    c.addEventListener('click',()=>{
+      const id = c.dataset.id;
+      if(probSel.has(id)){probSel.delete(id);c.classList.remove('selected');}
+      else {probSel.add(id);c.classList.add('selected');}
+      document.getElementById('probCnt').textContent = probSel.size;
+      buildSols();
+    });
+  });
+}
+buildProbs();
+
+const SOLUTIONS = [
+  {pid:'pop',name:'행정수도·기업 지방 이전',desc:'균형발전 정책'},
+  {pid:'pop',name:'스마트시티 분산 개발',desc:'다핵 도시 구조'},
+  {pid:'env',name:'친환경차·신재생에너지 확대',desc:'그린뉴딜'},
+  {pid:'env',name:'미세먼지 다국가 협력',desc:'국제공조'},
+  {pid:'house',name:'공공임대주택 대규모 확대',desc:'주거 안전망'},
+  {pid:'house',name:'세입자 보호 제도 강화',desc:'전월세 안정'},
+  {pid:'traffic',name:'대중교통 무료화·확장',desc:'자가용 의존 감소'},
+  {pid:'traffic',name:'재택근무 활성화',desc:'출퇴근 분산'},
+  {pid:'rural',name:'청년 농업 지원금',desc:'귀촌 유도'},
+  {pid:'rural',name:'스마트팜·농촌 관광',desc:'농촌 부가가치'},
+  {pid:'gap',name:'지방 의대·대학 확충',desc:'지방 인재 정착'},
+  {pid:'fam',name:'마을공동체·주민자치 활성화',desc:'관계 회복'},
+  {pid:'culture',name:'전통문화 디지털 아카이브',desc:'기록 보존'},
+  {pid:'job',name:'전직 지원·평생교육',desc:'직업 전환 지원'}
+];
+const solSel = new Set();
+
+function buildSols(){
+  const list = SOLUTIONS.filter(s=>probSel.has(s.pid));
+  if(!list.length){document.getElementById('solList').innerHTML='<div class="text-sm text-slate-500 italic">먼저 STEP 1에서 문제점을 선택하세요.</div>';return;}
+  document.getElementById('solList').innerHTML = list.map((s,i)=>`
+    <label class="solution-card flex items-start gap-2 bg-slate-50 border-2 border-slate-200 rounded-lg p-3 cursor-pointer">
+      <input type="checkbox" class="mt-1 sol-cb" data-key="${s.pid}::${s.name}">
+      <div class="flex-1"><div class="font-bold text-sm">${s.name}</div><div class="text-xs text-slate-500">${s.desc}</div></div>
+    </label>
+  `).join('');
+  document.querySelectorAll('.sol-cb').forEach(cb=>{
+    cb.addEventListener('change',e=>{
+      const k = cb.dataset.key;
+      if(cb.checked){solSel.add(k);cb.parentElement.classList.add('checked');}
+      else{solSel.delete(k);cb.parentElement.classList.remove('checked');}
+    });
+  });
+}
+buildSols();
+
+// 차트
+const ctx = document.getElementById('chartCmp');
+new Chart(ctx,{
+  type:'bar',
+  data:{
+    labels:['도시인구','농업인구','제조업','오염도(상대)'],
+    datasets:[
+      {label:'1960',data:[28,62,14,1],backgroundColor:'#84cc16'},
+      {label:'2020',data:[91,5,24,5],backgroundColor:'#f87171'}
+    ]
+  },
+  options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{y:{beginAtZero:true,max:100}}}
+});
+
+document.getElementById('genResult').addEventListener('click',()=>{
+  const probs = [...probSel].map(id=>PROBS.find(p=>p.id===id)).filter(Boolean);
+  const sols = [...solSel];
+  document.getElementById('rProb').innerHTML = probs.length?probs.map(p=>`<li>${p.icon} ${p.name} — ${p.desc}</li>`).join(''):'<li>(선택 없음)</li>';
+  document.getElementById('rSol').innerHTML = sols.length?sols.map(s=>{const [pid,name]=s.split('::');return `<li>${name}</li>`;}).join(''):'<li>(선택 없음)</li>';
+  document.getElementById('rIdea').textContent = document.getElementById('myIdea').value || '(미작성)';
+  document.getElementById('resultPanel').classList.remove('hidden');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>⚖️ 다문화 시민 법정 — 관용의 한계는 어디까지?</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#1e1b4b 0%,#312e81 100%);min-height:100vh;color:#e2e8f0;-webkit-tap-highlight-color:transparent}
+.fjua{font-family:'Jua',sans-serif}
+.gavel{filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))}
+.scale-input{appearance:none;width:100%;height:8px;background:linear-gradient(to right,#3b82f6 0%,#a855f7 50%,#dc2626 100%);border-radius:99px;outline:none}
+.scale-input::-webkit-slider-thumb{appearance:none;width:24px;height:24px;background:#fff;border-radius:50%;cursor:pointer;border:3px solid #1e293b;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.case-pill{transition:all .2s}
+.case-pill:hover{transform:translateY(-2px)}
+.case-pill.active{background:#fbbf24!important;color:#1e1b4b!important;box-shadow:0 0 0 3px #fbbf24,0 8px 24px rgba(251,191,36,.3)}
+.stance-card{transition:all .2s;cursor:pointer}
+.stance-card:hover{transform:translateY(-2px)}
+.stance-card.selected{box-shadow:0 0 0 3px #fbbf24}
+.fade-in{animation:fi .4s ease-out}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media print{body{background:#fff!important;color:#000!important}.no-print{display:none!important}.print-only{display:block!important}}
+.print-only{display:none}
+</style>
+</head>
+<body>
+
+<header class="no-print bg-slate-900/60 backdrop-blur border-b border-slate-700 sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+  <a href="hub.html?mode=unit&id=culture" class="flex items-center gap-2 font-bold text-slate-200 hover:text-amber-400">← 단원으로</a>
+  <div class="text-xs text-slate-400">[10통사1-04-03+04] 문화 상대주의·다문화 갈등</div>
+  <button onclick="window.print()" class="text-sm bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-lg">🖨 판결문</button>
+</div>
+</header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+
+<section class="text-center mb-8">
+  <div class="text-7xl gavel mb-2">⚖️</div>
+  <h1 class="fjua text-4xl md:text-5xl mb-2 text-amber-400">다문화 시민 법정</h1>
+  <p class="text-slate-300 text-sm md:text-base">관용과 보편 인권 사이, 당신은 어떻게 판결할 것인가?</p>
+  <div class="mt-3 inline-flex flex-wrap gap-2 text-xs justify-center">
+    <span class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded-full font-bold">⏱ 약 30분</span>
+    <span class="bg-rose-500/20 text-rose-300 px-3 py-1 rounded-full font-bold">난이도 심화</span>
+  </div>
+</section>
+
+<!-- 사건 선택 -->
+<section class="bg-slate-800/60 backdrop-blur rounded-2xl p-5 border border-slate-700 mb-5">
+  <h2 class="fjua text-xl mb-3 text-amber-300">📋 오늘의 사건 5건</h2>
+  <div id="caseList" class="grid grid-cols-2 md:grid-cols-5 gap-2"></div>
+</section>
+
+<!-- 사건 상세 -->
+<section id="caseDetail" class="hidden bg-slate-800/80 backdrop-blur rounded-2xl p-6 border-2 border-amber-500 mb-5 fade-in">
+  <div class="flex items-center gap-3 mb-3">
+    <div id="cdEmoji" class="text-5xl"></div>
+    <div>
+      <div class="text-xs text-amber-400 font-bold">사건 #<span id="cdNum"></span></div>
+      <h3 id="cdTitle" class="fjua text-2xl text-white"></h3>
+    </div>
+  </div>
+  <div id="cdDesc" class="bg-slate-900/60 rounded-xl p-4 text-sm text-slate-200 mb-4 leading-relaxed"></div>
+
+  <!-- STEP 1: 입장 비교 -->
+  <div class="mb-5">
+    <div class="text-amber-300 font-bold mb-2">⚖️ STEP 1. 세 가지 입장 비교</div>
+    <div class="grid md:grid-cols-3 gap-3">
+      <div class="stance-card bg-blue-900/40 border-2 border-blue-700 rounded-xl p-4" data-stance="absolute">
+        <div class="font-bold text-blue-300 mb-1">📐 문화 절대주의</div>
+        <div class="text-xs text-slate-300">하나의 보편적 기준으로 모든 문화를 평가. "옳은 문화"가 따로 있다.</div>
+      </div>
+      <div class="stance-card bg-emerald-900/40 border-2 border-emerald-700 rounded-xl p-4" data-stance="relative">
+        <div class="font-bold text-emerald-300 mb-1">🌐 문화 상대주의</div>
+        <div class="text-xs text-slate-300">각 문화는 그 사회의 맥락에서 이해. 다양성 존중이 우선.</div>
+      </div>
+      <div class="stance-card bg-rose-900/40 border-2 border-rose-700 rounded-xl p-4" data-stance="extreme">
+        <div class="font-bold text-rose-300 mb-1">⚠️ 극단적 문화 상대주의</div>
+        <div class="text-xs text-slate-300">어떤 문화든 무비판 수용. 인권 침해도 문화라면 인정.</div>
+      </div>
+    </div>
+    <div class="mt-2 text-xs text-slate-400">→ 이 사건에 가장 가까운 입장을 클릭하세요.</div>
+  </div>
+
+  <!-- STEP 2: 판결 슬라이더 -->
+  <div class="mb-5">
+    <div class="text-amber-300 font-bold mb-2">⚖️ STEP 2. 관용 ↔ 보편 인권 저울</div>
+    <div class="bg-slate-900/60 rounded-xl p-4">
+      <div class="flex justify-between text-xs mb-2">
+        <span class="text-emerald-400">← 문화 관용 (수용)</span>
+        <span class="text-rose-400">보편 인권 (제한) →</span>
+      </div>
+      <input id="scale" type="range" min="0" max="100" value="50" class="scale-input">
+      <div class="text-center mt-2 text-sm">
+        판결 강도: <b id="scaleVal" class="text-amber-300">50</b> / 100
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: 판결문 -->
+  <div class="mb-5">
+    <div class="text-amber-300 font-bold mb-2">📝 STEP 3. 판결문 작성</div>
+    <textarea id="verdict" rows="4" class="w-full bg-slate-900/60 border border-slate-600 rounded-xl p-3 text-sm text-slate-100 placeholder-slate-500" placeholder="이 사건에 대한 본인의 판결과 그 근거를 적어주세요. (보편 윤리와 충돌하는 지점은 무엇인지, 어떻게 균형을 잡을 것인지)"></textarea>
+  </div>
+
+  <!-- STEP 4: 갈등 해결 -->
+  <div class="mb-4">
+    <div class="text-amber-300 font-bold mb-2">🤝 STEP 4. 갈등 해결 방안 [04]</div>
+    <textarea id="resolve" rows="3" class="w-full bg-slate-900/60 border border-slate-600 rounded-xl p-3 text-sm text-slate-100 placeholder-slate-500" placeholder="다문화 사회에서 이런 갈등을 미리 방지하거나 해결하기 위한 정책·제도·교육 방안을 제안하세요."></textarea>
+  </div>
+
+  <button id="saveCase" class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold px-6 py-3 rounded-xl w-full">⚖️ 판결 확정 및 저장</button>
+  <div id="aiBox" class="hidden mt-4 bg-blue-900/40 border border-blue-700 rounded-xl p-4 fade-in">
+    <div class="text-xs text-blue-300 font-bold mb-1">🤖 AI 피드백</div>
+    <div id="aiTxt" class="text-sm text-slate-200"></div>
+  </div>
+</section>
+
+<!-- 진행도 -->
+<section class="bg-slate-800/60 backdrop-blur rounded-2xl p-5 border border-slate-700 mb-5">
+  <div class="flex items-center justify-between mb-2">
+    <span class="font-bold text-amber-300">⚖️ 판결 현황</span>
+    <span id="caseProg" class="text-sm text-slate-300">0 / 5 사건</span>
+  </div>
+  <div class="w-full bg-slate-900 rounded-full h-3"><div id="caseBar" style="width:0%;transition:width .5s" class="bg-gradient-to-r from-amber-400 to-rose-400 h-3 rounded-full"></div></div>
+</section>
+
+<!-- 인쇄용 결과 -->
+<section id="printResults" class="bg-white text-slate-900 rounded-2xl p-6 border-2 border-slate-800 hidden">
+  <h2 class="fjua text-2xl text-center border-b-2 border-slate-800 pb-2 mb-3">⚖️ 다문화 시민 법정 — 판결 종합 보고서</h2>
+  <div class="text-sm mb-3"><b>이름:</b> __________ <span class="ml-4"><b>날짜:</b> __________</span></div>
+  <div id="resultBody" class="space-y-3 text-sm"></div>
+</section>
+
+</main>
+
+<footer class="no-print text-center text-xs text-slate-500 py-6">풀어쓰는 사회학 정보부 · 통합사회 1 · 4단원</footer>
+
+<script>
+const CASES = [
+  {emoji:'🕌',title:'학교에서의 종교 의례',desc:'다문화 학교에서 무슬림 학생이 하루 5번 예배를 드리고 싶어 한다. 한 학생은 "공부 시간을 빼서까지 종교를 인정해야 하느냐"며 반대한다. 학교는 어떻게 해야 할까?'},
+  {emoji:'👗',title:'학교 복식 — 히잡 착용',desc:'한국 공립학교 교복 규정은 모자 착용 금지다. 무슬림 여학생이 종교적 이유로 히잡을 쓰고 싶어한다. 일부 교사는 "교복 규정 위반"이라며 거부한다.'},
+  {emoji:'🍽',title:'급식의 음식 문화',desc:'학교 급식이 돼지고기 위주로 나오는데, 무슬림·힌두교 학생은 종교상 못 먹는 음식이 많다. 채식주의 학생도 늘어나 기존 식단 유지가 어렵다.'},
+  {emoji:'⚔️',title:'명예 살인 (해외 사례)',desc:'어떤 문화권에서는 "가문의 명예를 더럽혔다"는 이유로 가족 구성원이 여성을 살해하는 관습이 있다. "그것도 그들의 문화이니 존중해야 한다"는 주장이 있다.'},
+  {emoji:'⚠️',title:'여성 할례 (FGM)',desc:'특정 문화권에서 여성에게 신체 일부를 절단하는 관습(여성 할례, FGM)이 행해진다. 본인 의사가 아닌 어린 나이에 강요되는 경우가 많다. 보편 인권과 정면 충돌하는 사안이다.'}
+];
+
+const recommended = ['relative','relative','relative','absolute','absolute'];
+const recScale = [40,30,30,90,95];
+
+const records = CASES.map(()=>null);
+let cur = null;
+
+function buildList(){
+  document.getElementById('caseList').innerHTML = CASES.map((c,i)=>`
+    <button class="case-pill bg-slate-700 hover:bg-slate-600 rounded-xl p-3 text-center" data-i="${i}">
+      <div class="text-3xl">${c.emoji}</div>
+      <div class="text-xs mt-1 font-bold">사건 ${i+1}</div>
+      <div id="badge${i}" class="text-xs mt-1 text-emerald-400 hidden">✓ 판결</div>
+    </button>
+  `).join('');
+  document.querySelectorAll('.case-pill').forEach(b=>{
+    b.addEventListener('click',()=>openCase(+b.dataset.i));
+  });
+}
+buildList();
+
+let stance = null;
+function openCase(i){
+  cur = i;
+  stance = records[i]?.stance || null;
+  document.querySelectorAll('.case-pill').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.case-pill')[i].classList.add('active');
+  document.getElementById('caseDetail').classList.remove('hidden');
+  document.getElementById('cdNum').textContent = i+1;
+  document.getElementById('cdEmoji').textContent = CASES[i].emoji;
+  document.getElementById('cdTitle').textContent = CASES[i].title;
+  document.getElementById('cdDesc').textContent = CASES[i].desc;
+  document.querySelectorAll('.stance-card').forEach(s=>s.classList.remove('selected'));
+  if(records[i]){
+    const r = records[i];
+    document.querySelector(`.stance-card[data-stance="${r.stance}"]`).classList.add('selected');
+    document.getElementById('scale').value = r.scale;
+    document.getElementById('scaleVal').textContent = r.scale;
+    document.getElementById('verdict').value = r.verdict;
+    document.getElementById('resolve').value = r.resolve;
+  } else {
+    document.getElementById('scale').value = 50;
+    document.getElementById('scaleVal').textContent = 50;
+    document.getElementById('verdict').value = '';
+    document.getElementById('resolve').value = '';
+  }
+  document.getElementById('aiBox').classList.add('hidden');
+  document.getElementById('caseDetail').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+document.querySelectorAll('.stance-card').forEach(s=>{
+  s.addEventListener('click',()=>{
+    document.querySelectorAll('.stance-card').forEach(x=>x.classList.remove('selected'));
+    s.classList.add('selected');
+    stance = s.dataset.stance;
+  });
+});
+
+document.getElementById('scale').addEventListener('input',e=>{
+  document.getElementById('scaleVal').textContent = e.target.value;
+});
+
+document.getElementById('saveCase').addEventListener('click',()=>{
+  if(cur===null||!stance){alert('입장을 선택해주세요.');return;}
+  const v = document.getElementById('verdict').value.trim();
+  const r = document.getElementById('resolve').value.trim();
+  if(v.length<10||r.length<10){alert('판결문과 해결 방안 모두 10자 이상 작성해주세요.');return;}
+  records[cur] = {stance, scale:+document.getElementById('scale').value, verdict:v, resolve:r};
+  document.getElementById('badge'+cur).classList.remove('hidden');
+  showAI(cur);
+  updateProg();
+});
+
+function showAI(i){
+  const r = records[i];
+  const recS = recommended[i];
+  const recV = recScale[i];
+  const stanceKR = {absolute:'문화 절대주의',relative:'문화 상대주의',extreme:'극단적 문화 상대주의'};
+  let msg = `학생은 [${stanceKR[r.stance]}] 입장에서 강도 ${r.scale}로 판결했습니다.`;
+  if(i===3||i===4){
+    if(r.stance!=='absolute'||r.scale<70){
+      msg += ` 그러나 이 사건은 생명·신체적 존엄성 같은 보편 인권의 영역으로, 문화 상대주의가 인권 침해를 정당화하는 ‘극단적 문화 상대주의’로 흐르지 않도록 주의가 필요합니다. 보편 윤리(인간 존엄성)는 문화 다양성보다 우선해야 한다는 관점도 함께 고려해보세요.`;
+    } else {
+      msg += ` 보편 인권을 우선시한 판결로, 인간 존엄성을 지키는 입장에 부합합니다. 다만, 해당 문화권 사람들에 대한 존중과 점진적 변화 유도 방안도 함께 고민해보면 좋겠습니다.`;
+    }
+  } else {
+    if(r.stance==='extreme'){
+      msg += ` 다만 극단적 상대주의는 모든 차이를 무비판 수용하므로, 갈등 조정의 기준을 잃을 수 있습니다.`;
+    } else if(r.scale>70){
+      msg += ` 종교의 자유나 의식주 차이는 비교적 보편 인권과 직접 충돌하지 않는 영역이므로, 다양성을 더 존중하는 방향도 고려해보세요.`;
+    } else {
+      msg += ` 종교 자유·식문화 차이는 보편 인권 침해가 아닌 영역이므로, 학교·사회의 합리적 배려가 더 중요합니다.`;
+    }
+  }
+  document.getElementById('aiTxt').textContent = msg;
+  document.getElementById('aiBox').classList.remove('hidden');
+}
+
+function updateProg(){
+  const done = records.filter(x=>x).length;
+  document.getElementById('caseProg').textContent = done+' / 5 사건';
+  document.getElementById('caseBar').style.width = (done*20)+'%';
+  if(done===5) renderPrint();
+}
+
+function renderPrint(){
+  const stanceKR = {absolute:'문화 절대주의',relative:'문화 상대주의',extreme:'극단적 문화 상대주의'};
+  document.getElementById('resultBody').innerHTML = CASES.map((c,i)=>{
+    const r = records[i];
+    return `<div class="border-b border-slate-300 pb-2">
+      <div class="font-bold">사건 ${i+1}. ${c.emoji} ${c.title}</div>
+      <div>입장: ${stanceKR[r.stance]} / 판결 강도: ${r.scale}/100</div>
+      <div>판결문: ${r.verdict}</div>
+      <div>해결 방안: ${r.resolve}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('printResults').classList.remove('hidden');
+}
+</script>
+</body>
+</html>

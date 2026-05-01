@@ -1,0 +1,55 @@
+{
+  "unit": "생활공간과 사회",
+  "unitSlug": "living-space",
+  "achievementStandard": "[10통사1-05-01] 산업화·도시화로 인해 나타난 생활공간과 생활양식의 변화 양상을 조사하고, 문제점의 해결 방안을 제안한다. / [10통사1-05-02] 교통·통신 및 과학기술 발달(정보화)에 따른 변화와 해결 방안. / [10통사1-05-03] 자기 지역의 공간 변화 양상을 조사하고 문제 해결 방안을 탐구한다.",
+  "contents": [
+    {
+      "slug": "industrialization",
+      "file": "c-living-space-industrialization.html",
+      "title": "🏗 산업화·도시화 타임머신 (1960→2030)",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "25분",
+      "tags": [
+        "산업화",
+        "도시화",
+        "타임슬라이더",
+        "통사1",
+        "5단원"
+      ],
+      "desc": "1960~2030 슬라이더로 도시 인구·산업·환경 변화를 체험하고 문제점·해결책을 매칭"
+    },
+    {
+      "slug": "informatization",
+      "file": "c-living-space-informatization.html",
+      "title": "📡 정보화 사회의 두 얼굴",
+      "type": "웹교구",
+      "difficulty": "심화",
+      "duration": "25분",
+      "tags": [
+        "정보화",
+        "교통통신",
+        "정책설계",
+        "통사1",
+        "5단원"
+      ],
+      "desc": "8개 정보화 정책을 선택하면 편익/부작용 점수가 동시에 변하는 정책 설계 시뮬레이션"
+    },
+    {
+      "slug": "region",
+      "file": "c-living-space-region.html",
+      "title": "🗺 우리 동네 변화 지도",
+      "type": "활동지",
+      "difficulty": "보통",
+      "duration": "30분",
+      "tags": [
+        "지역탐구",
+        "공간변화",
+        "보고서",
+        "통사1",
+        "5단원"
+      ],
+      "desc": "학생이 직접 살고 있는 지역을 분석해 변화 요인·긍정/부정 진단·해결안까지 작성하는 보고서형 활동지"
+    }
+  ]
+}

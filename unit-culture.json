@@ -1,0 +1,55 @@
+{
+  "unit": "문화와 다양성",
+  "unitSlug": "culture",
+  "achievementStandard": "[10통사1-04-01] 자연환경과 인문환경의 영향을 받아 형성된 다양한 문화권의 특징과 삶의 방식을 탐구한다. / [10통사1-04-02] 문화 변동의 양상과 전통문화의 의의·계승 방안. / [10통사1-04-03] 문화 상대주의적 태도와 보편 윤리. / [10통사1-04-04] 다문화 사회의 갈등 해결과 문화 다양성 존중.",
+  "contents": [
+    {
+      "slug": "world-zones",
+      "file": "c-culture-world-zones.html",
+      "title": "🌍 세계 문화권 탐험가",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "30분",
+      "tags": [
+        "문화권",
+        "자연환경",
+        "인문환경",
+        "통사1",
+        "4단원"
+      ],
+      "desc": "세계 6대 문화권을 인터랙티브 지도와 매칭 퀴즈로 탐험하는 4단계 학습 도구"
+    },
+    {
+      "slug": "change-lab",
+      "file": "c-culture-change-lab.html",
+      "title": "🔬 문화 변동 연구소",
+      "type": "웹교구",
+      "difficulty": "심화",
+      "duration": "30분",
+      "tags": [
+        "문화변동",
+        "전통문화",
+        "보존",
+        "통사1",
+        "4단원"
+      ],
+      "desc": "문화 변동 5사례 분석 + 내가 지키고 싶은 전통의 보존 계획서 작성"
+    },
+    {
+      "slug": "multicultural-court",
+      "file": "c-culture-multicultural-court.html",
+      "title": "⚖️ 다문화 시민 법정",
+      "type": "웹교구",
+      "difficulty": "심화",
+      "duration": "30분",
+      "tags": [
+        "문화상대주의",
+        "다문화",
+        "보편윤리",
+        "통사1",
+        "4단원"
+      ],
+      "desc": "5개 다문화 갈등 사건을 절대주의/상대주의/극단적 상대주의 입장에서 판결하고 갈등 해결안 작성"
+    }
+  ]
+}

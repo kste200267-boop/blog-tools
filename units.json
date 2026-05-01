@@ -28,6 +28,31 @@
       "categoryId": "integrated-social"
     },
     {
+      "slug": "culture",
+      "code": "IV",
+      "title": "문화와 다양성",
+      "subtitle": "문화권·문화 변동·다문화 사회",
+      "tags": [
+        "통사1",
+        "기초",
+        "심화"
+      ],
+      "contentCount": 3,
+      "categoryId": "integrated-social"
+    },
+    {
+      "slug": "living-space",
+      "code": "V",
+      "title": "생활공간과 사회",
+      "subtitle": "산업화·도시화·정보화와 지역 변화",
+      "tags": [
+        "통사1",
+        "기초"
+      ],
+      "contentCount": 3,
+      "categoryId": "integrated-social"
+    },
+    {
       "slug": "economy",
       "code": "IV-3",
       "title": "시장 경제와 지속가능발전 — 자산 관리와 금융 생활",
