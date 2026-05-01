@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>📊 2단원 행복 — 수업 슬라이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{box-sizing:border-box}body{font-family:'Noto Sans KR',sans-serif;background:#831843;color:#f1f5f9;margin:0;overflow:hidden}
+.fjua{font-family:'Jua',sans-serif}
+.slide{width:100vw;height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:5vh 5vw;text-align:center}
+.slide.active{display:flex;animation:fi .4s ease-out}
+@keyframes fi{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+.slide h1{font-family:'Jua',sans-serif;font-size:clamp(2rem,5vw,4rem);margin-bottom:1.5rem}
+.slide h2{font-family:'Jua',sans-serif;font-size:clamp(1.5rem,4vw,3rem);margin-bottom:1rem}
+.slide p,.slide li{font-size:clamp(1rem,2vw,1.5rem);line-height:1.7}
+.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(10px);padding:10px 20px;border-radius:99px;z-index:100;display:flex;gap:10px;align-items:center}
+.nav button{background:#ec4899;color:#fff;border:0;width:40px;height:40px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}
+.nav button:disabled{background:#475569;color:#94a3b8;cursor:not-allowed}
+.counter{color:#fbcfe8;font-weight:bold;min-width:60px;text-align:center}
+.cover{background:linear-gradient(135deg,#831843 0%,#500724 100%)}
+.intro{background:linear-gradient(135deg,#1e3a8a 0%,#0c4a6e 100%)}
+.concept{background:linear-gradient(135deg,#9d174d 0%,#831843 100%)}
+.activity{background:linear-gradient(135deg,#9a3412 0%,#7c2d12 100%)}
+.summary{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
+@media print{.slide{display:flex!important;page-break-after:always;height:auto;min-height:100vh}.nav{display:none}body{background:#fff;color:#000;overflow:visible}}
+</style></head><body>
+
+<div class="slide cover active">
+<div class="text-xs text-pink-200 font-bold mb-2">통합사회 1 · 2단원</div>
+<h1>😊 인간과 공동체 — 행복</h1>
+<p class="mt-4 text-pink-100">행복이란 무엇이며 어떻게 추구할 것인가</p>
+<div class="mt-8 text-base text-pink-200">[10통사1-02] 행복의 의미와 기준을 탐구하고, 행복한 삶을 위한 조건을 탐색한다.</div>
+</div>
+
+<div class="slide intro">
+<h2>🤔 "당신은 행복합니까?"</h2>
+<p class="mt-4">한국의 행복지수 — OECD 38개국 중 최하위권</p>
+<div class="mt-8 max-w-3xl bg-white/10 rounded-xl p-6 text-left">
+<ul class="text-base space-y-2">
+<li>📊 GDP는 세계 10위권</li>
+<li>📉 행복지수는 세계 50위권</li>
+<li>🤔 "잘 살게 됐는데 왜 안 행복할까?"</li>
+</ul>
+</div>
+<p class="mt-6 text-base text-violet-200">→ 진정한 행복은 무엇이며, 어떻게 만들 수 있을까?</p>
+</div>
+
+<div class="slide concept">
+<h2>📖 4대 행복관</h2>
+<div class="mt-6 grid grid-cols-2 gap-4 max-w-4xl">
+<div class="bg-white/10 rounded-xl p-4 text-left">
+<div class="text-3xl mb-2">🏛</div><b class="text-pink-200 text-xl">아리스토텔레스</b>
+<p class="text-base mt-2">덕(德) 있는 삶이 행복<br>이성을 탁월하게 발휘</p>
+</div>
+<div class="bg-white/10 rounded-xl p-4 text-left">
+<div class="text-3xl mb-2">📊</div><b class="text-pink-200 text-xl">공리주의</b>
+<p class="text-base mt-2">최대 다수의 최대 행복<br>쾌락이 행복의 본질</p>
+</div>
+<div class="bg-white/10 rounded-xl p-4 text-left">
+<div class="text-3xl mb-2">🧘</div><b class="text-pink-200 text-xl">동양 사상</b>
+<p class="text-base mt-2">마음의 평정·도덕적 완성<br>안빈낙도, 자비</p>
+</div>
+<div class="bg-white/10 rounded-xl p-4 text-left">
+<div class="text-3xl mb-2">💎</div><b class="text-pink-200 text-xl">자기실현</b>
+<p class="text-base mt-2">잠재력을 펼치는 것<br>매슬로우 욕구 위계</p>
+</div>
+</div>
+</div>
+
+<div class="slide concept">
+<h2>🎯 행복의 조건 — 4가지 차원</h2>
+<div class="mt-6 grid grid-cols-2 gap-4 max-w-4xl">
+<div class="bg-white/10 rounded-xl p-4 text-left">
+<div class="text-3xl mb-1">🏥</div><b class="text-pink-200">질 높은 정주 환경</b>
+<p class="text-sm mt-1">의료·주거·치안·자연</p>
+</div>
+<div class="bg-white/10 rounded-xl p-4 text-left">
+<div class="text-3xl mb-1">💰</div><b class="text-pink-200">경제적 안정</b>
+<p class="text-sm mt-1">소득·일자리·복지</p>
+</div>
+<div class="bg-white/10 rounded-xl p-4 text-left">
+<div class="text-3xl mb-1">🏛</div><b class="text-pink-200">민주주의 발전</b>
+<p class="text-sm mt-1">정치 참여·법치·인권</p>
+</div>
+<div class="bg-white/10 rounded-xl p-4 text-left">
+<div class="text-3xl mb-1">🤝</div><b class="text-pink-200">도덕적 실천</b>
+<p class="text-sm mt-1">공동체·배려·연대</p>
+</div>
+</div>
+</div>
+
+<div class="slide concept">
+<h2>📊 OECD Better Life Index</h2>
+<p class="mt-4 text-pink-100">행복을 11개 영역으로 측정</p>
+<div class="mt-6 max-w-4xl bg-white/10 rounded-xl p-5 text-left">
+<div class="grid grid-cols-3 gap-2 text-sm">
+<div>🏠 주거</div><div>💰 소득</div><div>💼 일자리</div>
+<div>👥 공동체</div><div>📚 교육</div><div>🌳 환경</div>
+<div>🗳 시민참여</div><div>❤️ 건강</div><div>😊 삶의 만족</div>
+<div>🛡 안전</div><div>⚖️ 일·삶 균형</div><div></div>
+</div>
+</div>
+<p class="mt-6 text-base text-amber-300">💡 한국은 일·삶 균형, 공동체 점수가 특히 낮음</p>
+</div>
+
+<div class="slide activity">
+<h2>🛠 단원 웹교구 (4종)</h2>
+<div class="mt-6 grid grid-cols-2 gap-3 max-w-4xl text-left">
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🧭 행복 나침반</b><p class="text-sm">나만의 행복 기준 탐색</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🎮 행복 퀴즈 게임</b><p class="text-sm">행복 관점 퀴즈</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🏛 4대 행복관 진단</b><p class="text-sm">10문항으로 본인 행복관 진단</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">📊 OECD 삶의 질 측정</b><p class="text-sm">11영역 자가 진단 + 레이더 차트</p></div>
+</div>
+</div>
+
+<div class="slide summary">
+<h2>🎯 오늘의 핵심</h2>
+<ul class="text-left mt-6 space-y-3 text-violet-100" style="list-style:none">
+<li>✅ 행복관 — 덕(아리스토텔레스) / 쾌락(공리주의) / 평정(동양) / 성장(자기실현)</li>
+<li>✅ 행복의 조건 — 환경 + 경제 + 민주주의 + 도덕</li>
+<li>✅ OECD Better Life Index 11개 영역</li>
+<li>✅ 행복은 외부 조건과 내면 가치가 함께 만든다</li>
+</ul>
+<div class="mt-10 bg-amber-500/20 rounded-xl p-5">
+<b class="text-amber-300">📌 다음 단원</b>
+<p class="text-base text-amber-100 mt-2">3단원 자연환경과 인간 — 인간은 자연과 어떻게 살아갈 것인가</p>
+</div>
+</div>
+
+<div class="nav">
+<button id="prev">←</button><span class="counter" id="counter">1 / 7</span><button id="next">→</button>
+<button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');let cur=0;
+function show(i){slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+slides.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===slides.length-1;}
+document.getElementById('prev').onclick=()=>{if(cur>0){cur--;show(cur);}};
+document.getElementById('next').onclick=()=>{if(cur<slides.length-1){cur++;show(cur);}};
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(cur<slides.length-1){cur++;show(cur);}}else if(e.key==='ArrowLeft'){if(cur>0){cur--;show(cur);}}});
+show(0);
+</script>
+</body></html>

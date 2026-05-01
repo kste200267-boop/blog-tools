@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>📋 3단원 단원평가 — 자연환경과 인간</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:#f1f5f9;color:#1e293b}
+.fjua{font-family:'Jua',sans-serif}
+.ws{max-width:850px;margin:20px auto;background:#fff;padding:40px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.ws h1{font-family:'Jua',sans-serif;font-size:1.6rem;text-align:center;border-bottom:3px solid #1e293b;padding-bottom:10px;margin-bottom:20px}
+.info{display:flex;justify-content:space-between;font-size:.9rem;border-bottom:1px solid #cbd5e1;padding-bottom:10px;margin-bottom:20px}
+.blank{display:inline-block;border-bottom:1px solid #1e293b;min-width:120px;height:1.5em;padding:0 4px}
+.q{background:#d1fae5;border-left:4px solid #059669;padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0}
+.q-num{display:inline-block;background:#059669;color:#fff;padding:3px 10px;border-radius:99px;font-weight:bold;font-size:.8rem;margin-right:8px}
+.opt{display:block;padding:6px 10px;margin:4px 0;border-radius:4px;cursor:pointer}
+.opt:hover{background:#f1f5f9}
+.opt input{margin-right:8px}
+.answer{border:1px solid #cbd5e1;border-radius:6px;min-height:80px;padding:10px;margin-top:8px;font-family:inherit;font-size:.95rem;width:100%;resize:vertical}
+.score-box{background:#fef3c7;border:1px solid #f59e0b;border-radius:8px;padding:12px;margin:12px 0;font-size:.9rem}
+@media print{body{background:#fff;padding:0;margin:0}.ws{max-width:100%;box-shadow:none;padding:25px;margin:0}.no-print{display:none!important}}
+</style></head><body>
+
+<div class="no-print" style="max-width:850px;margin:10px auto;display:flex;gap:8px;padding:0 20px;flex-wrap:wrap">
+<a href="hub.html?mode=unit&id=nature" class="bg-white border-2 border-slate-300 rounded-lg px-4 py-2 text-sm font-bold no-underline text-slate-700">← 단원으로</a>
+<button onclick="grade()" class="bg-emerald-600 text-white rounded-lg px-4 py-2 text-sm font-bold">📊 자동 채점</button>
+<button onclick="window.print()" class="bg-slate-800 text-white rounded-lg px-4 py-2 text-sm font-bold">🖨 PDF</button>
+</div>
+
+<div class="ws">
+<h1>📋 3단원 단원평가 — 자연환경과 인간</h1>
+<div class="info"><div>학번 <span class="blank"></span> 이름 <span class="blank"></span> 점수 <span class="blank"></span>/100</div><div>날짜 <span class="blank"></span></div></div>
+
+<p class="text-sm text-slate-600 mb-4"><b>제한 시간 30분</b> · 객관식 8(40점) + 서술형 3(60점)</p>
+
+<div class="q"><span class="q-num">Q1</span><b>건조 기후 지역의 적응 방식으로 적절한 것은?</b>
+<label class="opt"><input type="radio" name="q1" value="1"> ① 통나무집과 모피</label>
+<label class="opt"><input type="radio" name="q1" value="2"> ② 흙벽돌 가옥과 흰색 의복</label>
+<label class="opt"><input type="radio" name="q1" value="3"> ③ 이글루와 순록 유목</label>
+<label class="opt"><input type="radio" name="q1" value="4"> ④ 고상 가옥과 화전 농업</label>
+</div>
+
+<div class="q"><span class="q-num">Q2</span><b>한국의 한옥 온돌·대청마루는 어느 기후에 적응한 결과인가?</b>
+<label class="opt"><input type="radio" name="q2" value="1"> ① 열대</label>
+<label class="opt"><input type="radio" name="q2" value="2"> ② 건조</label>
+<label class="opt"><input type="radio" name="q2" value="3"> ③ 온대</label>
+<label class="opt"><input type="radio" name="q2" value="4"> ④ 한대</label>
+</div>
+
+<div class="q"><span class="q-num">Q3</span><b>지진 발생 시 학교에서 가장 적절한 행동은?</b>
+<label class="opt"><input type="radio" name="q3" value="1"> ① 즉시 복도로 뛰어나간다</label>
+<label class="opt"><input type="radio" name="q3" value="2"> ② 책상 아래로 들어가 머리를 보호 → 진동 후 운동장 대피</label>
+<label class="opt"><input type="radio" name="q3" value="3"> ③ 창문 옆에서 밖을 본다</label>
+<label class="opt"><input type="radio" name="q3" value="4"> ④ 가만히 앉아 있는다</label>
+</div>
+
+<div class="q"><span class="q-num">Q4</span><b>"인간만이 도덕적 가치를 가지며 자연은 인간을 위한 수단"이라는 입장은?</b>
+<label class="opt"><input type="radio" name="q4" value="1"> ① 인간중심주의</label>
+<label class="opt"><input type="radio" name="q4" value="2"> ② 생태중심주의</label>
+<label class="opt"><input type="radio" name="q4" value="3"> ③ 동물중심주의</label>
+<label class="opt"><input type="radio" name="q4" value="4"> ④ 자연주의</label>
+</div>
+
+<div class="q"><span class="q-num">Q5</span><b>레오폴드의 "대지윤리"는 어느 입장인가?</b>
+<label class="opt"><input type="radio" name="q5" value="1"> ① 인간중심주의</label>
+<label class="opt"><input type="radio" name="q5" value="2"> ② 생태중심주의</label>
+<label class="opt"><input type="radio" name="q5" value="3"> ③ 종교적 입장</label>
+<label class="opt"><input type="radio" name="q5" value="4"> ④ 공리주의</label>
+</div>
+
+<div class="q"><span class="q-num">Q6</span><b>지속가능 발전의 핵심 의미는?</b>
+<label class="opt"><input type="radio" name="q6" value="1"> ① 경제 성장만 중시</label>
+<label class="opt"><input type="radio" name="q6" value="2"> ② 미래 세대도 누릴 자연과 사회를 보전하며 발전</label>
+<label class="opt"><input type="radio" name="q6" value="3"> ③ 자연 보호만 우선</label>
+<label class="opt"><input type="radio" name="q6" value="4"> ④ 개발 중단</label>
+</div>
+
+<div class="q"><span class="q-num">Q7</span><b>다음 중 한국의 주요 자연재해가 <u>아닌</u> 것은?</b>
+<label class="opt"><input type="radio" name="q7" value="1"> ① 태풍</label>
+<label class="opt"><input type="radio" name="q7" value="2"> ② 미세먼지</label>
+<label class="opt"><input type="radio" name="q7" value="3"> ③ 사막화</label>
+<label class="opt"><input type="radio" name="q7" value="4"> ④ 폭염</label>
+</div>
+
+<div class="q"><span class="q-num">Q8</span><b>일상 속 친환경 실천으로 적절하지 <u>않은</u> 것은?</b>
+<label class="opt"><input type="radio" name="q8" value="1"> ① 일회용품 사용 줄이기</label>
+<label class="opt"><input type="radio" name="q8" value="2"> ② 대중교통 이용</label>
+<label class="opt"><input type="radio" name="q8" value="3"> ③ 일회용 플라스틱 더 많이 쓰기</label>
+<label class="opt"><input type="radio" name="q8" value="4"> ④ 텀블러·에코백 사용</label>
+</div>
+
+<div id="objResult" class="hidden score-box mt-3"></div>
+
+<h3 class="fjua text-lg mb-2 mt-6">📝 서술형 (3문항 × 20점)</h3>
+
+<div class="q"><span class="q-num">서1</span><b>한국의 자연환경 특징과 그것이 한국 문화(의·식·주 中 1개)에 미친 영향을 서술하시오. (20점)</b>
+<textarea class="answer" rows="6"></textarea>
+</div>
+
+<div class="q"><span class="q-num">서2</span><b>인간중심주의와 생태중심주의의 차이를 비교하고, 본인이 더 동의하는 입장과 그 이유를 서술하시오. (20점)</b>
+<textarea class="answer" rows="7"></textarea>
+</div>
+
+<div class="q"><span class="q-num">서3</span><b>본인이 거주하는 지역의 환경 문제 1가지와 학생으로서 실천 가능한 해결 방안 3가지를 작성하시오. (20점)</b>
+<textarea class="answer" rows="6"></textarea>
+</div>
+
+</div>
+
+<script>
+const ANS={q1:'2',q2:'3',q3:'2',q4:'1',q5:'2',q6:'2',q7:'3',q8:'3'};
+function grade(){let s=0,r=[];Object.keys(ANS).forEach(k=>{const v=document.querySelector(`input[name="${k}"]:checked`);const ok=v && v.value===ANS[k];if(ok)s+=5;r.push(`${k.toUpperCase()}: ${ok?'✓':'✗ ('+ANS[k]+')'}`);});const e=document.getElementById('objResult');e.classList.remove('hidden');e.innerHTML=`<b>📊 객관식</b>: <b class="text-2xl text-emerald-600">${s}</b> / 40점<br><div class="text-xs mt-2">${r.join(' · ')}</div>`;e.scrollIntoView({behavior:'smooth'});}
+;(function(){var KEY="ws_nature_eval";function snap(){var d={};document.querySelectorAll("input,textarea").forEach(function(el,i){var k=el.id||el.name||("_"+i);if(el.type==="radio"){if(el.checked)d[k]=el.value;}else d[k]=el.value;});return d;}function save(){try{localStorage.setItem(KEY,JSON.stringify(snap()));}catch(e){}}function restore(){try{var d=JSON.parse(localStorage.getItem(KEY)||"{}");document.querySelectorAll("input,textarea").forEach(function(el,i){var k=el.id||el.name||("_"+i);if(!(k in d))return;if(el.type==="radio"){if(el.value===d[k])el.checked=true;}else el.value=d[k];});}catch(e){}}window.addEventListener("load",function(){restore();document.body.addEventListener("input",save);document.body.addEventListener("change",save);});})();
+</script>
+</body></html>

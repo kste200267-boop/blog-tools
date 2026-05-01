@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>📊 3단원 자연환경과 인간 — 수업 슬라이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{box-sizing:border-box}body{font-family:'Noto Sans KR',sans-serif;background:#022c22;color:#f1f5f9;margin:0;overflow:hidden}
+.fjua{font-family:'Jua',sans-serif}
+.slide{width:100vw;height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:5vh 5vw;text-align:center}
+.slide.active{display:flex;animation:fi .4s ease-out}
+@keyframes fi{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+.slide h1{font-family:'Jua',sans-serif;font-size:clamp(2rem,5vw,4rem);margin-bottom:1.5rem}
+.slide h2{font-family:'Jua',sans-serif;font-size:clamp(1.5rem,4vw,3rem);margin-bottom:1rem}
+.slide p,.slide li{font-size:clamp(1rem,2vw,1.5rem);line-height:1.7}
+.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(10px);padding:10px 20px;border-radius:99px;z-index:100;display:flex;gap:10px;align-items:center}
+.nav button{background:#10b981;color:#022c22;border:0;width:40px;height:40px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}
+.nav button:disabled{background:#475569;color:#94a3b8;cursor:not-allowed}
+.counter{color:#10b981;font-weight:bold;min-width:60px;text-align:center}
+.cover{background:linear-gradient(135deg,#064e3b 0%,#022c22 100%)}
+.intro{background:linear-gradient(135deg,#1e3a8a 0%,#0c4a6e 100%)}
+.concept{background:linear-gradient(135deg,#065f46 0%,#064e3b 100%)}
+.summary{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
+@media print{.slide{display:flex!important;page-break-after:always;height:auto;min-height:100vh}.nav{display:none}body{background:#fff;color:#000;overflow:visible}}
+</style></head><body>
+
+<div class="slide cover active">
+<div class="text-xs text-emerald-300 font-bold mb-2">통합사회 1 · 3단원</div>
+<h1>🌿 자연환경과 인간</h1>
+<p class="mt-4 text-emerald-100">기후·재해·환경 윤리 — 자연과 함께 살아가는 법</p>
+<div class="mt-8 text-base text-emerald-200">[10통사1-03] 자연환경의 영향, 자연재해 대응, 인간과 자연의 윤리적 관계 탐구</div>
+</div>
+
+<div class="slide intro">
+<h2>🤔 만약 한국에 사막 기후가 왔다면?</h2>
+<p class="mt-4">한복도 없고, 김치도 없고, 한옥도 다른 모습</p>
+<p class="mt-6 text-base text-violet-200">→ 자연환경은 우리 삶을 어떻게 형성했고, 우리는 어떻게 적응했나?</p>
+</div>
+
+<div class="slide concept">
+<h2>🌡 5대 기후별 인간 적응</h2>
+<div class="mt-6 grid grid-cols-2 gap-3 max-w-4xl text-left">
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">☀️ 열대</b><p class="text-sm">고상가옥·헐렁한 옷·화전</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🏜 건조</b><p class="text-sm">흙벽돌집·흰 의복·유목</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🌳 온대</b><p class="text-sm">벽돌집·계절 의복·혼합 농업</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🌲 냉대</b><p class="text-sm">통나무집·모피·임업</p></div>
+<div class="bg-white/10 rounded-xl p-3 col-span-2"><b class="text-amber-300">❄️ 한대</b><p class="text-sm">이글루·동물 가죽·순록 유목</p></div>
+</div>
+</div>
+
+<div class="slide concept">
+<h2>🌋 자연재해 대응 원칙</h2>
+<ul class="text-left mt-6 space-y-3 max-w-3xl" style="list-style:none">
+<li class="bg-white/10 rounded-xl p-4">🚨 <b>예방</b> — 평소 대피로 숙지, 교육</li>
+<li class="bg-white/10 rounded-xl p-4">📡 <b>경보</b> — 정확한 정보원 확인</li>
+<li class="bg-white/10 rounded-xl p-4">🏃 <b>대피</b> — 즉각적 행동 (쓰나미 5분 이내)</li>
+<li class="bg-white/10 rounded-xl p-4">🤝 <b>복구</b> — 공동체 협력, 정부 지원</li>
+</ul>
+<p class="mt-4 text-base text-amber-200">⚠️ 한국 주요 재해: 태풍·지진·산불·미세먼지</p>
+</div>
+
+<div class="slide concept">
+<h2>⚖️ 환경 윤리 4가지 입장</h2>
+<div class="mt-6 grid grid-cols-2 gap-4 max-w-4xl">
+<div class="bg-white/10 rounded-xl p-4 text-left">
+<div class="text-3xl mb-1">🤴</div><b class="text-emerald-300">인간중심주의</b>
+<p class="text-sm mt-1">인간만 도덕적 가치 (베이컨·데카르트)</p>
+</div>
+<div class="bg-white/10 rounded-xl p-4 text-left">
+<div class="text-3xl mb-1">🌳</div><b class="text-emerald-300">생태중심주의</b>
+<p class="text-sm mt-1">자연 자체의 내재적 가치 (레오폴드)</p>
+</div>
+<div class="bg-white/10 rounded-xl p-4 text-left">
+<div class="text-3xl mb-1">🐘</div><b class="text-emerald-300">동물중심주의</b>
+<p class="text-sm mt-1">고통 느끼는 동물까지 (싱어·레건)</p>
+</div>
+<div class="bg-white/10 rounded-xl p-4 text-left">
+<div class="text-3xl mb-1">⚖️</div><b class="text-emerald-300">온건한 인간중심주의</b>
+<p class="text-sm mt-1">인간 이익+자연 보호 의무 (패스모어)</p>
+</div>
+</div>
+</div>
+
+<div class="slide concept">
+<h2>🌍 인간-자연 공존 원칙</h2>
+<ul class="text-left mt-6 space-y-3 max-w-3xl" style="list-style:none">
+<li class="bg-white/10 rounded-xl p-4">♻️ <b>지속가능 발전</b> — 미래 세대도 누릴 자연</li>
+<li class="bg-white/10 rounded-xl p-4">🌱 <b>탄소 중립</b> — 2050 넷제로 목표</li>
+<li class="bg-white/10 rounded-xl p-4">🌳 <b>생물 다양성 보전</b> — 멸종 위기 종 보호</li>
+<li class="bg-white/10 rounded-xl p-4">💚 <b>친환경 소비</b> — 개인의 선택이 세상을 바꿈</li>
+</ul>
+</div>
+
+<div class="slide concept">
+<h2>🛠 단원 웹교구 (3종)</h2>
+<div class="mt-6 grid grid-cols-3 gap-3 max-w-4xl">
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🌡 세계 기후 탐험가</b><p class="text-sm">5대 기후별 적응 매칭</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🌋 자연재해 시뮬</b><p class="text-sm">5재해 의사결정</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🌿 환경 윤리 딜레마</b><p class="text-sm">5딜레마 슬라이더 진단</p></div>
+</div>
+</div>
+
+<div class="slide summary">
+<h2>🎯 오늘의 핵심</h2>
+<ul class="text-left mt-6 space-y-3 text-violet-100" style="list-style:none">
+<li>✅ 자연환경(기후·지형) → 인간 의식주·문화 형성</li>
+<li>✅ 자연재해 대응: 예방-경보-대피-복구</li>
+<li>✅ 환경 윤리: 인간중심 ↔ 생태중심 사이 균형</li>
+<li>✅ 지속가능 발전 = 현재와 미래 세대의 공존</li>
+</ul>
+<div class="mt-10 bg-amber-500/20 rounded-xl p-5">
+<b class="text-amber-300">📌 다음 단원</b>
+<p class="text-base text-amber-100 mt-2">4단원 문화와 다양성 — 세계 문화권의 다양성</p>
+</div>
+</div>
+
+<div class="nav">
+<button id="prev">←</button><span class="counter" id="counter">1 / 8</span><button id="next">→</button>
+<button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');let cur=0;
+function show(i){slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+slides.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===slides.length-1;}
+document.getElementById('prev').onclick=()=>{if(cur>0){cur--;show(cur);}};
+document.getElementById('next').onclick=()=>{if(cur<slides.length-1){cur++;show(cur);}};
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(cur<slides.length-1){cur++;show(cur);}}else if(e.key==='ArrowLeft'){if(cur>0){cur--;show(cur);}}});
+show(0);
+</script>
+</body></html>

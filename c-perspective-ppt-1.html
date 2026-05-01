@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>📊 1단원 통합적 관점 — 수업 슬라이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{box-sizing:border-box}body{font-family:'Noto Sans KR',sans-serif;background:#0f172a;color:#f1f5f9;margin:0;overflow:hidden}
+.fjua{font-family:'Jua',sans-serif}
+.slide{width:100vw;height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:5vh 5vw;text-align:center}
+.slide.active{display:flex;animation:fi .4s ease-out}
+@keyframes fi{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+.slide h1{font-family:'Jua',sans-serif;font-size:clamp(2rem,5vw,4rem);margin-bottom:1.5rem}
+.slide h2{font-family:'Jua',sans-serif;font-size:clamp(1.5rem,4vw,3rem);margin-bottom:1rem}
+.slide p,.slide li{font-size:clamp(1rem,2vw,1.5rem);line-height:1.7}
+.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(10px);padding:10px 20px;border-radius:99px;z-index:100;display:flex;gap:10px;align-items:center}
+.nav button{background:#2563eb;color:#fff;border:0;width:40px;height:40px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}
+.nav button:disabled{background:#475569;color:#94a3b8;cursor:not-allowed}
+.counter{color:#60a5fa;font-weight:bold;min-width:60px;text-align:center}
+.cover{background:linear-gradient(135deg,#1e3a8a 0%,#0c4a6e 100%)}
+.intro{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
+.concept{background:linear-gradient(135deg,#1e40af 0%,#1e3a8a 100%)}
+.activity{background:linear-gradient(135deg,#9a3412 0%,#7c2d12 100%)}
+.summary{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
+@media print{.slide{display:flex!important;page-break-after:always;height:auto;min-height:100vh}.nav{display:none}body{background:#fff;color:#000;overflow:visible}}
+</style></head><body>
+
+<div class="slide cover active">
+<div class="text-xs text-blue-300 font-bold mb-2">통합사회 1 · 1단원</div>
+<h1>🧭 통합적 관점으로<br>바라보는 사회</h1>
+<p class="mt-4 text-blue-100">시간·공간·사회·윤리 — 4가지 시선으로 세상을 보다</p>
+<div class="mt-8 text-base text-blue-200">
+[10통사1-01-01] 시간적·공간적·사회적·윤리적 관점의 특징을 이해하고,<br>이를 통합적으로 활용하여 사회 현상을 탐구한다.
+</div>
+</div>
+
+<div class="slide intro">
+<h2>🤔 같은 사건, 다른 시선</h2>
+<p class="mt-4">"청년 1인 가구가 50%를 넘었다."</p>
+<div class="mt-8 max-w-3xl bg-white/10 rounded-xl p-6 text-left">
+<p class="text-base">관점에 따라 같은 현상이 전혀 다르게 보입니다.</p>
+<ul class="text-base mt-3 space-y-2">
+<li>⏰ 옛날에는? 미래에는?</li>
+<li>🗺 한국 vs 다른 나라는?</li>
+<li>👥 누가 영향받나? 구조는?</li>
+<li>⚖️ 이게 옳은 방향인가?</li>
+</ul>
+</div>
+<p class="mt-6 text-base text-violet-200">→ 4가지 관점을 통합하면 진짜 모습이 보인다</p>
+</div>
+
+<div class="slide concept">
+<h2>⏰ 시간적 관점</h2>
+<p class="mt-4 text-blue-100">"언제부터, 어떻게 변해왔나?"</p>
+<div class="mt-8 max-w-3xl bg-white/10 rounded-xl p-6 text-left">
+<ul class="text-base space-y-2">
+<li>📜 역사적 배경 — 과거 어떤 일이 있었나</li>
+<li>🔄 변화 과정 — 시대별 어떻게 달라졌나</li>
+<li>🔮 미래 전망 — 앞으로 어떻게 될 것인가</li>
+</ul>
+<p class="mt-4 text-amber-300">예: 1인 가구 — 1980년 5%, 2025년 35%</p>
+</div>
+</div>
+
+<div class="slide concept">
+<h2>🗺 공간적 관점</h2>
+<p class="mt-4 text-blue-100">"어디서, 지역적 차이는?"</p>
+<div class="mt-8 max-w-3xl bg-white/10 rounded-xl p-6 text-left">
+<ul class="text-base space-y-2">
+<li>📍 지역적 분포 — 어느 지역에서 두드러지나</li>
+<li>🌍 국제 비교 — 다른 나라와 어떻게 다른가</li>
+<li>🏘 공간 환경 — 자연·인문환경의 영향은</li>
+</ul>
+<p class="mt-4 text-amber-300">예: 1인 가구 — 서울 60%, 농촌 20%</p>
+</div>
+</div>
+
+<div class="slide concept">
+<h2>👥 사회적 관점</h2>
+<p class="mt-4 text-blue-100">"누가, 어떤 구조 속에서?"</p>
+<div class="mt-8 max-w-3xl bg-white/10 rounded-xl p-6 text-left">
+<ul class="text-base space-y-2">
+<li>🎯 영향 받는 집단 — 누가 영향을 받나</li>
+<li>🏛 사회 구조 — 정치·경제·사회 제도의 영향</li>
+<li>🤝 이해관계 — 누가 이득·손해를 보나</li>
+</ul>
+<p class="mt-4 text-amber-300">예: 1인 가구 — 청년 주거난, 1인 경제 산업 성장</p>
+</div>
+</div>
+
+<div class="slide concept">
+<h2>⚖️ 윤리적 관점</h2>
+<p class="mt-4 text-blue-100">"옳은가? 어떤 가치를 추구해야 하나?"</p>
+<div class="mt-8 max-w-3xl bg-white/10 rounded-xl p-6 text-left">
+<ul class="text-base space-y-2">
+<li>🎯 가치 판단 — 무엇이 옳고 그른가</li>
+<li>⚔️ 권리·의무 충돌 — 누구의 권리가 우선?</li>
+<li>🌟 추구할 가치 — 우리 사회는 어디로 가야 하나</li>
+</ul>
+<p class="mt-4 text-amber-300">예: 1인 가구 — 자율적 삶 vs 공동체 가치 충돌</p>
+</div>
+</div>
+
+<div class="slide concept">
+<h2>🧠 통합적 관점</h2>
+<p class="mt-4 text-blue-100">4가지 관점을 하나로 모으면 보이는 것</p>
+<div class="mt-8 grid grid-cols-2 gap-6 max-w-4xl">
+<div class="bg-amber-500/20 border border-amber-400 rounded-xl p-5">
+<div class="text-3xl mb-2">❌</div>
+<b class="text-amber-300">단편적 시각</b>
+<p class="text-base mt-2">"청년이 결혼 안 해서 그렇다"<br>(원인 단순화)</p>
+</div>
+<div class="bg-emerald-500/20 border border-emerald-400 rounded-xl p-5">
+<div class="text-3xl mb-2">✅</div>
+<b class="text-emerald-300">통합적 시각</b>
+<p class="text-base mt-2">"역사·지역·구조·가치가 모두 작용한 복합 현상"</p>
+</div>
+</div>
+</div>
+
+<div class="slide activity">
+<div class="text-xs text-amber-300 font-bold mb-2">학생 활동</div>
+<h2>🛠 단원 웹교구 (5종)</h2>
+<div class="mt-6 grid grid-cols-2 gap-3 max-w-4xl text-left">
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">📰 뉴스 4관점 분석기</b><p class="text-sm">학생이 뉴스 입력 → 4관점 분석 가이드</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🥊 4관점 토론장</b><p class="text-sm">모둠원 4명 → 입장별 발표 + 합의문</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🎯 4관점 마스터 퀴즈</b><p class="text-sm">100문항 중 랜덤 출제</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🚀 화성 이주 시뮬</b><p class="text-sm">4관점 통합 적용 프로젝트</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🔍 범죄 수사 게임</b><p class="text-sm">4관점으로 사건 분석</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">📝 자기소개 슬라이드</b><p class="text-sm">4관점으로 나를 소개</p></div>
+</div>
+</div>
+
+<div class="slide summary">
+<h2>🎯 오늘의 핵심</h2>
+<ul class="text-left mt-6 space-y-3 text-violet-100" style="list-style:none">
+<li>✅ 시간 — "언제부터, 어떻게 변했나"</li>
+<li>✅ 공간 — "어디서, 지역적 차이는"</li>
+<li>✅ 사회 — "누가, 어떤 구조 속에서"</li>
+<li>✅ 윤리 — "옳은가, 어떤 가치를 추구해야 하나"</li>
+<li>✅ 통합 — 4관점이 모두 합쳐져야 진짜가 보임</li>
+</ul>
+<div class="mt-10 bg-amber-500/20 rounded-xl p-5">
+<b class="text-amber-300">📌 다음 단원</b>
+<p class="text-base text-amber-100 mt-2">2단원 인간과 공동체 — 행복이란 무엇인가</p>
+</div>
+</div>
+
+<div class="nav">
+<button id="prev">←</button><span class="counter" id="counter">1 / 9</span><button id="next">→</button>
+<button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');let cur=0;
+function show(i){slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+slides.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===slides.length-1;}
+document.getElementById('prev').onclick=()=>{if(cur>0){cur--;show(cur);}};
+document.getElementById('next').onclick=()=>{if(cur<slides.length-1){cur++;show(cur);}};
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(cur<slides.length-1){cur++;show(cur);}}else if(e.key==='ArrowLeft'){if(cur>0){cur--;show(cur);}}});
+show(0);
+</script>
+</body></html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>📝 학습지 ① 4관점 개념 정리</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:#f1f5f9;color:#1e293b}
+.fjua{font-family:'Jua',sans-serif}
+.ws{max-width:850px;margin:20px auto;background:#fff;padding:40px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.ws h1{font-family:'Jua',sans-serif;font-size:1.6rem;text-align:center;border-bottom:3px solid #1e293b;padding-bottom:10px;margin-bottom:20px}
+.info{display:flex;justify-content:space-between;font-size:.9rem;border-bottom:1px solid #cbd5e1;padding-bottom:10px;margin-bottom:20px}
+.blank{display:inline-block;border-bottom:1px solid #1e293b;min-width:120px;height:1.5em;padding:0 4px}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.88rem}
+th{background:#2563eb;color:#fff;padding:10px 6px}
+td{border:1px solid #94a3b8;padding:8px;vertical-align:top}
+td input,td textarea,td select{width:100%;border:1px solid #e2e8f0;font-family:inherit;font-size:.85rem;outline:none;border-radius:4px;padding:4px;resize:vertical;background:transparent}
+.q{background:#eff6ff;border-left:4px solid #2563eb;padding:12px 16px;margin:16px 0;border-radius:0 8px 8px 0}
+.q-num{display:inline-block;background:#2563eb;color:#fff;width:24px;height:24px;border-radius:50%;text-align:center;font-weight:bold;line-height:24px;font-size:.85rem;margin-right:8px}
+.answer{border:1px solid #cbd5e1;border-radius:6px;min-height:50px;padding:8px;margin-top:6px;font-family:inherit;font-size:.9rem;width:100%;resize:vertical}
+@media print{body{background:#fff;padding:0;margin:0}.ws{max-width:100%;box-shadow:none;padding:25px;margin:0}.no-print{display:none!important}}
+</style></head><body>
+
+<div class="no-print" style="max-width:850px;margin:10px auto;display:flex;gap:8px;padding:0 20px;flex-wrap:wrap">
+<a href="hub.html?mode=unit&id=integrated-perspective" class="bg-white border-2 border-slate-300 rounded-lg px-4 py-2 text-sm font-bold no-underline text-slate-700">← 단원으로</a>
+<a href="c-perspective-news-analyzer.html" class="bg-blue-600 text-white rounded-lg px-4 py-2 text-sm font-bold no-underline">📰 웹교구</a>
+<button onclick="window.print()" class="bg-slate-800 text-white rounded-lg px-4 py-2 text-sm font-bold">🖨 PDF</button>
+</div>
+
+<div class="ws">
+<h1>📝 학습지 ① 4관점 개념 정리</h1>
+<div class="info"><div>학번 <span class="blank"></span> 이름 <span class="blank"></span></div><div>날짜 <span class="blank"></span></div></div>
+
+<p class="text-sm text-slate-600 mb-4"><b>학습 목표</b>: 4가지 관점(시간·공간·사회·윤리)의 특징을 구분하고 사례에 적용한다. <b>[10통사1-01-01]</b></p>
+
+<h3 class="fjua text-lg mb-2">📊 4관점 비교표</h3>
+<table>
+<thead><tr><th style="width:18%">관점</th><th style="width:35%">핵심 질문</th><th>본인 사례 (한국 사회 현상 1개)</th></tr></thead>
+<tbody>
+<tr><td><b>⏰ 시간</b></td><td>언제부터? 어떻게 변해왔나?</td><td><textarea rows="2"></textarea></td></tr>
+<tr><td><b>🗺 공간</b></td><td>어디서? 지역적 차이는?</td><td><textarea rows="2"></textarea></td></tr>
+<tr><td><b>👥 사회</b></td><td>누가? 어떤 구조 속에서?</td><td><textarea rows="2"></textarea></td></tr>
+<tr><td><b>⚖️ 윤리</b></td><td>옳은가? 어떤 가치를?</td><td><textarea rows="2"></textarea></td></tr>
+</tbody></table>
+
+<div class="q"><div class="q-num">1</div><b>오늘 본 뉴스나 사회 이슈 1개를 선택</b>
+<input class="answer" type="text" style="min-height:auto" placeholder="예: 청년 1인 가구 50% 돌파, AI 일자리 대체 등">
+</div>
+
+<div class="q"><div class="q-num">2</div><b>그 이슈를 4관점으로 분석</b>
+<textarea class="answer" rows="6" placeholder="⏰ 시간:&#10;🗺 공간:&#10;👥 사회:&#10;⚖️ 윤리:"></textarea>
+</div>
+
+<div class="q"><div class="q-num">3</div><b>4관점 통합 결론 — 1문단 (5줄 이상)</b>
+<textarea class="answer" rows="6" placeholder="이 현상은 단순한 ___이 아니라, 시간·공간·사회·윤리적 차원이 복합적으로 작용한 결과이며..."></textarea>
+</div>
+
+<hr class="my-4">
+<div class="text-xs text-slate-500"><b>🛠 웹교구 연계:</b> <a href="c-perspective-news-analyzer.html" class="text-blue-600 underline">📰 뉴스 4관점 분석기</a>로 가이드 질문 따라 분석</div>
+</div>
+
+<script>;(function(){var KEY="ws_persp_1";function snap(){var d={};document.querySelectorAll("input,textarea,select").forEach(function(el,i){var k=el.id||el.name||("_"+i);d[k]=el.value;});return d;}function save(){try{localStorage.setItem(KEY,JSON.stringify(snap()));}catch(e){}}function restore(){try{var d=JSON.parse(localStorage.getItem(KEY)||"{}");document.querySelectorAll("input,textarea,select").forEach(function(el,i){var k=el.id||el.name||("_"+i);if(k in d)el.value=d[k];});}catch(e){}}window.addEventListener("load",function(){restore();document.body.addEventListener("input",save);});})();</script>
+</body></html>
