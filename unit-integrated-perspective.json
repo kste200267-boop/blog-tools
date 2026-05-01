@@ -68,16 +68,21 @@
       "difficulty": "보통",
       "duration": "15분",
       "tags": []
-          },
+    },
     {
-      "slug": "intro",
-      "file": "dilema.html",
-      "title": "윤리적 딜레마",
-      "desc": "",
+      "slug": "legacy-total100",
+      "file": "total100.html",
+      "title": "📂 4관점 마스터 퀴즈 🎯 (구버전)",
       "type": "웹교구",
       "difficulty": "보통",
       "duration": "15분",
-      "tags": []
+      "tags": [
+        "퀴즈",
+        "4관점",
+        "구버전",
+        "통사1"
+      ],
+      "desc": "4관점 마스터 퀴즈 — 이전 대화에서 만든 구버전"
     }
   ]
 }

@@ -48,6 +48,19 @@
       "difficulty": "보통",
       "duration": "15분",
       "tags": []
+    },
+    {
+      "slug": "legacy-election",
+      "file": "election.html",
+      "title": "📂 학생 선거 용지 생성기 (구버전)",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "15분",
+      "tags": [
+        "선거",
+        "구버전"
+      ],
+      "desc": "학생 선거 용지 생성기 — 이전 대화에서 만든 구버전"
     }
   ]
 }
