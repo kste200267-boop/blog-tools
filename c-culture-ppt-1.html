@@ -1,233 +1,175 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>📊 4-1 세계의 다양한 문화권 — 수업 슬라이드</title>
-<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>세계 6대 문화권 — 자연이 빚은 6가지 삶</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;700;900&family=Noto+Serif+KR:wght@400;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-*{box-sizing:border-box}
-body{font-family:'Noto Sans KR',sans-serif;background:#1e293b;color:#f1f5f9;min-height:100vh;margin:0;overflow:hidden}
-.fjua{font-family:'Jua',sans-serif}
-.slide{width:100vw;height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:5vh 5vw;text-align:center}
-.slide.active{display:flex;animation:fi .4s ease-out}
-@keyframes fi{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
-.slide h1{font-family:'Jua',sans-serif;font-size:clamp(2rem,5vw,4rem);margin-bottom:1.5rem}
-.slide h2{font-family:'Jua',sans-serif;font-size:clamp(1.5rem,4vw,3rem);margin-bottom:1rem}
-.slide p,.slide li{font-size:clamp(1rem,2vw,1.5rem);line-height:1.7}
-.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(10px);padding:10px 20px;border-radius:99px;z-index:100;display:flex;gap:10px;align-items:center}
-.nav button{background:#fbbf24;color:#1e293b;border:0;width:40px;height:40px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}
-.nav button:disabled{background:#475569;color:#94a3b8;cursor:not-allowed}
-.counter{color:#fbbf24;font-weight:bold;min-width:60px;text-align:center}
-.cover{background:linear-gradient(135deg,#7c2d12 0%,#451a03 100%)}
-.intro{background:linear-gradient(135deg,#1e3a8a 0%,#0c4a6e 100%)}
-.concept{background:linear-gradient(135deg,#064e3b 0%,#022c22 100%)}
-.activity{background:linear-gradient(135deg,#9a3412 0%,#7c2d12 100%)}
-.summary{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
-.zone{display:inline-block;padding:1.5rem;margin:.5rem;border-radius:1rem;background:rgba(255,255,255,.1);min-width:160px}
-@media print{
-.slide{display:flex!important;page-break-after:always;height:auto;min-height:100vh}
-.nav{display:none}
-body{background:#fff;color:#000;overflow:visible}
-}
-.qr-hint{font-size:.9rem;color:#fbbf24;margin-top:1rem}
-</style></head>
-<body>
+*{box-sizing:border-box;margin:0;padding:0}html,body{overflow:hidden;width:100vw;height:100vh}body{font-family:'Noto Sans KR',sans-serif;background:#000;color:#fff}
+.bhs{font-family:'Black Han Sans',sans-serif;letter-spacing:-1px}.nsr{font-family:'Noto Serif KR',serif}
+.slide{width:100vw;height:100vh;display:none;position:relative;overflow:hidden}.slide.active{display:flex}
+.slide.active>*{animation:in .6s cubic-bezier(.2,.8,.2,1)}@keyframes in{from{opacity:0;transform:translateY(20px)}to{opacity:1}}
+.nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);backdrop-filter:blur(20px);padding:12px 24px;border-radius:99px;z-index:100;display:flex;gap:12px;align-items:center;border:1px solid rgba(255,255,255,.1)}
+.nav button{background:#fff;color:#000;border:0;width:44px;height:44px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}.nav button:hover{transform:scale(1.1)}.nav button:disabled{background:#333;color:#666}
+.counter{color:#fbbf24;font-weight:900;min-width:64px;text-align:center;font-size:.9rem}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#dc2626,#fbbf24,#10b981,#3b82f6,#a78bfa);z-index:100;transition:width .4s}
+@media print{.nav,.progress{display:none}.slide{display:flex!important;page-break-after:always}}
 
-<!-- 슬라이드 1: 표지 -->
-<div class="slide cover active">
-<div class="text-xs text-amber-300 font-bold mb-2">통합사회 1 · 4단원 · 4-1</div>
-<h1>🌍 세계의 다양한 문화권</h1>
-<p class="mt-4 text-amber-100">자연환경과 인간이 만들어낸 6대 문화권 탐험</p>
-<div class="mt-8 text-base text-amber-200">
-[10통사1-04-01] 자연환경과 인문환경의 영향을 받아 형성된<br>다양한 문화권의 특징과 삶의 방식을 탐구한다.
-</div>
-</div>
+.s-cover{background:radial-gradient(circle at 30% 50%,#7c2d12 0%,#000 70%);align-items:center;justify-content:center;text-align:center;flex-direction:column;padding:5vh 5vw}
+.s-cover .label{color:#fbbf24;letter-spacing:8px;font-weight:700;margin-bottom:24px;border:1px solid rgba(251,191,36,.4);padding:8px 24px;border-radius:99px;font-size:clamp(.8rem,1.2vw,1rem)}
+.s-cover h1{font-size:clamp(3rem,11vw,9rem);line-height:.9;margin-bottom:24px;background:linear-gradient(135deg,#fff,#fbbf24,#f97316);-webkit-background-clip:text;color:transparent;font-weight:900}
+.s-cover .sub{font-size:clamp(1.2rem,2.5vw,1.8rem);color:rgba(255,255,255,.7);font-weight:300;letter-spacing:4px}
 
-<!-- 슬라이드 2: 도입 -->
-<div class="slide intro">
-<div class="text-xs text-blue-300 font-bold mb-2">도입</div>
-<h2>🤔 같은 사막에 살아도</h2>
-<p class="mt-4">왜 사람들이 다른 옷을 입을까?</p>
-<div class="mt-8 text-amber-300 text-2xl">사막 = 흰색 긴 옷? 검은색? 가죽?</div>
-<p class="text-base mt-6 text-blue-200">→ 자연환경만으로는 설명 안 됨. 무엇이 더 작용했을까?</p>
-</div>
+.s-hook{background:linear-gradient(135deg,#0c0a09 0%,#1c1917 100%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw;gap:32px}
+.s-hook .pre{color:#fbbf24;letter-spacing:6px;margin-bottom:24px;font-size:clamp(.85rem,1.3vw,1rem)}
+.s-hook h2{font-size:clamp(2rem,5vw,4rem);font-weight:900;line-height:1.1;margin-bottom:24px}
+.s-hook .images{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1100px;width:100%}
+.s-hook .img{aspect-ratio:1;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:5rem;background:#1c1917;border:1px solid rgba(255,255,255,.1);transition:.3s;position:relative;overflow:hidden}
+.s-hook .img:hover{transform:scale(1.05)}
+.s-hook .img p{font-size:.85rem;color:rgba(255,255,255,.6);margin-top:8px;font-weight:700}
+.s-hook .answer{font-size:clamp(1rem,1.6vw,1.3rem);color:rgba(255,255,255,.6);font-weight:300;font-family:'Noto Serif KR',serif}
+.s-hook .answer em{color:#fbbf24;font-style:normal;font-weight:900;font-family:'Black Han Sans',sans-serif}
 
-<!-- 슬라이드 3: 학습 목표 -->
-<div class="slide intro">
-<div class="text-xs text-blue-300 font-bold mb-2">학습 목표</div>
-<h2>🎯 오늘 배울 것</h2>
-<ul class="text-left mt-6 space-y-3 text-blue-100" style="list-style:none">
-<li>✅ 문화권이 어떻게 형성되는지 설명</li>
-<li>✅ 자연환경과 인문환경의 관계 이해</li>
-<li>✅ 6대 문화권의 특징 비교</li>
-<li>✅ 한국이 속한 문화권의 특징 파악</li>
-</ul>
-</div>
+.s-zones{background:linear-gradient(135deg,#0c0a09 0%,#1c1917 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch;justify-content:center}
+.s-zones h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:32px;text-align:center}
+.s-zones .grid6{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:16px;flex:1;max-height:65vh}
+.s-zones .z{padding:24px;border-radius:16px;display:flex;flex-direction:column;justify-content:space-between;text-align:center;transition:.3s;color:#fff}
+.s-zones .z:hover{transform:translateY(-8px)}
+.s-zones .z1{background:linear-gradient(135deg,#dc2626 0%,#7f1d1d 100%)}
+.s-zones .z2{background:linear-gradient(135deg,#f97316 0%,#7c2d12 100%)}
+.s-zones .z3{background:linear-gradient(135deg,#fbbf24 0%,#92400e 100%);color:#1c1917}
+.s-zones .z4{background:linear-gradient(135deg,#3b82f6 0%,#1e3a8a 100%)}
+.s-zones .z5{background:linear-gradient(135deg,#a78bfa 0%,#581c87 100%)}
+.s-zones .z6{background:linear-gradient(135deg,#10b981 0%,#064e3b 100%)}
+.s-zones .z .icon{font-size:3.5rem}
+.s-zones .z h3{font-size:clamp(1.1rem,1.7vw,1.4rem);font-weight:900;margin:8px 0}
+.s-zones .z .feat{font-size:clamp(.75rem,1vw,.85rem);line-height:1.5;font-weight:500}
 
-<!-- 슬라이드 4: 문화권 개념 -->
-<div class="slide concept">
-<div class="text-xs text-emerald-300 font-bold mb-2">개념</div>
-<h2>📖 문화권이란?</h2>
-<p class="mt-4 text-emerald-100">비슷한 자연환경과 인문환경을 공유하며<br>유사한 문화 양식을 가진 일정한 지역</p>
-<div class="mt-10 grid grid-cols-2 gap-6 max-w-3xl">
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-3xl mb-2">🌿</div>
-<b class="text-emerald-300">자연환경</b>
-<p class="text-base mt-2">기후 · 지형 · 식생 · 토양</p>
-</div>
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-3xl mb-2">🏛</div>
-<b class="text-emerald-300">인문환경</b>
-<p class="text-base mt-2">종교 · 언어 · 산업 · 의식주</p>
-</div>
-</div>
-</div>
+.s-spotlight{background:linear-gradient(135deg,#7c2d12 0%,#451a03 100%);align-items:center;justify-content:center;padding:8vh 5vw;flex-direction:column;text-align:center;gap:16px}
+.s-spotlight .pre{color:#fbbf24;letter-spacing:6px;font-size:clamp(.85rem,1.3vw,1rem);margin-bottom:16px}
+.s-spotlight h2{font-size:clamp(2rem,4.5vw,3.5rem);font-weight:900}
+.s-spotlight .grid-cols-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1100px;width:100%;margin-top:24px}
+.s-spotlight .col{padding:32px;border-radius:16px;text-align:left}
+.s-spotlight .nat{background:rgba(16,185,129,.15);border:2px solid #10b981}
+.s-spotlight .hum{background:rgba(59,130,246,.15);border:2px solid #3b82f6}
+.s-spotlight .col h3{font-size:1.3rem;font-weight:900;margin-bottom:16px}
+.s-spotlight .nat h3{color:#10b981}
+.s-spotlight .hum h3{color:#60a5fa}
+.s-spotlight .col li{padding:6px 0;font-size:clamp(.95rem,1.4vw,1.1rem);display:flex;gap:8px}
+.s-spotlight .col li::before{content:'•';color:#fbbf24;font-weight:900}
+.s-spotlight .arrow-down{margin-top:16px;font-size:1rem;color:#fbbf24;font-style:italic}
 
-<!-- 슬라이드 5: 6대 문화권 -->
-<div class="slide concept">
-<h2>🗺 세계 6대 문화권</h2>
-<div class="mt-6 grid grid-cols-3 gap-3 max-w-5xl">
-<div class="zone"><div class="text-4xl">🏯</div><b>동아시아</b><p class="text-xs text-emerald-200">한·중·일</p></div>
-<div class="zone"><div class="text-4xl">🛕</div><b>동남·남아시아</b><p class="text-xs text-emerald-200">불교/힌두권</p></div>
-<div class="zone"><div class="text-4xl">🕌</div><b>건조</b><p class="text-xs text-emerald-200">서남아·북아프리카</p></div>
-<div class="zone"><div class="text-4xl">⛪</div><b>유럽</b><p class="text-xs text-emerald-200">그리스도교</p></div>
-<div class="zone"><div class="text-4xl">🗽</div><b>아메리카</b><p class="text-xs text-emerald-200">앵글로·라틴</p></div>
-<div class="zone"><div class="text-4xl">🌍</div><b>아프리카</b><p class="text-xs text-emerald-200">사하라 이남</p></div>
-</div>
-</div>
+.s-formula{background:linear-gradient(135deg,#0c0a09 0%,#1c1917 100%);align-items:center;justify-content:center;padding:8vh 5vw;flex-direction:column;text-align:center;gap:32px}
+.s-formula h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900}
+.s-formula .eq{display:flex;align-items:center;gap:24px;font-family:'Black Han Sans',sans-serif}
+.s-formula .eq>div{font-size:clamp(1.5rem,3vw,2.5rem);padding:24px 32px;border-radius:12px}
+.s-formula .e1{background:#10b981;color:#fff}.s-formula .e2{background:#3b82f6;color:#fff}.s-formula .e3{background:#fbbf24;color:#000}
+.s-formula .plus,.s-formula .eq-mark{font-size:clamp(2rem,4vw,3rem);color:#fff;font-weight:900}
+.s-formula .insight{margin-top:32px;font-size:clamp(.95rem,1.4vw,1.2rem);color:rgba(255,255,255,.7);max-width:800px;line-height:1.7;font-family:'Noto Serif KR',serif;font-style:italic}
 
-<!-- 슬라이드 6: 동아시아 -->
-<div class="slide concept">
-<h2>🏯 동아시아 문화권</h2>
-<div class="mt-4 grid grid-cols-2 gap-6 max-w-4xl text-left">
-<div class="bg-white/10 rounded-xl p-5">
-<b class="text-orange-300 text-xl">🌿 자연</b>
-<ul class="mt-2 text-base">
-<li>• 온대 계절풍 기후</li>
-<li>• 충적 평야</li>
-<li>• 한반도·중국·일본</li>
-</ul>
-</div>
-<div class="bg-white/10 rounded-xl p-5">
-<b class="text-orange-300 text-xl">🏛 인문</b>
-<ul class="mt-2 text-base">
-<li>• 유교·불교</li>
-<li>• 한자 문화권</li>
-<li>• 쌀 + 젓가락</li>
-</ul>
-</div>
-</div>
-<p class="mt-6 text-amber-200 text-base">💡 형성 원리: 풍부한 강수 → 벼농사 → 정착 → 공동체 규범(유교)</p>
-</div>
+.s-activity{background:linear-gradient(135deg,#7c2d12 0%,#451a03 100%);align-items:center;justify-content:center;padding:8vh 5vw;flex-direction:column;text-align:center;gap:24px}
+.s-activity .badge{color:#fbbf24;letter-spacing:6px;font-weight:700;border:1px solid rgba(251,191,36,.5);padding:8px 24px;border-radius:99px;background:rgba(0,0,0,.3);font-size:clamp(.8rem,1.2vw,1rem)}
+.s-activity h2{font-size:clamp(2rem,5vw,4rem);font-weight:900;line-height:1}
+.s-activity .panel{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1100px;width:100%;margin-top:16px}
+.s-activity .web,.s-activity .ws{padding:24px;border-radius:16px;text-align:left}
+.s-activity .web{background:rgba(0,0,0,.5);border:1px solid #fbbf24}
+.s-activity .ws{background:rgba(16,185,129,.15);border:1px solid #10b981}
+.s-activity .web h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;color:#fbbf24}
+.s-activity .ws h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;color:#10b981}
+.s-activity .web code{background:rgba(0,0,0,.5);padding:4px 8px;border-radius:4px;font-size:.85rem;color:#fbbf24}
 
-<!-- 슬라이드 7: 건조 -->
-<div class="slide concept">
-<h2>🕌 건조 문화권</h2>
-<div class="mt-4 grid grid-cols-2 gap-6 max-w-4xl text-left">
-<div class="bg-white/10 rounded-xl p-5">
-<b class="text-orange-300 text-xl">🌿 자연</b>
-<ul class="mt-2 text-base">
-<li>• 사막·스텝 기후</li>
-<li>• 일교차 큼</li>
-<li>• 오아시스 의존</li>
-</ul>
-</div>
-<div class="bg-white/10 rounded-xl p-5">
-<b class="text-orange-300 text-xl">🏛 인문</b>
-<ul class="mt-2 text-base">
-<li>• 이슬람교</li>
-<li>• 유목 + 대상 무역</li>
-<li>• 흰색 긴 의복</li>
-</ul>
-</div>
-</div>
-<p class="mt-6 text-amber-200 text-base">💡 형성 원리: 농업 곤란 → 유목·교역 → 부족·종교 결속</p>
-</div>
+.s-end{background:radial-gradient(circle at 50% 50%,#7c2d12 0%,#000 80%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw;gap:24px}
+.s-end .key{color:#fbbf24;letter-spacing:6px;font-weight:700;font-size:clamp(.85rem,1.3vw,1rem)}
+.s-end h2{font-size:clamp(2.5rem,6vw,5.5rem);line-height:1;font-weight:900;background:linear-gradient(180deg,#fff,#fbbf24);-webkit-background-clip:text;color:transparent}
+.s-end .takeaways{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:1000px;width:100%;margin-top:32px}
+.s-end .ta{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px;text-align:left;font-size:clamp(.9rem,1.3vw,1.1rem)}
+.s-end .ta b{color:#fbbf24}
+.s-end .next{margin-top:32px;font-size:clamp(.85rem,1.2vw,1rem);color:rgba(255,255,255,.5)}.s-end .next b{color:#fbbf24}
 
-<!-- 슬라이드 8: 유럽 -->
-<div class="slide concept">
-<h2>⛪ 유럽 문화권</h2>
-<div class="mt-4 grid grid-cols-2 gap-6 max-w-4xl text-left">
-<div class="bg-white/10 rounded-xl p-5">
-<b class="text-orange-300 text-xl">🌿 자연</b>
-<ul class="mt-2 text-base">
-<li>• 서안 해양성·지중해성</li>
-<li>• 대서양·지중해 접근</li>
-<li>• 다양한 반도와 해안</li>
-</ul>
-</div>
-<div class="bg-white/10 rounded-xl p-5">
-<b class="text-orange-300 text-xl">🏛 인문</b>
-<ul class="mt-2 text-base">
-<li>• 그리스도교</li>
-<li>• 산업혁명 발상지</li>
-<li>• 합리주의·과학</li>
-</ul>
-</div>
-</div>
-<p class="mt-6 text-amber-200 text-base">💡 형성 원리: 무역 도시 → 합리주의 → 과학혁명 → 산업혁명</p>
-</div>
+@media (max-width:768px){.s-hook .images,.s-zones .grid6,.s-spotlight .grid-cols-2,.s-end .takeaways,.s-activity .panel{grid-template-columns:1fr}.s-zones .grid6{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,1fr)}.s-formula .eq{flex-direction:column}}
+</style></head><body>
+<div class="progress" id="prog" style="width:0%"></div>
 
-<!-- 슬라이드 9: 비교표 -->
-<div class="slide concept">
-<h2>📊 6대 문화권 비교</h2>
-<table class="mt-6 text-base bg-white/10 rounded-xl overflow-hidden text-left max-w-5xl">
-<thead><tr class="bg-white/20"><th class="p-3">문화권</th><th class="p-3">기후</th><th class="p-3">종교</th><th class="p-3">산업</th></tr></thead>
-<tbody>
-<tr><td class="p-3">🏯 동아시아</td><td class="p-3">온대</td><td class="p-3">유교·불교</td><td class="p-3">벼농사</td></tr>
-<tr class="bg-white/5"><td class="p-3">🛕 동남·남아</td><td class="p-3">열대 계절풍</td><td class="p-3">불교·힌두</td><td class="p-3">향신료</td></tr>
-<tr><td class="p-3">🕌 건조</td><td class="p-3">사막</td><td class="p-3">이슬람</td><td class="p-3">유목·교역</td></tr>
-<tr class="bg-white/5"><td class="p-3">⛪ 유럽</td><td class="p-3">해양성</td><td class="p-3">그리스도교</td><td class="p-3">상공업</td></tr>
-<tr><td class="p-3">🗽 아메리카</td><td class="p-3">다양</td><td class="p-3">기독교 다수</td><td class="p-3">다양</td></tr>
-<tr class="bg-white/5"><td class="p-3">🌍 아프리카</td><td class="p-3">열대</td><td class="p-3">토속·이슬람·기독교</td><td class="p-3">부족 단위</td></tr>
-</tbody></table>
-</div>
+<section class="slide s-cover active">
+<span class="label">통합사회 1 · 4단원 · 4-1</span>
+<h1 class="bhs">자연이 빚은<br>6가지 삶</h1>
+<p class="sub">세계 6대 문화권 탐험</p>
+</section>
 
-<!-- 슬라이드 10: 활동 -->
-<div class="slide activity">
-<div class="text-xs text-amber-300 font-bold mb-2">학생 활동</div>
-<h2>🌍 세계 문화권 탐험가 — 웹교구</h2>
-<p class="mt-4 text-amber-100">QR 또는 링크 접속 → 6대 문화권 클릭<br>매칭 게임 + 5문항 퀴즈</p>
-<div class="mt-8 bg-white/10 rounded-xl p-6 max-w-2xl">
-<b class="text-amber-300">📲 c-culture-world-zones.html</b>
-<p class="qr-hint mt-3">→ 모둠당 1문화권 → 1분 30초 발표</p>
+<section class="slide s-hook">
+<div class="pre">왜 사막에 다른 옷을?</div>
+<h2 class="bhs">같은 사막에 살아도<br>왜 다른 옷을 입을까?</h2>
+<div class="images">
+<div class="img">🤍<p>흰색 긴 옷</p></div>
+<div class="img">🖤<p>검은 베일</p></div>
+<div class="img">🟫<p>가죽 옷</p></div>
 </div>
-<div class="mt-6 bg-emerald-500/20 rounded-xl p-4 max-w-2xl">
-<b class="text-emerald-300">📝 학습지 ① ②</b>
-<p class="text-base mt-2 text-emerald-100">우리 동네는 어느 문화권? + 6대 문화권 비교표</p>
-</div>
-</div>
+<p class="answer">자연환경만으로는 설명되지 않는다.<br><em>인문환경(종교·언어·역사)</em>이 함께 작용한다.</p>
+</section>
 
-<!-- 슬라이드 11: 정리 -->
-<div class="slide summary">
-<h2>🎯 오늘의 핵심</h2>
-<ul class="text-left mt-6 space-y-3 text-violet-100" style="list-style:none">
-<li>✅ 문화권 = 자연환경 + 인문환경의 결합체</li>
-<li>✅ 자연이 인간 적응을 결정 → 인간이 문화를 만듦</li>
-<li>✅ 6대 문화권은 각각 고유한 형성 원리를 가짐</li>
-<li>✅ 한국 = 동아시아 (온대 + 유교 + 쌀)</li>
-</ul>
-<div class="mt-10 bg-amber-500/20 rounded-xl p-5">
-<b class="text-amber-300">📌 다음 차시</b>
-<p class="text-base text-amber-100 mt-2">4-2 문화 변동과 전통 문화 — 한복 개량부터 K-pop까지</p>
+<section class="slide s-zones">
+<h2 class="bhs">🗺 세계 6대 문화권</h2>
+<div class="grid6">
+<div class="z z1"><div class="icon">🏯</div><h3>동아시아</h3><div class="feat">한·중·일<br>유교·쌀·한자</div></div>
+<div class="z z3"><div class="icon">🛕</div><h3>동남·남아</h3><div class="feat">불교·힌두<br>계절풍·향신료</div></div>
+<div class="z z2"><div class="icon">🕌</div><h3>건조</h3><div class="feat">서남아·북아프리카<br>이슬람·유목</div></div>
+<div class="z z4"><div class="icon">⛪</div><h3>유럽</h3><div class="feat">그리스도교<br>해양성·합리주의</div></div>
+<div class="z z5"><div class="icon">🗽</div><h3>아메리카</h3><div class="feat">앵글로·라틴<br>이주민 다문화</div></div>
+<div class="z z6"><div class="icon">🌍</div><h3>아프리카</h3><div class="feat">사하라 이남<br>부족·구전</div></div>
 </div>
-</div>
+</section>
 
-<!-- 네비게이션 -->
-<div class="nav">
-<button id="prev">←</button>
-<span class="counter" id="counter">1 / 11</span>
-<button id="next">→</button>
-<button onclick="window.print()" title="인쇄/PDF">🖨</button>
-<button onclick="document.documentElement.requestFullscreen()" title="전체화면">⛶</button>
+<section class="slide s-spotlight">
+<div class="pre">CASE STUDY</div>
+<h2 class="bhs">🏯 동아시아 — 쌀이 만든 문명</h2>
+<div class="grid-cols-2">
+<div class="col nat">
+<h3>🌿 자연환경</h3>
+<ul><li>온대 계절풍 기후</li><li>충적평야 + 풍부한 강수</li><li>한반도·중국·일본 열도</li></ul>
 </div>
+<div class="col hum">
+<h3>🏛 인문환경</h3>
+<ul><li>유교·불교의 융합</li><li>한자 문화권</li><li>쌀 + 젓가락 식문화</li></ul>
+</div>
+</div>
+<p class="arrow-down">↓</p>
+<p style="font-family:'Noto Serif KR',serif;font-size:clamp(1rem,1.7vw,1.3rem);max-width:900px;line-height:1.6">"풍부한 강수 → <b style="color:#fbbf24">벼농사</b> 발달 → 정착 농경 사회<br>→ 공동체 규범으로서 <b style="color:#fbbf24">유교</b> 확립"</p>
+</section>
 
-<script>
-const slides=document.querySelectorAll('.slide');
-let cur=0;
-function show(i){slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+slides.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===slides.length-1;}
-document.getElementById('prev').onclick=()=>{if(cur>0){cur--;show(cur);}};
-document.getElementById('next').onclick=()=>{if(cur<slides.length-1){cur++;show(cur);}};
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(cur<slides.length-1){cur++;show(cur);}}else if(e.key==='ArrowLeft'){if(cur>0){cur--;show(cur);}}});
-show(0);
-</script>
-</body></html>
+<section class="slide s-formula">
+<h2 class="bhs">📐 문화권의 공식</h2>
+<div class="eq">
+<div class="e1">자연환경</div>
+<span class="plus">+</span>
+<div class="e2">인문환경</div>
+<span class="eq-mark">=</span>
+<div class="e3">문화권</div>
+</div>
+<p class="insight">"비슷한 자연환경과 인문환경을 공유하며<br>유사한 문화 양식을 가진 일정한 지역."</p>
+</section>
+
+<section class="slide s-activity">
+<div class="badge">학생 활동</div>
+<h2 class="bhs">🌍 세계 문화권<br>탐험가</h2>
+<div class="panel">
+<div class="web"><h3>🌐 웹교구</h3><code>c-culture-world-zones.html</code><p style="margin-top:12px;color:rgba(255,255,255,.8);font-size:.9rem">6대 문화권 클릭 → 매칭 게임 + 5문항 퀴즈</p></div>
+<div class="ws"><h3>📝 학습지 ① ②</h3><p style="color:rgba(255,255,255,.8);font-size:.9rem">우리 동네는 어느 문화권? + 6대 문화권 비교표</p></div>
+</div>
+</section>
+
+<section class="slide s-end">
+<div class="key">CORE TAKEAWAYS</div>
+<h2 class="bhs">기억해야 할<br>4가지</h2>
+<div class="takeaways">
+<div class="ta"><b>① 문화권 = 자연 + 인문환경</b>의 결합</div>
+<div class="ta"><b>② 자연이 적응을 결정</b>, 인간이 문화를 만든다</div>
+<div class="ta"><b>③ 6대 문화권</b>은 각각 고유한 형성 원리</div>
+<div class="ta"><b>④ 한국 = 동아시아</b> (온대+유교+쌀)</div>
+</div>
+<p class="next">다음 차시 → <b>4-2 문화 변동과 전통 문화</b></p>
+</section>
+
+<div class="nav"><button id="prev">←</button><span class="counter" id="counter">1 / 7</span><button id="next">→</button><button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button></div>
+<script>const sl=document.querySelectorAll('.slide');let c=0;function s(i){sl.forEach(x=>x.classList.remove('active'));sl[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+sl.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===sl.length-1;document.getElementById('prog').style.width=(((i+1)/sl.length)*100)+'%';}
+document.getElementById('prev').onclick=()=>{if(c>0){c--;s(c);}};document.getElementById('next').onclick=()=>{if(c<sl.length-1){c++;s(c);}};
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(c<sl.length-1){c++;s(c);}}else if(e.key==='ArrowLeft'){if(c>0){c--;s(c);}}});
+let tx=0;document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){if(dx<0&&c<sl.length-1){c++;s(c);}else if(dx>0&&c>0){c--;s(c);}}});
+s(0);</script></body></html>

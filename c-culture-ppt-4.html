@@ -1,208 +1,132 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>📊 4-4 다문화 사회와 다양성 존중 — 수업 슬라이드</title>
-<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-*{box-sizing:border-box}body{font-family:'Noto Sans KR',sans-serif;background:#1e1b4b;color:#f1f5f9;margin:0;overflow:hidden}
-.fjua{font-family:'Jua',sans-serif}
-.slide{width:100vw;height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:5vh 5vw;text-align:center}
-.slide.active{display:flex;animation:fi .4s ease-out}
-@keyframes fi{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
-.slide h1{font-family:'Jua',sans-serif;font-size:clamp(2rem,5vw,4rem);margin-bottom:1.5rem}
-.slide h2{font-family:'Jua',sans-serif;font-size:clamp(1.5rem,4vw,3rem);margin-bottom:1rem}
-.slide p,.slide li{font-size:clamp(1rem,2vw,1.5rem);line-height:1.7}
-.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(10px);padding:10px 20px;border-radius:99px;z-index:100;display:flex;gap:10px;align-items:center}
-.nav button{background:#f43f5e;color:#1e1b4b;border:0;width:40px;height:40px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}
-.nav button:disabled{background:#475569;color:#94a3b8;cursor:not-allowed}
-.counter{color:#f43f5e;font-weight:bold;min-width:60px;text-align:center}
-.cover{background:linear-gradient(135deg,#9f1239 0%,#4c0519 100%)}
-.intro{background:linear-gradient(135deg,#1e3a8a 0%,#0c4a6e 100%)}
-.concept{background:linear-gradient(135deg,#9f1239 0%,#4c0519 100%)}
-.activity{background:linear-gradient(135deg,#9a3412 0%,#7c2d12 100%)}
-.summary{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
-@media print{.slide{display:flex!important;page-break-after:always;height:auto;min-height:100vh}.nav{display:none}body{background:#fff;color:#000;overflow:visible}}
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>다문화 사회 — 함께 살아가는 법</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;700;900&family=Noto+Serif+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script><style>
+*{box-sizing:border-box;margin:0;padding:0}html,body{overflow:hidden;width:100vw;height:100vh}body{font-family:'Noto Sans KR',sans-serif;background:#000;color:#fff}
+.bhs{font-family:'Black Han Sans',sans-serif;letter-spacing:-1px}
+.slide{width:100vw;height:100vh;display:none;position:relative;overflow:hidden}.slide.active{display:flex}
+.slide.active>*{animation:in .6s cubic-bezier(.2,.8,.2,1)}@keyframes in{from{opacity:0;transform:translateY(20px)}to{opacity:1}}
+.nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);backdrop-filter:blur(20px);padding:12px 24px;border-radius:99px;z-index:100;display:flex;gap:12px;align-items:center}
+.nav button{background:#fff;color:#000;border:0;width:44px;height:44px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}.nav button:disabled{background:#333;color:#666}
+.counter{color:#f43f5e;font-weight:900;min-width:64px;text-align:center;font-size:.9rem}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#f43f5e,#fbbf24,#10b981);z-index:100;transition:width .4s}
+@media print{.nav,.progress{display:none}.slide{display:flex!important;page-break-after:always}}
+
+.s-cover{background:radial-gradient(circle at 30% 70%,#9f1239 0%,#000 70%);align-items:center;justify-content:center;text-align:center;flex-direction:column;padding:5vh 5vw}
+.s-cover .label{color:#fda4af;letter-spacing:8px;font-weight:700;margin-bottom:24px;border:1px solid rgba(253,164,175,.4);padding:8px 24px;border-radius:99px;font-size:clamp(.8rem,1.2vw,1rem)}
+.s-cover h1{font-size:clamp(3rem,11vw,9rem);line-height:.9;margin-bottom:24px;background:linear-gradient(135deg,#fff,#f43f5e);-webkit-background-clip:text;color:transparent;font-weight:900}
+.s-cover .sub{font-size:clamp(1.2rem,2.5vw,1.8rem);color:rgba(255,255,255,.7);font-weight:300;letter-spacing:4px}
+
+.s-stats{background:linear-gradient(135deg,#0c0a09 0%,#1c1917 100%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw}
+.s-stats .pre{color:#f43f5e;letter-spacing:6px;margin-bottom:24px;font-size:clamp(.85rem,1.3vw,1rem)}
+.s-stats h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:48px}
+.s-stats .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1100px;width:100%}
+.s-stats .stat{padding:32px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px}
+.s-stats .num{font-size:clamp(3rem,6vw,5rem);font-weight:900;color:#f43f5e;line-height:1;margin-bottom:8px;font-family:'Black Han Sans',sans-serif}
+.s-stats .lab{font-size:clamp(.9rem,1.4vw,1.1rem);color:rgba(255,255,255,.85);margin-bottom:12px;font-weight:700}
+.s-stats .det{font-size:.85rem;color:rgba(255,255,255,.5);line-height:1.5}
+
+.s-people{background:linear-gradient(135deg,#9f1239 0%,#4c0519 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch;justify-content:center}
+.s-people h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:32px;text-align:center}
+.s-people .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.s-people .person{padding:24px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1);border-radius:16px;text-align:center;transition:.3s}
+.s-people .person:hover{border-color:#f43f5e;transform:translateY(-4px)}
+.s-people .person .icon{font-size:3rem;margin-bottom:12px}
+.s-people .person h3{font-size:clamp(1.05rem,1.5vw,1.2rem);font-weight:900;color:#f43f5e;margin-bottom:4px}
+.s-people .person .num{font-size:.85rem;color:#fbbf24;font-weight:700;margin-bottom:8px}
+.s-people .person p{font-size:clamp(.8rem,1.1vw,.9rem);color:rgba(255,255,255,.7);line-height:1.5}
+
+.s-issues{background:linear-gradient(135deg,#7f1d1d 0%,#1c1917 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch;justify-content:center}
+.s-issues h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:32px;text-align:center;color:#fbbf24}
+.s-issues .three{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.s-issues .iss{padding:28px 24px;background:rgba(0,0,0,.5);border:1px solid #ef4444;border-radius:16px}
+.s-issues .iss h3{font-size:clamp(1.1rem,1.6vw,1.3rem);font-weight:900;color:#ef4444;margin-bottom:12px}
+.s-issues .iss ul{list-style:none}
+.s-issues .iss li{padding:6px 0;font-size:clamp(.85rem,1.2vw,.95rem);color:rgba(255,255,255,.85);display:flex;gap:8px}
+.s-issues .iss li::before{content:'•';color:#ef4444;font-weight:900}
+
+.s-sol{background:linear-gradient(135deg,#064e3b 0%,#022c22 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch;justify-content:center}
+.s-sol h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:32px;text-align:center;color:#10b981}
+.s-sol .stack{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.s-sol .col-s{padding:32px 24px;background:rgba(0,0,0,.3);border-radius:16px}
+.s-sol .col-s h3{font-size:clamp(1.2rem,1.8vw,1.4rem);font-weight:900;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.s-sol .s1 h3{color:#fbbf24}.s-sol .s2 h3{color:#60a5fa}.s-sol .s3 h3{color:#10b981}
+.s-sol .col-s ul{list-style:none}
+.s-sol .col-s li{padding:8px 0;font-size:clamp(.85rem,1.2vw,.95rem);color:rgba(255,255,255,.85);border-bottom:1px solid rgba(255,255,255,.05)}
+.s-sol .col-s li:last-child{border:0}
+
+.s-quote{background:linear-gradient(135deg,#9f1239 0%,#4c0519 100%);align-items:center;justify-content:center;padding:8vh 8vw;flex-direction:column;text-align:center;gap:32px}
+.s-quote .marks{font-size:clamp(4rem,8vw,7rem);color:rgba(244,63,94,.3);font-family:Georgia,serif;line-height:.5}
+.s-quote blockquote{font-size:clamp(1.6rem,3.5vw,3rem);line-height:1.4;font-weight:300;max-width:1200px;font-family:'Noto Serif KR',serif}
+.s-quote blockquote em{color:#fbbf24;font-style:normal;font-weight:700}
+
+.s-end{background:radial-gradient(circle at 70% 30%,#9f1239 0%,#000 80%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw;gap:24px}
+.s-end .key{color:#f43f5e;letter-spacing:6px;font-weight:700;font-size:clamp(.85rem,1.3vw,1rem)}
+.s-end h2{font-size:clamp(2.5rem,6vw,5.5rem);line-height:1;font-weight:900;background:linear-gradient(180deg,#fff,#f43f5e);-webkit-background-clip:text;color:transparent}
+.s-end .center-msg{font-family:'Noto Serif KR',serif;font-size:clamp(1.2rem,2vw,1.6rem);color:rgba(255,255,255,.85);font-style:italic;max-width:900px;line-height:1.6;margin-top:32px;border-left:4px solid #f43f5e;padding-left:24px;text-align:left}
+.s-end .center-msg em{color:#fbbf24;font-style:normal;font-weight:900;font-family:'Black Han Sans',sans-serif}
+
+@media (max-width:768px){.s-stats .grid3,.s-people .grid,.s-issues .three,.s-sol .stack{grid-template-columns:1fr 1fr}}
 </style></head><body>
+<div class="progress" id="prog" style="width:0%"></div>
 
-<div class="slide cover active">
-<div class="text-xs text-rose-300 font-bold mb-2">통합사회 1 · 4단원 · 4-4</div>
-<h1>🤝 다문화 사회와 다양성 존중</h1>
-<p class="mt-4 text-rose-100">함께 살아가는 법을 배우다</p>
-<div class="mt-8 text-base text-rose-200">
-[10통사1-04-04] 다문화 사회의 갈등을 해결하고<br>문화 다양성을 존중하는 방안을 모색한다.
-</div>
-</div>
+<section class="slide s-cover active">
+<span class="label">통합사회 1 · 4단원 · 4-4</span>
+<h1 class="bhs">우리는 모두<br>누군가에겐<br>외국인이다</h1>
+<p class="sub">다문화 사회와 다양성 존중</p>
+</section>
 
-<div class="slide intro">
-<div class="text-xs text-blue-300 font-bold mb-2">현황</div>
-<h2>📊 한국은 이미 다문화 사회</h2>
-<div class="mt-6 grid grid-cols-3 gap-4 max-w-4xl">
-<div class="bg-white/10 rounded-xl p-5">
-<div class="fjua text-4xl text-rose-300">5%</div>
-<p class="text-base mt-2">외국인 비율 (2025)</p>
+<section class="slide s-stats">
+<div class="pre">한국, 다문화 사회의 현실</div>
+<h2 class="bhs">📊 미래가 아닌, 지금</h2>
+<div class="grid3">
+<div class="stat"><div class="num">5%</div><div class="lab">외국인 비율 (2025)</div><div class="det">전국민 5명 중 1명은<br>외국 배경</div></div>
+<div class="stat"><div class="num">200만+</div><div class="lab">체류 외국인 수</div><div class="det">결혼이주민 ·<br>외국인 노동자 등</div></div>
+<div class="stat"><div class="num">10%+</div><div class="lab">다문화 학생 (일부)</div><div class="det">교실에서 매일 만나는<br>다문화 친구들</div></div>
 </div>
-<div class="bg-white/10 rounded-xl p-5">
-<div class="fjua text-4xl text-rose-300">200만+</div>
-<p class="text-base mt-2">체류 외국인 수</p>
-</div>
-<div class="bg-white/10 rounded-xl p-5">
-<div class="fjua text-4xl text-rose-300">10%</div>
-<p class="text-base mt-2">다문화 학생 비율 일부 지역</p>
-</div>
-</div>
-<p class="mt-6 text-base text-blue-200">→ 다문화 사회는 미래가 아닌 <b>현재</b></p>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>🌍 다문화 사회의 구성원</h2>
-<div class="mt-6 grid grid-cols-2 gap-4 max-w-4xl">
-<div class="bg-white/10 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">💍</div>
-<b class="text-amber-300">결혼 이주민</b>
-<p class="text-base mt-1">국제결혼으로 정착</p>
+<section class="slide s-people">
+<h2 class="bhs">🌍 우리 곁의 다문화 구성원</h2>
+<div class="grid">
+<div class="person"><div class="icon">💍</div><h3>결혼 이주민</h3><div class="num">17만+</div><p>국제결혼으로 정착</p></div>
+<div class="person"><div class="icon">👷</div><h3>외국인 노동자</h3><div class="num">90만+</div><p>제조업·농어업 현장</p></div>
+<div class="person"><div class="icon">🎓</div><h3>유학생</h3><div class="num">20만+</div><p>대학·대학원 재학</p></div>
+<div class="person"><div class="icon">🤝</div><h3>북한이탈주민</h3><div class="num">3.5만+</div><p>새 삶을 시작</p></div>
 </div>
-<div class="bg-white/10 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">👷</div>
-<b class="text-amber-300">외국인 노동자</b>
-<p class="text-base mt-1">제조업·농어업 현장</p>
-</div>
-<div class="bg-white/10 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">🎓</div>
-<b class="text-amber-300">유학생</b>
-<p class="text-base mt-1">대학·대학원 재학</p>
-</div>
-<div class="bg-white/10 rounded-xl p-4 text-left">
-<div class="text-3xl mb-1">🤝</div>
-<b class="text-amber-300">북한이탈주민</b>
-<p class="text-base mt-1">3만 5천명 이상</p>
-</div>
-</div>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>⚠️ 갈등 사례 1 — 결혼 이주민</h2>
-<div class="mt-6 bg-white/10 rounded-xl p-6 max-w-3xl text-left">
-<ul class="text-base space-y-2">
-<li>📉 저소득·빈곤</li>
-<li>🗣 의사소통의 어려움</li>
-<li>👨‍👩‍👧 자녀 양육 갈등 (이중 정체성)</li>
-<li>💔 가정 폭력 노출 위험</li>
-<li>🚫 사회적 고립</li>
-</ul>
+<section class="slide s-issues">
+<h2 class="bhs">⚠️ 그러나 — 갈등은 현실</h2>
+<div class="three">
+<div class="iss"><h3>💍 결혼 이주민</h3><ul><li>저소득·빈곤</li><li>의사소통 어려움</li><li>자녀 양육 갈등</li><li>가정 폭력 노출</li><li>사회적 고립</li></ul></div>
+<div class="iss"><h3>👷 외국인 노동자</h3><ul><li>장시간 노동·저임금</li><li>산업재해 무방비</li><li>비자·체류 불안</li><li>폭언·폭행 피해</li><li>법적 사각지대</li></ul></div>
+<div class="iss"><h3>🎒 다문화 학생</h3><ul><li>한국어 학업 격차</li><li>외모·이름 따돌림</li><li>이중 정체성 혼란</li><li>진로 정보 부족</li><li>정서적 소외</li></ul></div>
 </div>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>⚠️ 갈등 사례 2 — 외국인 노동자</h2>
-<div class="mt-6 bg-white/10 rounded-xl p-6 max-w-3xl text-left">
-<ul class="text-base space-y-2">
-<li>⏰ 장시간 노동·저임금</li>
-<li>🏥 산업재해 무방비</li>
-<li>📜 비자·체류 불안정</li>
-<li>👊 폭언·폭행 피해</li>
-<li>⚖️ 법적 보호 사각지대</li>
-</ul>
+<section class="slide s-sol">
+<h2 class="bhs">💡 함께 만드는 해법</h2>
+<div class="stack">
+<div class="col-s s1"><h3>📜 제도</h3><ul><li>다문화가족지원법</li><li>외국인근로자법</li><li>의료 통역 서비스</li><li>차별금지법 추진</li></ul></div>
+<div class="col-s s2"><h3>🎓 교육·인식</h3><ul><li>다문화 감수성 교육</li><li>세계시민 교육</li><li>미디어 인식 개선</li><li>다문화 축제·교류</li></ul></div>
+<div class="col-s s3"><h3>🤝 시민 의식</h3><ul><li>상호문화주의</li><li>관용과 공감</li><li>반차별 행동</li><li>옆에서 목소리 내기</li></ul></div>
 </div>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>⚠️ 갈등 사례 3 — 다문화 학생</h2>
-<div class="mt-6 bg-white/10 rounded-xl p-6 max-w-3xl text-left">
-<ul class="text-base space-y-2">
-<li>🎒 한국어 어려움 → 학업 격차</li>
-<li>👥 외모·이름으로 따돌림</li>
-<li>🆔 이중 정체성 혼란</li>
-<li>📚 진로 정보 부족</li>
-<li>💔 정서적 소외감</li>
-</ul>
-</div>
-<p class="mt-4 text-base text-rose-200 italic">"검은 피부색 때문에 초등학교부터 괴롭힘 대상이 되었다" — 실제 사례</p>
-</div>
+<section class="slide s-quote">
+<div class="marks">"</div>
+<blockquote>다른 것은 <em>틀린 것이</em> 아니다.<br>차이를 차별의 이유로 만들지 말자.</blockquote>
+</section>
 
-<div class="slide concept">
-<h2>💡 해결 방안 1 — 제도</h2>
-<ul class="text-left mt-6 space-y-3 max-w-3xl" style="list-style:none">
-<li class="bg-white/10 rounded-xl p-4">📜 <b>다문화가족지원법</b> — 한국어·자녀 교육·생활 지원</li>
-<li class="bg-white/10 rounded-xl p-4">⚖️ <b>외국인근로자법</b> — 노동권·산재 보호</li>
-<li class="bg-white/10 rounded-xl p-4">🏥 <b>의료·보육 지원</b> — 의료 통역 서비스</li>
-<li class="bg-white/10 rounded-xl p-4">🚓 <b>차별 금지 입법 추진</b> — 포괄적 차별금지법</li>
-</ul>
-</div>
+<section class="slide s-end">
+<div class="key">UNIT FINAL MESSAGE</div>
+<h2 class="bhs">함께 살아가는<br>법을 배운다</h2>
+<div class="center-msg">"다양성이 있어 사회는 풍요로워지고,<br><em>존중이 있어</em> 함께 살 수 있다.<br>우리는 모두 누군가에게는 외국인이다."</div>
+</section>
 
-<div class="slide concept">
-<h2>💡 해결 방안 2 — 교육·인식</h2>
-<ul class="text-left mt-6 space-y-3 max-w-3xl" style="list-style:none">
-<li class="bg-white/10 rounded-xl p-4">🎓 <b>다문화 감수성 교육</b> — 학교 정규 교육</li>
-<li class="bg-white/10 rounded-xl p-4">🌍 <b>세계시민 교육</b> — 글로벌 시민의식</li>
-<li class="bg-white/10 rounded-xl p-4">📺 <b>미디어 인식 개선</b> — 편견 없는 표현</li>
-<li class="bg-white/10 rounded-xl p-4">🤝 <b>다문화 축제·교류</b> — 직접 만남의 기회</li>
-</ul>
-</div>
-
-<div class="slide concept">
-<h2>💡 해결 방안 3 — 시민 의식</h2>
-<div class="mt-6 grid grid-cols-2 gap-4 max-w-4xl">
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-3xl mb-2">🌐</div>
-<b class="text-amber-300 text-xl">상호문화주의</b>
-<p class="text-base mt-2">"다른 문화에서 배운다"</p>
-</div>
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-3xl mb-2">🤝</div>
-<b class="text-amber-300 text-xl">관용과 공감</b>
-<p class="text-base mt-2">"내가 겪는다면 어떨까"</p>
-</div>
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-3xl mb-2">⚖️</div>
-<b class="text-amber-300 text-xl">반차별</b>
-<p class="text-base mt-2">"차이를 차별로 만들지 말자"</p>
-</div>
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-3xl mb-2">📢</div>
-<b class="text-amber-300 text-xl">목소리 내기</b>
-<p class="text-base mt-2">"옆에서 부조리를 보면 알린다"</p>
-</div>
-</div>
-</div>
-
-<div class="slide activity">
-<div class="text-xs text-amber-300 font-bold mb-2">학생 활동</div>
-<h2>⚖️ 다문화 시민 법정 STEP 4 + 학급 약속</h2>
-<p class="mt-4 text-amber-100">정책 제안서 작성 + "우리 반 다문화 약속" 만들기</p>
-<div class="mt-8 bg-white/10 rounded-xl p-6 max-w-2xl text-left">
-<b class="text-amber-300">📲 활동 흐름</b>
-<ol class="text-base mt-3 list-decimal list-inside space-y-1">
-<li>웹교구로 5사건 판결 완료 (지난 차시)</li>
-<li>STEP 4 갈등 해결 방안 작성</li>
-<li>모둠별 정책 제안서 발표</li>
-<li>학급 전체 합의 → 5개 약속 게시</li>
-</ol>
-</div>
-</div>
-
-<div class="slide summary">
-<h2>🎯 단원 마지막 메시지</h2>
-<div class="mt-6 bg-white/10 rounded-2xl p-8 max-w-3xl">
-<p class="text-2xl text-amber-300 mb-4">"다른 것은 틀린 것이 아니다."</p>
-<p class="text-base text-violet-100">우리는 모두 누군가에게는 외국인이다.<br>차이를 차별의 이유로 만들지 말자.<br><br>다양성이 있어 사회는 풍요로워지고,<br>존중이 있어 함께 살 수 있다.</p>
-</div>
-<div class="mt-8 bg-emerald-500/20 rounded-xl p-4">
-<b class="text-emerald-300">📌 다음 단원</b>
-<p class="text-base text-emerald-100 mt-2">5단원 생활공간과 사회 — 우리가 살아가는 공간의 변화</p>
-</div>
-</div>
-
-<div class="nav">
-<button id="prev">←</button><span class="counter" id="counter">1 / 11</span><button id="next">→</button>
-<button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button>
-</div>
-
-<script>
-const slides=document.querySelectorAll('.slide');let cur=0;
-function show(i){slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+slides.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===slides.length-1;}
-document.getElementById('prev').onclick=()=>{if(cur>0){cur--;show(cur);}};
-document.getElementById('next').onclick=()=>{if(cur<slides.length-1){cur++;show(cur);}};
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(cur<slides.length-1){cur++;show(cur);}}else if(e.key==='ArrowLeft'){if(cur>0){cur--;show(cur);}}});
-show(0);
-</script>
-</body></html>
+<div class="nav"><button id="prev">←</button><span class="counter" id="counter">1 / 7</span><button id="next">→</button><button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button></div>
+<script>const sl=document.querySelectorAll('.slide');let c=0;function s(i){sl.forEach(x=>x.classList.remove('active'));sl[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+sl.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===sl.length-1;document.getElementById('prog').style.width=(((i+1)/sl.length)*100)+'%';}
+document.getElementById('prev').onclick=()=>{if(c>0){c--;s(c);}};document.getElementById('next').onclick=()=>{if(c<sl.length-1){c++;s(c);}};
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(c<sl.length-1){c++;s(c);}}else if(e.key==='ArrowLeft'){if(c>0){c--;s(c);}}});
+let tx=0;document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){if(dx<0&&c<sl.length-1){c++;s(c);}else if(dx>0&&c>0){c--;s(c);}}});s(0);</script></body></html>

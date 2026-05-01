@@ -1,216 +1,187 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>📊 4-2 문화 변동과 전통 문화 — 수업 슬라이드</title>
-<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-*{box-sizing:border-box}body{font-family:'Noto Sans KR',sans-serif;background:#0f172a;color:#f1f5f9;margin:0;overflow:hidden}
-.fjua{font-family:'Jua',sans-serif}
-.slide{width:100vw;height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:5vh 5vw;text-align:center}
-.slide.active{display:flex;animation:fi .4s ease-out}
-@keyframes fi{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
-.slide h1{font-family:'Jua',sans-serif;font-size:clamp(2rem,5vw,4rem);margin-bottom:1.5rem}
-.slide h2{font-family:'Jua',sans-serif;font-size:clamp(1.5rem,4vw,3rem);margin-bottom:1rem}
-.slide p,.slide li{font-size:clamp(1rem,2vw,1.5rem);line-height:1.7}
-.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(10px);padding:10px 20px;border-radius:99px;z-index:100;display:flex;gap:10px;align-items:center}
-.nav button{background:#10b981;color:#0f172a;border:0;width:40px;height:40px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}
-.nav button:disabled{background:#475569;color:#94a3b8;cursor:not-allowed}
-.counter{color:#10b981;font-weight:bold;min-width:60px;text-align:center}
-.cover{background:linear-gradient(135deg,#064e3b 0%,#022c22 100%)}
-.intro{background:linear-gradient(135deg,#1e3a8a 0%,#0c4a6e 100%)}
-.concept{background:linear-gradient(135deg,#065f46 0%,#064e3b 100%)}
-.activity{background:linear-gradient(135deg,#9a3412 0%,#7c2d12 100%)}
-.summary{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
-.factor{display:inline-block;padding:1.5rem;margin:.5rem;border-radius:1rem;background:rgba(255,255,255,.1);min-width:200px}
-@media print{.slide{display:flex!important;page-break-after:always;height:auto;min-height:100vh}.nav{display:none}body{background:#fff;color:#000;overflow:visible}}
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>문화 변동 — 한복은 어떻게 살아남았나</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;700;900&family=Noto+Serif+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script><style>
+*{box-sizing:border-box;margin:0;padding:0}html,body{overflow:hidden;width:100vw;height:100vh}body{font-family:'Noto Sans KR',sans-serif;background:#000;color:#fff}
+.bhs{font-family:'Black Han Sans',sans-serif;letter-spacing:-1px}.nsr{font-family:'Noto Serif KR',serif}
+.slide{width:100vw;height:100vh;display:none;position:relative;overflow:hidden}.slide.active{display:flex}
+.slide.active>*{animation:in .6s cubic-bezier(.2,.8,.2,1)}@keyframes in{from{opacity:0;transform:translateY(20px)}to{opacity:1}}
+.nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);backdrop-filter:blur(20px);padding:12px 24px;border-radius:99px;z-index:100;display:flex;gap:12px;align-items:center}
+.nav button{background:#fff;color:#000;border:0;width:44px;height:44px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}.nav button:disabled{background:#333;color:#666}
+.counter{color:#10b981;font-weight:900;min-width:64px;text-align:center;font-size:.9rem}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#10b981,#06b6d4);z-index:100;transition:width .4s}
+@media print{.nav,.progress{display:none}.slide{display:flex!important;page-break-after:always}}
+
+.s-cover{background:radial-gradient(circle at 70% 30%,#064e3b 0%,#000 70%);align-items:center;justify-content:center;text-align:center;flex-direction:column;padding:5vh 5vw}
+.s-cover .label{color:#10b981;letter-spacing:8px;font-weight:700;margin-bottom:24px;border:1px solid rgba(16,185,129,.4);padding:8px 24px;border-radius:99px;font-size:clamp(.8rem,1.2vw,1rem)}
+.s-cover h1{font-size:clamp(3rem,11vw,9rem);line-height:.9;margin-bottom:24px;background:linear-gradient(135deg,#fff,#10b981);-webkit-background-clip:text;color:transparent;font-weight:900}
+.s-cover .sub{font-size:clamp(1.2rem,2.5vw,1.8rem);color:rgba(255,255,255,.7);font-weight:300;letter-spacing:4px}
+
+.s-vs{background:#0a0a0a;display:grid;grid-template-columns:1fr 1fr}
+.s-vs .col{padding:8vh 5vw;display:flex;flex-direction:column;justify-content:center;gap:16px}
+.s-vs .col.left{background:linear-gradient(135deg,#451a03 0%,#000 100%)}
+.s-vs .col.right{background:linear-gradient(135deg,#064e3b 0%,#000 100%)}
+.s-vs .year{font-size:clamp(2.5rem,5vw,4rem);color:#fbbf24;font-weight:900;font-family:'Black Han Sans',sans-serif}
+.s-vs .icon{font-size:6rem}
+.s-vs h2{font-size:clamp(2rem,4vw,3rem);font-family:'Black Han Sans',sans-serif;line-height:1}
+.s-vs .desc{font-size:clamp(1rem,1.5vw,1.2rem);color:rgba(255,255,255,.7);line-height:1.6}
+
+.s-factors{background:linear-gradient(135deg,#0c0a09 0%,#1c1917 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch;justify-content:center}
+.s-factors h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:32px;text-align:center}
+.s-factors .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.s-factors .factor{padding:32px;border-radius:16px}
+.s-factors .internal{background:rgba(16,185,129,.1);border:2px solid #10b981}
+.s-factors .external{background:rgba(59,130,246,.1);border:2px solid #3b82f6}
+.s-factors .factor h3{font-size:clamp(1.4rem,2.2vw,1.8rem);font-weight:900;margin-bottom:16px}
+.s-factors .internal h3{color:#10b981}.s-factors .external h3{color:#60a5fa}
+.s-factors .factor ul{list-style:none}
+.s-factors .factor li{padding:10px 0;font-size:clamp(.95rem,1.4vw,1.1rem);border-bottom:1px solid rgba(255,255,255,.05)}
+.s-factors .factor li:last-child{border:0}
+.s-factors .factor li b{color:#fbbf24}
+
+.s-cases{background:linear-gradient(135deg,#022c22 0%,#0c0a09 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch;justify-content:center}
+.s-cases h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:24px;text-align:center}
+.s-cases .case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.s-cases .case{background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:24px;transition:.3s}
+.s-cases .case:hover{border-color:#10b981;transform:translateY(-4px)}
+.s-cases .case .icon{font-size:3rem;margin-bottom:12px}
+.s-cases .case h3{font-size:clamp(1rem,1.4vw,1.2rem);font-weight:900;margin-bottom:8px}
+.s-cases .case .tag{display:inline-block;background:#10b981;color:#000;padding:4px 10px;border-radius:99px;font-size:.7rem;font-weight:900;margin-bottom:12px}
+.s-cases .case p{font-size:clamp(.85rem,1.2vw,.95rem);color:rgba(255,255,255,.7);line-height:1.5}
+
+.s-results{background:linear-gradient(135deg,#0c4a6e 0%,#0c1e2e 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch;justify-content:center}
+.s-results h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:32px;text-align:center}
+.s-results .three{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.s-results .r{padding:32px 24px;border-radius:16px;text-align:center}
+.s-results .r1{background:rgba(16,185,129,.15);border:2px solid #10b981}
+.s-results .r2{background:rgba(59,130,246,.15);border:2px solid #3b82f6}
+.s-results .r3{background:rgba(251,191,36,.15);border:2px solid #fbbf24}
+.s-results .r .icon{font-size:4rem;margin-bottom:12px}
+.s-results .r h3{font-size:clamp(1.3rem,2vw,1.6rem);font-weight:900;margin-bottom:8px}
+.s-results .r .def{font-size:clamp(.9rem,1.3vw,1rem);color:rgba(255,255,255,.8);margin-bottom:12px;line-height:1.5}
+.s-results .r .ex{font-size:clamp(.8rem,1.1vw,.9rem);color:rgba(255,255,255,.5);font-style:italic;border-top:1px solid rgba(255,255,255,.1);padding-top:12px}
+
+.s-quote{background:linear-gradient(135deg,#064e3b 0%,#022c22 100%);align-items:center;justify-content:center;padding:8vh 8vw;flex-direction:column;text-align:center;gap:32px}
+.s-quote .marks{font-size:clamp(4rem,8vw,7rem);color:rgba(16,185,129,.3);font-family:Georgia,serif;line-height:.5}
+.s-quote blockquote{font-size:clamp(1.6rem,3.5vw,3rem);line-height:1.4;font-weight:300;max-width:1200px;font-family:'Noto Serif KR',serif}
+.s-quote blockquote em{color:#10b981;font-style:normal;font-weight:700}
+.s-quote cite{font-size:clamp(.9rem,1.4vw,1.1rem);color:rgba(255,255,255,.5);font-style:normal;letter-spacing:2px}.s-quote cite::before{content:'— '}
+
+.s-activity{background:linear-gradient(135deg,#7c2d12 0%,#451a03 100%);align-items:center;justify-content:center;padding:8vh 5vw;flex-direction:column;text-align:center;gap:24px}
+.s-activity .badge{color:#fbbf24;letter-spacing:6px;font-weight:700;border:1px solid rgba(251,191,36,.5);padding:8px 24px;border-radius:99px;background:rgba(0,0,0,.3);font-size:clamp(.8rem,1.2vw,1rem)}
+.s-activity h2{font-size:clamp(2rem,5vw,4rem);font-weight:900;line-height:1}
+.s-activity .panel{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1100px;width:100%}
+.s-activity .web,.s-activity .ws{padding:24px;border-radius:16px;text-align:left}
+.s-activity .web{background:rgba(0,0,0,.5);border:1px solid #fbbf24}
+.s-activity .ws{background:rgba(16,185,129,.15);border:1px solid #10b981}
+.s-activity .web h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;color:#fbbf24}
+.s-activity .ws h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;color:#10b981}
+.s-activity .web code{background:rgba(0,0,0,.5);padding:4px 8px;border-radius:4px;font-size:.85rem;color:#fbbf24}
+
+.s-end{background:radial-gradient(circle at 30% 70%,#064e3b 0%,#000 80%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw;gap:24px}
+.s-end .key{color:#10b981;letter-spacing:6px;font-weight:700;font-size:clamp(.85rem,1.3vw,1rem)}
+.s-end h2{font-size:clamp(2.5rem,7vw,6rem);line-height:1;font-weight:900;background:linear-gradient(180deg,#fff,#10b981);-webkit-background-clip:text;color:transparent}
+.s-end .takeaways{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:1000px;width:100%;margin-top:32px}
+.s-end .ta{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px;text-align:left;font-size:clamp(.9rem,1.3vw,1.1rem)}
+.s-end .ta b{color:#10b981}
+.s-end .next{margin-top:32px;font-size:clamp(.85rem,1.2vw,1rem);color:rgba(255,255,255,.5)}.s-end .next b{color:#10b981}
+
+@media (max-width:768px){.s-vs,.s-factors .grid,.s-cases .case-grid,.s-results .three,.s-end .takeaways,.s-activity .panel{grid-template-columns:1fr}}
 </style></head><body>
+<div class="progress" id="prog" style="width:0%"></div>
 
-<div class="slide cover active">
-<div class="text-xs text-emerald-300 font-bold mb-2">통합사회 1 · 4단원 · 4-2</div>
-<h1>🔬 문화 변동과 전통 문화</h1>
-<p class="mt-4 text-emerald-100">변하는 문화 속에서 살아남는 것은 무엇인가</p>
-<div class="mt-8 text-base text-emerald-200">
-[10통사1-04-02] 문화 변동의 양상과 그에 따른 문제점,<br>전통문화의 의의와 계승 방안을 탐구한다.
-</div>
-</div>
+<section class="slide s-cover active">
+<span class="label">통합사회 1 · 4단원 · 4-2</span>
+<h1 class="bhs">한복은 어떻게<br>살아남았나</h1>
+<p class="sub">문화 변동과 전통 문화</p>
+</section>
 
-<div class="slide intro">
-<div class="text-xs text-blue-300 font-bold mb-2">도입</div>
-<h2>👘 1900년 → 2025년</h2>
-<p class="mt-4">한복은 어떻게 변했을까?</p>
-<div class="mt-8 grid grid-cols-2 gap-8 max-w-3xl">
-<div class="bg-white/10 rounded-xl p-6">
-<div class="text-5xl">👘</div>
-<b class="text-amber-300">전통 한복</b>
-<p class="text-base mt-2">의식·명절</p>
+<section class="slide s-vs">
+<div class="col left">
+<div class="year">1900</div>
+<div class="icon">👘</div>
+<h2 class="bhs">전통 한복</h2>
+<p class="desc">의식과 명절의 옷.<br>양반과 평민, 색깔이 다 달랐다.</p>
 </div>
-<div class="bg-white/10 rounded-xl p-6">
-<div class="text-5xl">👗</div>
-<b class="text-amber-300">생활/퓨전 한복</b>
-<p class="text-base mt-2">일상·SNS·세계화</p>
+<div class="col right">
+<div class="year">2025</div>
+<div class="icon">👗</div>
+<h2 class="bhs">생활·퓨전 한복</h2>
+<p class="desc">일상에서 입는 옷.<br>외국인이 입고 SNS로 세계화.</p>
 </div>
-</div>
-<p class="mt-6 text-base text-blue-200">→ 왜 변할까? 어떻게 변할까? 무엇이 남을까?</p>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>📖 문화 변동이란?</h2>
-<p class="mt-4 text-emerald-100">한 사회의 문화가 시간이 지남에 따라 변화하는 현상</p>
-<div class="mt-10 grid grid-cols-2 gap-6 max-w-4xl">
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-3xl mb-2">🏠</div>
-<b class="text-emerald-300 text-xl">내재적 요인</b>
-<p class="text-base mt-2">사회 내부에서 발생</p>
-<ul class="text-base mt-3 text-left">
-<li>• 발견 (이미 존재 → 알아냄)</li>
-<li>• 발명 (없던 것 → 새로 만듦)</li>
+<section class="slide s-factors">
+<h2 class="bhs">📖 문화 변동의 두 갈래</h2>
+<div class="grid">
+<div class="factor internal">
+<h3>🏠 내재적 요인</h3>
+<ul>
+<li><b>발견</b> — 이미 존재하던 것을 알아냄<br><span style="color:rgba(255,255,255,.5);font-size:.85em">예: 신대륙 발견, 페니실린</span></li>
+<li><b>발명</b> — 없던 것을 새로 만듦<br><span style="color:rgba(255,255,255,.5);font-size:.85em">예: 한글 창제, 거북선</span></li>
 </ul>
 </div>
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-3xl mb-2">🌐</div>
-<b class="text-emerald-300 text-xl">외재적 요인</b>
-<p class="text-base mt-2">외부에서 유입 = 문화 전파</p>
-<ul class="text-base mt-3 text-left">
-<li>• 직접 전파 (사람 직접)</li>
-<li>• 간접 전파 (매체)</li>
-<li>• 자극 전파 (자극 → 새 발명)</li>
+<div class="factor external">
+<h3>🌐 외재적 요인 (전파)</h3>
+<ul>
+<li><b>직접 전파</b> — 사람의 직접 접촉<br><span style="color:rgba(255,255,255,.5);font-size:.85em">예: 베트남 쌀국수의 한국 정착</span></li>
+<li><b>간접 전파</b> — 매체 (인터넷·TV)<br><span style="color:rgba(255,255,255,.5);font-size:.85em">예: K-pop의 세계화</span></li>
+<li><b>자극 전파</b> — 영감 받아 새 발명<br><span style="color:rgba(255,255,255,.5);font-size:.85em">예: 한자 자극 → 한글 창제</span></li>
 </ul>
 </div>
 </div>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>🔍 직접 전파</h2>
-<p class="mt-4 text-emerald-100">두 사회 구성원의 직접 접촉</p>
-<div class="mt-8 bg-white/10 rounded-xl p-6 max-w-3xl">
-<div class="text-5xl mb-3">🍜</div>
-<b class="text-amber-300 text-2xl">베트남 쌀국수의 한국 전파</b>
-<p class="text-base mt-3">베트남 전쟁 후 이주민 → 쌀국수 식당 개업 → 한국에 정착</p>
+<section class="slide s-cases">
+<h2 class="bhs">🎬 5가지 한국 사례</h2>
+<div class="case-grid">
+<div class="case"><div class="icon">👘</div><span class="tag">내재적</span><h3>한복 개량</h3><p>국내 디자이너가 자생적으로 변형 → 새로운 형태 탄생</p></div>
+<div class="case"><div class="icon">🎤</div><span class="tag">간접 전파</span><h3>K-pop 세계화</h3><p>유튜브·SNS 매체로 전 세계 확산. 한류 음악 장르 형성</p></div>
+<div class="case"><div class="icon">🥢</div><span class="tag">내재적</span><h3>명절 간소화</h3><p>가치관 변화로 차례·제사 형식이 점차 변화</p></div>
+<div class="case"><div class="icon">🍕</div><span class="tag">직접 전파</span><h3>한식 퓨전</h3><p>김치 피자, 불고기 버거 — 음식 문화 결합</p></div>
+<div class="case"><div class="icon">🔤</div><span class="tag">자극 전파</span><h3>한글 창제</h3><p>한자에서 자극받아 완전히 새로운 문자 발명</p></div>
+<div class="case" style="display:flex;align-items:center;justify-content:center;background:rgba(251,191,36,.1);border-color:#fbbf24"><div style="text-align:center"><div class="icon">🤔</div><h3 style="color:#fbbf24">학생 활동</h3><p>"내가 발견한 변동" 적기</p></div></div>
 </div>
-<p class="mt-6 text-base text-emerald-200">📌 핵심: <b>사람과 사람의 직접 만남</b></p>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>📡 간접 전파</h2>
-<p class="mt-4 text-emerald-100">매체를 통한 전파 (인터넷·TV·SNS)</p>
-<div class="mt-8 bg-white/10 rounded-xl p-6 max-w-3xl">
-<div class="text-5xl mb-3">🎤</div>
-<b class="text-amber-300 text-2xl">K-pop의 세계화</b>
-<p class="text-base mt-3">유튜브·틱톡 → 외국인이 한국어 가사를 따라 부름<br>한국에 안 와봐도 K-pop을 알게 됨</p>
+<section class="slide s-results">
+<h2 class="bhs">🔗 문화 접변의 3가지 결과</h2>
+<div class="three">
+<div class="r r1"><div class="icon">🤝</div><h3>병존</h3><div class="def">두 문화가 나란히 공존</div><div class="ex">예: 한식·양식 식당이 함께 영업</div></div>
+<div class="r r2"><div class="icon">🌊</div><h3>동화</h3><div class="def">한쪽이 다른 쪽에 흡수</div><div class="ex">예: 일상복은 양복으로 거의 대체</div></div>
+<div class="r r3"><div class="icon">🎨</div><h3>융합</h3><div class="def">새로운 제3의 문화 탄생</div><div class="ex">예: 비빔밥 토르티야, 김치 피자</div></div>
 </div>
-<p class="mt-6 text-base text-emerald-200">📌 핵심: <b>매개체 → 비대면</b></p>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>💡 자극 전파</h2>
-<p class="mt-4 text-emerald-100">다른 문화에서 영감 → 새로운 것 발명</p>
-<div class="mt-8 bg-white/10 rounded-xl p-6 max-w-3xl">
-<div class="text-5xl mb-3">🔤</div>
-<b class="text-amber-300 text-2xl">한글 창제 (1443)</b>
-<p class="text-base mt-3">한자·산스크리트 등에서 자극을 받아<br>완전히 새로운 한국식 표음 문자 발명</p>
-</div>
-<p class="mt-6 text-base text-emerald-200">📌 핵심: <b>외부 자극 → 내부 발명</b></p>
-</div>
+<section class="slide s-quote">
+<div class="marks">"</div>
+<blockquote>전통은 박물관에 있는 게 아니라<br><em>오늘의 거리에서</em><br>다시 살아나는 것이다.</blockquote>
+<cite>한복 디자이너의 메모 · 2024</cite>
+</section>
 
-<div class="slide concept">
-<h2>🔗 문화 접변의 결과 3가지</h2>
-<div class="mt-6 grid grid-cols-3 gap-4 max-w-5xl">
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-4xl mb-2">🤝</div>
-<b class="text-emerald-300 text-xl">병존</b>
-<p class="text-base mt-2">두 문화 나란히 공존</p>
-<p class="text-sm mt-2 text-emerald-200">예: 한식 + 양식 식당</p>
+<section class="slide s-activity">
+<div class="badge">학생 활동</div>
+<h2 class="bhs">🔬 문화 변동 연구소</h2>
+<div class="panel">
+<div class="web"><h3>🌐 웹교구</h3><code>c-culture-change-lab.html</code><p style="margin-top:12px;color:rgba(255,255,255,.8);font-size:.9rem">5사례 자동 분류 + 보존 계획서 작성 → PDF 출력</p></div>
+<div class="ws"><h3>📝 학습지 ③</h3><p style="color:rgba(255,255,255,.8);font-size:.9rem">분류표 + 내가 지키고 싶은 전통 보존 계획서</p></div>
 </div>
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-4xl mb-2">🌊</div>
-<b class="text-emerald-300 text-xl">동화</b>
-<p class="text-base mt-2">한쪽이 다른 쪽에 흡수</p>
-<p class="text-sm mt-2 text-emerald-200">예: 양복으로의 일상 전환</p>
-</div>
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-4xl mb-2">🎨</div>
-<b class="text-emerald-300 text-xl">융합</b>
-<p class="text-base mt-2">새로운 제3의 문화 탄생</p>
-<p class="text-sm mt-2 text-emerald-200">예: 비빔밥 토르티야</p>
-</div>
-</div>
-</div>
+</section>
 
-<div class="slide concept">
-<h2>📜 전통문화의 의의</h2>
-<div class="mt-6 grid grid-cols-2 gap-6 max-w-4xl">
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-4xl mb-2">🏛</div>
-<b class="text-amber-300 text-xl">정체성</b>
-<p class="text-base mt-2">"우리는 누구인가"의 답</p>
+<section class="slide s-end">
+<div class="key">CORE TAKEAWAYS</div>
+<h2 class="bhs">기억해야 할<br>4가지</h2>
+<div class="takeaways">
+<div class="ta"><b>① 변동의 양 갈래</b> — 내재적(발명) + 외재적(전파)</div>
+<div class="ta"><b>② 전파 3종</b> — 직접·간접·자극</div>
+<div class="ta"><b>③ 접변 결과</b> — 병존·동화·융합</div>
+<div class="ta"><b>④ 전통문화</b> = 정체성·자긍심·자원 — 변하지만 살아남는다</div>
 </div>
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-4xl mb-2">💎</div>
-<b class="text-amber-300 text-xl">자긍심</b>
-<p class="text-base mt-2">민족적 자존감 · 단결</p>
-</div>
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-4xl mb-2">💰</div>
-<b class="text-amber-300 text-xl">문화 자원</b>
-<p class="text-base mt-2">관광·산업·외교 자산</p>
-</div>
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-4xl mb-2">🌱</div>
-<b class="text-amber-300 text-xl">창조의 원천</b>
-<p class="text-base mt-2">새 문화 창출의 토대</p>
-</div>
-</div>
-</div>
+<p class="next">다음 차시 → <b>4-3 문화 상대주의와 보편 윤리</b></p>
+</section>
 
-<div class="slide concept">
-<h2>🛡 전통문화 계승 방안</h2>
-<ul class="text-left mt-6 space-y-4 max-w-3xl" style="list-style:none">
-<li class="bg-white/10 rounded-xl p-4">🏛 <b>제도적 지원</b> — 무형문화재 지정, 전통문화 지원법</li>
-<li class="bg-white/10 rounded-xl p-4">📚 <b>교육·학교</b> — 전통 동아리, 체험 학습, 교과 연계</li>
-<li class="bg-white/10 rounded-xl p-4">📱 <b>디지털 아카이빙</b> — 유튜브·VR·메타버스 기록</li>
-<li class="bg-white/10 rounded-xl p-4">🎨 <b>현대적 융합</b> — 한복 디자이너, 판소리 콜라보</li>
-</ul>
-</div>
-
-<div class="slide activity">
-<div class="text-xs text-amber-300 font-bold mb-2">학생 활동</div>
-<h2>🔬 문화 변동 연구소 — 웹교구</h2>
-<p class="mt-4 text-amber-100">5사례 분류 + 보존 계획서 작성</p>
-<div class="mt-8 bg-white/10 rounded-xl p-6 max-w-2xl">
-<b class="text-amber-300">📲 c-culture-change-lab.html</b>
-<p class="text-base mt-3">한복 개량 / K-pop / 명절 / 한식 퓨전 / 한글 디자인</p>
-</div>
-<div class="mt-6 bg-emerald-500/20 rounded-xl p-4 max-w-2xl">
-<b class="text-emerald-300">📝 학습지 ③</b>
-<p class="text-base mt-2 text-emerald-100">분류표 + 내가 지키고 싶은 전통 보존 계획서</p>
-</div>
-</div>
-
-<div class="slide summary">
-<h2>🎯 오늘의 핵심</h2>
-<ul class="text-left mt-6 space-y-3 text-violet-100" style="list-style:none">
-<li>✅ 문화는 끊임없이 변동 (내재적 + 외재적)</li>
-<li>✅ 외재적 = 직접 / 간접 / 자극 전파</li>
-<li>✅ 결과 = 병존 / 동화 / 융합</li>
-<li>✅ 전통문화는 정체성·자긍심·자원 — 변하지만 살아남는다</li>
-</ul>
-<div class="mt-10 bg-amber-500/20 rounded-xl p-5">
-<b class="text-amber-300">📌 다음 차시</b>
-<p class="text-base text-amber-100 mt-2">4-3 문화 상대주의와 보편 윤리 — 어디까지 존중해야 할까?</p>
-</div>
-</div>
-
-<div class="nav">
-<button id="prev">←</button><span class="counter" id="counter">1 / 11</span><button id="next">→</button>
-<button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button>
-</div>
-
-<script>
-const slides=document.querySelectorAll('.slide');let cur=0;
-function show(i){slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+slides.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===slides.length-1;}
-document.getElementById('prev').onclick=()=>{if(cur>0){cur--;show(cur);}};
-document.getElementById('next').onclick=()=>{if(cur<slides.length-1){cur++;show(cur);}};
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(cur<slides.length-1){cur++;show(cur);}}else if(e.key==='ArrowLeft'){if(cur>0){cur--;show(cur);}}});
-show(0);
-</script>
-</body></html>
+<div class="nav"><button id="prev">←</button><span class="counter" id="counter">1 / 8</span><button id="next">→</button><button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button></div>
+<script>const sl=document.querySelectorAll('.slide');let c=0;function s(i){sl.forEach(x=>x.classList.remove('active'));sl[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+sl.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===sl.length-1;document.getElementById('prog').style.width=(((i+1)/sl.length)*100)+'%';}
+document.getElementById('prev').onclick=()=>{if(c>0){c--;s(c);}};document.getElementById('next').onclick=()=>{if(c<sl.length-1){c++;s(c);}};
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(c<sl.length-1){c++;s(c);}}else if(e.key==='ArrowLeft'){if(c>0){c--;s(c);}}});
+let tx=0;document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){if(dx<0&&c<sl.length-1){c++;s(c);}else if(dx>0&&c>0){c--;s(c);}}});s(0);</script></body></html>
