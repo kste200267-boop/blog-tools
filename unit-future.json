@@ -4,13 +4,115 @@
   "achievementStandard": "[10통사2-05-01] 지속가능발전의 의미와 SDGs. / [10통사2-05-02] 저출산·고령화 등 인구 문제와 대응. / [10통사2-05-03] 미래 사회의 변화와 지속 가능한 삶의 방향.",
   "contents": [
     {
+      "slug": "teaching-pack",
+      "file": "c-future-teaching-pack.html",
+      "title": "📚 10단원 수업 발행 패키지 (총괄)",
+      "type": "교사용",
+      "difficulty": "-",
+      "duration": "참고",
+      "tags": [
+        "수업안",
+        "교사용",
+        "총괄",
+        "통사2",
+        "10단원"
+      ],
+      "desc": "교사용 허브"
+    },
+    {
+      "slug": "ppt-1",
+      "file": "c-future-ppt-1.html",
+      "title": "📊 PPT 10단원 (HTML)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": [
+        "PPT",
+        "HTML",
+        "SDGs",
+        "미래",
+        "통사2",
+        "10단원"
+      ],
+      "desc": "8슬라이드"
+    },
+    {
+      "slug": "ppt-1-pptx",
+      "file": "c-future-ppt-1.pptx",
+      "title": "📥 PPT 10단원 (PPTX)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": [
+        "PPT",
+        "PPTX",
+        "다운로드",
+        "통사2",
+        "10단원"
+      ],
+      "desc": "편집 가능"
+    },
+    {
+      "slug": "worksheet-1",
+      "file": "c-future-worksheet-1.html",
+      "title": "📝 학습지 ① SDGs + 인구 문제",
+      "type": "학습지",
+      "difficulty": "보통",
+      "duration": "25분",
+      "tags": [
+        "학습지",
+        "SDGs",
+        "인구",
+        "통사2",
+        "10단원"
+      ],
+      "desc": "우선순위 + 인구 분석"
+    },
+    {
+      "slug": "worksheet-2",
+      "file": "c-future-worksheet-2.html",
+      "title": "📝 학습지 ② 기후 위기·미래 사회",
+      "type": "학습지",
+      "difficulty": "보통",
+      "duration": "25분",
+      "tags": [
+        "학습지",
+        "기후",
+        "미래",
+        "통사2",
+        "10단원"
+      ],
+      "desc": "기후 + 미래 진로"
+    },
+    {
+      "slug": "eval",
+      "file": "c-future-eval.html",
+      "title": "📋 10단원 단원평가",
+      "type": "문항",
+      "difficulty": "보통",
+      "duration": "30분",
+      "tags": [
+        "평가",
+        "자동채점",
+        "통사2",
+        "10단원"
+      ],
+      "desc": "객관식 8 + 서술형 3 = 100점"
+    },
+    {
       "slug": "climate-novel",
       "file": "w-climate-novel.html",
       "title": "🌊 지구의 선택 — 기후변화 시뮬레이터",
       "type": "웹교구",
       "difficulty": "보통",
       "duration": "15분",
-      "tags": ["기후변화","환경","시뮬레이션","통사2","10단원"],
+      "tags": [
+        "기후변화",
+        "환경",
+        "시뮬레이션",
+        "통사2",
+        "10단원"
+      ],
       "desc": "기후 위기 상황에서 정책 선택을 하며 지구의 미래를 결정하는 인터랙티브 소설"
     },
     {
@@ -20,7 +122,13 @@
       "type": "웹교구",
       "difficulty": "보통",
       "duration": "15분",
-      "tags": ["재난","안전","시뮬레이션","통사2","10단원"],
+      "tags": [
+        "재난",
+        "안전",
+        "시뮬레이션",
+        "통사2",
+        "10단원"
+      ],
       "desc": "시장이 되어 재난 상황에 대응하며 주민을 지키는 의사결정 게임"
     },
     {
@@ -30,7 +138,13 @@
       "type": "웹교구",
       "difficulty": "보통",
       "duration": "25분",
-      "tags": ["SDGs","지속가능","UN","통사2","10단원"],
+      "tags": [
+        "SDGs",
+        "지속가능",
+        "UN",
+        "통사2",
+        "10단원"
+      ],
       "desc": "UN 지속가능발전목표 17개 중 우선순위 5개 선택 + 실천 계획 작성"
     },
     {
@@ -40,7 +154,13 @@
       "type": "웹교구",
       "difficulty": "심화",
       "duration": "25분",
-      "tags": ["저출산","고령화","정책","통사2","10단원"],
+      "tags": [
+        "저출산",
+        "고령화",
+        "정책",
+        "통사2",
+        "10단원"
+      ],
       "desc": "저출산·고령화 정책 8가지를 선택해 30년 후 한국 인구 변화 예측"
     }
   ]

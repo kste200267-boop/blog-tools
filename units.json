@@ -74,25 +74,27 @@
       "slug": "human-rights",
       "code": "VI",
       "title": "인권 보장과 헌법",
-      "subtitle": "기본권·헌법·인권 침해 구제",
+      "subtitle": "PPT(HTML+PPTX)·학습지·웹교구·평가 발행 패키지",
       "tags": [
         "통사2",
         "기초",
-        "심화"
+        "심화",
+        "발행패키지"
       ],
-      "contentCount": 3,
+      "contentCount": 9,
       "categoryId": "integrated-social"
     },
     {
       "slug": "justice",
       "code": "VII",
       "title": "사회 정의와 불평등",
-      "subtitle": "분배 정의·롤스·노직·사회보장",
+      "subtitle": "PPT(HTML+PPTX)·학습지·웹교구·평가 발행 패키지",
       "tags": [
         "통사2",
-        "심화"
+        "심화",
+        "발행패키지"
       ],
-      "contentCount": 3,
+      "contentCount": 9,
       "categoryId": "integrated-social"
     },
     {
@@ -111,25 +113,27 @@
       "slug": "globalization",
       "code": "IX",
       "title": "세계화와 평화",
-      "subtitle": "세계화·국제 협력·FTA·평화",
+      "subtitle": "PPT(HTML+PPTX)·학습지·웹교구·평가 발행 패키지",
       "tags": [
         "통사2",
-        "심화"
+        "심화",
+        "발행패키지"
       ],
-      "contentCount": 3,
+      "contentCount": 9,
       "categoryId": "integrated-social"
     },
     {
       "slug": "future",
       "code": "X",
       "title": "미래와 지속 가능한 삶",
-      "subtitle": "SDGs·인구 문제·기후 위기",
+      "subtitle": "PPT(HTML+PPTX)·학습지·웹교구·평가 발행 패키지",
       "tags": [
         "통사2",
         "기초",
-        "심화"
+        "심화",
+        "발행패키지"
       ],
-      "contentCount": 4,
+      "contentCount": 10,
       "categoryId": "integrated-social"
     },
     {

@@ -4,13 +4,114 @@
   "achievementStandard": "[10통사2-04-01] 세계화의 양상과 영향(긍정·부정). / [10통사2-04-02] 국제 협력과 분쟁 해결. / [10통사2-04-03] 평화의 의미와 국제 사회의 평화 노력.",
   "contents": [
     {
+      "slug": "teaching-pack",
+      "file": "c-globalization-teaching-pack.html",
+      "title": "📚 9단원 수업 발행 패키지 (총괄)",
+      "type": "교사용",
+      "difficulty": "-",
+      "duration": "참고",
+      "tags": [
+        "수업안",
+        "교사용",
+        "총괄",
+        "통사2",
+        "9단원"
+      ],
+      "desc": "교사용 허브"
+    },
+    {
+      "slug": "ppt-1",
+      "file": "c-globalization-ppt-1.html",
+      "title": "📊 PPT 9단원 (HTML)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": [
+        "PPT",
+        "HTML",
+        "세계화",
+        "평화",
+        "통사2",
+        "9단원"
+      ],
+      "desc": "8슬라이드"
+    },
+    {
+      "slug": "ppt-1-pptx",
+      "file": "c-globalization-ppt-1.pptx",
+      "title": "📥 PPT 9단원 (PPTX)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": [
+        "PPT",
+        "PPTX",
+        "다운로드",
+        "통사2",
+        "9단원"
+      ],
+      "desc": "편집 가능"
+    },
+    {
+      "slug": "worksheet-1",
+      "file": "c-globalization-worksheet-1.html",
+      "title": "📝 학습지 ① 세계화 양상·빛/그림자",
+      "type": "학습지",
+      "difficulty": "보통",
+      "duration": "25분",
+      "tags": [
+        "학습지",
+        "세계화",
+        "통사2",
+        "9단원"
+      ],
+      "desc": "4영역 + 사례 분류"
+    },
+    {
+      "slug": "worksheet-2",
+      "file": "c-globalization-worksheet-2.html",
+      "title": "📝 학습지 ② 국제 협력·평화",
+      "type": "학습지",
+      "difficulty": "보통",
+      "duration": "25분",
+      "tags": [
+        "학습지",
+        "국제기구",
+        "평화",
+        "통사2",
+        "9단원"
+      ],
+      "desc": "기구 매칭 + 평화 분석"
+    },
+    {
+      "slug": "eval",
+      "file": "c-globalization-eval.html",
+      "title": "📋 9단원 단원평가",
+      "type": "문항",
+      "difficulty": "보통",
+      "duration": "30분",
+      "tags": [
+        "평가",
+        "자동채점",
+        "통사2",
+        "9단원"
+      ],
+      "desc": "객관식 8 + 서술형 3 = 100점"
+    },
+    {
       "slug": "culture-diplomat",
       "file": "w-culture-diplomat.html",
       "title": "🗺️ 문화 충돌 외교관",
       "type": "웹교구",
       "difficulty": "보통",
       "duration": "15분",
-      "tags": ["문화","다문화","외교","통사2","9단원"],
+      "tags": [
+        "문화",
+        "다문화",
+        "외교",
+        "통사2",
+        "9단원"
+      ],
       "desc": "다른 문화권과의 갈등 상황에서 외교적 해결을 모색하는 롤플레이"
     },
     {
@@ -20,7 +121,12 @@
       "type": "웹교구",
       "difficulty": "보통",
       "duration": "25분",
-      "tags": ["세계화","양면성","통사2","9단원"],
+      "tags": [
+        "세계화",
+        "양면성",
+        "통사2",
+        "9단원"
+      ],
       "desc": "7개 세계화 사례를 빛/그림자/양면으로 분류하고 본인 입장 정립"
     },
     {
@@ -30,7 +136,13 @@
       "type": "웹교구",
       "difficulty": "심화",
       "duration": "30분",
-      "tags": ["FTA","협상","외교","통사2","9단원"],
+      "tags": [
+        "FTA",
+        "협상",
+        "외교",
+        "통사2",
+        "9단원"
+      ],
       "desc": "한국 외교관 입장에서 5개 협상 의제를 결정하고 경제·산업·외교 점수 관리"
     }
   ]
