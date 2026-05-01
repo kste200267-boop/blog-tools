@@ -4,6 +4,100 @@
   "achievementStandard": "[10통사1-02] 행복의 의미와 기준을 탐구하고, 다양한 측면에서 행복한 삶을 위한 조건을 탐색한다.",
   "contents": [
     {
+      "slug": "teaching-pack",
+      "file": "c-happiness-teaching-pack.html",
+      "title": "📚 2단원 수업 발행 패키지 (총괄)",
+      "type": "교사용",
+      "difficulty": "-",
+      "duration": "참고",
+      "tags": [
+        "수업안",
+        "교사용",
+        "총괄",
+        "통사1",
+        "2단원"
+      ],
+      "desc": "PPT·학습지·웹교구·평가 안내"
+    },
+    {
+      "slug": "ppt-1",
+      "file": "c-happiness-ppt-1.html",
+      "title": "📊 PPT 2단원 행복 (HTML)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": [
+        "PPT",
+        "HTML",
+        "행복관",
+        "통사1",
+        "2단원"
+      ],
+      "desc": "7슬라이드 - 4행복관 + 조건"
+    },
+    {
+      "slug": "ppt-1-pptx",
+      "file": "c-happiness-ppt-1.pptx",
+      "title": "📥 PPT 2단원 (PPTX)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": [
+        "PPT",
+        "PPTX",
+        "다운로드",
+        "통사1",
+        "2단원"
+      ],
+      "desc": "편집 가능"
+    },
+    {
+      "slug": "worksheet-1",
+      "file": "c-happiness-worksheet-1.html",
+      "title": "📝 학습지 ① 4대 행복관 비교",
+      "type": "학습지",
+      "difficulty": "보통",
+      "duration": "25분",
+      "tags": [
+        "학습지",
+        "행복관",
+        "통사1",
+        "2단원"
+      ],
+      "desc": "4행복관 비교표 + 본인 행복관"
+    },
+    {
+      "slug": "worksheet-2",
+      "file": "c-happiness-worksheet-2.html",
+      "title": "📝 학습지 ② 행복 조건 + 자기 설계",
+      "type": "학습지",
+      "difficulty": "보통",
+      "duration": "30분",
+      "tags": [
+        "학습지",
+        "OECD",
+        "자기설계",
+        "통사1",
+        "2단원"
+      ],
+      "desc": "OECD 11영역 + 행복 설계도"
+    },
+    {
+      "slug": "eval",
+      "file": "c-happiness-eval.html",
+      "title": "📋 2단원 단원평가",
+      "type": "문항",
+      "difficulty": "보통",
+      "duration": "30분",
+      "tags": [
+        "평가",
+        "자동채점",
+        "통사1",
+        "2단원"
+      ],
+      "desc": "객관식 8 + 서술형 3 = 100점"
+    },
+    {
       "slug": "compass",
       "file": "happiness-compass.html",
       "title": "🧭 행복 나침반",
@@ -38,7 +132,13 @@
       "type": "웹교구",
       "difficulty": "보통",
       "duration": "20분",
-      "tags": ["행복관","아리스토텔레스","공리주의","통사1","2단원"],
+      "tags": [
+        "행복관",
+        "아리스토텔레스",
+        "공리주의",
+        "통사1",
+        "2단원"
+      ],
       "desc": "10가지 상황 선택으로 학생의 행복관(덕·공리·동양·자기실현)을 진단"
     },
     {
@@ -48,7 +148,13 @@
       "type": "웹교구",
       "difficulty": "보통",
       "duration": "20분",
-      "tags": ["삶의질","OECD","자기진단","통사1","2단원"],
+      "tags": [
+        "삶의질",
+        "OECD",
+        "자기진단",
+        "통사1",
+        "2단원"
+      ],
       "desc": "OECD Better Life Index 11개 영역으로 삶의 질을 자가 진단하고 개선 계획 작성"
     }
   ]

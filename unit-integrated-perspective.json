@@ -4,6 +4,100 @@
   "achievementStandard": "[10통사1-01-01] 시간적, 공간적, 사회적, 윤리적 관점의 특징을 이해하고, 이를 통합적으로 활용하여 사회 현상을 탐구한다.",
   "contents": [
     {
+      "slug": "teaching-pack",
+      "file": "c-perspective-teaching-pack.html",
+      "title": "📚 1단원 수업 발행 패키지 (총괄)",
+      "type": "교사용",
+      "difficulty": "-",
+      "duration": "참고",
+      "tags": [
+        "수업안",
+        "교사용",
+        "총괄",
+        "통사1",
+        "1단원"
+      ],
+      "desc": "PPT·학습지·웹교구·평가 안내 교사용 허브"
+    },
+    {
+      "slug": "ppt-1",
+      "file": "c-perspective-ppt-1.html",
+      "title": "📊 PPT 1단원 (HTML)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": [
+        "PPT",
+        "HTML",
+        "4관점",
+        "통사1",
+        "1단원"
+      ],
+      "desc": "9슬라이드 - 4관점 통합 안내"
+    },
+    {
+      "slug": "ppt-1-pptx",
+      "file": "c-perspective-ppt-1.pptx",
+      "title": "📥 PPT 1단원 (PPTX)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": [
+        "PPT",
+        "PPTX",
+        "다운로드",
+        "통사1",
+        "1단원"
+      ],
+      "desc": "PowerPoint 편집 가능"
+    },
+    {
+      "slug": "worksheet-1",
+      "file": "c-perspective-worksheet-1.html",
+      "title": "📝 학습지 ① 4관점 개념 정리",
+      "type": "학습지",
+      "difficulty": "쉬움",
+      "duration": "20분",
+      "tags": [
+        "학습지",
+        "4관점",
+        "통사1",
+        "1단원"
+      ],
+      "desc": "4관점 비교표 + 본인 사례 분석"
+    },
+    {
+      "slug": "worksheet-2",
+      "file": "c-perspective-worksheet-2.html",
+      "title": "📝 학습지 ② 모둠 토론 + 합의문",
+      "type": "학습지",
+      "difficulty": "보통",
+      "duration": "30분",
+      "tags": [
+        "학습지",
+        "토론",
+        "모둠",
+        "통사1",
+        "1단원"
+      ],
+      "desc": "모둠 4관점 발표 + 합의문 작성"
+    },
+    {
+      "slug": "eval",
+      "file": "c-perspective-eval.html",
+      "title": "📋 1단원 단원평가",
+      "type": "문항",
+      "difficulty": "보통",
+      "duration": "30분",
+      "tags": [
+        "평가",
+        "자동채점",
+        "통사1",
+        "1단원"
+      ],
+      "desc": "객관식 8 + 서술형 3 = 100점"
+    },
+    {
       "slug": "total100",
       "file": "c-ip-total100.html",
       "title": "4관점 마스터 퀴즈 🎯",
@@ -91,7 +185,13 @@
       "type": "웹교구",
       "difficulty": "보통",
       "duration": "25분",
-      "tags": ["뉴스","4관점","분석","통사1","1단원"],
+      "tags": [
+        "뉴스",
+        "4관점",
+        "분석",
+        "통사1",
+        "1단원"
+      ],
       "desc": "학생이 뉴스 입력 → 시간·공간·사회·윤리 4관점에서 분석하는 가이드 도구"
     },
     {
@@ -101,7 +201,13 @@
       "type": "활동지",
       "difficulty": "보통",
       "duration": "30분",
-      "tags": ["토론","4관점","모둠활동","통사1","1단원"],
+      "tags": [
+        "토론",
+        "4관점",
+        "모둠활동",
+        "통사1",
+        "1단원"
+      ],
       "desc": "모둠원을 4관점에 배정해 사회 이슈에 대한 발표문·합의문을 작성하는 토론 활동지"
     }
   ]

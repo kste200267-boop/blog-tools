@@ -4,13 +4,114 @@
   "achievementStandard": "[10통사1-03-01] 자연환경이 인간의 삶에 미치는 영향과 인간의 적응. / [10통사1-03-02] 자연재해가 발생하는 양상과 그로 인한 피해를 분석하고 대응 방안 탐구. / [10통사1-03-03] 인간과 자연의 바람직한 관계와 환경 윤리적 입장.",
   "contents": [
     {
+      "slug": "teaching-pack",
+      "file": "c-nature-teaching-pack.html",
+      "title": "📚 3단원 수업 발행 패키지 (총괄)",
+      "type": "교사용",
+      "difficulty": "-",
+      "duration": "참고",
+      "tags": [
+        "수업안",
+        "교사용",
+        "총괄",
+        "통사1",
+        "3단원"
+      ],
+      "desc": "PPT·학습지·웹교구·평가 안내"
+    },
+    {
+      "slug": "ppt-1",
+      "file": "c-nature-ppt-1.html",
+      "title": "📊 PPT 3단원 자연환경 (HTML)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": [
+        "PPT",
+        "HTML",
+        "기후",
+        "환경윤리",
+        "통사1",
+        "3단원"
+      ],
+      "desc": "8슬라이드 - 기후·재해·윤리"
+    },
+    {
+      "slug": "ppt-1-pptx",
+      "file": "c-nature-ppt-1.pptx",
+      "title": "📥 PPT 3단원 (PPTX)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": [
+        "PPT",
+        "PPTX",
+        "다운로드",
+        "통사1",
+        "3단원"
+      ],
+      "desc": "편집 가능"
+    },
+    {
+      "slug": "worksheet-1",
+      "file": "c-nature-worksheet-1.html",
+      "title": "📝 학습지 ① 기후·재해 대응",
+      "type": "학습지",
+      "difficulty": "보통",
+      "duration": "25분",
+      "tags": [
+        "학습지",
+        "기후",
+        "재해",
+        "통사1",
+        "3단원"
+      ],
+      "desc": "5대 기후 + 재해 대응 분석"
+    },
+    {
+      "slug": "worksheet-2",
+      "file": "c-nature-worksheet-2.html",
+      "title": "📝 학습지 ② 환경 윤리·실천",
+      "type": "학습지",
+      "difficulty": "심화",
+      "duration": "30분",
+      "tags": [
+        "학습지",
+        "환경윤리",
+        "SDGs",
+        "통사1",
+        "3단원"
+      ],
+      "desc": "4입장 비교 + 실천 캠페인 기획"
+    },
+    {
+      "slug": "eval",
+      "file": "c-nature-eval.html",
+      "title": "📋 3단원 단원평가",
+      "type": "문항",
+      "difficulty": "보통",
+      "duration": "30분",
+      "tags": [
+        "평가",
+        "자동채점",
+        "통사1",
+        "3단원"
+      ],
+      "desc": "객관식 8 + 서술형 3 = 100점"
+    },
+    {
       "slug": "climate-zones",
       "file": "c-nature-climate-zones.html",
       "title": "🌡 세계 기후 탐험가",
       "type": "웹교구",
       "difficulty": "보통",
       "duration": "25분",
-      "tags": ["기후","적응","통사1","3단원"],
+      "tags": [
+        "기후",
+        "적응",
+        "통사1",
+        "3단원"
+      ],
       "desc": "5대 기후 지역의 인간 적응 방식을 탐구하고 매칭 퀴즈로 정리"
     },
     {
@@ -20,7 +121,13 @@
       "type": "웹교구",
       "difficulty": "심화",
       "duration": "25분",
-      "tags": ["재해","대응","시뮬레이션","통사1","3단원"],
+      "tags": [
+        "재해",
+        "대응",
+        "시뮬레이션",
+        "통사1",
+        "3단원"
+      ],
       "desc": "쓰나미·화산·태풍·산불·지진 5가지 재해에서 의사결정을 내리는 생존 시뮬레이션"
     },
     {
@@ -30,7 +137,13 @@
       "type": "웹교구",
       "difficulty": "심화",
       "duration": "25분",
-      "tags": ["환경윤리","인간중심","생태중심","통사1","3단원"],
+      "tags": [
+        "환경윤리",
+        "인간중심",
+        "생태중심",
+        "통사1",
+        "3단원"
+      ],
       "desc": "5개 환경 딜레마에서 인간중심 ↔ 생태중심 입장을 슬라이더로 진단"
     }
   ]
