@@ -1,163 +1,405 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>📊 5-1 산업화·도시화 — 수업 슬라이드</title>
-<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>산업화와 도시화 — 한국, 60년의 변신</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Dodum&family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@400;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-*{box-sizing:border-box}body{font-family:'Noto Sans KR',sans-serif;background:#1c1917;color:#f1f5f9;margin:0;overflow:hidden}
-.fjua{font-family:'Jua',sans-serif}
-.slide{width:100vw;height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:5vh 5vw;text-align:center}
-.slide.active{display:flex;animation:fi .4s ease-out}
-@keyframes fi{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
-.slide h1{font-family:'Jua',sans-serif;font-size:clamp(2rem,5vw,4rem);margin-bottom:1.5rem}
-.slide h2{font-family:'Jua',sans-serif;font-size:clamp(1.5rem,4vw,3rem);margin-bottom:1rem}
-.slide p,.slide li{font-size:clamp(1rem,2vw,1.5rem);line-height:1.7}
-.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(10px);padding:10px 20px;border-radius:99px;z-index:100;display:flex;gap:10px;align-items:center}
-.nav button{background:#f59e0b;color:#1c1917;border:0;width:40px;height:40px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}
-.nav button:disabled{background:#475569;color:#94a3b8;cursor:not-allowed}
-.counter{color:#f59e0b;font-weight:bold;min-width:60px;text-align:center}
-.cover{background:linear-gradient(135deg,#7c2d12 0%,#451a03 100%)}
-.intro{background:linear-gradient(135deg,#1e3a8a 0%,#0c4a6e 100%)}
-.concept{background:linear-gradient(135deg,#7c2d12 0%,#3f1d10 100%)}
-.activity{background:linear-gradient(135deg,#9a3412 0%,#7c2d12 100%)}
-.summary{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
-@media print{.slide{display:flex!important;page-break-after:always;height:auto;min-height:100vh}.nav{display:none}body{background:#fff;color:#000;overflow:visible}}
-</style></head><body>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow:hidden;width:100vw;height:100vh}
+body{font-family:'Noto Sans KR',sans-serif;background:#000;color:#fff}
+.bhs{font-family:'Black Han Sans',sans-serif;letter-spacing:-1px}
+.gdd{font-family:'Gowun Dodum',sans-serif}
+.nsr{font-family:'Noto Serif KR',serif}
 
-<div class="slide cover active">
-<div class="text-xs text-amber-300 font-bold mb-2">통합사회 1 · 5단원 · 5-1</div>
-<h1>🏗 산업화와 도시화</h1>
-<p class="mt-4 text-amber-100">우리가 사는 공간은 어떻게 변했는가</p>
-<div class="mt-8 text-base text-amber-200">
-[10통사1-05-01] 산업화·도시화로 인해 나타난 생활공간과 생활양식의<br>변화 양상을 조사하고, 이에 따른 문제점의 해결 방안을 제안한다.
-</div>
-</div>
+/* 슬라이드 기본 */
+.slide{width:100vw;height:100vh;display:none;position:relative;overflow:hidden}
+.slide.active{display:flex}
+.slide.active>*{animation:slideIn .6s cubic-bezier(.2,.8,.2,1)}
+@keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-<div class="slide intro">
-<div class="text-xs text-blue-300 font-bold mb-2">도입</div>
-<h2>📸 1960년 vs 2025년 서울</h2>
-<p class="mt-4">사진 두 장 — 같은 도시일까?</p>
-<div class="mt-8 grid grid-cols-2 gap-8 max-w-3xl">
-<div class="bg-white/10 rounded-xl p-6"><div class="text-5xl">🌾</div><b class="text-amber-300">1960</b><p class="text-base mt-2">한강변 논·낮은 건물</p></div>
-<div class="bg-white/10 rounded-xl p-6"><div class="text-5xl">🏙</div><b class="text-amber-300">2025</b><p class="text-base mt-2">고층 빌딩·아파트 숲</p></div>
-</div>
-<p class="mt-6 text-base text-blue-200">→ 60년간 어떤 일이 일어났을까? 좋기만 했을까?</p>
-</div>
+/* 네비 */
+.nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);backdrop-filter:blur(20px);padding:12px 24px;border-radius:99px;z-index:100;display:flex;gap:12px;align-items:center;border:1px solid rgba(255,255,255,.1)}
+.nav button{background:#fff;color:#000;border:0;width:44px;height:44px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem;transition:.2s}
+.nav button:hover{transform:scale(1.1)}
+.nav button:disabled{background:#333;color:#666;cursor:not-allowed}
+.counter{color:#fbbf24;font-weight:900;min-width:64px;text-align:center;font-size:.9rem}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#f59e0b,#dc2626,#7c3aed);z-index:100;transition:width .4s}
 
-<div class="slide concept">
-<h2>📖 산업화란?</h2>
-<p class="mt-4 text-amber-100">농업 중심 사회 → 공업·서비스업 중심 사회로의 변화</p>
-<div class="mt-10 grid grid-cols-2 gap-6 max-w-4xl">
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-3xl mb-2">🌾</div><b class="text-amber-300 text-xl">변화 전</b>
-<p class="text-base mt-2">농업·1차 산업 중심<br>대다수 농촌 거주</p>
-</div>
-<div class="bg-white/10 rounded-xl p-5">
-<div class="text-3xl mb-2">🏭</div><b class="text-amber-300 text-xl">변화 후</b>
-<p class="text-base mt-2">공업·서비스업 중심<br>도시로 인구 집중</p>
-</div>
-</div>
-</div>
+@media print{.nav,.progress{display:none}.slide{display:flex!important;page-break-after:always;height:100vh}}
 
-<div class="slide concept">
-<h2>📖 도시화란?</h2>
-<p class="mt-4 text-amber-100">전체 인구 중 도시 거주 인구 비율이 높아지는 현상</p>
-<div class="mt-8 max-w-3xl bg-white/10 rounded-xl p-6">
-<b class="text-amber-300 text-xl">📊 한국 도시화율 추이</b>
-<table class="mt-3 text-base w-full">
-<tr><td class="py-1">1960</td><td><b class="text-amber-300">28%</b></td><td class="text-sm">— 농업 중심</td></tr>
-<tr><td class="py-1">1980</td><td><b class="text-amber-300">57%</b></td><td class="text-sm">— 도시·농촌 역전</td></tr>
-<tr><td class="py-1">2000</td><td><b class="text-amber-300">80%</b></td><td class="text-sm">— 본격 도시 사회</td></tr>
-<tr><td class="py-1">2025</td><td><b class="text-amber-300">92%</b></td><td class="text-sm">— 초도시화</td></tr>
-</table>
-</div>
-<p class="mt-6 text-base text-amber-200">💡 한국은 세계에서 가장 빠른 도시화를 경험</p>
-</div>
+/* ===== 슬라이드별 디자인 ===== */
 
-<div class="slide concept">
-<h2>🚦 한국 도시화의 단계</h2>
-<ul class="text-left mt-6 space-y-3 max-w-3xl" style="list-style:none">
-<li class="bg-white/10 rounded-xl p-4">📅 <b>1960~70s</b> — 경제 개발 5개년 계획 → 농촌→도시 대이동</li>
-<li class="bg-white/10 rounded-xl p-4">📅 <b>1980s</b> — 중화학공업 → 울산·포항·창원 공업 도시 발달</li>
-<li class="bg-white/10 rounded-xl p-4">📅 <b>1990s</b> — 수도권 집중 가속 → 신도시 1기 (분당·일산)</li>
-<li class="bg-white/10 rounded-xl p-4">📅 <b>2000s~</b> — 광역화·초도시화 → 수도권 50%+ 집중</li>
-</ul>
-</div>
+/* 1. 표지 — 풀스크린 그라디언트 + 큰 타이포 */
+.s-cover{background:radial-gradient(circle at 30% 20%,#7c2d12 0%,#000 60%);align-items:center;justify-content:center;text-align:center;flex-direction:column;padding:5vh 5vw}
+.s-cover .label{font-size:clamp(.8rem,1.2vw,1rem);color:#fbbf24;letter-spacing:8px;font-weight:700;margin-bottom:24px;border:1px solid rgba(251,191,36,.4);padding:8px 24px;border-radius:99px;display:inline-block;background:rgba(0,0,0,.4)}
+.s-cover h1{font-size:clamp(3rem,11vw,9rem);line-height:.9;margin-bottom:24px;background:linear-gradient(180deg,#fff 0%,#fbbf24 100%);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:900}
+.s-cover .sub{font-size:clamp(1.2rem,2.5vw,1.8rem);color:rgba(255,255,255,.8);font-weight:300;letter-spacing:4px}
+.s-cover .meta{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);display:flex;gap:32px;color:rgba(255,255,255,.5);font-size:.85rem;font-weight:300}
+.s-cover .meta b{color:#fbbf24}
 
-<div class="slide concept">
-<h2>⚠️ 도시 문제 6가지</h2>
-<div class="mt-6 grid grid-cols-3 gap-3 max-w-5xl">
-<div class="bg-white/10 rounded-xl p-4"><div class="text-3xl">👥</div><b>인구 집중</b><p class="text-sm text-amber-200 mt-1">수도권 50%+</p></div>
-<div class="bg-white/10 rounded-xl p-4"><div class="text-3xl">🏠</div><b>주거난</b><p class="text-sm text-amber-200 mt-1">집값 폭등</p></div>
-<div class="bg-white/10 rounded-xl p-4"><div class="text-3xl">🚗</div><b>교통 혼잡</b><p class="text-sm text-amber-200 mt-1">출퇴근 정체</p></div>
-<div class="bg-white/10 rounded-xl p-4"><div class="text-3xl">🌫</div><b>환경 오염</b><p class="text-sm text-amber-200 mt-1">미세먼지·소음</p></div>
-<div class="bg-white/10 rounded-xl p-4"><div class="text-3xl">👨‍👩‍👧</div><b>공동체 약화</b><p class="text-sm text-amber-200 mt-1">1인 가구 증가</p></div>
-<div class="bg-white/10 rounded-xl p-4"><div class="text-3xl">⚖️</div><b>지역 격차</b><p class="text-sm text-amber-200 mt-1">수도권 vs 지방</p></div>
-</div>
-</div>
+/* 2. 도입 — 비교 split */
+.s-vs{background:#0a0a0a;display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch}
+.s-vs .col{padding:8vh 5vw;display:flex;flex-direction:column;justify-content:center;gap:16px}
+.s-vs .col.left{background:linear-gradient(135deg,#1a2e1a 0%,#0a1a0a 100%)}
+.s-vs .col.right{background:linear-gradient(135deg,#1e1b4b 0%,#0a0826 100%)}
+.s-vs .year{font-size:clamp(2rem,4vw,3rem);color:#fbbf24;font-weight:900}
+.s-vs .col h2{font-size:clamp(2rem,5vw,4rem);line-height:1;margin:8px 0}
+.s-vs .stats{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.s-vs .stat{display:flex;justify-content:space-between;padding:12px;background:rgba(255,255,255,.05);border-radius:8px;font-size:clamp(.9rem,1.4vw,1.1rem)}
+.s-vs .stat b{color:#fbbf24;font-size:1.2em}
+.s-vs .vs{display:flex;align-items:center;justify-content:center;font-size:5rem;color:#fff;font-weight:900;writing-mode:vertical-rl;letter-spacing:-4px;background:#000;padding:0 24px}
 
-<div class="slide concept">
-<h2>🌾 농촌의 그림자</h2>
-<p class="mt-4 text-amber-100">도시 발전의 반대편 — 농촌 공동화</p>
-<ul class="text-left mt-6 space-y-3 max-w-3xl" style="list-style:none">
-<li class="bg-white/10 rounded-xl p-4">📉 인구 감소 — 청년·장년 도시 이주</li>
-<li class="bg-white/10 rounded-xl p-4">👴 고령화 — 농촌 65세 이상 50% 이상</li>
-<li class="bg-white/10 rounded-xl p-4">🏫 학교 통폐합 — 작은 학교 소멸</li>
-<li class="bg-white/10 rounded-xl p-4">⚠️ 지방 소멸 — 89개 시군구 소멸 위기</li>
-</ul>
-</div>
+/* 3. 임팩트 — 통계 한 가지 강조 */
+.s-impact{background:radial-gradient(ellipse at center,#1e3a8a 0%,#000 80%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw}
+.s-impact .pre{font-size:clamp(.9rem,1.4vw,1.1rem);color:#60a5fa;letter-spacing:6px;margin-bottom:32px;text-transform:uppercase}
+.s-impact .number{font-size:clamp(8rem,22vw,18rem);line-height:.85;font-weight:900;background:linear-gradient(180deg,#fff 0%,#3b82f6 100%);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:16px}
+.s-impact .unit{font-size:clamp(2rem,4vw,3rem);color:#fbbf24;margin-bottom:48px}
+.s-impact .desc{font-size:clamp(1rem,1.8vw,1.4rem);color:rgba(255,255,255,.7);max-width:800px;line-height:1.7;font-weight:300}
 
-<div class="slide concept">
-<h2>💡 해결 방안</h2>
-<ul class="text-left mt-6 space-y-3 max-w-3xl" style="list-style:none">
-<li class="bg-white/10 rounded-xl p-4">🏛 <b>균형 발전</b> — 행정수도·공공기관 지방 이전</li>
-<li class="bg-white/10 rounded-xl p-4">🏠 <b>주거 정책</b> — 공공임대주택 확대, 세입자 보호</li>
-<li class="bg-white/10 rounded-xl p-4">🚊 <b>대중교통 강화</b> — 광역철도, 무료/저비용 환승</li>
-<li class="bg-white/10 rounded-xl p-4">🌳 <b>친환경 도시</b> — 그린벨트, 그린 뉴딜, 스마트시티</li>
-<li class="bg-white/10 rounded-xl p-4">🌾 <b>농촌 회복</b> — 청년 농업 지원, 스마트팜, 귀촌 정책</li>
-</ul>
-</div>
+/* 4. 차트 슬라이드 */
+.s-chart{background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch}
+.s-chart h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:8px}
+.s-chart .subtitle{color:#94a3b8;font-size:clamp(.9rem,1.4vw,1.1rem);margin-bottom:32px}
+.s-chart .chart-wrap{flex:1;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:24px;display:flex;align-items:center;justify-content:center;position:relative}
+.s-chart .source{position:absolute;bottom:8px;right:16px;font-size:.7rem;color:rgba(255,255,255,.4)}
 
-<div class="slide activity">
-<div class="text-xs text-amber-300 font-bold mb-2">학생 활동</div>
-<h2>🏗 산업화·도시화 타임머신 — 웹교구</h2>
-<p class="mt-4 text-amber-100">1960~2030 슬라이더로 도시 변화 직접 체험</p>
-<div class="mt-8 bg-white/10 rounded-xl p-6 max-w-2xl">
-<b class="text-amber-300">📲 c-living-space-industrialization.html</b>
-<p class="text-base mt-3">연도별 도시 인구·산업·환경·풍경 변화 + 문제 매칭 + Chart.js 비교</p>
-</div>
-<div class="mt-6 bg-emerald-500/20 rounded-xl p-4 max-w-2xl">
-<b class="text-emerald-300">📝 학습지 ①</b>
-<p class="text-base mt-2 text-emerald-100">1960 vs 2025 비교표 + 도시 문제 분석 + 해결안 작성</p>
-</div>
-</div>
+/* 5. 단계별 타임라인 */
+.s-timeline{background:linear-gradient(180deg,#0c0a09 0%,#1c1917 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch;justify-content:center}
+.s-timeline h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:48px;text-align:center}
+.s-timeline .line{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.s-timeline .line::before{content:'';position:absolute;top:32px;left:5%;right:5%;height:2px;background:linear-gradient(90deg,#22c55e,#fbbf24,#f97316,#dc2626)}
+.s-timeline .step{text-align:center;padding:0 12px}
+.s-timeline .dot{width:64px;height:64px;border-radius:50%;background:#000;border:3px solid;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;position:relative;z-index:1}
+.s-timeline .step:nth-child(1) .dot{border-color:#22c55e;background:#0a2e1a}
+.s-timeline .step:nth-child(2) .dot{border-color:#fbbf24;background:#2e2a0a}
+.s-timeline .step:nth-child(3) .dot{border-color:#f97316;background:#2e1c0a}
+.s-timeline .step:nth-child(4) .dot{border-color:#dc2626;background:#2e0a0a}
+.s-timeline .year-tl{font-size:clamp(1.2rem,2vw,1.6rem);font-weight:900;color:#fbbf24;margin-bottom:8px}
+.s-timeline .step h3{font-size:clamp(1rem,1.6vw,1.3rem);margin-bottom:8px;font-weight:700}
+.s-timeline .step p{font-size:clamp(.8rem,1.1vw,.95rem);color:rgba(255,255,255,.6);line-height:1.5}
 
-<div class="slide summary">
-<h2>🎯 오늘의 핵심</h2>
-<ul class="text-left mt-6 space-y-3 text-violet-100" style="list-style:none">
-<li>✅ 산업화 = 농업 → 공업·서비스업 중심 사회로 변화</li>
-<li>✅ 도시화 = 도시 인구 비율↑ + 도시 생활양식 확산</li>
-<li>✅ 한국은 세계에서 가장 빠르게 산업화·도시화</li>
-<li>✅ 도시 문제(주거·교통·환경) + 농촌 공동화 동시 발생</li>
-<li>✅ 균형 발전·친환경 도시·농촌 회복이 해결 방향</li>
-</ul>
-<div class="mt-10 bg-amber-500/20 rounded-xl p-5">
-<b class="text-amber-300">📌 다음 차시</b>
-<p class="text-base text-amber-100 mt-2">5-2 교통·통신·정보화 — 스마트폰이 바꾼 우리 삶</p>
-</div>
-</div>
+/* 6. 6 그리드 (도시 문제) */
+.s-grid{background:linear-gradient(135deg,#7f1d1d 0%,#1c1917 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch}
+.s-grid h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:8px}
+.s-grid .lead{color:rgba(255,255,255,.7);font-size:clamp(.9rem,1.4vw,1.1rem);margin-bottom:32px}
+.s-grid .g6{flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:16px}
+.s-grid .card{background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:8px;transition:.3s}
+.s-grid .card:hover{border-color:#fbbf24;transform:translateY(-4px)}
+.s-grid .card .icon{font-size:2rem}
+.s-grid .card h3{font-size:clamp(1.1rem,1.6vw,1.3rem);font-weight:700;color:#fbbf24}
+.s-grid .card p{font-size:clamp(.8rem,1.1vw,.95rem);color:rgba(255,255,255,.7);line-height:1.5}
+.s-grid .card .stat{font-size:clamp(.85rem,1.2vw,1rem);font-weight:700;color:#ef4444;margin-top:auto;padding-top:8px;border-top:1px solid rgba(255,255,255,.1)}
 
+/* 7. 인용문 */
+.s-quote{background:linear-gradient(135deg,#0c4a6e 0%,#0c1e2e 100%);align-items:center;justify-content:center;padding:8vh 8vw;flex-direction:column;text-align:center;gap:32px}
+.s-quote .marks{font-size:clamp(4rem,8vw,7rem);color:rgba(251,191,36,.3);line-height:.5;font-family:Georgia,serif}
+.s-quote blockquote{font-size:clamp(1.6rem,3.5vw,3rem);line-height:1.4;font-weight:300;max-width:1200px;font-family:'Noto Serif KR',serif}
+.s-quote blockquote em{color:#fbbf24;font-style:normal;font-weight:700}
+.s-quote cite{font-size:clamp(.9rem,1.4vw,1.1rem);color:rgba(255,255,255,.5);font-style:normal;letter-spacing:2px}
+.s-quote cite::before{content:'— '}
+
+/* 8. 농촌 그림자 — 어두운 분위기 */
+.s-dark{background:linear-gradient(180deg,#1c1917 0%,#0c0a09 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch;justify-content:center;position:relative}
+.s-dark::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M0,80 Q25,60 50,80 T100,80 L100,100 L0,100 Z' fill='%23292524' opacity='.5'/%3E%3C/svg%3E");background-size:200px;opacity:.3}
+.s-dark>*{position:relative;z-index:1}
+.s-dark h2{font-size:clamp(2rem,4vw,3.2rem);font-weight:900;margin-bottom:16px;color:#fbbf24}
+.s-dark .lead{font-size:clamp(1rem,1.6vw,1.3rem);color:rgba(255,255,255,.6);margin-bottom:48px;max-width:800px;line-height:1.7}
+.s-dark .nums{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.s-dark .num{text-align:center;padding:24px;background:rgba(0,0,0,.4);border:1px solid rgba(220,38,38,.3);border-radius:12px}
+.s-dark .num .big{font-size:clamp(2rem,4vw,3rem);font-weight:900;color:#ef4444;line-height:1}
+.s-dark .num .lab{font-size:clamp(.8rem,1.1vw,.95rem);color:rgba(255,255,255,.7);margin-top:8px}
+
+/* 9. 솔루션 카드 */
+.s-sol{background:linear-gradient(135deg,#064e3b 0%,#022c22 100%);padding:8vh 5vw;flex-direction:column;align-items:stretch}
+.s-sol h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;margin-bottom:8px;color:#10b981}
+.s-sol .lead{color:rgba(255,255,255,.7);margin-bottom:32px;font-size:clamp(.9rem,1.4vw,1.1rem)}
+.s-sol .stack{display:flex;flex-direction:column;gap:14px}
+.s-sol .item{display:flex;align-items:center;gap:24px;padding:16px 24px;background:rgba(0,0,0,.3);border-left:4px solid #10b981;border-radius:0 12px 12px 0;transition:.3s}
+.s-sol .item:hover{background:rgba(0,0,0,.5);transform:translateX(8px)}
+.s-sol .num-circle{width:48px;height:48px;border-radius:50%;background:#10b981;color:#000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.4rem;flex-shrink:0}
+.s-sol .item-c{flex:1}
+.s-sol .item h3{font-size:clamp(1.1rem,1.6vw,1.3rem);font-weight:700;margin-bottom:4px}
+.s-sol .item p{font-size:clamp(.85rem,1.2vw,1rem);color:rgba(255,255,255,.7);line-height:1.5}
+
+/* 10. 활동 */
+.s-activity{background:linear-gradient(135deg,#7c2d12 0%,#451a03 100%);align-items:center;justify-content:center;padding:8vh 5vw;flex-direction:column;text-align:center;gap:24px}
+.s-activity .badge{font-size:clamp(.8rem,1.2vw,1rem);color:#fbbf24;letter-spacing:6px;font-weight:700;border:1px solid rgba(251,191,36,.5);padding:8px 24px;border-radius:99px;background:rgba(0,0,0,.3)}
+.s-activity h2{font-size:clamp(2rem,5vw,4.5rem);font-weight:900;line-height:1;color:#fff}
+.s-activity .icon-big{font-size:8rem}
+.s-activity .panel{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1100px;width:100%}
+.s-activity .web,.s-activity .ws{padding:24px;border-radius:16px;text-align:left}
+.s-activity .web{background:rgba(0,0,0,.5);border:1px solid #fbbf24}
+.s-activity .ws{background:rgba(16,185,129,.15);border:1px solid #10b981}
+.s-activity .web h3,.s-activity .ws h3{font-size:1.2rem;font-weight:700;margin-bottom:8px}
+.s-activity .web h3{color:#fbbf24}
+.s-activity .ws h3{color:#10b981}
+.s-activity .web code{background:rgba(0,0,0,.5);padding:4px 8px;border-radius:4px;font-size:.85rem;color:#fbbf24}
+
+/* 11. 마무리 */
+.s-end{background:radial-gradient(circle at 70% 80%,#7c3aed 0%,#000 70%);align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5vh 5vw;gap:24px}
+.s-end .key{font-size:clamp(.9rem,1.4vw,1.1rem);color:#a78bfa;letter-spacing:6px;font-weight:700}
+.s-end h2{font-size:clamp(2.5rem,7vw,6rem);line-height:1;font-weight:900;background:linear-gradient(180deg,#fff,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.s-end .takeaways{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:1000px;width:100%;margin-top:32px}
+.s-end .ta{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px;text-align:left;font-size:clamp(.9rem,1.3vw,1.1rem)}
+.s-end .ta b{color:#fbbf24}
+.s-end .next{margin-top:32px;font-size:clamp(.85rem,1.2vw,1rem);color:rgba(255,255,255,.5)}
+.s-end .next b{color:#a78bfa}
+
+@media (max-width:768px){
+.s-vs{grid-template-columns:1fr;grid-template-rows:1fr auto 1fr}
+.s-vs .vs{writing-mode:horizontal-tb;padding:12px 0}
+.s-grid .g6{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,1fr)}
+.s-timeline .line{grid-template-columns:1fr;gap:24px}
+.s-timeline .line::before{display:none}
+.s-dark .nums{grid-template-columns:repeat(2,1fr)}
+.s-activity .panel,.s-end .takeaways{grid-template-columns:1fr}
+}
+</style></head>
+<body>
+
+<div class="progress" id="prog" style="width:0%"></div>
+
+<!-- 1. 표지 -->
+<section class="slide s-cover active">
+<span class="label">통합사회 1 · 5단원 · 5-1</span>
+<h1 class="bhs">한국,<br>60년의<br>대변신</h1>
+<p class="sub gdd">산업화와 도시화가 우리 삶을 어떻게 바꿨나</p>
+<div class="meta">
+<div>📊 <b>도시화율 28% → 92%</b></div>
+<div>⏱ <b>50분</b></div>
+<div>📋 <b>[10통사1-05-01]</b></div>
+</div>
+</section>
+
+<!-- 2. 비교 도입 -->
+<section class="slide s-vs">
+<div class="col left">
+<div class="year">1960</div>
+<h2 class="bhs">농민의 나라</h2>
+<div class="stats">
+<div class="stat"><span>도시 인구</span><b>28%</b></div>
+<div class="stat"><span>농업 인구</span><b>62%</b></div>
+<div class="stat"><span>1인당 GDP</span><b>$80</b></div>
+<div class="stat"><span>아파트 비율</span><b>0%</b></div>
+</div>
+</div>
+<div class="vs bhs">VS</div>
+<div class="col right">
+<div class="year">2025</div>
+<h2 class="bhs">도시의 나라</h2>
+<div class="stats">
+<div class="stat"><span>도시 인구</span><b>92%</b></div>
+<div class="stat"><span>농업 인구</span><b>5%</b></div>
+<div class="stat"><span>1인당 GDP</span><b>$36,000</b></div>
+<div class="stat"><span>아파트 비율</span><b>64%</b></div>
+</div>
+</div>
+</section>
+
+<!-- 3. 임팩트 -->
+<section class="slide s-impact">
+<div class="pre">한국이 도시화에 걸린 시간</div>
+<div class="number bhs">60</div>
+<div class="unit gdd">년</div>
+<p class="desc">영국이 200년, 일본이 100년 걸린 도시화를 한국은 단 60년에 끝냈다.<br>세계에서 가장 빠른 변신이었다.</p>
+</section>
+
+<!-- 4. 차트 (도시화율) -->
+<section class="slide s-chart">
+<h2 class="bhs">📈 도시화율의 폭주</h2>
+<p class="subtitle">1960 → 2025 한국 도시 인구 비율 추이</p>
+<div class="chart-wrap">
+<canvas id="urbanChart"></canvas>
+<span class="source">출처: 통계청 인구주택총조사 / KOSIS</span>
+</div>
+</section>
+
+<!-- 5. 타임라인 -->
+<section class="slide s-timeline">
+<h2 class="bhs">🚦 한국 도시화 4단계</h2>
+<div class="line">
+<div class="step">
+<div class="dot">🌾</div>
+<div class="year-tl">1960~70s</div>
+<h3>대이동의 시작</h3>
+<p>경제개발 5개년 + 새마을운동<br>농촌 → 도시 본격 이주</p>
+</div>
+<div class="step">
+<div class="dot">🏭</div>
+<div class="year-tl">1980s</div>
+<h3>중화학공업</h3>
+<p>울산·포항·창원<br>공업 도시 폭발 성장</p>
+</div>
+<div class="step">
+<div class="dot">🏙</div>
+<div class="year-tl">1990s</div>
+<h3>신도시 1기</h3>
+<p>분당·일산·평촌<br>수도권 광역화</p>
+</div>
+<div class="step">
+<div class="dot">🌆</div>
+<div class="year-tl">2000s~</div>
+<h3>초도시화</h3>
+<p>판교·동탄·세종<br>수도권 50%+ 집중</p>
+</div>
+</div>
+</section>
+
+<!-- 6. 도시 문제 6 그리드 -->
+<section class="slide s-grid">
+<h2 class="bhs">⚠️ 도시 폭주의 어두운 그림자</h2>
+<p class="lead">빠른 도시화 = 빠른 문제 누적</p>
+<div class="g6">
+<div class="card"><div class="icon">🏠</div><h3>주거난</h3><p>서울 아파트 평균 매매가 13억 원, 청년 자가 비율 12%</p><div class="stat">집값 ↑ 5년간 +60%</div></div>
+<div class="card"><div class="icon">🚗</div><h3>교통 혼잡</h3><p>출근길 평균 1시간 10분, 광역 통근자 50만+</p><div class="stat">통근 시간 OECD 1위</div></div>
+<div class="card"><div class="icon">🌫</div><h3>환경 오염</h3><p>미세먼지·오존·소음 — WHO 기준 초과 일수 연 100일+</p><div class="stat">초미세먼지 연 25㎍/㎥</div></div>
+<div class="card"><div class="icon">👥</div><h3>인구 집중</h3><p>수도권에 인구 50%, 경제 53%, 일자리 56% 집중</p><div class="stat">국토 12% → 인구 50%</div></div>
+<div class="card"><div class="icon">⚖️</div><h3>지역 격차</h3><p>비수도권 청년 유출 가속, 일자리·교육 기회 양극화</p><div class="stat">소멸 위험 시군 89개</div></div>
+<div class="card"><div class="icon">🏚</div><h3>공동체 붕괴</h3><p>1인 가구 35%, 이웃 모르는 비율 70%, 고독사 증가</p><div class="stat">1인 가구 750만</div></div>
+</div>
+</section>
+
+<!-- 7. 인용 -->
+<section class="slide s-quote">
+<div class="marks">"</div>
+<blockquote>도시는 사람을 모이게 했지만,<br><em>외롭게도</em> 만들었다.</blockquote>
+<cite>한국 도시 60년 — 어느 사회학자의 진단</cite>
+</section>
+
+<!-- 8. 농촌 그림자 -->
+<section class="slide s-dark">
+<h2 class="bhs">🌾 도시가 빛났을 때<br>농촌에는 무엇이 남았나</h2>
+<p class="lead">도시화의 반대편 — 농촌 공동화의 가속</p>
+<div class="nums">
+<div class="num"><div class="big">5%</div><div class="lab">농업 인구 비율<br>(1960: 62%)</div></div>
+<div class="num"><div class="big">52%</div><div class="lab">농촌 65세 이상<br>비율</div></div>
+<div class="num"><div class="big">89개</div><div class="lab">소멸 위험<br>시군구</div></div>
+<div class="num"><div class="big">3,800</div><div class="lab">2050 한국 인구<br>예상 (만)</div></div>
+</div>
+</section>
+
+<!-- 9. 솔루션 -->
+<section class="slide s-sol">
+<h2 class="bhs">💡 균형의 길</h2>
+<p class="lead">도시도, 농촌도 함께 살아남는 5가지 전략</p>
+<div class="stack">
+<div class="item"><div class="num-circle">1</div><div class="item-c"><h3>균형 발전</h3><p>행정수도·공공기관 지방 이전, 혁신도시 11곳 활성화</p></div></div>
+<div class="item"><div class="num-circle">2</div><div class="item-c"><h3>주거 정책</h3><p>공공임대 50만 호 확대, 세입자 보호 강화, 청년 주거</p></div></div>
+<div class="item"><div class="num-circle">3</div><div class="item-c"><h3>대중교통 강화</h3><p>광역철도(GTX), 무료/저비용 환승, 자가용 의존 완화</p></div></div>
+<div class="item"><div class="num-circle">4</div><div class="item-c"><h3>친환경 도시</h3><p>그린벨트 보호, 그린뉴딜, 스마트시티(부산·세종)</p></div></div>
+<div class="item"><div class="num-circle">5</div><div class="item-c"><h3>농촌 회복</h3><p>청년 농업 지원금, 스마트팜, 귀촌·귀농 정책</p></div></div>
+</div>
+</section>
+
+<!-- 10. 활동 -->
+<section class="slide s-activity">
+<div class="badge">학생 활동</div>
+<div class="icon-big">🏗</div>
+<h2 class="bhs">슬라이더로<br>60년을 직접 경험하라</h2>
+<div class="panel">
+<div class="web">
+<h3>🌐 웹교구</h3>
+<code>c-living-space-industrialization.html</code>
+<p style="margin-top:12px;color:rgba(255,255,255,.8);font-size:.9rem">1960→2030 슬라이더로 도시 인구·산업·환경 변화 직접 체험 + 도시 문제 매칭 + Chart.js 비교</p>
+</div>
+<div class="ws">
+<h3>📝 학습지 ①</h3>
+<p style="color:rgba(255,255,255,.8);font-size:.9rem">1960 vs 2025 비교표 + 도시 문제 분석 + 해결안 작성<br><span style="color:#10b981;font-weight:700">→ A4 1쪽 인쇄형</span></p>
+</div>
+</div>
+</section>
+
+<!-- 11. 마무리 -->
+<section class="slide s-end">
+<div class="key">CORE TAKEAWAYS</div>
+<h2 class="bhs">기억해야 할<br>5가지</h2>
+<div class="takeaways">
+<div class="ta"><b>① 산업화</b> = 농업 → 공업·서비스업 중심</div>
+<div class="ta"><b>② 도시화</b> = 도시 인구 비율 ↑ + 도시 양식 확산</div>
+<div class="ta"><b>③ 한국</b> = 세계 최단기 도시화 (60년)</div>
+<div class="ta"><b>④ 양면성</b> = 도시 문제 + 농촌 공동화 동시 발생</div>
+<div class="ta" style="grid-column:1/-1;text-align:center;border-color:#10b981"><b>⑤ 해법</b> = 균형 발전 + 친환경 + 농촌 회복</div>
+</div>
+<p class="next">다음 차시 → <b>5-2 교통·통신·정보화 — 스마트폰이 바꾼 우리 삶</b></p>
+</section>
+
+<!-- 네비 -->
 <div class="nav">
-<button id="prev">←</button><span class="counter" id="counter">1 / 10</span><button id="next">→</button>
-<button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button>
+<button id="prev">←</button>
+<span class="counter" id="counter">1 / 11</span>
+<button id="next">→</button>
+<button onclick="window.print()" title="인쇄">🖨</button>
+<button onclick="document.documentElement.requestFullscreen()" title="전체화면">⛶</button>
 </div>
 
 <script>
-const slides=document.querySelectorAll('.slide');let cur=0;
-function show(i){slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+slides.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===slides.length-1;}
+const slides=document.querySelectorAll('.slide');
+let cur=0;
+function show(i){
+  slides.forEach(s=>s.classList.remove('active'));
+  slides[i].classList.add('active');
+  document.getElementById('counter').textContent=(i+1)+' / '+slides.length;
+  document.getElementById('prev').disabled=i===0;
+  document.getElementById('next').disabled=i===slides.length-1;
+  document.getElementById('prog').style.width=(((i+1)/slides.length)*100)+'%';
+  if(i===3 && !window.urbanChartDone) drawChart();
+}
+function drawChart(){
+  const ctx=document.getElementById('urbanChart');
+  if(!ctx) return;
+  new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:['1960','1970','1980','1990','2000','2010','2020','2025'],
+      datasets:[{
+        label:'도시화율 (%)',
+        data:[28,41,57,74,80,82,91,92],
+        borderColor:'#fbbf24',
+        backgroundColor:'rgba(251,191,36,.15)',
+        fill:true,
+        borderWidth:3,
+        pointRadius:6,
+        pointBackgroundColor:'#fbbf24',
+        pointBorderColor:'#000',
+        pointBorderWidth:2,
+        tension:.3
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{labels:{color:'#fff',font:{size:14,weight:'bold'}}},
+        tooltip:{backgroundColor:'#000',titleColor:'#fbbf24',bodyColor:'#fff'}
+      },
+      scales:{
+        x:{ticks:{color:'#94a3b8',font:{size:13}},grid:{color:'rgba(255,255,255,.05)'}},
+        y:{ticks:{color:'#94a3b8',font:{size:13},callback:v=>v+'%'},grid:{color:'rgba(255,255,255,.05)'},min:0,max:100}
+      }
+    }
+  });
+  window.urbanChartDone=true;
+}
 document.getElementById('prev').onclick=()=>{if(cur>0){cur--;show(cur);}};
 document.getElementById('next').onclick=()=>{if(cur<slides.length-1){cur++;show(cur);}};
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(cur<slides.length-1){cur++;show(cur);}}else if(e.key==='ArrowLeft'){if(cur>0){cur--;show(cur);}}});
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){if(cur<slides.length-1){cur++;show(cur);}}
+  else if(e.key==='ArrowLeft'){if(cur>0){cur--;show(cur);}}
+  else if(e.key==='f'||e.key==='F'){document.documentElement.requestFullscreen();}
+});
+// touch
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50){
+    if(dx<0&&cur<slides.length-1){cur++;show(cur);}
+    else if(dx>0&&cur>0){cur--;show(cur);}
+  }
+});
 show(0);
 </script>
 </body></html>
