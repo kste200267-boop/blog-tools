@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>📊 10단원 미래와 지속가능한 삶 — 수업 슬라이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{box-sizing:border-box}body{font-family:'Noto Sans KR',sans-serif;background:#064e3b;color:#f1f5f9;margin:0;overflow:hidden}
+.fjua{font-family:'Jua',sans-serif}
+.slide{width:100vw;height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:5vh 5vw;text-align:center}
+.slide.active{display:flex;animation:fi .4s ease-out}
+@keyframes fi{from{opacity:0;transform:scale(.97)}to{opacity:1}}
+.slide h1{font-family:'Jua',sans-serif;font-size:clamp(2rem,5vw,4rem);margin-bottom:1.5rem}
+.slide h2{font-family:'Jua',sans-serif;font-size:clamp(1.5rem,4vw,3rem);margin-bottom:1rem}
+.slide p,.slide li{font-size:clamp(1rem,2vw,1.5rem);line-height:1.7}
+.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(10px);padding:10px 20px;border-radius:99px;z-index:100;display:flex;gap:10px;align-items:center}
+.nav button{background:#10b981;color:#022c22;border:0;width:40px;height:40px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}
+.nav button:disabled{background:#475569;color:#94a3b8;cursor:not-allowed}
+.counter{color:#10b981;font-weight:bold;min-width:60px;text-align:center}
+.cover{background:linear-gradient(135deg,#064e3b 0%,#022c22 100%)}
+.intro{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
+.concept{background:linear-gradient(135deg,#065f46 0%,#064e3b 100%)}
+.summary{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
+@media print{.slide{display:flex!important;page-break-after:always;height:auto;min-height:100vh}.nav{display:none}body{background:#fff;color:#000;overflow:visible}}
+</style></head><body>
+
+<div class="slide cover active">
+<div class="text-xs text-emerald-200 font-bold mb-2">통합사회 2 · 10단원</div>
+<h1>🌍 미래와 지속가능한 삶</h1>
+<p class="mt-4 text-emerald-100">우리 세대 + 미래 세대 함께 살 지구</p>
+<div class="mt-8 text-base text-emerald-200">[10통사2-05] SDGs, 인구 문제, 미래 사회 변화와 지속가능</div>
+</div>
+
+<div class="slide intro">
+<h2>🤔 100년 후 한국은?</h2>
+<div class="mt-6 max-w-3xl bg-white/10 rounded-xl p-6 text-left">
+<ul class="text-base space-y-2">
+<li>👶 출산율 0.7 → 인구 감소</li>
+<li>👴 고령화율 40%+ → 부양 부담</li>
+<li>🌡 평균 기온 +2°C → 폭염·해수면</li>
+<li>🤖 AI·로봇 → 일자리 변화</li>
+</ul>
+<p class="mt-4 text-amber-300">→ 지속가능한 미래는 어떻게 만들까?</p>
+</div>
+</div>
+
+<div class="slide concept">
+<h2>🌟 SDGs (지속가능발전목표)</h2>
+<p class="mt-4 text-emerald-100">UN이 2030년까지 추진하는 17가지 목표</p>
+<div class="mt-6 grid grid-cols-4 gap-2 max-w-5xl text-xs">
+<div class="bg-white/10 rounded p-2">1. 빈곤 종식</div>
+<div class="bg-white/10 rounded p-2">2. 기아 종식</div>
+<div class="bg-white/10 rounded p-2">3. 건강한 삶</div>
+<div class="bg-white/10 rounded p-2">4. 양질 교육</div>
+<div class="bg-white/10 rounded p-2">5. 성평등</div>
+<div class="bg-white/10 rounded p-2">6. 깨끗한 물</div>
+<div class="bg-white/10 rounded p-2">7. 청정 에너지</div>
+<div class="bg-white/10 rounded p-2">8. 양질 일자리</div>
+<div class="bg-white/10 rounded p-2">9. 산업·혁신</div>
+<div class="bg-white/10 rounded p-2">10. 불평등 감소</div>
+<div class="bg-white/10 rounded p-2">11. 지속가능 도시</div>
+<div class="bg-white/10 rounded p-2">12. 책임 소비</div>
+<div class="bg-white/10 rounded p-2">13. 기후 행동</div>
+<div class="bg-white/10 rounded p-2">14. 해양 보호</div>
+<div class="bg-white/10 rounded p-2">15. 육상 생태계</div>
+<div class="bg-white/10 rounded p-2">16. 평화·정의</div>
+<div class="bg-white/10 rounded p-2 col-span-4">17. 파트너십</div>
+</div>
+</div>
+
+<div class="slide concept">
+<h2>👶 한국의 인구 문제</h2>
+<div class="mt-6 grid grid-cols-3 gap-3 max-w-4xl">
+<div class="bg-white/10 rounded-xl p-4 text-center">
+<div class="fjua text-3xl text-amber-300">0.72</div>
+<p class="text-sm mt-1">합계출산율 (2025)</p>
+<p class="text-xs text-emerald-200 mt-1">세계 최저 수준</p>
+</div>
+<div class="bg-white/10 rounded-xl p-4 text-center">
+<div class="fjua text-3xl text-amber-300">19%</div>
+<p class="text-sm mt-1">고령화율 (2025)</p>
+<p class="text-xs text-emerald-200 mt-1">2050년 40%+</p>
+</div>
+<div class="bg-white/10 rounded-xl p-4 text-center">
+<div class="fjua text-3xl text-amber-300">5,150만</div>
+<p class="text-sm mt-1">총인구</p>
+<p class="text-xs text-emerald-200 mt-1">2050년 4,200만 예상</p>
+</div>
+</div>
+<p class="mt-6 text-base text-amber-300">⚠️ 노동력 감소·연금 부담·지방 소멸 가속</p>
+</div>
+
+<div class="slide concept">
+<h2>🌡 기후 위기와 한국</h2>
+<ul class="text-left mt-6 space-y-3 max-w-3xl" style="list-style:none">
+<li class="bg-white/10 rounded-xl p-4">🌡 한국 평균 기온 +1.6°C (1912~2020, 세계 평균의 2배)</li>
+<li class="bg-white/10 rounded-xl p-4">🌊 해수면 상승으로 인천공항·부산 위협</li>
+<li class="bg-white/10 rounded-xl p-4">🔥 폭염·산불·수해 빈도 ↑</li>
+<li class="bg-white/10 rounded-xl p-4">🎯 2050 탄소중립 목표 (넷제로)</li>
+</ul>
+</div>
+
+<div class="slide concept">
+<h2>🤖 미래 사회 변화</h2>
+<div class="mt-6 grid grid-cols-2 gap-4 max-w-4xl">
+<div class="bg-white/10 rounded-xl p-4 text-left">
+<div class="text-3xl mb-1">🤖</div><b class="text-emerald-300">AI·자동화</b>
+<p class="text-sm mt-1">단순 반복 → AI / 창의·공감 → 인간</p>
+</div>
+<div class="bg-white/10 rounded-xl p-4 text-left">
+<div class="text-3xl mb-1">🧬</div><b class="text-emerald-300">바이오·의료</b>
+<p class="text-sm mt-1">유전자 치료·맞춤 의학</p>
+</div>
+<div class="bg-white/10 rounded-xl p-4 text-left">
+<div class="text-3xl mb-1">🌐</div><b class="text-emerald-300">메타버스·디지털</b>
+<p class="text-sm mt-1">가상 공간 일·교육</p>
+</div>
+<div class="bg-white/10 rounded-xl p-4 text-left">
+<div class="text-3xl mb-1">🚀</div><b class="text-emerald-300">우주·신소재</b>
+<p class="text-sm mt-1">민간 우주 시대</p>
+</div>
+</div>
+</div>
+
+<div class="slide concept">
+<h2>🛠 단원 웹교구 (4종)</h2>
+<div class="mt-6 grid grid-cols-2 gap-3 max-w-4xl">
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🌊 기후 시뮬</b><p class="text-sm">기후 정책 선택</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🏘 재난 시장</b><p class="text-sm">재난 대응</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🎯 SDGs 17 카드</b><p class="text-sm">우선순위 + 실천</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">👶 인구 정책 시뮬</b><p class="text-sm">30년 후 예측</p></div>
+</div>
+</div>
+
+<div class="slide summary">
+<h2>🎯 단원 마지막 메시지</h2>
+<div class="mt-6 bg-white/10 rounded-2xl p-8 max-w-3xl">
+<p class="text-2xl text-emerald-300 mb-4">"미래는 우리가 만든다."</p>
+<p class="text-base text-violet-100">SDGs 17개 목표<br>+ 인구·기후·기술 변화에<br>능동적으로 참여하는 시민<br><br>그것이 지속가능한 삶의 시작</p>
+</div>
+</div>
+
+<div class="nav">
+<button id="prev">←</button><span class="counter" id="counter">1 / 8</span><button id="next">→</button>
+<button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');let cur=0;
+function show(i){slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+slides.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===slides.length-1;}
+document.getElementById('prev').onclick=()=>{if(cur>0){cur--;show(cur);}};
+document.getElementById('next').onclick=()=>{if(cur<slides.length-1){cur++;show(cur);}};
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(cur<slides.length-1){cur++;show(cur);}}else if(e.key==='ArrowLeft'){if(cur>0){cur--;show(cur);}}});
+show(0);
+</script>
+</body></html>

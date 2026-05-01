@@ -4,13 +4,114 @@
   "achievementStandard": "[10통사2-01-01] 인권의 의미와 발전 과정. / [10통사2-01-02] 우리 헌법에 보장된 기본권과 그 제한 요건. / [10통사2-01-03] 인권 침해 사례와 구제 방안.",
   "contents": [
     {
+      "slug": "teaching-pack",
+      "file": "c-rights-teaching-pack.html",
+      "title": "📚 6단원 수업 발행 패키지 (총괄)",
+      "type": "교사용",
+      "difficulty": "-",
+      "duration": "참고",
+      "tags": [
+        "수업안",
+        "교사용",
+        "총괄",
+        "통사2",
+        "6단원"
+      ],
+      "desc": "교사용 허브"
+    },
+    {
+      "slug": "ppt-1",
+      "file": "c-rights-ppt-1.html",
+      "title": "📊 PPT 6단원 (HTML)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": [
+        "PPT",
+        "HTML",
+        "인권",
+        "헌법",
+        "통사2",
+        "6단원"
+      ],
+      "desc": "8슬라이드"
+    },
+    {
+      "slug": "ppt-1-pptx",
+      "file": "c-rights-ppt-1.pptx",
+      "title": "📥 PPT 6단원 (PPTX)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": [
+        "PPT",
+        "PPTX",
+        "다운로드",
+        "통사2",
+        "6단원"
+      ],
+      "desc": "편집 가능"
+    },
+    {
+      "slug": "worksheet-1",
+      "file": "c-rights-worksheet-1.html",
+      "title": "📝 학습지 ① 인권 발전 + 5대 기본권",
+      "type": "학습지",
+      "difficulty": "보통",
+      "duration": "25분",
+      "tags": [
+        "학습지",
+        "기본권",
+        "통사2",
+        "6단원"
+      ],
+      "desc": "3세대 인권 + 매칭"
+    },
+    {
+      "slug": "worksheet-2",
+      "file": "c-rights-worksheet-2.html",
+      "title": "📝 학습지 ② 4요건 + 침해 구제",
+      "type": "학습지",
+      "difficulty": "심화",
+      "duration": "30분",
+      "tags": [
+        "학습지",
+        "4요건",
+        "구제",
+        "통사2",
+        "6단원"
+      ],
+      "desc": "4요건 검증 + 구제 절차"
+    },
+    {
+      "slug": "eval",
+      "file": "c-rights-eval.html",
+      "title": "📋 6단원 단원평가",
+      "type": "문항",
+      "difficulty": "보통",
+      "duration": "30분",
+      "tags": [
+        "평가",
+        "자동채점",
+        "통사2",
+        "6단원"
+      ],
+      "desc": "객관식 8 + 서술형 3 = 100점"
+    },
+    {
       "slug": "human-rights-court",
       "file": "w-human-rights-court.html",
       "title": "⚖️ 인권 법정 — 당신이 판사입니다",
       "type": "웹교구",
       "difficulty": "보통",
       "duration": "15분",
-      "tags": ["인권","법정","시뮬레이션","통사2","6단원"],
+      "tags": [
+        "인권",
+        "법정",
+        "시뮬레이션",
+        "통사2",
+        "6단원"
+      ],
       "desc": "실제 인권 사건을 심리하며 판결을 내리는 법정 시뮬레이션"
     },
     {
@@ -20,7 +121,13 @@
       "type": "웹교구",
       "difficulty": "쉬움",
       "duration": "20분",
-      "tags": ["헌법","기본권","빙고","통사2","6단원"],
+      "tags": [
+        "헌법",
+        "기본권",
+        "빙고",
+        "통사2",
+        "6단원"
+      ],
       "desc": "상황 카드를 보고 해당 기본권을 5x5 빙고판에서 찾는 게임"
     },
     {
@@ -30,7 +137,13 @@
       "type": "웹교구",
       "difficulty": "심화",
       "duration": "25분",
-      "tags": ["기본권","제한","제37조","통사2","6단원"],
+      "tags": [
+        "기본권",
+        "제한",
+        "제37조",
+        "통사2",
+        "6단원"
+      ],
       "desc": "헌법 37조 2항 4요건으로 5개 사례에서 기본권 제한의 정당성을 직접 검증"
     }
   ]

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>📊 6단원 인권 보장과 헌법 — 수업 슬라이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{box-sizing:border-box}body{font-family:'Noto Sans KR',sans-serif;background:#451a03;color:#f1f5f9;margin:0;overflow:hidden}
+.fjua{font-family:'Jua',sans-serif}
+.slide{width:100vw;height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:5vh 5vw;text-align:center}
+.slide.active{display:flex;animation:fi .4s ease-out}
+@keyframes fi{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+.slide h1{font-family:'Jua',sans-serif;font-size:clamp(2rem,5vw,4rem);margin-bottom:1.5rem}
+.slide h2{font-family:'Jua',sans-serif;font-size:clamp(1.5rem,4vw,3rem);margin-bottom:1rem}
+.slide p,.slide li{font-size:clamp(1rem,2vw,1.5rem);line-height:1.7}
+.nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(10px);padding:10px 20px;border-radius:99px;z-index:100;display:flex;gap:10px;align-items:center}
+.nav button{background:#fbbf24;color:#451a03;border:0;width:40px;height:40px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.2rem}
+.nav button:disabled{background:#475569;color:#94a3b8;cursor:not-allowed}
+.counter{color:#fbbf24;font-weight:bold;min-width:60px;text-align:center}
+.cover{background:linear-gradient(135deg,#7c2d12 0%,#451a03 100%)}
+.intro{background:linear-gradient(135deg,#1e3a8a 0%,#0c4a6e 100%)}
+.concept{background:linear-gradient(135deg,#92400e 0%,#7c2d12 100%)}
+.summary{background:linear-gradient(135deg,#581c87 0%,#3b0764 100%)}
+@media print{.slide{display:flex!important;page-break-after:always;height:auto;min-height:100vh}.nav{display:none}body{background:#fff;color:#000;overflow:visible}}
+</style></head><body>
+
+<div class="slide cover active">
+<div class="text-xs text-amber-200 font-bold mb-2">통합사회 2 · 6단원</div>
+<h1>⚖️ 인권 보장과 헌법</h1>
+<p class="mt-4 text-amber-100">사람답게 살 권리, 어떻게 지킬 것인가</p>
+<div class="mt-8 text-base text-amber-200">[10통사2-01] 인권의 의미와 발전, 헌법 기본권, 인권 침해와 구제</div>
+</div>
+
+<div class="slide intro">
+<h2>🤔 우리는 어떤 권리를 가지고 있을까?</h2>
+<div class="mt-6 max-w-3xl bg-white/10 rounded-xl p-6 text-left">
+<ul class="text-base space-y-2">
+<li>✅ 학교에서 배울 권리</li>
+<li>✅ 자유롭게 말할 권리</li>
+<li>✅ 차별받지 않을 권리</li>
+<li>✅ 공정하게 재판받을 권리</li>
+</ul>
+<p class="mt-4 text-amber-300">→ 이 모든 것이 헌법으로 보장된 "기본권"</p>
+</div>
+</div>
+
+<div class="slide concept">
+<h2>📜 인권의 발전 — 3세대 인권</h2>
+<ul class="text-left mt-6 space-y-3 max-w-3xl" style="list-style:none">
+<li class="bg-white/10 rounded-xl p-4"><b class="text-amber-300">1세대 시민·정치적 권리</b> — 자유권 (18C 시민혁명)</li>
+<li class="bg-white/10 rounded-xl p-4"><b class="text-amber-300">2세대 경제·사회·문화적 권리</b> — 사회권 (20C 산업화)</li>
+<li class="bg-white/10 rounded-xl p-4"><b class="text-amber-300">3세대 연대·집단적 권리</b> — 평화권·환경권 (현대)</li>
+</ul>
+</div>
+
+<div class="slide concept">
+<h2>📚 헌법의 5대 기본권</h2>
+<div class="mt-6 grid grid-cols-2 gap-3 max-w-4xl text-left">
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🕊 자유권</b><p class="text-sm">신체·언론·종교·재산 (제12~23조)</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">⚖️ 평등권</b><p class="text-sm">차별받지 않을 권리 (제11조)</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">🗳 참정권</b><p class="text-sm">선거·공무담임 (제24·25조)</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">📝 청구권</b><p class="text-sm">청원·재판·국가배상 (제26~30조)</p></div>
+<div class="bg-white/10 rounded-xl p-3 col-span-2"><b class="text-amber-300">🏥 사회권</b><p class="text-sm">교육·근로·환경·인간다운 생활 (제31~36조)</p></div>
+</div>
+</div>
+
+<div class="slide concept">
+<h2>⚖️ 기본권 제한의 4요건</h2>
+<p class="mt-4 text-amber-100">헌법 제37조 ② — 기본권은 절대적이지 않다</p>
+<ul class="text-left mt-6 space-y-3 max-w-3xl" style="list-style:none">
+<li class="bg-white/10 rounded-xl p-4"><b class="text-amber-300">① 목적의 정당성</b> — 국가안전·질서·공공복리</li>
+<li class="bg-white/10 rounded-xl p-4"><b class="text-amber-300">② 방법의 적정성</b> — 효과적·적합한 수단</li>
+<li class="bg-white/10 rounded-xl p-4"><b class="text-amber-300">③ 피해의 최소성</b> — 가장 덜 침해적</li>
+<li class="bg-white/10 rounded-xl p-4"><b class="text-amber-300">④ 법익의 균형성</b> — 얻는 이익 ≥ 침해</li>
+</ul>
+<p class="mt-4 text-base text-rose-300">⚠️ 본질적 내용은 절대 침해 금지</p>
+</div>
+
+<div class="slide concept">
+<h2>🆘 인권 침해 구제 방법</h2>
+<ul class="text-left mt-6 space-y-3 max-w-3xl" style="list-style:none">
+<li class="bg-white/10 rounded-xl p-4">📜 <b>국가인권위원회</b> 진정</li>
+<li class="bg-white/10 rounded-xl p-4">⚖️ <b>법원</b> 재판 청구</li>
+<li class="bg-white/10 rounded-xl p-4">🏛 <b>헌법재판소</b> 헌법소원</li>
+<li class="bg-white/10 rounded-xl p-4">🚓 <b>국민권익위원회</b> 행정심판</li>
+<li class="bg-white/10 rounded-xl p-4">🤝 <b>국제기구</b> (UN 인권이사회 등)</li>
+</ul>
+</div>
+
+<div class="slide concept">
+<h2>🛠 단원 웹교구 (3종)</h2>
+<div class="mt-6 grid grid-cols-3 gap-3 max-w-4xl">
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">⚖️ 인권 법정</b><p class="text-sm">실제 사건 판결</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">📜 헌법 빙고</b><p class="text-sm">5x5 기본권 빙고</p></div>
+<div class="bg-white/10 rounded-xl p-3"><b class="text-amber-300">⚖️ 4요건 검증</b><p class="text-sm">기본권 제한 시뮬</p></div>
+</div>
+</div>
+
+<div class="slide summary">
+<h2>🎯 오늘의 핵심</h2>
+<ul class="text-left mt-6 space-y-3 text-violet-100" style="list-style:none">
+<li>✅ 인권은 천부적·보편적·불가침적 권리</li>
+<li>✅ 헌법 5대 기본권: 자유·평등·참정·청구·사회</li>
+<li>✅ 기본권 제한은 4요건 충족 시에만 가능</li>
+<li>✅ 본질적 내용은 절대 침해 X</li>
+<li>✅ 인권 침해 시 다양한 구제 절차 활용</li>
+</ul>
+<div class="mt-10 bg-amber-500/20 rounded-xl p-5">
+<b class="text-amber-300">📌 다음 단원</b>
+<p class="text-base text-amber-100 mt-2">7단원 사회 정의와 불평등 — 공정한 분배는 무엇인가</p>
+</div>
+</div>
+
+<div class="nav">
+<button id="prev">←</button><span class="counter" id="counter">1 / 8</span><button id="next">→</button>
+<button onclick="window.print()">🖨</button><button onclick="document.documentElement.requestFullscreen()">⛶</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');let cur=0;
+function show(i){slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');document.getElementById('counter').textContent=(i+1)+' / '+slides.length;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===slides.length-1;}
+document.getElementById('prev').onclick=()=>{if(cur>0){cur--;show(cur);}};
+document.getElementById('next').onclick=()=>{if(cur<slides.length-1){cur++;show(cur);}};
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(cur<slides.length-1){cur++;show(cur);}}else if(e.key==='ArrowLeft'){if(cur>0){cur--;show(cur);}}});
+show(0);
+</script>
+</body></html>
