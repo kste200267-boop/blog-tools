@@ -83,6 +83,26 @@
         "통사1"
       ],
       "desc": "4관점 마스터 퀴즈 — 이전 대화에서 만든 구버전"
+    },
+    {
+      "slug": "news-analyzer",
+      "file": "c-perspective-news-analyzer.html",
+      "title": "📰 뉴스 4관점 분석기",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "25분",
+      "tags": ["뉴스","4관점","분석","통사1","1단원"],
+      "desc": "학생이 뉴스 입력 → 시간·공간·사회·윤리 4관점에서 분석하는 가이드 도구"
+    },
+    {
+      "slug": "debate-arena",
+      "file": "c-perspective-debate-arena.html",
+      "title": "🥊 사회 이슈 4관점 토론장",
+      "type": "활동지",
+      "difficulty": "보통",
+      "duration": "30분",
+      "tags": ["토론","4관점","모둠활동","통사1","1단원"],
+      "desc": "모둠원을 4관점에 배정해 사회 이슈에 대한 발표문·합의문을 작성하는 토론 활동지"
     }
   ]
 }

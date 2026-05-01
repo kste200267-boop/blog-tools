@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>🤝 FTA 협상 시뮬레이션</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#1e3a8a 0%,#1e40af 100%);min-height:100vh;color:#e2e8f0}
+.fjua{font-family:'Jua',sans-serif}
+.topic{transition:all .2s;cursor:pointer}.topic:hover{background:#334155}
+.opt{transition:all .15s;cursor:pointer}.opt:hover{transform:scale(1.01)}.opt.picked{box-shadow:0 0 0 3px #fbbf24}
+@media print{body{background:#fff!important;color:#000!important}.no-print{display:none!important}}
+</style></head><body>
+<header class="no-print bg-slate-900/70 backdrop-blur border-b border-slate-700 sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="hub.html?mode=unit&id=globalization" class="font-bold text-slate-200">← 단원으로</a>
+<div class="text-xs text-slate-400">[10통사2-04-02] 국제 협력</div>
+<button onclick="window.print()" class="text-sm bg-slate-700 px-3 py-1.5 rounded-lg">🖨</button></div></header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+<section class="text-center mb-6">
+<div class="text-6xl mb-2">🤝</div>
+<h1 class="fjua text-4xl md:text-5xl mb-2 text-amber-300">FTA 협상 외교관</h1>
+<p class="text-slate-300 text-sm">한국 외교관 입장에서 5개 협상 의제에 대한 결정을 내리고 종합 점수를 받습니다.</p>
+</section>
+
+<section class="bg-slate-800/60 rounded-2xl p-5 border border-slate-700 mb-5">
+<div class="grid grid-cols-3 gap-3">
+<div class="bg-emerald-900/40 rounded-xl p-3 text-center"><div class="text-xs text-emerald-300">📈 경제이익</div><div class="fjua text-2xl text-emerald-200" id="vEcon">0</div></div>
+<div class="bg-rose-900/40 rounded-xl p-3 text-center"><div class="text-xs text-rose-300">🏭 자국산업</div><div class="fjua text-2xl text-rose-200" id="vIndu">0</div></div>
+<div class="bg-blue-900/40 rounded-xl p-3 text-center"><div class="text-xs text-blue-300">🌐 외교점수</div><div class="fjua text-2xl text-blue-200" id="vDip">0</div></div>
+</div></section>
+
+<section id="topics"></section>
+
+<section class="bg-slate-800/40 rounded-2xl p-5 border border-slate-700 mb-5">
+<h2 class="fjua text-xl mb-3 text-amber-300">📜 협상 결과문</h2>
+<textarea id="treaty" rows="4" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-sm text-slate-100" placeholder="협상 결과를 종합한 협정문 요약을 작성하세요."></textarea>
+</section>
+
+<section class="bg-gradient-to-r from-amber-900/60 to-blue-900/60 rounded-2xl p-6 border-2 border-amber-500">
+<h2 class="fjua text-2xl mb-3 text-amber-200">📄 협상 보고서</h2>
+<button id="genBtn" class="bg-amber-500 text-slate-900 font-bold px-5 py-2.5 rounded-lg mr-2">📋 정리</button>
+<button onclick="window.print()" class="bg-slate-200 text-slate-900 font-bold px-5 py-2.5 rounded-lg">🖨 PDF</button>
+<div id="report" class="hidden mt-4 bg-white text-slate-900 rounded-xl p-5">
+<h3 class="fjua text-xl text-center border-b-2 border-slate-800 pb-2 mb-3">🤝 FTA 협상 결과</h3>
+<div class="text-sm space-y-2">
+<div><b>이름:</b> _________ <b>날짜:</b> _________</div>
+<div><b>최종 점수:</b> 경제 <span id="rE"></span> / 산업 <span id="rI"></span> / 외교 <span id="rD"></span></div>
+<div><b>의제별 결정:</b><ol id="rDecs" class="ml-4 list-decimal"></ol></div>
+<div><b>협정문 요약:</b> <span id="rT"></span></div>
+</div></div></section>
+</main>
+<footer class="no-print text-center text-xs text-slate-500 py-6">풀어쓰는 사회학 정보부 · 통합사회 2 · 9단원</footer>
+
+<script>
+const TOPICS=[
+{title:'🚗 자동차 관세',desc:'상대국이 한국 자동차에 25% 관세를 매기겠다고 한다.',
+opts:[
+{t:'관세 즉시 철폐 요구 (강경)',e:30,i:20,d:-5},
+{t:'5년 점진 철폐 합의',e:15,i:10,d:10},
+{t:'유지하되 자동차 부품 양보 받기',e:5,i:5,d:5}]},
+{title:'🌾 쌀 시장 개방',desc:'상대국이 쌀 수입 자유화를 강력 요구한다.',
+opts:[
+{t:'완전 개방 (소비자 가격 ↓)',e:20,i:-30,d:15},
+{t:'관세할당제 (TRQ)로 일부만',e:5,i:-5,d:5},
+{t:'개방 거부 — 농가 보호',e:-10,i:20,d:-15}]},
+{title:'💊 제약 특허 보호',desc:'다국적 제약사 특허 기간 연장 요구.',
+opts:[
+{t:'특허 연장 수용 (외국 신약 ↑)',e:10,i:-10,d:10},
+{t:'복제약 제조권 유지 (서민 약값 ↓)',e:-5,i:15,d:-5},
+{t:'분야별 차등 적용',e:5,i:5,d:5}]},
+{title:'🌳 환경 기준',desc:'상대국이 한국 산업 환경 기준을 자국 수준으로 맞추라 요구.',
+opts:[
+{t:'엄격한 환경 기준 도입 (산업 부담)',e:5,i:-15,d:15},
+{t:'5년 유예 후 단계적',e:10,i:5,d:5},
+{t:'주권 침해라며 거부',e:-10,i:5,d:-15}]},
+{title:'👷 노동 기준',desc:'상대국이 한국의 외국인 노동자 처우 개선을 요구.',
+opts:[
+{t:'노동 기본권 강화',e:0,i:-5,d:15},
+{t:'점진 개선 약속',e:5,i:0,d:5},
+{t:'국내 문제로 거부',e:-5,i:5,d:-10}]}];
+const recs=TOPICS.map(()=>null);
+function build(){
+document.getElementById('topics').innerHTML=TOPICS.map((t,i)=>`
+<div class="bg-slate-800/40 rounded-2xl p-5 border border-slate-700 mb-3">
+<h3 class="fjua text-xl mb-1">${t.title}</h3>
+<p class="text-sm text-slate-300 mb-3">${t.desc}</p>
+<div class="space-y-2" data-i="${i}">
+${t.opts.map((o,j)=>`<div class="opt bg-slate-900/60 border border-slate-600 rounded-lg p-3 text-sm" data-j="${j}">
+<div class="font-bold">${o.t}</div>
+<div class="text-xs text-slate-400 mt-1">📈${o.e>=0?'+':''}${o.e} 🏭${o.i>=0?'+':''}${o.i} 🌐${o.d>=0?'+':''}${o.d}</div>
+</div>`).join('')}
+</div></div>`).join('');
+document.querySelectorAll('[data-i]').forEach(g=>{
+const i=+g.dataset.i;
+g.querySelectorAll('.opt').forEach(o=>o.addEventListener('click',()=>{
+g.querySelectorAll('.opt').forEach(x=>x.classList.remove('picked'));o.classList.add('picked');
+const j=+o.dataset.j;recs[i]={...TOPICS[i].opts[j],idx:j};
+update();
+}));});}
+build();
+function update(){
+let e=0,ii=0,d=0;recs.forEach(r=>{if(r){e+=r.e;ii+=r.i;d+=r.d;}});
+document.getElementById('vEcon').textContent=e;document.getElementById('vIndu').textContent=ii;document.getElementById('vDip').textContent=d;
+}
+document.getElementById('genBtn').addEventListener('click',()=>{
+document.getElementById('rE').textContent=document.getElementById('vEcon').textContent;
+document.getElementById('rI').textContent=document.getElementById('vIndu').textContent;
+document.getElementById('rD').textContent=document.getElementById('vDip').textContent;
+document.getElementById('rDecs').innerHTML=TOPICS.map((t,i)=>{const r=recs[i];return `<li>${t.title}: ${r?t.opts[r.idx].t:'(미결정)'}</li>`;}).join('');
+document.getElementById('rT').textContent=document.getElementById('treaty').value||'-';
+document.getElementById('report').classList.remove('hidden');
+});
+</script></body></html>

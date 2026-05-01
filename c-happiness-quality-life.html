@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>📊 삶의 질 측정기 — OECD Better Life</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#cffafe 0%,#fef3c7 100%);min-height:100vh}
+.fjua{font-family:'Jua',sans-serif}
+.s-input{appearance:none;width:100%;height:8px;background:#cbd5e1;border-radius:99px;outline:none}
+.s-input::-webkit-slider-thumb{appearance:none;width:24px;height:24px;background:#0891b2;border-radius:50%;cursor:pointer;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+@media print{.no-print{display:none!important}}
+</style></head><body class="text-slate-800">
+<header class="no-print bg-white/80 backdrop-blur border-b sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="hub.html?mode=unit&id=happiness" class="font-bold">← 단원으로</a>
+<div class="text-xs text-slate-500">[10통사1-02-02] 행복의 조건</div>
+<button onclick="window.print()" class="text-sm bg-slate-100 px-3 py-1.5 rounded-lg">🖨</button></div></header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+<section class="bg-white rounded-2xl p-6 shadow-sm border mb-5">
+<div class="text-xs text-cyan-600 font-bold mb-1">통합사회 1 · 2단원 행복</div>
+<h1 class="fjua text-3xl md:text-4xl mb-2">📊 삶의 질 측정기</h1>
+<p class="text-slate-600 text-sm">OECD Better Life Index 11개 영역으로 학생의 삶의 질을 자가 진단하고 개선 영역을 찾습니다.</p>
+</section>
+
+<section class="bg-white rounded-2xl p-6 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-4">🎯 11개 영역 자가 진단</h2>
+<p class="text-sm text-slate-600 mb-4">각 영역에 대한 본인의 만족도를 0~10으로 매겨주세요.</p>
+<div id="dimList" class="space-y-3"></div>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">📈 결과 시각화</h2>
+<canvas id="chart" height="240"></canvas>
+<div class="text-center mt-3 text-sm">총점: <b id="total" class="text-cyan-600 fjua text-2xl">0</b> / 110</div>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">💡 개선 계획</h2>
+<p class="text-sm text-slate-600 mb-3">점수가 낮은 2~3개 영역을 골라 개선 계획을 작성하세요.</p>
+<textarea id="plan" rows="5" class="w-full bg-slate-50 border-2 border-slate-300 rounded-lg p-3 text-sm" placeholder="예: '시민참여' 점수가 낮은데, 학교 동아리 활동 시작이나 자원봉사 월 1회 등 작은 실천부터..."></textarea>
+</section>
+
+<section class="bg-gradient-to-r from-cyan-100 to-amber-100 border-2 border-cyan-300 rounded-2xl p-6">
+<h2 class="fjua text-2xl mb-3">📄 삶의 질 진단 보고서</h2>
+<button id="genBtn" class="bg-cyan-600 text-white font-bold px-5 py-2.5 rounded-lg mr-2">📋 정리</button>
+<button onclick="window.print()" class="bg-slate-800 text-white font-bold px-5 py-2.5 rounded-lg">🖨 PDF</button>
+<div id="report" class="hidden mt-4 bg-white rounded-xl p-5 border-2 border-slate-800">
+<h3 class="fjua text-xl text-center border-b-2 border-slate-800 pb-2 mb-3">📊 삶의 질 진단 결과</h3>
+<div class="text-sm space-y-2">
+<div><b>이름:</b> _________ <b>날짜:</b> _________</div>
+<div><b>총점:</b> <span id="rTotal"></span> / 110</div>
+<div><b>가장 만족하는 영역 TOP 3:</b><ol id="rTop" class="ml-4 list-decimal"></ol></div>
+<div><b>개선이 필요한 영역 BOTTOM 3:</b><ol id="rBot" class="ml-4 list-decimal"></ol></div>
+<div><b>개선 계획:</b> <span id="rPlan"></span></div>
+</div></div></section>
+</main>
+<footer class="no-print text-center text-xs text-slate-400 py-6">풀어쓰는 사회학 정보부 · 통합사회 1 · 2단원</footer>
+
+<script>
+const DIM=[
+{name:'주거',icon:'🏠',desc:'살기 좋은 집과 환경'},
+{name:'소득',icon:'💰',desc:'경제적 여유'},
+{name:'일자리',icon:'💼',desc:'안정된 일과 진로'},
+{name:'공동체',icon:'👥',desc:'친구·가족·이웃 관계'},
+{name:'교육',icon:'📚',desc:'배움의 기회와 질'},
+{name:'환경',icon:'🌳',desc:'깨끗한 자연·공기'},
+{name:'시민참여',icon:'🗳',desc:'사회·학교 의사결정 참여'},
+{name:'건강',icon:'❤️',desc:'몸과 마음의 건강'},
+{name:'삶의 만족',icon:'😊',desc:'전반적 만족감'},
+{name:'안전',icon:'🛡',desc:'학교·사회의 안전'},
+{name:'일과 삶 균형',icon:'⚖️',desc:'시간 배분 만족도'}];
+const vals=DIM.map(()=>5);
+function build(){
+document.getElementById('dimList').innerHTML=DIM.map((d,i)=>`
+<div class="bg-slate-50 rounded-xl p-3">
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-2"><span class="text-xl">${d.icon}</span><b class="text-sm">${d.name}</b><span class="text-xs text-slate-500">${d.desc}</span></div>
+<span class="text-cyan-600 font-bold text-sm" id="v${i}">5</span></div>
+<input type="range" min="0" max="10" value="5" class="s-input" data-i="${i}">
+</div>`).join('');
+document.querySelectorAll('.s-input').forEach(s=>s.addEventListener('input',e=>{const i=+e.target.dataset.i;vals[i]=+e.target.value;document.getElementById('v'+i).textContent=e.target.value;updateChart();}));
+}
+build();
+let chart;
+window.addEventListener('load',()=>{
+const ctx=document.getElementById('chart');
+chart=new Chart(ctx,{type:'radar',data:{labels:DIM.map(d=>d.name),datasets:[{label:'나의 점수',data:vals,backgroundColor:'rgba(8,145,178,.2)',borderColor:'#0891b2',pointBackgroundColor:'#0891b2'}]},options:{responsive:true,scales:{r:{beginAtZero:true,max:10,pointLabels:{font:{size:12}}}},plugins:{legend:{display:false}}}});
+});
+function updateChart(){if(!chart)return;chart.data.datasets[0].data=vals;chart.update();document.getElementById('total').textContent=vals.reduce((s,v)=>s+v,0);}
+updateChart();
+document.getElementById('genBtn').addEventListener('click',()=>{
+const sorted=DIM.map((d,i)=>({...d,v:vals[i]})).sort((a,b)=>b.v-a.v);
+document.getElementById('rTotal').textContent=vals.reduce((s,v)=>s+v,0);
+document.getElementById('rTop').innerHTML=sorted.slice(0,3).map(d=>`<li>${d.icon} ${d.name} — ${d.v}/10</li>`).join('');
+document.getElementById('rBot').innerHTML=sorted.slice(-3).reverse().map(d=>`<li>${d.icon} ${d.name} — ${d.v}/10</li>`).join('');
+document.getElementById('rPlan').textContent=document.getElementById('plan').value||'-';
+document.getElementById('report').classList.remove('hidden');
+});
+</script></body></html>

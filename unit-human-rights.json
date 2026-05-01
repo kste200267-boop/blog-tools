@@ -1,0 +1,37 @@
+{
+  "unit": "인권 보장과 헌법",
+  "unitSlug": "human-rights",
+  "achievementStandard": "[10통사2-01-01] 인권의 의미와 발전 과정. / [10통사2-01-02] 우리 헌법에 보장된 기본권과 그 제한 요건. / [10통사2-01-03] 인권 침해 사례와 구제 방안.",
+  "contents": [
+    {
+      "slug": "human-rights-court",
+      "file": "w-human-rights-court.html",
+      "title": "⚖️ 인권 법정 — 당신이 판사입니다",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "15분",
+      "tags": ["인권","법정","시뮬레이션","통사2","6단원"],
+      "desc": "실제 인권 사건을 심리하며 판결을 내리는 법정 시뮬레이션"
+    },
+    {
+      "slug": "constitution-bingo",
+      "file": "c-rights-constitution-bingo.html",
+      "title": "📜 헌법 기본권 빙고",
+      "type": "웹교구",
+      "difficulty": "쉬움",
+      "duration": "20분",
+      "tags": ["헌법","기본권","빙고","통사2","6단원"],
+      "desc": "상황 카드를 보고 해당 기본권을 5x5 빙고판에서 찾는 게임"
+    },
+    {
+      "slug": "restriction-sim",
+      "file": "c-rights-restriction-sim.html",
+      "title": "⚖️ 기본권 제한 4요건 검증",
+      "type": "웹교구",
+      "difficulty": "심화",
+      "duration": "25분",
+      "tags": ["기본권","제한","제37조","통사2","6단원"],
+      "desc": "헌법 37조 2항 4요건으로 5개 사례에서 기본권 제한의 정당성을 직접 검증"
+    }
+  ]
+}

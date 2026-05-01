@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>📰 뉴스 4관점 분석기</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#dbeafe 0%,#fef3c7 50%,#fce7f3 100%);min-height:100vh}
+.fjua{font-family:'Jua',sans-serif}
+.persp{transition:all .2s}.persp:hover{transform:translateY(-2px)}
+.fade{animation:fi .4s ease-out}@keyframes fi{from{opacity:0}to{opacity:1}}
+@media print{.no-print{display:none!important}}
+</style></head>
+<body class="text-slate-800">
+<header class="no-print bg-white/80 backdrop-blur border-b sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="hub.html?mode=unit&id=integrated-perspective" class="font-bold">← 단원으로</a>
+<div class="text-xs text-slate-500">[10통사1-01-01] 통합적 관점</div>
+<button onclick="window.print()" class="text-sm bg-slate-100 px-3 py-1.5 rounded-lg">🖨</button></div></header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+<section class="bg-white rounded-2xl p-6 shadow-sm border mb-5">
+<div class="text-xs text-blue-600 font-bold mb-1">통합사회 1 · 1단원 통합적 관점</div>
+<h1 class="fjua text-3xl md:text-4xl mb-2">📰 뉴스 4관점 분석기</h1>
+<p class="text-slate-600 text-sm">학생이 직접 뉴스를 입력하면 시간·공간·사회·윤리 4관점에서 분석할 수 있는 가이드 질문이 나옵니다.</p>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">📝 STEP 1. 뉴스 입력</h2>
+<input id="title" class="w-full bg-slate-50 border-2 border-slate-300 rounded-lg p-2.5 text-sm mb-3" placeholder="뉴스 제목 입력 (예: '서울 청년 1인 가구 50% 돌파')">
+<textarea id="body" rows="4" class="w-full bg-slate-50 border-2 border-slate-300 rounded-lg p-3 text-sm" placeholder="뉴스 본문 또는 핵심 내용을 입력하거나 붙여넣으세요."></textarea>
+<div class="flex gap-2 mt-3 flex-wrap">
+<button id="example1" class="text-xs bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg">예시 ① 청년 1인가구</button>
+<button id="example2" class="text-xs bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg">예시 ② AI 일자리</button>
+<button id="example3" class="text-xs bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg">예시 ③ 기후 위기</button>
+</div></section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">🔍 STEP 2. 4관점 분석</h2>
+<div class="grid md:grid-cols-2 gap-3">
+<div class="persp bg-amber-50 border-2 border-amber-300 rounded-xl p-4">
+<div class="flex items-center gap-2 mb-2"><span class="text-2xl">⏰</span><b class="text-amber-800">시간적 관점</b></div>
+<div class="text-xs text-slate-600 mb-2">언제부터? 역사적으로 어떤 변화? 과거에는?</div>
+<ul class="text-xs space-y-1 mb-2 text-amber-900"><li>• 이 현상이 처음 나타난 시점은?</li><li>• 과거와 비교했을 때 무엇이 다른가?</li><li>• 앞으로 어떻게 변할 것인가?</li></ul>
+<textarea id="qTime" rows="3" class="w-full bg-white border border-amber-300 rounded p-2 text-sm" placeholder="시간 관점에서 분석해보세요"></textarea>
+</div>
+<div class="persp bg-emerald-50 border-2 border-emerald-300 rounded-xl p-4">
+<div class="flex items-center gap-2 mb-2"><span class="text-2xl">🗺</span><b class="text-emerald-800">공간적 관점</b></div>
+<div class="text-xs text-slate-600 mb-2">어디서? 지역별 차이는? 국제 사례는?</div>
+<ul class="text-xs space-y-1 mb-2 text-emerald-900"><li>• 어느 지역·국가에서 두드러지나?</li><li>• 지역별 차이의 원인은?</li><li>• 다른 나라 사례와 비교하면?</li></ul>
+<textarea id="qSpace" rows="3" class="w-full bg-white border border-emerald-300 rounded p-2 text-sm" placeholder="공간 관점에서 분석해보세요"></textarea>
+</div>
+<div class="persp bg-blue-50 border-2 border-blue-300 rounded-xl p-4">
+<div class="flex items-center gap-2 mb-2"><span class="text-2xl">👥</span><b class="text-blue-800">사회적 관점</b></div>
+<div class="text-xs text-slate-600 mb-2">누가 영향받나? 사회 구조·제도·관계는?</div>
+<ul class="text-xs space-y-1 mb-2 text-blue-900"><li>• 어떤 집단·계층이 영향을 받나?</li><li>• 정치·경제·사회 구조의 영향은?</li><li>• 이해관계자는 누구인가?</li></ul>
+<textarea id="qSocial" rows="3" class="w-full bg-white border border-blue-300 rounded p-2 text-sm" placeholder="사회 관점에서 분석해보세요"></textarea>
+</div>
+<div class="persp bg-rose-50 border-2 border-rose-300 rounded-xl p-4">
+<div class="flex items-center gap-2 mb-2"><span class="text-2xl">⚖️</span><b class="text-rose-800">윤리적 관점</b></div>
+<div class="text-xs text-slate-600 mb-2">옳은가? 가치 판단은? 누구의 권리가?</div>
+<ul class="text-xs space-y-1 mb-2 text-rose-900"><li>• 무엇이 옳은 행위인가?</li><li>• 누구의 권리·의무가 충돌하는가?</li><li>• 우리는 어떤 가치를 추구해야 하나?</li></ul>
+<textarea id="qEth" rows="3" class="w-full bg-white border border-rose-300 rounded p-2 text-sm" placeholder="윤리 관점에서 분석해보세요"></textarea>
+</div>
+</div></section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">🧠 STEP 3. 통합적 결론</h2>
+<p class="text-sm text-slate-600 mb-3">4관점을 종합해 본인만의 통합적 해석과 제안을 작성하세요.</p>
+<textarea id="myConcl" rows="4" class="w-full bg-slate-50 border-2 border-slate-300 rounded-lg p-3 text-sm" placeholder="예: 이 현상은 단순히 한 시점의 문제가 아니라 시대·공간·사회구조·가치관이 복합적으로 작용한 결과이며..."></textarea>
+</section>
+
+<section class="bg-gradient-to-r from-amber-100 to-rose-100 border-2 border-amber-300 rounded-2xl p-6">
+<h2 class="fjua text-2xl mb-3">📄 4관점 분석 보고서</h2>
+<button id="genBtn" class="bg-rose-600 text-white font-bold px-5 py-2.5 rounded-lg mr-2">📋 정리</button>
+<button onclick="window.print()" class="bg-slate-800 text-white font-bold px-5 py-2.5 rounded-lg">🖨 PDF</button>
+<div id="report" class="hidden mt-4 bg-white rounded-xl p-5 border-2 border-slate-800 fade">
+<h3 class="fjua text-xl text-center border-b-2 border-slate-800 pb-2 mb-3">📰 뉴스 4관점 분석 결과</h3>
+<div class="text-sm space-y-2">
+<div><b>이름:</b> _________ <b>날짜:</b> _________</div>
+<div><b>📰 분석 뉴스:</b> <span id="rTitle"></span></div>
+<div class="bg-slate-50 rounded p-2 text-xs"><span id="rBody"></span></div>
+<div class="grid md:grid-cols-2 gap-3 mt-3">
+<div class="bg-amber-50 rounded p-2"><b>⏰ 시간:</b> <span id="rT"></span></div>
+<div class="bg-emerald-50 rounded p-2"><b>🗺 공간:</b> <span id="rS"></span></div>
+<div class="bg-blue-50 rounded p-2"><b>👥 사회:</b> <span id="rSo"></span></div>
+<div class="bg-rose-50 rounded p-2"><b>⚖️ 윤리:</b> <span id="rE"></span></div>
+</div>
+<div class="bg-violet-50 rounded p-3 mt-2"><b>🧠 통합 결론:</b> <span id="rC"></span></div>
+</div></div></section>
+</main>
+<footer class="no-print text-center text-xs text-slate-400 py-6">풀어쓰는 사회학 정보부 · 통합사회 1 · 1단원</footer>
+
+<script>
+const EX={
+1:{t:'서울 청년 1인가구 50% 돌파',b:'서울에 거주하는 20·30대 청년 가구 중 1인 가구 비율이 처음으로 50%를 넘었다. 주거비 부담과 결혼 가치관 변화가 주요 원인으로 지목된다.'},
+2:{t:'AI가 일자리를 대체한다',b:'생성형 AI 도입으로 사무직·번역·디자인 등 다양한 분야에서 일자리 변화가 일어나고 있다. 새로운 직업도 생겨나지만 격차 확대 우려도 크다.'},
+3:{t:'한국, 50년 만에 기록적 폭염',b:'올여름 서울이 50년 만에 가장 더운 여름을 기록했다. 기후 위기의 영향으로 농작물 피해와 온열질환자가 급증했다.'}};
+['1','2','3'].forEach(n=>document.getElementById('example'+n).addEventListener('click',()=>{document.getElementById('title').value=EX[n].t;document.getElementById('body').value=EX[n].b;}));
+document.getElementById('genBtn').addEventListener('click',()=>{
+document.getElementById('rTitle').textContent=document.getElementById('title').value||'(미입력)';
+document.getElementById('rBody').textContent=document.getElementById('body').value||'-';
+document.getElementById('rT').textContent=document.getElementById('qTime').value||'-';
+document.getElementById('rS').textContent=document.getElementById('qSpace').value||'-';
+document.getElementById('rSo').textContent=document.getElementById('qSocial').value||'-';
+document.getElementById('rE').textContent=document.getElementById('qEth').value||'-';
+document.getElementById('rC').textContent=document.getElementById('myConcl').value||'-';
+document.getElementById('report').classList.remove('hidden');
+});
+</script></body></html>

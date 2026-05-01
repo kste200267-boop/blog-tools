@@ -30,6 +30,26 @@
         "통사1"
       ],
       "desc": "행복에 대한 다양한 관점을 퀴즈로 학습"
+    },
+    {
+      "slug": "aristotle",
+      "file": "c-happiness-aristotle.html",
+      "title": "🏛 행복관 진단 — 4대 행복관",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "20분",
+      "tags": ["행복관","아리스토텔레스","공리주의","통사1","2단원"],
+      "desc": "10가지 상황 선택으로 학생의 행복관(덕·공리·동양·자기실현)을 진단"
+    },
+    {
+      "slug": "quality-life",
+      "file": "c-happiness-quality-life.html",
+      "title": "📊 삶의 질 측정기 (OECD)",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "20분",
+      "tags": ["삶의질","OECD","자기진단","통사1","2단원"],
+      "desc": "OECD Better Life Index 11개 영역으로 삶의 질을 자가 진단하고 개선 계획 작성"
     }
   ]
 }

@@ -1,0 +1,37 @@
+{
+  "unit": "세계화와 평화",
+  "unitSlug": "globalization",
+  "achievementStandard": "[10통사2-04-01] 세계화의 양상과 영향(긍정·부정). / [10통사2-04-02] 국제 협력과 분쟁 해결. / [10통사2-04-03] 평화의 의미와 국제 사회의 평화 노력.",
+  "contents": [
+    {
+      "slug": "culture-diplomat",
+      "file": "w-culture-diplomat.html",
+      "title": "🗺️ 문화 충돌 외교관",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "15분",
+      "tags": ["문화","다문화","외교","통사2","9단원"],
+      "desc": "다른 문화권과의 갈등 상황에서 외교적 해결을 모색하는 롤플레이"
+    },
+    {
+      "slug": "light-shadow",
+      "file": "c-globalization-light-shadow.html",
+      "title": "🌐 세계화의 빛과 그림자",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "25분",
+      "tags": ["세계화","양면성","통사2","9단원"],
+      "desc": "7개 세계화 사례를 빛/그림자/양면으로 분류하고 본인 입장 정립"
+    },
+    {
+      "slug": "fta-negotiation",
+      "file": "c-globalization-fta-negotiation.html",
+      "title": "🤝 FTA 협상 외교관",
+      "type": "웹교구",
+      "difficulty": "심화",
+      "duration": "30분",
+      "tags": ["FTA","협상","외교","통사2","9단원"],
+      "desc": "한국 외교관 입장에서 5개 협상 의제를 결정하고 경제·산업·외교 점수 관리"
+    }
+  ]
+}

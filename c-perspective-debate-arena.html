@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>🥊 사회 이슈 4관점 토론장</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#fef3c7 0%,#fce7f3 100%);min-height:100vh}
+.fjua{font-family:'Jua',sans-serif}
+.iss{transition:all .2s;cursor:pointer}.iss:hover{transform:translateY(-2px)}.iss.active{box-shadow:0 0 0 3px #f59e0b}
+.fade{animation:fi .4s ease-out}@keyframes fi{from{opacity:0}to{opacity:1}}
+@media print{.no-print{display:none!important}}
+</style></head><body class="text-slate-800">
+<header class="no-print bg-white/80 backdrop-blur border-b sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="hub.html?mode=unit&id=integrated-perspective" class="font-bold">← 단원으로</a>
+<div class="text-xs text-slate-500">[10통사1-01-01] 통합적 관점</div>
+<button onclick="window.print()" class="text-sm bg-slate-100 px-3 py-1.5 rounded-lg">🖨</button></div></header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+<section class="bg-white rounded-2xl p-6 shadow-sm border mb-5">
+<div class="text-xs text-blue-600 font-bold mb-1">통합사회 1 · 1단원 통합적 관점</div>
+<h1 class="fjua text-3xl md:text-4xl mb-2">🥊 사회 이슈 4관점 토론장</h1>
+<p class="text-slate-600 text-sm">모둠 토론용. 사회 이슈를 고르고 4관점에 학생들을 배정한 뒤 각자 입장을 작성·정리합니다.</p>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">📋 STEP 1. 토론 이슈 선택</h2>
+<div id="issGrid" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
+<div class="mt-3 text-sm text-slate-600">또는 직접 입력: <input id="customIss" class="bg-slate-50 border border-slate-300 rounded p-2 text-sm w-64" placeholder="예: 학교 휴대폰 사용"></div>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">👥 STEP 2. 모둠 배정</h2>
+<p class="text-sm text-slate-600 mb-3">모둠원을 4관점에 한 명씩 배정합니다.</p>
+<div class="grid md:grid-cols-2 gap-3">
+<div class="bg-amber-50 border-2 border-amber-300 rounded-xl p-3"><div class="flex items-center gap-2 mb-2"><span class="text-2xl">⏰</span><b class="text-amber-800">시간 관점</b></div><input id="m1" class="w-full bg-white border border-amber-200 rounded p-2 text-sm" placeholder="배정 학생명"></div>
+<div class="bg-emerald-50 border-2 border-emerald-300 rounded-xl p-3"><div class="flex items-center gap-2 mb-2"><span class="text-2xl">🗺</span><b class="text-emerald-800">공간 관점</b></div><input id="m2" class="w-full bg-white border border-emerald-200 rounded p-2 text-sm" placeholder="배정 학생명"></div>
+<div class="bg-blue-50 border-2 border-blue-300 rounded-xl p-3"><div class="flex items-center gap-2 mb-2"><span class="text-2xl">👥</span><b class="text-blue-800">사회 관점</b></div><input id="m3" class="w-full bg-white border border-blue-200 rounded p-2 text-sm" placeholder="배정 학생명"></div>
+<div class="bg-rose-50 border-2 border-rose-300 rounded-xl p-3"><div class="flex items-center gap-2 mb-2"><span class="text-2xl">⚖️</span><b class="text-rose-800">윤리 관점</b></div><input id="m4" class="w-full bg-white border border-rose-200 rounded p-2 text-sm" placeholder="배정 학생명"></div>
+</div></section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">💬 STEP 3. 입장 발표문 작성</h2>
+<div class="grid md:grid-cols-2 gap-3">
+<div><label class="text-sm font-bold text-amber-800">⏰ 시간 관점 발표문</label><textarea id="aTime" rows="3" class="w-full bg-amber-50 border-2 border-amber-200 rounded-lg p-2 text-sm mt-1" placeholder="과거에는... 지금은... 앞으로는..."></textarea></div>
+<div><label class="text-sm font-bold text-emerald-800">🗺 공간 관점 발표문</label><textarea id="aSpace" rows="3" class="w-full bg-emerald-50 border-2 border-emerald-200 rounded-lg p-2 text-sm mt-1" placeholder="다른 나라는... 우리 지역은..."></textarea></div>
+<div><label class="text-sm font-bold text-blue-800">👥 사회 관점 발표문</label><textarea id="aSocial" rows="3" class="w-full bg-blue-50 border-2 border-blue-200 rounded-lg p-2 text-sm mt-1" placeholder="누가 영향받는지... 구조적 원인은..."></textarea></div>
+<div><label class="text-sm font-bold text-rose-800">⚖️ 윤리 관점 발표문</label><textarea id="aEth" rows="3" class="w-full bg-rose-50 border-2 border-rose-200 rounded-lg p-2 text-sm mt-1" placeholder="옳고 그름의 기준... 우리가 추구할 가치..."></textarea></div>
+</div></section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">🤝 STEP 4. 모둠 합의문</h2>
+<p class="text-sm text-slate-600 mb-3">4관점을 토대로 모둠 전체가 합의한 결론을 작성하세요.</p>
+<textarea id="consensus" rows="4" class="w-full bg-slate-50 border-2 border-slate-300 rounded-lg p-3 text-sm" placeholder="우리 모둠은 다음과 같이 결론을 내렸다..."></textarea>
+</section>
+
+<section class="bg-gradient-to-r from-amber-100 to-pink-100 border-2 border-amber-300 rounded-2xl p-6">
+<h2 class="fjua text-2xl mb-3">📄 토론 결과지</h2>
+<button id="genBtn" class="bg-rose-600 text-white font-bold px-5 py-2.5 rounded-lg mr-2">📋 정리</button>
+<button onclick="window.print()" class="bg-slate-800 text-white font-bold px-5 py-2.5 rounded-lg">🖨 PDF</button>
+<div id="report" class="hidden mt-4 bg-white rounded-xl p-5 border-2 border-slate-800 fade">
+<h3 class="fjua text-xl text-center border-b-2 border-slate-800 pb-2 mb-3">🥊 4관점 토론 결과지</h3>
+<div class="text-sm space-y-2">
+<div><b>모둠:</b> _________ <b>날짜:</b> _________</div>
+<div><b>📋 토론 이슈:</b> <span id="rIss"></span></div>
+<div class="grid md:grid-cols-2 gap-3 mt-2">
+<div class="bg-amber-50 rounded p-2 text-xs"><b>⏰ 시간 (<span id="rM1"></span>):</b> <span id="rT"></span></div>
+<div class="bg-emerald-50 rounded p-2 text-xs"><b>🗺 공간 (<span id="rM2"></span>):</b> <span id="rS"></span></div>
+<div class="bg-blue-50 rounded p-2 text-xs"><b>👥 사회 (<span id="rM3"></span>):</b> <span id="rSo"></span></div>
+<div class="bg-rose-50 rounded p-2 text-xs"><b>⚖️ 윤리 (<span id="rM4"></span>):</b> <span id="rE"></span></div>
+</div>
+<div class="bg-amber-100 rounded p-3 mt-2"><b>🤝 모둠 합의문:</b> <span id="rCon"></span></div>
+</div></div></section>
+</main>
+<footer class="no-print text-center text-xs text-slate-400 py-6">풀어쓰는 사회학 정보부 · 통합사회 1 · 1단원</footer>
+
+<script>
+const ISS=[
+{e:'📱',t:'학교 스마트폰 전면 금지'},
+{e:'🤖',t:'AI 면접 도입 확대'},
+{e:'🌍',t:'기후 위기 — 탄소세 도입'},
+{e:'🏠',t:'1인 가구 증가와 주거 정책'},
+{e:'👴',t:'정년 연장 vs 청년 일자리'},
+{e:'🚗',t:'자율주행차 사고 책임'}];
+let curIss='';
+function buildIss(){
+document.getElementById('issGrid').innerHTML=ISS.map((s,i)=>`<button class="iss bg-slate-50 border-2 border-slate-300 rounded-xl p-3 text-center text-sm" data-t="${s.t}"><div class="text-2xl">${s.e}</div><div class="font-bold mt-1">${s.t}</div></button>`).join('');
+document.querySelectorAll('.iss').forEach(b=>b.addEventListener('click',()=>{curIss=b.dataset.t;document.querySelectorAll('.iss').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById('customIss').value='';}));
+}
+buildIss();
+document.getElementById('customIss').addEventListener('input',e=>{curIss=e.target.value;document.querySelectorAll('.iss').forEach(x=>x.classList.remove('active'));});
+document.getElementById('genBtn').addEventListener('click',()=>{
+document.getElementById('rIss').textContent=curIss||document.getElementById('customIss').value||'(미선택)';
+['M1','M2','M3','M4'].forEach((id,i)=>document.getElementById('r'+id).textContent=document.getElementById('m'+(i+1)).value||'-');
+document.getElementById('rT').textContent=document.getElementById('aTime').value||'-';
+document.getElementById('rS').textContent=document.getElementById('aSpace').value||'-';
+document.getElementById('rSo').textContent=document.getElementById('aSocial').value||'-';
+document.getElementById('rE').textContent=document.getElementById('aEth').value||'-';
+document.getElementById('rCon').textContent=document.getElementById('consensus').value||'-';
+document.getElementById('report').classList.remove('hidden');
+});
+</script></body></html>

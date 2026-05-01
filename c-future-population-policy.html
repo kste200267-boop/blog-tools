@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>👶 인구문제 정책 시뮬레이터</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#fef3c7 0%,#fce7f3 100%);min-height:100vh}
+.fjua{font-family:'Jua',sans-serif}
+.pol{transition:all .25s;cursor:pointer}.pol:hover{transform:translateY(-2px)}.pol.picked{background:#fef08a!important;border-color:#ca8a04!important}
+@media print{.no-print{display:none!important}}
+</style></head><body class="text-slate-800">
+<header class="no-print bg-white/80 backdrop-blur border-b sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="hub.html?mode=unit&id=future" class="font-bold">← 단원으로</a>
+<div class="text-xs text-slate-500">[10통사2-05-02] 저출산·고령화</div>
+<button onclick="window.print()" class="text-sm bg-slate-100 px-3 py-1.5 rounded-lg">🖨</button></div></header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+<section class="bg-white rounded-2xl p-6 shadow-sm border mb-5">
+<div class="text-xs text-pink-600 font-bold mb-1">통합사회 2 · 10단원 미래와 지속가능</div>
+<h1 class="fjua text-3xl md:text-4xl mb-2">👶 인구문제 정책 시뮬레이터</h1>
+<p class="text-slate-600 text-sm">한국의 저출산·고령화 문제 해결을 위한 정책을 선택하고 30년 후 인구 변화를 예측합니다.</p>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">📊 현재 한국 (2026)</h2>
+<div class="grid grid-cols-3 gap-3 text-center">
+<div class="bg-amber-50 rounded-lg p-3"><div class="text-xs">합계출산율</div><div class="fjua text-2xl text-amber-600">0.72</div></div>
+<div class="bg-rose-50 rounded-lg p-3"><div class="text-xs">고령화율</div><div class="fjua text-2xl text-rose-600">19%</div></div>
+<div class="bg-blue-50 rounded-lg p-3"><div class="text-xs">총인구</div><div class="fjua text-2xl text-blue-600">5,150만</div></div>
+</div></section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">🎯 정책 선택 (다중)</h2>
+<div id="polGrid" class="grid md:grid-cols-2 gap-3"></div>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">📈 30년 후 예측</h2>
+<canvas id="chart" height="200"></canvas>
+<div class="grid grid-cols-3 gap-3 text-center mt-4">
+<div class="bg-amber-50 rounded-lg p-3"><div class="text-xs">예측 출산율</div><div class="fjua text-2xl text-amber-600" id="pBirth">0.72</div></div>
+<div class="bg-rose-50 rounded-lg p-3"><div class="text-xs">고령화율</div><div class="fjua text-2xl text-rose-600" id="pOld">35%</div></div>
+<div class="bg-blue-50 rounded-lg p-3"><div class="text-xs">총인구</div><div class="fjua text-2xl text-blue-600" id="pTot">3,800만</div></div>
+</div></section>
+
+<section class="bg-gradient-to-r from-pink-100 to-amber-100 border-2 border-pink-300 rounded-2xl p-6">
+<h2 class="fjua text-2xl mb-3">📄 정책 분석 보고서</h2>
+<button onclick="window.print()" class="bg-slate-800 text-white font-bold px-5 py-2.5 rounded-lg">🖨 PDF</button>
+</section>
+</main>
+<footer class="no-print text-center text-xs text-slate-400 py-6">풀어쓰는 사회학 정보부 · 통합사회 2 · 10단원</footer>
+
+<script>
+const POL=[
+{id:'a',icon:'💰',name:'아이당 월 100만원 지급',birth:0.15,old:0,pop:80,cost:5},
+{id:'b',icon:'🏠',name:'신혼부부 무이자 주택대출',birth:0.10,old:0,pop:60,cost:4},
+{id:'c',icon:'👶',name:'무상 보육 (24시간 어린이집)',birth:0.12,old:0,pop:70,cost:4},
+{id:'d',icon:'🌍',name:'외국인 노동 적극 수용',birth:0.02,old:-3,pop:200,cost:2},
+{id:'e',icon:'🎓',name:'고교까지 교육비 완전 무상',birth:0.06,old:0,pop:30,cost:3},
+{id:'f',icon:'💼',name:'육아휴직 1년 의무 + 100% 임금',birth:0.18,old:0,pop:90,cost:4},
+{id:'g',icon:'👴',name:'정년 70세로 연장',birth:0,old:-2,pop:0,cost:1},
+{id:'h',icon:'🤖',name:'AI·로봇 산업 집중 투자',birth:0,old:-1,pop:50,cost:5}];
+const sel=new Set();
+function build(){
+document.getElementById('polGrid').innerHTML=POL.map(p=>`
+<div class="pol bg-slate-50 border-2 border-slate-300 rounded-xl p-3" data-id="${p.id}">
+<div class="flex items-center gap-2"><span class="text-2xl">${p.icon}</span><b>${p.name}</b></div>
+<div class="text-xs text-slate-500 mt-1">출산${p.birth>=0?'+':''}${p.birth} 고령${p.old>=0?'+':''}${p.old}% 인구${p.pop>=0?'+':''}${p.pop}만 비용${p.cost}</div>
+</div>`).join('');
+document.querySelectorAll('.pol').forEach(c=>c.addEventListener('click',()=>{
+const id=c.dataset.id;
+if(sel.has(id)){sel.delete(id);c.classList.remove('picked');}
+else{sel.add(id);c.classList.add('picked');}
+update();
+}));
+}
+build();
+let chart;
+window.addEventListener('load',()=>{
+chart=new Chart(document.getElementById('chart'),{type:'line',data:{labels:['2026','2030','2035','2040','2045','2050','2055'],datasets:[{label:'예측 인구 (만)',data:[5150,5050,4850,4500,4200,3900,3800],borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.1)',fill:true}]},options:{responsive:true,scales:{y:{beginAtZero:false}}}});
+update();});
+function update(){
+let b=0.72,o=35,p=3800;
+sel.forEach(id=>{const x=POL.find(y=>y.id===id);b+=x.birth;o+=x.old;p+=x.pop;});
+document.getElementById('pBirth').textContent=b.toFixed(2);
+document.getElementById('pOld').textContent=Math.max(20,Math.min(45,o))+'%';
+document.getElementById('pTot').textContent=Math.round(p)+'만';
+if(chart){const newData=[5150,5050,4850,4500,4200,3900,Math.max(3500,p)];chart.data.datasets[0].data=newData;chart.update();}
+}
+</script></body></html>

@@ -1,0 +1,37 @@
+{
+  "unit": "사회 정의와 불평등",
+  "unitSlug": "justice",
+  "achievementStandard": "[10통사2-02-01] 분배적 정의의 의미와 다양한 관점(롤스·노직). / [10통사2-02-02] 불평등의 양상과 분배 원칙(능력·필요·업적·평등) 비교. / [10통사2-02-03] 사회적 약자 보호와 사회 보장 제도.",
+  "contents": [
+    {
+      "slug": "inequality-life",
+      "file": "w-inequality-life.html",
+      "title": "🎲 출발선이 다른 인생게임",
+      "type": "웹교구",
+      "difficulty": "쉬움",
+      "duration": "15분",
+      "tags": ["불평등","사회구조","게임","통사2","7단원"],
+      "desc": "서로 다른 조건에서 시작하는 인생게임으로 사회 불평등을 체험"
+    },
+    {
+      "slug": "rawls-nozick",
+      "file": "c-justice-rawls-nozick.html",
+      "title": "⚖️ 정의론 비교 — 롤스 vs 노직",
+      "type": "웹교구",
+      "difficulty": "심화",
+      "duration": "25분",
+      "tags": ["정의","롤스","노직","통사2","7단원"],
+      "desc": "5개 사례로 평등 자유주의(롤스)와 자유지상주의(노직) 사이 본인 입장 진단"
+    },
+    {
+      "slug": "distribution-game",
+      "file": "c-justice-distribution-game.html",
+      "title": "🎲 분배 게임",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "25분",
+      "tags": ["분배","능력","필요","업적","평등","통사2","7단원"],
+      "desc": "100을 5명에게 분배하는 게임. 4가지 원칙(능력·필요·업적·평등) 비교 분석"
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>🎲 분배 게임 — 자원을 어떻게 나눌까?</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#fef3c7 0%,#dbeafe 100%);min-height:100vh}
+.fjua{font-family:'Jua',sans-serif}
+.player{transition:all .2s}
+.alloc{appearance:none;width:100%;height:8px;background:#cbd5e1;border-radius:99px;outline:none}
+.alloc::-webkit-slider-thumb{appearance:none;width:22px;height:22px;background:#0891b2;border-radius:50%;cursor:pointer;border:3px solid #fff}
+.princ{transition:all .2s;cursor:pointer}.princ:hover{background:#fef9c3}.princ.active{background:#fde68a!important;border-color:#f59e0b!important}
+@media print{.no-print{display:none!important}}
+</style></head><body class="text-slate-800">
+<header class="no-print bg-white/80 backdrop-blur border-b sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="hub.html?mode=unit&id=justice" class="font-bold">← 단원으로</a>
+<div class="text-xs text-slate-500">[10통사2-02-02] 분배 원칙</div>
+<button onclick="window.print()" class="text-sm bg-slate-100 px-3 py-1.5 rounded-lg">🖨</button></div></header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+<section class="bg-white rounded-2xl p-6 shadow-sm border mb-5">
+<div class="text-xs text-amber-600 font-bold mb-1">통합사회 2 · 7단원 정의와 불평등</div>
+<h1 class="fjua text-3xl md:text-4xl mb-2">🎲 분배 게임</h1>
+<p class="text-slate-600 text-sm">100을 5명에게 나눠야 합니다. 4가지 원칙(능력·필요·업적·평등) 중 하나를 따라 분배해보세요.</p>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">🧭 분배 원칙 선택</h2>
+<div class="grid md:grid-cols-2 gap-3">
+<div class="princ bg-slate-50 border-2 border-slate-300 rounded-xl p-3" data-p="ability"><b>💪 능력에 따라</b><div class="text-xs text-slate-600">능력이 큰 사람에게 더 많이 — 효율 ↑, 약자 소외</div></div>
+<div class="princ bg-slate-50 border-2 border-slate-300 rounded-xl p-3" data-p="need"><b>🤝 필요에 따라</b><div class="text-xs text-slate-600">가장 절실한 사람에게 우선 — 약자 보호</div></div>
+<div class="princ bg-slate-50 border-2 border-slate-300 rounded-xl p-3" data-p="merit"><b>🏆 업적에 따라</b><div class="text-xs text-slate-600">기여한 만큼 — 동기 부여, 경쟁</div></div>
+<div class="princ bg-slate-50 border-2 border-slate-300 rounded-xl p-3" data-p="equal"><b>🟰 평등 분배</b><div class="text-xs text-slate-600">똑같이 — 단순·공정, 동기 약화</div></div>
+</div></section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">👥 5명의 시민</h2>
+<p class="text-sm text-slate-600 mb-3">잔여 자원: <b id="remain" class="text-rose-600 fjua text-2xl">100</b></p>
+<div id="players" class="space-y-3"></div>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">📊 분배 결과 분석</h2>
+<canvas id="chart" height="200"></canvas>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4 text-center">
+<div class="bg-blue-50 rounded-lg p-2"><div class="text-xs">📊 평균</div><div class="fjua text-xl text-blue-600" id="avg">0</div></div>
+<div class="bg-emerald-50 rounded-lg p-2"><div class="text-xs">📈 표준편차</div><div class="fjua text-xl text-emerald-600" id="std">0</div></div>
+<div class="bg-amber-50 rounded-lg p-2"><div class="text-xs">🔝 최대</div><div class="fjua text-xl text-amber-600" id="max">0</div></div>
+<div class="bg-rose-50 rounded-lg p-2"><div class="text-xs">🔻 최소</div><div class="fjua text-xl text-rose-600" id="min">0</div></div>
+</div></section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">💭 본인의 정당화</h2>
+<textarea id="just" rows="4" class="w-full bg-slate-50 border-2 border-slate-300 rounded-lg p-3 text-sm" placeholder="이 분배 방식을 선택한 이유와 그 정의관(평등/효율/공정 등)에 대한 설명을 적으세요."></textarea>
+</section>
+
+<section class="bg-gradient-to-r from-amber-100 to-blue-100 border-2 border-amber-300 rounded-2xl p-6">
+<h2 class="fjua text-2xl mb-3">📄 분배 보고서</h2>
+<button id="genBtn" class="bg-amber-600 text-white font-bold px-5 py-2.5 rounded-lg mr-2">📋 정리</button>
+<button onclick="window.print()" class="bg-slate-800 text-white font-bold px-5 py-2.5 rounded-lg">🖨 PDF</button>
+<div id="report" class="hidden mt-4 bg-white rounded-xl p-5 border-2 border-slate-800">
+<h3 class="fjua text-xl text-center border-b-2 pb-2 mb-3">🎲 분배 결과 보고서</h3>
+<div class="text-sm space-y-2">
+<div><b>이름:</b> _________ <b>날짜:</b> _________</div>
+<div><b>적용 원칙:</b> <span id="rPrinc"></span></div>
+<div><b>분배 결과:</b><ul id="rDist" class="ml-4 list-disc"></ul></div>
+<div><b>통계:</b> 평균 <span id="rAvg"></span> / 표준편차 <span id="rStd"></span> / 최대-최소 격차 <span id="rGap"></span></div>
+<div><b>정당화:</b> <span id="rJust"></span></div>
+</div></div></section>
+</main>
+<footer class="no-print text-center text-xs text-slate-400 py-6">풀어쓰는 사회학 정보부 · 통합사회 2 · 7단원</footer>
+
+<script>
+const PEOPLE=[
+{name:'민준 (대기업 임원)',ability:90,need:20,merit:80,desc:'고소득·고능력'},
+{name:'서연 (만성질환 환자)',ability:30,need:90,merit:30,desc:'의료비 부담 큼'},
+{name:'지호 (스타트업 창업자)',ability:70,need:40,merit:90,desc:'성과·기여 큼'},
+{name:'하윤 (한부모 가정 학생)',ability:50,need:80,merit:50,desc:'경제적 어려움'},
+{name:'준우 (평범한 직장인)',ability:60,need:50,merit:60,desc:'평균적'}];
+const allocs=PEOPLE.map(()=>20);
+let principle=null;
+
+function build(){
+document.getElementById('players').innerHTML=PEOPLE.map((p,i)=>`
+<div class="player bg-slate-50 rounded-xl p-3">
+<div class="flex items-center justify-between mb-1">
+<div><b>${p.name}</b><div class="text-xs text-slate-500">${p.desc}</div></div>
+<div class="text-cyan-600 fjua text-xl" id="a${i}">20</div></div>
+<input type="range" min="0" max="100" value="20" class="alloc" data-i="${i}">
+<div class="flex gap-2 mt-1 text-xs"><span>능력 ${p.ability}</span><span>필요 ${p.need}</span><span>업적 ${p.merit}</span></div>
+</div>`).join('');
+document.querySelectorAll('.alloc').forEach(s=>s.addEventListener('input',e=>{const i=+e.target.dataset.i;allocs[i]=+e.target.value;document.getElementById('a'+i).textContent=e.target.value;update();}));
+}
+build();
+
+document.querySelectorAll('.princ').forEach(p=>p.addEventListener('click',()=>{
+principle=p.dataset.p;
+document.querySelectorAll('.princ').forEach(x=>x.classList.remove('active'));p.classList.add('active');
+// 자동 분배 추천
+let weights;
+if(principle==='ability')weights=PEOPLE.map(p=>p.ability);
+else if(principle==='need')weights=PEOPLE.map(p=>p.need);
+else if(principle==='merit')weights=PEOPLE.map(p=>p.merit);
+else weights=[1,1,1,1,1];
+const sum=weights.reduce((s,w)=>s+w,0);
+PEOPLE.forEach((_,i)=>{allocs[i]=Math.round(weights[i]/sum*100);document.getElementById('a'+i).textContent=allocs[i];document.querySelectorAll('.alloc')[i].value=allocs[i];});
+update();
+}));
+
+let chart;
+window.addEventListener('load',()=>{
+chart=new Chart(document.getElementById('chart'),{type:'bar',data:{labels:PEOPLE.map(p=>p.name.split(' ')[0]),datasets:[{label:'분배량',data:allocs,backgroundColor:['#3b82f6','#ef4444','#10b981','#f59e0b','#8b5cf6']}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:100}}}});update();});
+
+function update(){
+const sum=allocs.reduce((s,v)=>s+v,0);document.getElementById('remain').textContent=100-sum;
+const avg=sum/allocs.length;document.getElementById('avg').textContent=avg.toFixed(1);
+const std=Math.sqrt(allocs.reduce((s,v)=>s+(v-avg)**2,0)/allocs.length);document.getElementById('std').textContent=std.toFixed(1);
+document.getElementById('max').textContent=Math.max(...allocs);document.getElementById('min').textContent=Math.min(...allocs);
+if(chart){chart.data.datasets[0].data=allocs;chart.update();}
+}
+
+const PRLABELS={ability:'💪 능력에 따라',need:'🤝 필요에 따라',merit:'🏆 업적에 따라',equal:'🟰 평등 분배'};
+document.getElementById('genBtn').addEventListener('click',()=>{
+document.getElementById('rPrinc').textContent=PRLABELS[principle]||'(미선택)';
+document.getElementById('rDist').innerHTML=PEOPLE.map((p,i)=>`<li>${p.name}: ${allocs[i]}</li>`).join('');
+document.getElementById('rAvg').textContent=document.getElementById('avg').textContent;
+document.getElementById('rStd').textContent=document.getElementById('std').textContent;
+document.getElementById('rGap').textContent=Math.max(...allocs)-Math.min(...allocs);
+document.getElementById('rJust').textContent=document.getElementById('just').value||'-';
+document.getElementById('report').classList.remove('hidden');
+});
+</script></body></html>

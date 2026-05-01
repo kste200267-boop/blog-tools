@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>📜 헌법 빙고 — 기본권 빨리 찾기</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#fef3c7 0%,#fef9c3 100%);min-height:100vh}
+.fjua{font-family:'Jua',sans-serif}
+.cell{transition:all .2s;cursor:pointer;aspect-ratio:1}.cell:hover{transform:scale(1.05)}
+.cell.marked{background:#fbbf24!important;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.cell.bingo{background:#ef4444!important;animation:pop .5s}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+.fade{animation:fi .4s ease-out}@keyframes fi{from{opacity:0}to{opacity:1}}
+@media print{.no-print{display:none!important}}
+</style></head><body class="text-slate-800">
+<header class="no-print bg-white/80 backdrop-blur border-b sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="hub.html?mode=unit&id=human-rights" class="font-bold">← 단원으로</a>
+<div class="text-xs text-slate-500">[10통사2-01-01] 인권의 의미와 발전</div>
+<button onclick="window.print()" class="text-sm bg-slate-100 px-3 py-1.5 rounded-lg">🖨</button></div></header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+<section class="bg-white rounded-2xl p-6 shadow-sm border mb-5">
+<div class="text-xs text-amber-600 font-bold mb-1">통합사회 2 · 6단원 인권 보장과 헌법</div>
+<h1 class="fjua text-3xl md:text-4xl mb-2">📜 헌법 기본권 빙고</h1>
+<p class="text-slate-600 text-sm">상황 카드를 보고 해당하는 기본권 칸을 찾아 빙고를 완성하세요.</p>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<div class="flex items-center justify-between mb-3">
+<h2 class="fjua text-xl">🎯 상황 카드</h2>
+<div class="text-sm">완성: <b id="bingoCount" class="text-rose-600">0</b> 줄</div>
+</div>
+<div id="caseCard" class="bg-amber-50 border-2 border-amber-300 rounded-xl p-5 text-center">
+<div class="text-xs text-amber-700 font-bold mb-1">상황 #<span id="caseNum">1</span></div>
+<div id="caseTxt" class="text-base font-bold mb-2"></div>
+<div class="flex gap-2 justify-center mt-3">
+<button id="nextBtn" class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-4 py-2 rounded-lg text-sm">다음 상황 →</button>
+<button id="hintBtn" class="bg-slate-200 hover:bg-slate-300 px-4 py-2 rounded-lg text-sm">💡 힌트</button>
+</div>
+<div id="hintBox" class="hidden mt-3 text-xs bg-white rounded p-2 border border-amber-200"></div>
+</div></section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">🎲 5×5 빙고판</h2>
+<div id="board" class="grid grid-cols-5 gap-2"></div>
+<button id="resetBtn" class="mt-3 text-sm bg-slate-100 px-4 py-2 rounded-lg">🔄 새 게임</button>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">📚 기본권 정리</h2>
+<div class="grid md:grid-cols-2 gap-3 text-sm">
+<div class="bg-blue-50 rounded-lg p-3 border-l-4 border-blue-500"><b>자유권</b><div class="text-xs text-slate-600">신체·정신·경제 활동의 자유 (제12~22조)</div></div>
+<div class="bg-emerald-50 rounded-lg p-3 border-l-4 border-emerald-500"><b>평등권</b><div class="text-xs text-slate-600">차별받지 않을 권리 (제11조)</div></div>
+<div class="bg-amber-50 rounded-lg p-3 border-l-4 border-amber-500"><b>참정권</b><div class="text-xs text-slate-600">선거권·공무담임권 (제24·25조)</div></div>
+<div class="bg-rose-50 rounded-lg p-3 border-l-4 border-rose-500"><b>청구권</b><div class="text-xs text-slate-600">청원·재판청구·국가배상 (제26~30조)</div></div>
+<div class="bg-violet-50 rounded-lg p-3 border-l-4 border-violet-500"><b>사회권</b><div class="text-xs text-slate-600">교육·근로·환경·사회보장 (제31~36조)</div></div>
+</div></section>
+</main>
+<footer class="no-print text-center text-xs text-slate-400 py-6">풀어쓰는 사회학 정보부 · 통합사회 2 · 6단원</footer>
+
+<script>
+// 25개 칸 (5x5)
+const CELLS=[
+{name:'신체의 자유',type:'자유권',art:'제12조'},
+{name:'언론·출판의 자유',type:'자유권',art:'제21조'},
+{name:'양심의 자유',type:'자유권',art:'제19조'},
+{name:'직업 선택의 자유',type:'자유권',art:'제15조'},
+{name:'거주·이전의 자유',type:'자유권',art:'제14조'},
+{name:'평등권',type:'평등권',art:'제11조'},
+{name:'성별·종교·신분 차별 금지',type:'평등권',art:'제11조'},
+{name:'선거권',type:'참정권',art:'제24조'},
+{name:'공무담임권',type:'참정권',art:'제25조'},
+{name:'국민투표권',type:'참정권',art:'제72조'},
+{name:'청원권',type:'청구권',art:'제26조'},
+{name:'재판청구권',type:'청구권',art:'제27조'},
+{name:'국가배상청구권',type:'청구권',art:'제29조'},
+{name:'형사보상청구권',type:'청구권',art:'제28조'},
+{name:'교육받을 권리',type:'사회권',art:'제31조'},
+{name:'근로의 권리',type:'사회권',art:'제32조'},
+{name:'근로3권 (단결권)',type:'사회권',art:'제33조'},
+{name:'인간다운 생활권',type:'사회권',art:'제34조'},
+{name:'환경권',type:'사회권',art:'제35조'},
+{name:'혼인·가족생활 보장',type:'사회권',art:'제36조'},
+{name:'주거의 자유',type:'자유권',art:'제16조'},
+{name:'사생활의 비밀 보장',type:'자유권',art:'제17조'},
+{name:'학문·예술의 자유',type:'자유권',art:'제22조'},
+{name:'재산권 보장',type:'자유권',art:'제23조'},
+{name:'집회·결사의 자유',type:'자유권',art:'제21조'}];
+
+const SCENARIOS=[
+{txt:'경찰이 영장 없이 우리 집을 수색하려 한다',right:['주거의 자유'],hint:'제16조 — 영장주의'},
+{txt:'친구가 SNS에 사회 비판 글을 올렸다는 이유로 처벌받았다',right:['언론·출판의 자유'],hint:'제21조'},
+{txt:'장애인이라는 이유로 학원이 입학을 거부했다',right:['평등권','성별·종교·신분 차별 금지'],hint:'제11조'},
+{txt:'18세 청소년이 처음 투표하러 갔다',right:['선거권'],hint:'제24조'},
+{txt:'공장 근로자들이 임금 인상을 요구하며 노조를 만들었다',right:['근로3권 (단결권)','근로의 권리'],hint:'제33조'},
+{txt:'어떤 회사가 해고된 직원이 부당함을 호소하려 법원에 갔다',right:['재판청구권'],hint:'제27조'},
+{txt:'학생이 본인의 종교 활동을 자유롭게 선택했다',right:['양심의 자유'],hint:'제19조'},
+{txt:'환경부가 미세먼지 대책을 강화하라는 요구가 빗발쳤다',right:['환경권'],hint:'제35조'},
+{txt:'외국에서 살다 한국으로 이사 왔다',right:['거주·이전의 자유'],hint:'제14조'},
+{txt:'대학생이 진로를 정해 직장에 취업했다',right:['직업 선택의 자유','근로의 권리'],hint:'제15조'},
+{txt:'억울하게 구속됐다 무죄 받은 사람이 보상을 요구한다',right:['형사보상청구권','국가배상청구권'],hint:'제28조'},
+{txt:'시민들이 광장에서 평화 시위를 열었다',right:['집회·결사의 자유'],hint:'제21조'},
+{txt:'중학생이 무상으로 의무교육을 받고 있다',right:['교육받을 권리'],hint:'제31조'},
+{txt:'기초생활보장 수급자가 생계비를 받았다',right:['인간다운 생활권'],hint:'제34조'}];
+
+let cur=0,marks=new Set();
+function shuf(a){return a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1])}
+let board;
+function newGame(){
+marks.clear();cur=0;
+board=shuf([...CELLS]).slice(0,25);
+document.getElementById('board').innerHTML=board.map((c,i)=>`<div class="cell bg-slate-100 border-2 border-slate-300 rounded-lg flex items-center justify-center text-center p-1 text-xs font-bold" data-i="${i}">${c.name}<div class="text-[10px] font-normal text-slate-500 mt-1">${c.art}</div></div>`).join('');
+document.querySelectorAll('.cell').forEach(c=>c.addEventListener('click',()=>{
+const i=+c.dataset.i;
+const sc=SCENARIOS[cur%SCENARIOS.length];
+if(sc.right.includes(board[i].name)){
+marks.add(i);c.classList.add('marked');
+checkBingo();nextScenario();
+}else{c.classList.add('bg-red-200');setTimeout(()=>c.classList.remove('bg-red-200'),500);}
+}));
+nextScenario();
+}
+function nextScenario(){
+const sc=SCENARIOS[cur%SCENARIOS.length];
+document.getElementById('caseNum').textContent=cur+1;
+document.getElementById('caseTxt').textContent=sc.txt;
+document.getElementById('hintBox').classList.add('hidden');
+document.getElementById('hintBox').textContent='💡 '+sc.hint;
+cur++;
+}
+document.getElementById('nextBtn').addEventListener('click',nextScenario);
+document.getElementById('hintBtn').addEventListener('click',()=>document.getElementById('hintBox').classList.toggle('hidden'));
+document.getElementById('resetBtn').addEventListener('click',newGame);
+function checkBingo(){
+let lines=0;
+for(let i=0;i<5;i++){
+let row=true,col=true;
+for(let j=0;j<5;j++){if(!marks.has(i*5+j))row=false;if(!marks.has(j*5+i))col=false;}
+if(row)lines++;if(col)lines++;
+}
+let d1=true,d2=true;
+for(let i=0;i<5;i++){if(!marks.has(i*5+i))d1=false;if(!marks.has(i*5+(4-i)))d2=false;}
+if(d1)lines++;if(d2)lines++;
+document.getElementById('bingoCount').textContent=lines;
+}
+newGame();
+</script></body></html>
