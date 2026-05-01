@@ -105,7 +105,7 @@ mCount=0;mSel=null;document.getElementById('matchScore').textContent='매칭: 0 
 const left=PAIRS.map((p,i)=>({type:'n',idx:i,txt:p.n}));
 const right=PAIRS.map((p,i)=>({type:'c',idx:i,txt:p.c}));
 const all=shuf([...left,...right]);
-document.getElementById('matchBoard').innerHTML=all.map(c=>`<div class="adapt-card bg-${c.type==='n'?'orange':'blue'}-100 border-2 border-${c.type==='n'?'orange':'blue'}-300 rounded-lg p-2.5 text-sm" data-t="${c.type}" data-i="${c.idx}">${c.txt}</div>`).join('');
+document.getElementById('matchBoard').innerHTML=all.map(c=>`<div class="adapt-card ${c.type==='n'?'bg-orange-100 border-orange-300':'bg-blue-100 border-blue-300'} border-2 rounded-lg p-2.5 text-sm" data-t="${c.type}" data-i="${c.idx}">${c.txt}</div>`).join('');
 document.querySelectorAll('.adapt-card').forEach(el=>el.addEventListener('click',()=>{
 if(el.classList.contains('matched'))return;
 if(!mSel){mSel=el;el.classList.add('selected');return;}
