@@ -142,8 +142,8 @@ const CASES = [
   {emoji:'🕌',title:'학교에서의 종교 의례',desc:'다문화 학교에서 무슬림 학생이 하루 5번 예배를 드리고 싶어 한다. 한 학생은 "공부 시간을 빼서까지 종교를 인정해야 하느냐"며 반대한다. 학교는 어떻게 해야 할까?'},
   {emoji:'👗',title:'학교 복식 — 히잡 착용',desc:'한국 공립학교 교복 규정은 모자 착용 금지다. 무슬림 여학생이 종교적 이유로 히잡을 쓰고 싶어한다. 일부 교사는 "교복 규정 위반"이라며 거부한다.'},
   {emoji:'🍽',title:'급식의 음식 문화',desc:'학교 급식이 돼지고기 위주로 나오는데, 무슬림·힌두교 학생은 종교상 못 먹는 음식이 많다. 채식주의 학생도 늘어나 기존 식단 유지가 어렵다.'},
-  {emoji:'⚔️',title:'명예 살인 (해외 사례)',desc:'어떤 문화권에서는 "가문의 명예를 더럽혔다"는 이유로 가족 구성원이 여성을 살해하는 관습이 있다. "그것도 그들의 문화이니 존중해야 한다"는 주장이 있다.'},
-  {emoji:'⚠️',title:'여성 할례 (FGM)',desc:'특정 문화권에서 여성에게 신체 일부를 절단하는 관습(여성 할례, FGM)이 행해진다. 본인 의사가 아닌 어린 나이에 강요되는 경우가 많다. 보편 인권과 정면 충돌하는 사안이다.'}
+  {emoji:'👶',title:'아동 강제 노동 관습',desc:'일부 지역에서는 가난한 가정의 어린이를 학교 대신 노동에 투입하는 관습이 남아있다. "그것도 그 사회의 문화"라며 외부 개입을 거부한다. 아동의 교육권·보편 인권과 충돌하는 사안이다.'},
+  {emoji:'💔',title:'가정 내 폭력을 묵인하는 관습',desc:'일부 사회에서는 "가정의 일은 가정에서 해결한다"며 가정 내 폭력을 외부가 개입하지 않는 관습이 있다. 피해자 보호와 문화·전통 존중 사이 갈등이 발생한다.'}
 ];
 
 const recommended = ['relative','relative','relative','absolute','absolute'];
@@ -263,6 +263,74 @@ function renderPrint(){
   }).join('');
   document.getElementById('printResults').classList.remove('hidden');
 }
+</script>
+<script>
+;(function(){
+  var KEY="sav_"+(location.pathname.split("/").pop()||"x").replace(/\.html$/,"");
+  function snap(){
+    var d={};
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(el.type==="checkbox"||el.type==="radio")d[k]=el.checked;else d[k]=el.value;
+    });
+    return d;
+  }
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(snap()));}catch(e){}}
+  function restore(){
+    try{var d=JSON.parse(localStorage.getItem(KEY)||"{}");
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(!(k in d))return;
+      if(el.type==="checkbox"||el.type==="radio")el.checked=d[k];
+      else el.value=d[k];
+      el.dispatchEvent(new Event("input",{bubbles:true}));
+      el.dispatchEvent(new Event("change",{bubbles:true}));
+    });}catch(e){}
+  }
+  function btn(label,onclick,bg){
+    var b=document.createElement("button");
+    b.textContent=label;b.className="text-xs no-print";
+    b.style.cssText="background:"+bg+";color:#fff;padding:6px 10px;border-radius:6px;border:0;font-weight:bold;cursor:pointer;margin:2px;font-family:inherit";
+    b.onclick=onclick;return b;
+  }
+  function csv(){
+    var rows=[];rows.push(["field","value"]);
+    var d=snap();
+    Object.keys(d).forEach(function(k){
+      var v=String(d[k]||"").replace(/"/g,"\"\"");
+      rows.push(["\""+k+"\"","\""+v+"\""]);
+    });
+    var s=rows.map(function(r){return r.join(",");}).join("\n");
+    var blob=new Blob(["﻿"+s],{type:"text/csv;charset=utf-8"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(blob);
+    a.download=KEY+"_"+(new Date().toISOString().slice(0,10))+".csv";a.click();
+  }
+  function code(){
+    try{
+      var d=snap();var s=JSON.stringify(d);
+      var b64=btoa(unescape(encodeURIComponent(s))).replace(/[+/=]/g,function(c){return {"+":"-","/":"_","=":""}[c];});
+      var name=(prompt("학생 이름을 입력하세요(결과 코드에 포함됩니다)")||"학생").slice(0,8);
+      prompt("📋 결과 코드 (복사해서 교사에게 제출):",name+"#"+b64.slice(0,400));
+    }catch(e){alert("결과 코드 생성 실패");}
+  }
+  function clr(){if(confirm("저장된 답을 모두 지울까요?")){localStorage.removeItem(KEY);location.reload();}}
+  window.addEventListener("load",function(){
+    setTimeout(restore,100);
+    document.body.addEventListener("input",save);
+    document.body.addEventListener("change",save);
+    document.body.addEventListener("click",function(e){if(e.target.matches("button,.opt,.choice,.judge,.crit,.princ,.policy-card,.problem-chip,.factor-card,.tag-pill,.iss,.sdg,.pol,.zone-btn,.czone,.dis-card,.case-pill,.stance-card,.adapt-card,.case-card,.cell"))save();});
+    var bar=document.createElement("div");
+    bar.className="no-print";
+    bar.style.cssText="position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.85);padding:6px;border-radius:10px;z-index:9999;display:flex;flex-wrap:wrap;max-width:90vw;box-shadow:0 4px 12px rgba(0,0,0,0.3)";
+    bar.appendChild(btn("💾 자동저장 ON","#",""));
+    bar.lastChild.style.cssText="font-size:10px;color:#10b981;padding:6px 8px;background:transparent;cursor:default";
+    bar.appendChild(btn("📤 CSV",csv,"#0891b2"));
+    bar.appendChild(btn("📋 결과코드",code,"#f59e0b"));
+    bar.appendChild(btn("🗑 지우기",clr,"#dc2626"));
+    document.body.appendChild(bar);
+  });
+})();
+
 </script>
 </body>
 </html>

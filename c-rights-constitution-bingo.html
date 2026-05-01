@@ -145,4 +145,72 @@ if(d1)lines++;if(d2)lines++;
 document.getElementById('bingoCount').textContent=lines;
 }
 newGame();
-</script></body></html>
+</script><script>
+;(function(){
+  var KEY="sav_"+(location.pathname.split("/").pop()||"x").replace(/\.html$/,"");
+  function snap(){
+    var d={};
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(el.type==="checkbox"||el.type==="radio")d[k]=el.checked;else d[k]=el.value;
+    });
+    return d;
+  }
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(snap()));}catch(e){}}
+  function restore(){
+    try{var d=JSON.parse(localStorage.getItem(KEY)||"{}");
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(!(k in d))return;
+      if(el.type==="checkbox"||el.type==="radio")el.checked=d[k];
+      else el.value=d[k];
+      el.dispatchEvent(new Event("input",{bubbles:true}));
+      el.dispatchEvent(new Event("change",{bubbles:true}));
+    });}catch(e){}
+  }
+  function btn(label,onclick,bg){
+    var b=document.createElement("button");
+    b.textContent=label;b.className="text-xs no-print";
+    b.style.cssText="background:"+bg+";color:#fff;padding:6px 10px;border-radius:6px;border:0;font-weight:bold;cursor:pointer;margin:2px;font-family:inherit";
+    b.onclick=onclick;return b;
+  }
+  function csv(){
+    var rows=[];rows.push(["field","value"]);
+    var d=snap();
+    Object.keys(d).forEach(function(k){
+      var v=String(d[k]||"").replace(/"/g,"\"\"");
+      rows.push(["\""+k+"\"","\""+v+"\""]);
+    });
+    var s=rows.map(function(r){return r.join(",");}).join("\n");
+    var blob=new Blob(["﻿"+s],{type:"text/csv;charset=utf-8"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(blob);
+    a.download=KEY+"_"+(new Date().toISOString().slice(0,10))+".csv";a.click();
+  }
+  function code(){
+    try{
+      var d=snap();var s=JSON.stringify(d);
+      var b64=btoa(unescape(encodeURIComponent(s))).replace(/[+/=]/g,function(c){return {"+":"-","/":"_","=":""}[c];});
+      var name=(prompt("학생 이름을 입력하세요(결과 코드에 포함됩니다)")||"학생").slice(0,8);
+      prompt("📋 결과 코드 (복사해서 교사에게 제출):",name+"#"+b64.slice(0,400));
+    }catch(e){alert("결과 코드 생성 실패");}
+  }
+  function clr(){if(confirm("저장된 답을 모두 지울까요?")){localStorage.removeItem(KEY);location.reload();}}
+  window.addEventListener("load",function(){
+    setTimeout(restore,100);
+    document.body.addEventListener("input",save);
+    document.body.addEventListener("change",save);
+    document.body.addEventListener("click",function(e){if(e.target.matches("button,.opt,.choice,.judge,.crit,.princ,.policy-card,.problem-chip,.factor-card,.tag-pill,.iss,.sdg,.pol,.zone-btn,.czone,.dis-card,.case-pill,.stance-card,.adapt-card,.case-card,.cell"))save();});
+    var bar=document.createElement("div");
+    bar.className="no-print";
+    bar.style.cssText="position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.85);padding:6px;border-radius:10px;z-index:9999;display:flex;flex-wrap:wrap;max-width:90vw;box-shadow:0 4px 12px rgba(0,0,0,0.3)";
+    bar.appendChild(btn("💾 자동저장 ON","#",""));
+    bar.lastChild.style.cssText="font-size:10px;color:#10b981;padding:6px 8px;background:transparent;cursor:default";
+    bar.appendChild(btn("📤 CSV",csv,"#0891b2"));
+    bar.appendChild(btn("📋 결과코드",code,"#f59e0b"));
+    bar.appendChild(btn("🗑 지우기",clr,"#dc2626"));
+    document.body.appendChild(bar);
+  });
+})();
+
+</script>
+</body></html>
