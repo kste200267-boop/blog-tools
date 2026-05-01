@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>📋 4단원 단원평가 — 문화와 다양성</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:#f1f5f9;color:#1e293b}
+.fjua{font-family:'Jua',sans-serif}
+.ws{max-width:850px;margin:20px auto;background:#fff;padding:40px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.ws h1{font-family:'Jua',sans-serif;font-size:1.6rem;text-align:center;border-bottom:3px solid #1e293b;padding-bottom:10px;margin-bottom:20px}
+.info{display:flex;justify-content:space-between;font-size:.9rem;border-bottom:1px solid #cbd5e1;padding-bottom:10px;margin-bottom:20px}
+.blank{display:inline-block;border-bottom:1px solid #1e293b;min-width:120px;height:1.5em;padding:0 4px}
+.q{background:#f8fafc;border-left:4px solid #7c3aed;padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0}
+.q-num{display:inline-block;background:#7c3aed;color:#fff;padding:3px 10px;border-radius:99px;font-weight:bold;font-size:.8rem;margin-right:8px}
+.opt{display:block;padding:6px 10px;margin:4px 0;border-radius:4px;cursor:pointer}
+.opt:hover{background:#f1f5f9}
+.opt input{margin-right:8px}
+.answer{border:1px solid #cbd5e1;border-radius:6px;min-height:80px;padding:10px;margin-top:8px;font-family:inherit;font-size:.95rem;width:100%;resize:vertical}
+.score-box{background:#fef3c7;border:1px solid #f59e0b;border-radius:8px;padding:12px;margin:12px 0;font-size:.9rem}
+@media print{body{background:#fff;padding:0;margin:0}.ws{max-width:100%;box-shadow:none;padding:25px;margin:0}.no-print{display:none!important}}
+</style></head><body>
+
+<div class="no-print" style="max-width:850px;margin:10px auto;display:flex;gap:8px;padding:0 20px;flex-wrap:wrap">
+<a href="hub.html?mode=unit&id=culture" class="bg-white border-2 border-slate-300 rounded-lg px-4 py-2 text-sm font-bold no-underline text-slate-700">← 단원으로</a>
+<button onclick="grade()" class="bg-emerald-600 text-white rounded-lg px-4 py-2 text-sm font-bold">📊 자동 채점</button>
+<button onclick="window.print()" class="bg-slate-800 text-white rounded-lg px-4 py-2 text-sm font-bold">🖨 PDF</button>
+</div>
+
+<div class="ws">
+<h1>📋 4단원 단원평가 — 문화와 다양성</h1>
+<div class="info">
+<div>학번 <span class="blank"></span> 이름 <span class="blank"></span> 점수 <span class="blank"></span>/100</div>
+<div>날짜 <span class="blank"></span></div>
+</div>
+
+<p class="text-sm text-slate-600 mb-4"><b>제한 시간 30분</b> · 객관식 10문항(50점) + 서술형 4문항(50점)</p>
+
+<div class="score-box">
+<b>📌 평가 기준</b>: <b>객관식</b> 각 5점 (정답만 인정) / <b>서술형</b> 각 12.5점 (개념 정확 + 사례 + 본인 해석)
+</div>
+
+<h3 class="fjua text-lg mb-2 mt-4">📝 객관식 (10문항 × 5점 = 50점)</h3>
+
+<div class="q">
+<span class="q-num">Q1</span><b>다음 중 자연환경이 인문환경에 미친 영향으로 적절하지 <u>않은</u> 것은?</b>
+<label class="opt"><input type="radio" name="q1" value="1"> ① 건조 기후에서 유목 생활이 발달했다</label>
+<label class="opt"><input type="radio" name="q1" value="2"> ② 온대 계절풍 기후에서 벼농사가 발달했다</label>
+<label class="opt"><input type="radio" name="q1" value="3"> ③ 한대 기후에서 이슬람교가 형성되었다</label>
+<label class="opt"><input type="radio" name="q1" value="4"> ④ 사막에서 흰색 긴 의복이 발달했다</label>
+<label class="opt"><input type="radio" name="q1" value="5"> ⑤ 해양성 기후에서 무역 도시가 발달했다</label>
+</div>
+
+<div class="q">
+<span class="q-num">Q2</span><b>다음 중 동아시아 문화권의 특징은?</b>
+<label class="opt"><input type="radio" name="q2" value="1"> ① 이슬람교 + 유목</label>
+<label class="opt"><input type="radio" name="q2" value="2"> ② 유교·불교 + 한자 + 쌀농사</label>
+<label class="opt"><input type="radio" name="q2" value="3"> ③ 그리스도교 + 산업혁명</label>
+<label class="opt"><input type="radio" name="q2" value="4"> ④ 힌두교 + 향신료 무역</label>
+<label class="opt"><input type="radio" name="q2" value="5"> ⑤ 부족 단위 + 토속 신앙</label>
+</div>
+
+<div class="q">
+<span class="q-num">Q3</span><b>한글 창제는 다음 중 어느 변동 요인에 해당하는가?</b>
+<label class="opt"><input type="radio" name="q3" value="1"> ① 발견 (내재적)</label>
+<label class="opt"><input type="radio" name="q3" value="2"> ② 발명 + 자극 전파</label>
+<label class="opt"><input type="radio" name="q3" value="3"> ③ 직접 전파</label>
+<label class="opt"><input type="radio" name="q3" value="4"> ④ 간접 전파</label>
+<label class="opt"><input type="radio" name="q3" value="5"> ⑤ 문화 동화</label>
+</div>
+
+<div class="q">
+<span class="q-num">Q4</span><b>K-pop이 SNS·유튜브를 통해 전 세계로 퍼진 것은?</b>
+<label class="opt"><input type="radio" name="q4" value="1"> ① 내재적 변동</label>
+<label class="opt"><input type="radio" name="q4" value="2"> ② 직접 전파</label>
+<label class="opt"><input type="radio" name="q4" value="3"> ③ 간접 전파</label>
+<label class="opt"><input type="radio" name="q4" value="4"> ④ 자극 전파</label>
+<label class="opt"><input type="radio" name="q4" value="5"> ⑤ 문화 동화</label>
+</div>
+
+<div class="q">
+<span class="q-num">Q5</span><b>두 문화가 결합해 새로운 제3의 문화가 탄생하는 것은?</b>
+<label class="opt"><input type="radio" name="q5" value="1"> ① 문화 병존</label>
+<label class="opt"><input type="radio" name="q5" value="2"> ② 문화 동화</label>
+<label class="opt"><input type="radio" name="q5" value="3"> ③ 문화 융합</label>
+<label class="opt"><input type="radio" name="q5" value="4"> ④ 문화 소멸</label>
+<label class="opt"><input type="radio" name="q5" value="5"> ⑤ 문화 회귀</label>
+</div>
+
+<div class="q">
+<span class="q-num">Q6</span><b>전통문화의 의의로 적절하지 <u>않은</u> 것은?</b>
+<label class="opt"><input type="radio" name="q6" value="1"> ① 민족 정체성 형성</label>
+<label class="opt"><input type="radio" name="q6" value="2"> ② 자긍심 · 단결</label>
+<label class="opt"><input type="radio" name="q6" value="3"> ③ 문화 자원 (관광·산업)</label>
+<label class="opt"><input type="radio" name="q6" value="4"> ④ 새 문화 창조의 토대</label>
+<label class="opt"><input type="radio" name="q6" value="5"> ⑤ 외래 문화 차단의 도구</label>
+</div>
+
+<div class="q">
+<span class="q-num">Q7</span><b>"각 문화는 그 사회의 맥락에서 이해해야 한다"는 입장은?</b>
+<label class="opt"><input type="radio" name="q7" value="1"> ① 문화 절대주의</label>
+<label class="opt"><input type="radio" name="q7" value="2"> ② 문화 상대주의</label>
+<label class="opt"><input type="radio" name="q7" value="3"> ③ 극단적 문화 상대주의</label>
+<label class="opt"><input type="radio" name="q7" value="4"> ④ 자문화중심주의</label>
+<label class="opt"><input type="radio" name="q7" value="5"> ⑤ 문화사대주의</label>
+</div>
+
+<div class="q">
+<span class="q-num">Q8</span><b>"인간 존엄성을 침해하는 문화도 모두 인정해야 한다"는 입장의 위험은?</b>
+<label class="opt"><input type="radio" name="q8" value="1"> ① 자문화중심주의로 빠짐</label>
+<label class="opt"><input type="radio" name="q8" value="2"> ② 문화 사대주의로 빠짐</label>
+<label class="opt"><input type="radio" name="q8" value="3"> ③ 보편 인권 침해 정당화</label>
+<label class="opt"><input type="radio" name="q8" value="4"> ④ 문화 발전 가속화</label>
+<label class="opt"><input type="radio" name="q8" value="5"> ⑤ 다양성 소멸</label>
+</div>
+
+<div class="q">
+<span class="q-num">Q9</span><b>한국 다문화 사회의 갈등 원인으로 가장 적절한 것은?</b>
+<label class="opt"><input type="radio" name="q9" value="1"> ① 문화적 차이에 대한 무지·이해 부족</label>
+<label class="opt"><input type="radio" name="q9" value="2"> ② 다문화 인구 부족</label>
+<label class="opt"><input type="radio" name="q9" value="3"> ③ 한국 문화의 부재</label>
+<label class="opt"><input type="radio" name="q9" value="4"> ④ 외국 문화의 우월성</label>
+<label class="opt"><input type="radio" name="q9" value="5"> ⑤ 자연환경의 변화</label>
+</div>
+
+<div class="q">
+<span class="q-num">Q10</span><b>다문화 사회의 갈등 해결 방안으로 적절하지 <u>않은</u> 것은?</b>
+<label class="opt"><input type="radio" name="q10" value="1"> ① 다문화 감수성 교육 강화</label>
+<label class="opt"><input type="radio" name="q10" value="2"> ② 세계 시민 의식 함양</label>
+<label class="opt"><input type="radio" name="q10" value="3"> ③ 다문화가족지원법 같은 제도 정비</label>
+<label class="opt"><input type="radio" name="q10" value="4"> ④ 외국인 노동자의 권리 확대</label>
+<label class="opt"><input type="radio" name="q10" value="5"> ⑤ 자문화의 우월성을 강조하는 교육</label>
+</div>
+
+<div id="objResult" class="hidden score-box mt-3"></div>
+
+<h3 class="fjua text-lg mb-2 mt-6">📝 서술형 (4문항 × 12.5점 = 50점)</h3>
+
+<div class="q">
+<span class="q-num">서1</span><b>자연환경(기후)이 인문환경(종교·생활양식)에 영향을 준 사례 1개를 골라, 어떻게 영향을 주었는지 5줄 이상 서술하시오. (12.5점)</b>
+<textarea class="answer" rows="6"></textarea>
+</div>
+
+<div class="q">
+<span class="q-num">서2</span><b>"한복 개량 디자인의 세계화"를 문화 변동의 <u>요인과 결과</u>로 분석하시오. (12.5점)</b>
+<p class="text-xs text-slate-500 mt-1">평가 요소: 요인 분류(4점) + 결과 양상(4점) + 의의(4.5점)</p>
+<textarea class="answer" rows="6"></textarea>
+</div>
+
+<div class="q">
+<span class="q-num">서3</span><b>"어떤 문화권에서는 부모가 자녀의 결혼 상대를 정한다." 이 관습을 문화 상대주의와 보편 윤리 두 관점에서 모두 분석하고 본인 입장을 서술하시오. (12.5점)</b>
+<textarea class="answer" rows="7"></textarea>
+</div>
+
+<div class="q">
+<span class="q-num">서4</span><b>한국 다문화 사회의 갈등 1가지를 제시하고, 본인이 생각하는 해결 방안 3가지를 구체적으로 작성하시오. (12.5점)</b>
+<textarea class="answer" rows="6"></textarea>
+</div>
+
+</div>
+
+<script>
+const ANS={q1:'3',q2:'2',q3:'2',q4:'3',q5:'3',q6:'5',q7:'2',q8:'3',q9:'1',q10:'5'};
+function grade(){
+let s=0,results=[];
+Object.keys(ANS).forEach(k=>{
+const v=document.querySelector(`input[name="${k}"]:checked`);
+const ok=v && v.value===ANS[k];
+if(ok)s+=5;
+results.push(`${k.toUpperCase()}: ${ok?'✓':'✗ (정답 '+ANS[k]+')'}`);
+});
+const r=document.getElementById('objResult');
+r.classList.remove('hidden');
+r.innerHTML=`<b>📊 객관식 자동 채점</b>: <b class="text-2xl text-emerald-600">${s}</b> / 50점<br><div class="text-xs mt-2">${results.join(' · ')}</div><div class="text-xs mt-2 text-slate-500">서술형은 교사가 채점합니다.</div>`;
+r.scrollIntoView({behavior:'smooth'});
+}
+;(function(){var KEY="ws_culture_eval";function snap(){var d={};document.querySelectorAll("input,textarea,select").forEach(function(el,i){var k=el.id||el.name||("_"+i);if(el.type==="radio"){if(el.checked)d[k]=el.value;}else d[k]=el.value;});return d;}function save(){try{localStorage.setItem(KEY,JSON.stringify(snap()));}catch(e){}}function restore(){try{var d=JSON.parse(localStorage.getItem(KEY)||"{}");document.querySelectorAll("input,textarea,select").forEach(function(el,i){var k=el.id||el.name||("_"+i);if(!(k in d))return;if(el.type==="radio"){if(el.value===d[k])el.checked=true;}else el.value=d[k];});}catch(e){}}window.addEventListener("load",function(){restore();document.body.addEventListener("input",save);document.body.addEventListener("change",save);});})();
+</script>
+</body></html>
