@@ -147,6 +147,125 @@
         "통사2"
       ],
       "desc": "수요와공급 그래프 생성기"
+    },
+    {
+      "slug": "w-economy-1",
+      "file": "w-economy-1.html",
+      "title": "🎮 1차시 인터랙티브 — 자산 관리와 금융 생활",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "45분",
+      "tags": [
+        "1차시",
+        "인터랙티브",
+        "금융생활",
+        "통사2"
+      ],
+      "desc": "1차시 자산 관리와 금융 생활을 영상·퀴즈로 풀어내는 웹 인터랙티브 학습 도구"
+    },
+    {
+      "slug": "w-economy-2",
+      "file": "w-economy-2.html",
+      "title": "🎮 2차시 인터랙티브 — 자산 관리 원칙과 포트폴리오",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "45분",
+      "tags": [
+        "2차시",
+        "인터랙티브",
+        "포트폴리오",
+        "3원칙",
+        "통사2"
+      ],
+      "desc": "수익성·안전성·유동성 3원칙과 포트폴리오 구성을 차트로 학습하는 웹 인터랙티브 도구"
+    },
+    {
+      "slug": "w-economy-3",
+      "file": "w-economy-3.html",
+      "title": "🤖 AIEP — AI 6대 자산 정밀 진단",
+      "type": "웹교구",
+      "difficulty": "심화",
+      "duration": "45분",
+      "tags": [
+        "3차시",
+        "AI진단",
+        "포트폴리오",
+        "통사2"
+      ],
+      "desc": "AI 기반 6대 자산 정밀 진단을 통해 학생 맞춤 포트폴리오를 설계하는 웹교구"
+    },
+    {
+      "slug": "w-economy-4",
+      "file": "w-economy-4.html",
+      "title": "🎲 10년 투자 서바이벌 — 도파민 에디션",
+      "type": "웹교구",
+      "difficulty": "심화",
+      "duration": "45분",
+      "tags": [
+        "4차시",
+        "투자게임",
+        "도파민에디션",
+        "통사2"
+      ],
+      "desc": "10년간 투자 의사결정을 시뮬레이션하며 자산을 불려가는 도파민 에디션 서바이벌 게임"
+    },
+    {
+      "slug": "legacy-1차시-학습",
+      "file": "1차시_학습.html",
+      "title": "📂 1차시 학습 (구버전)",
+      "type": "학습지",
+      "difficulty": "보통",
+      "duration": "45분",
+      "tags": [
+        "1차시",
+        "구버전",
+        "통사2"
+      ],
+      "desc": "1차시 자산 관리와 금융 생활 학습 — 이전 대화에서 만든 구버전"
+    },
+    {
+      "slug": "legacy-2차시-학습지",
+      "file": "2차시_학습지.html",
+      "title": "📂 2차시 학습지 (구버전)",
+      "type": "학습지",
+      "difficulty": "보통",
+      "duration": "45분",
+      "tags": [
+        "2차시",
+        "구버전",
+        "통사2"
+      ],
+      "desc": "2차시 자산 관리 원칙과 포트폴리오 학습지 — 이전 대화에서 만든 구버전"
+    },
+    {
+      "slug": "legacy-lesson3-worksheet",
+      "file": "lesson3-worksheet.html",
+      "title": "📂 3차시 AI 자산 진단 (구버전)",
+      "type": "웹교구",
+      "difficulty": "심화",
+      "duration": "45분",
+      "tags": [
+        "3차시",
+        "AI진단",
+        "구버전",
+        "통사2"
+      ],
+      "desc": "3차시 AI 6대 자산 정밀 진단 — 이전 대화에서 만든 구버전"
+    },
+    {
+      "slug": "legacy-lesson4-worksheet",
+      "file": "lesson4-worksheet.html",
+      "title": "📂 4차시 투자 서바이벌 (구버전)",
+      "type": "웹교구",
+      "difficulty": "심화",
+      "duration": "45분",
+      "tags": [
+        "4차시",
+        "투자게임",
+        "구버전",
+        "통사2"
+      ],
+      "desc": "4차시 10년 투자 서바이벌 — 이전 대화에서 만든 구버전"
     }
   ]
 }

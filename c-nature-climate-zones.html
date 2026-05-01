@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>🌡 세계 기후 탐험가 — 인간의 적응</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#bae6fd 0%,#fef3c7 50%,#fee2e2 100%);min-height:100vh;-webkit-tap-highlight-color:transparent}
+.fjua{font-family:'Jua',sans-serif}
+.czone{transition:all .2s;cursor:pointer}.czone:hover{transform:translateY(-3px)}.czone.active{box-shadow:0 0 0 4px #f59e0b}
+.adapt-card{transition:all .2s;cursor:pointer}.adapt-card.matched{opacity:.5}.adapt-card.selected{box-shadow:0 0 0 3px #2563eb}
+.fade{animation:fi .35s ease-out}@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media print{.no-print{display:none!important}}
+</style></head>
+<body class="text-slate-800">
+<header class="no-print bg-white/80 backdrop-blur border-b sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="hub.html?mode=unit&id=nature" class="font-bold text-slate-700">← 단원으로</a>
+<div class="text-xs text-slate-500">[10통사1-03-01] 자연환경과 인간</div>
+<button onclick="window.print()" class="text-sm bg-slate-100 px-3 py-1.5 rounded-lg">🖨</button></div></header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+<section class="bg-white rounded-2xl p-6 shadow-sm border mb-5">
+<div class="text-xs text-emerald-600 font-bold mb-1">통합사회 1 · 3단원 자연환경과 인간</div>
+<h1 class="fjua text-3xl md:text-4xl mb-2">🌡 세계 기후 탐험가</h1>
+<p class="text-slate-600 text-sm">5대 기후 지역의 인간 적응 방식을 탐구하고, 의식주·산업·주거 양식을 매칭합니다.</p>
+<div class="mt-3 flex flex-wrap gap-2 text-xs">
+<span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full font-bold">⏱ 25분</span>
+<span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-bold">난이도 보통</span>
+</div></section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">🌍 5대 기후 지역</h2>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+<button class="czone bg-gradient-to-b from-red-200 to-yellow-100 border-2 border-red-300 rounded-xl p-3" data-z="0"><div class="text-3xl">☀️</div><div class="font-bold text-sm mt-1">열대</div></button>
+<button class="czone bg-gradient-to-b from-yellow-200 to-orange-100 border-2 border-yellow-400 rounded-xl p-3" data-z="1"><div class="text-3xl">🏜</div><div class="font-bold text-sm mt-1">건조</div></button>
+<button class="czone bg-gradient-to-b from-emerald-200 to-blue-100 border-2 border-emerald-300 rounded-xl p-3" data-z="2"><div class="text-3xl">🌳</div><div class="font-bold text-sm mt-1">온대</div></button>
+<button class="czone bg-gradient-to-b from-blue-200 to-slate-100 border-2 border-blue-300 rounded-xl p-3" data-z="3"><div class="text-3xl">🌲</div><div class="font-bold text-sm mt-1">냉대</div></button>
+<button class="czone bg-gradient-to-b from-slate-200 to-slate-50 border-2 border-slate-400 rounded-xl p-3" data-z="4"><div class="text-3xl">❄️</div><div class="font-bold text-sm mt-1">한대</div></button>
+</div>
+<div id="zoneInfo" class="hidden mt-5 fade bg-slate-50 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3"><span id="zEmoji" class="text-3xl"></span><h3 id="zName" class="fjua text-2xl"></h3></div>
+<div class="grid md:grid-cols-2 gap-3">
+<div class="bg-white rounded-lg p-3 border-l-4 border-orange-500"><div class="text-xs font-bold text-orange-700 mb-1">🌡 기후 특징</div><ul id="zClimate" class="text-sm space-y-1"></ul></div>
+<div class="bg-white rounded-lg p-3 border-l-4 border-blue-500"><div class="text-xs font-bold text-blue-700 mb-1">🏠 인간 적응</div><ul id="zAdapt" class="text-sm space-y-1"></ul></div></div>
+<div class="bg-amber-50 border border-amber-200 rounded-lg p-3 mt-3 text-sm"><b>💡 대표 지역:</b> <span id="zRegion"></span></div></div>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">🎯 적응 방식 매칭</h2>
+<p class="text-sm text-slate-600 mb-3">기후 ↔ 적응 방식을 짝지어 보세요.</p>
+<div id="matchScore" class="font-bold text-blue-600 text-sm mb-3">매칭: 0 / 5</div>
+<div id="matchBoard" class="grid grid-cols-2 gap-2"></div>
+<button id="matchReset" class="mt-3 text-sm bg-slate-100 px-4 py-2 rounded-lg">🔄 다시</button>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">📝 학생 탐구</h2>
+<label class="text-sm font-bold block mb-1">기후가 인간 생활에 미친 영향 — 한국 사례로 작성</label>
+<textarea id="myWrite" rows="4" class="w-full bg-slate-50 border-2 border-slate-300 rounded-lg p-3 text-sm" placeholder="예: 한국은 사계절 온대 기후로, 봄·가을 농사가 가능했고 한옥의 온돌·대청마루는 추위·더위 모두 대응한 적응의 결과..."></textarea>
+</section>
+
+<section class="bg-gradient-to-r from-amber-100 to-rose-100 border-2 border-amber-300 rounded-2xl p-6 mb-5">
+<h2 class="fjua text-2xl mb-2">📄 학습 결과</h2>
+<button id="genBtn" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-5 py-2.5 rounded-lg mr-2">📋 정리</button>
+<button onclick="window.print()" class="bg-slate-800 text-white font-bold px-5 py-2.5 rounded-lg">🖨 PDF</button>
+<div id="report" class="hidden mt-4 bg-white p-5 rounded-xl border-2 border-slate-800">
+<h3 class="fjua text-xl text-center border-b-2 pb-2 mb-3">🌡 기후 탐험 보고서</h3>
+<div class="text-sm space-y-2">
+<div><b>이름:</b> _________ <b>날짜:</b> _________</div>
+<div><b>방문 기후대:</b> <span id="rVisited"></span></div>
+<div><b>매칭:</b> <span id="rMatch"></span> / 5</div>
+<div><b>탐구 작성:</b> <span id="rWrite"></span></div></div></div></section>
+</main>
+<footer class="no-print text-center text-xs text-slate-400 py-6">풀어쓰는 사회학 정보부 · 통합사회 1 · 3단원</footer>
+<script>
+const Z=[
+{emoji:'☀️',name:'열대 기후',climate:['연중 고온다습','월평균 18℃ 이상','강수량 풍부'],adapt:['고상 가옥(통풍·습기 차단)','얇은 옷·헐렁한 의복','이동식 화전 농업·플랜테이션'],region:'아마존, 콩고, 인도네시아'},
+{emoji:'🏜',name:'건조 기후',climate:['강수량 250mm 이하','일교차 매우 큼','사막·스텝'],adapt:['흙벽돌 집·평지붕','전신 가리는 흰 의복','오아시스 농업·유목'],region:'사하라, 중앙아시아, 호주 내륙'},
+{emoji:'🌳',name:'온대 기후',climate:['사계절 뚜렷','중위도 분포','강수 적당'],adapt:['벽돌·목조 가옥','계절 의복','상업적 혼합 농업'],region:'한국, 서유럽, 미 동부'},
+{emoji:'🌲',name:'냉대 기후',climate:['겨울 매우 추움','짧은 여름','침엽수림 발달'],adapt:['통나무집·이중창','두꺼운 모피·털 의복','임업·목축'],region:'시베리아, 캐나다, 북유럽'},
+{emoji:'❄️',name:'한대 기후',climate:['최난월 10℃ 이하','영구 동토','강풍 빈번'],adapt:['이글루·반지하 가옥','동물 가죽 두꺼운 옷','순록 유목·사냥'],region:'그린란드, 시베리아 북부, 알래스카'}
+];
+const visited=new Set();
+document.querySelectorAll('.czone').forEach(b=>{
+b.addEventListener('click',()=>{
+const i=+b.dataset.z;visited.add(i);
+document.querySelectorAll('.czone').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+const z=Z[i];document.getElementById('zoneInfo').classList.remove('hidden');
+document.getElementById('zEmoji').textContent=z.emoji;document.getElementById('zName').textContent=z.name;
+document.getElementById('zClimate').innerHTML=z.climate.map(x=>`<li>• ${x}</li>`).join('');
+document.getElementById('zAdapt').innerHTML=z.adapt.map(x=>`<li>• ${x}</li>`).join('');
+document.getElementById('zRegion').textContent=z.region;
+});});
+const PAIRS=[
+{n:'열대 — 고온다습',c:'고상 가옥 + 화전 농업'},
+{n:'건조 — 사막·고일교차',c:'흙벽돌 + 흰색 전신복'},
+{n:'온대 — 사계절',c:'벽돌집 + 상업 농업'},
+{n:'냉대 — 한랭·침엽수',c:'통나무집 + 임업·목축'},
+{n:'한대 — 영구 동토',c:'이글루 + 순록 유목'}
+];
+let mSel=null,mCount=0;
+function shuf(a){return a.map(x=>[Math.random(),x]).sort((x,y)=>x[0]-y[0]).map(x=>x[1])}
+function buildMatch(){
+mCount=0;mSel=null;document.getElementById('matchScore').textContent='매칭: 0 / 5';
+const left=PAIRS.map((p,i)=>({type:'n',idx:i,txt:p.n}));
+const right=PAIRS.map((p,i)=>({type:'c',idx:i,txt:p.c}));
+const all=shuf([...left,...right]);
+document.getElementById('matchBoard').innerHTML=all.map(c=>`<div class="adapt-card ${c.type==='n'?'bg-orange-100 border-orange-300':'bg-blue-100 border-blue-300'} border-2 rounded-lg p-2.5 text-sm" data-t="${c.type}" data-i="${c.idx}">${c.txt}</div>`).join('');
+document.querySelectorAll('.adapt-card').forEach(el=>el.addEventListener('click',()=>{
+if(el.classList.contains('matched'))return;
+if(!mSel){mSel=el;el.classList.add('selected');return;}
+if(mSel===el){el.classList.remove('selected');mSel=null;return;}
+if(mSel.dataset.t===el.dataset.t){mSel.classList.remove('selected');mSel=el;el.classList.add('selected');return;}
+if(mSel.dataset.i===el.dataset.i){el.classList.add('matched','bg-emerald-200');mSel.classList.add('matched','bg-emerald-200');mSel.classList.remove('selected');mSel=null;mCount++;document.getElementById('matchScore').textContent='매칭: '+mCount+' / 5';}
+else{const w=mSel;el.classList.add('bg-red-200');w.classList.add('bg-red-200');setTimeout(()=>{el.classList.remove('bg-red-200');w.classList.remove('bg-red-200','selected');mSel=null;},700);}
+}));}
+document.getElementById('matchReset').addEventListener('click',buildMatch);buildMatch();
+document.getElementById('genBtn').addEventListener('click',()=>{
+document.getElementById('rVisited').textContent=[...visited].map(i=>Z[i].emoji+' '+Z[i].name).join(', ')||'(없음)';
+document.getElementById('rMatch').textContent=mCount;
+document.getElementById('rWrite').textContent=document.getElementById('myWrite').value||'-';
+document.getElementById('report').classList.remove('hidden');
+});
+</script><script>
+;(function(){
+  var KEY="sav_"+(location.pathname.split("/").pop()||"x").replace(/\.html$/,"");
+  function snap(){
+    var d={};
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(el.type==="checkbox"||el.type==="radio")d[k]=el.checked;else d[k]=el.value;
+    });
+    return d;
+  }
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(snap()));}catch(e){}}
+  function restore(){
+    try{var d=JSON.parse(localStorage.getItem(KEY)||"{}");
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(!(k in d))return;
+      if(el.type==="checkbox"||el.type==="radio")el.checked=d[k];
+      else el.value=d[k];
+      el.dispatchEvent(new Event("input",{bubbles:true}));
+      el.dispatchEvent(new Event("change",{bubbles:true}));
+    });}catch(e){}
+  }
+  function btn(label,onclick,bg){
+    var b=document.createElement("button");
+    b.textContent=label;b.className="text-xs no-print";
+    b.style.cssText="background:"+bg+";color:#fff;padding:6px 10px;border-radius:6px;border:0;font-weight:bold;cursor:pointer;margin:2px;font-family:inherit";
+    b.onclick=onclick;return b;
+  }
+  function csv(){
+    var rows=[];rows.push(["field","value"]);
+    var d=snap();
+    Object.keys(d).forEach(function(k){
+      var v=String(d[k]||"").replace(/"/g,"\"\"");
+      rows.push(["\""+k+"\"","\""+v+"\""]);
+    });
+    var s=rows.map(function(r){return r.join(",");}).join("\n");
+    var blob=new Blob(["﻿"+s],{type:"text/csv;charset=utf-8"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(blob);
+    a.download=KEY+"_"+(new Date().toISOString().slice(0,10))+".csv";a.click();
+  }
+  function code(){
+    try{
+      var d=snap();var s=JSON.stringify(d);
+      var b64=btoa(unescape(encodeURIComponent(s))).replace(/[+/=]/g,function(c){return {"+":"-","/":"_","=":""}[c];});
+      var name=(prompt("학생 이름을 입력하세요(결과 코드에 포함됩니다)")||"학생").slice(0,8);
+      prompt("📋 결과 코드 (복사해서 교사에게 제출):",name+"#"+b64.slice(0,400));
+    }catch(e){alert("결과 코드 생성 실패");}
+  }
+  function clr(){if(confirm("저장된 답을 모두 지울까요?")){localStorage.removeItem(KEY);location.reload();}}
+  window.addEventListener("load",function(){
+    setTimeout(restore,100);
+    document.body.addEventListener("input",save);
+    document.body.addEventListener("change",save);
+    document.body.addEventListener("click",function(e){if(e.target.matches("button,.opt,.choice,.judge,.crit,.princ,.policy-card,.problem-chip,.factor-card,.tag-pill,.iss,.sdg,.pol,.zone-btn,.czone,.dis-card,.case-pill,.stance-card,.adapt-card,.case-card,.cell"))save();});
+    var bar=document.createElement("div");
+    bar.className="no-print";
+    bar.style.cssText="position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.85);padding:6px;border-radius:10px;z-index:9999;display:flex;flex-wrap:wrap;max-width:90vw;box-shadow:0 4px 12px rgba(0,0,0,0.3)";
+    bar.appendChild(btn("💾 자동저장 ON","#",""));
+    bar.lastChild.style.cssText="font-size:10px;color:#10b981;padding:6px 8px;background:transparent;cursor:default";
+    bar.appendChild(btn("📤 CSV",csv,"#0891b2"));
+    bar.appendChild(btn("📋 결과코드",code,"#f59e0b"));
+    bar.appendChild(btn("🗑 지우기",clr,"#dc2626"));
+    document.body.appendChild(bar);
+  });
+})();
+
+</script>
+</body></html>

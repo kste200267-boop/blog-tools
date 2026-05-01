@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>🌐 세계화의 빛과 그림자</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#dbeafe 0%,#fef3c7 100%);min-height:100vh}
+.fjua{font-family:'Jua',sans-serif}
+.case-card{transition:all .25s}
+.judge{transition:all .15s;cursor:pointer}.judge:hover{transform:scale(1.05)}.judge.picked{box-shadow:0 0 0 3px #2563eb}
+@media print{.no-print{display:none!important}}
+</style></head><body class="text-slate-800">
+<header class="no-print bg-white/80 backdrop-blur border-b sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="hub.html?mode=unit&id=globalization" class="font-bold">← 단원으로</a>
+<div class="text-xs text-slate-500">[10통사2-04-01] 세계화의 양상</div>
+<button onclick="window.print()" class="text-sm bg-slate-100 px-3 py-1.5 rounded-lg">🖨</button></div></header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+<section class="bg-white rounded-2xl p-6 shadow-sm border mb-5">
+<div class="text-xs text-blue-600 font-bold mb-1">통합사회 2 · 9단원 세계화와 평화</div>
+<h1 class="fjua text-3xl md:text-4xl mb-2">🌐 세계화의 빛과 그림자</h1>
+<p class="text-slate-600 text-sm">7가지 세계화 사례를 분석해 빛/그림자/양면성으로 분류하고 본인의 입장을 정립합니다.</p>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<div class="grid grid-cols-3 gap-2 text-center">
+<div class="bg-emerald-50 border border-emerald-300 rounded-lg p-2"><div class="text-xs text-emerald-700">🌟 빛</div><div class="fjua text-2xl text-emerald-600" id="cLight">0</div></div>
+<div class="bg-rose-50 border border-rose-300 rounded-lg p-2"><div class="text-xs text-rose-700">⚠️ 그림자</div><div class="fjua text-2xl text-rose-600" id="cShadow">0</div></div>
+<div class="bg-amber-50 border border-amber-300 rounded-lg p-2"><div class="text-xs text-amber-700">⚖️ 양면</div><div class="fjua text-2xl text-amber-600" id="cBoth">0</div></div>
+</div></section>
+
+<section id="cases"></section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">💭 본인의 입장</h2>
+<div class="grid md:grid-cols-2 gap-3 mb-3">
+<label class="bg-slate-50 rounded-lg p-3 cursor-pointer border-2 border-slate-300 has-[:checked]:bg-emerald-50 has-[:checked]:border-emerald-500">
+<input type="radio" name="stance" value="pro" class="mr-2"><b>🚀 세계화 적극 찬성</b><div class="text-xs text-slate-500">전체적으로 인류에게 이익</div></label>
+<label class="bg-slate-50 rounded-lg p-3 cursor-pointer border-2 border-slate-300 has-[:checked]:bg-rose-50 has-[:checked]:border-rose-500">
+<input type="radio" name="stance" value="con" class="mr-2"><b>🛡 세계화 비판/제한</b><div class="text-xs text-slate-500">부작용이 더 크다</div></label>
+<label class="bg-slate-50 rounded-lg p-3 cursor-pointer border-2 border-slate-300 has-[:checked]:bg-amber-50 has-[:checked]:border-amber-500">
+<input type="radio" name="stance" value="balance" class="mr-2"><b>⚖️ 균형·관리된 세계화</b><div class="text-xs text-slate-500">이익은 살리고 그림자는 줄이자</div></label>
+<label class="bg-slate-50 rounded-lg p-3 cursor-pointer border-2 border-slate-300 has-[:checked]:bg-blue-50 has-[:checked]:border-blue-500">
+<input type="radio" name="stance" value="local" class="mr-2"><b>🏠 지역화 우선</b><div class="text-xs text-slate-500">로컬·자국 보호 강화</div></label>
+</div>
+<textarea id="reason" rows="3" class="w-full bg-slate-50 border-2 border-slate-300 rounded-lg p-3 text-sm" placeholder="이 입장을 선택한 이유를 적어주세요."></textarea>
+</section>
+
+<section class="bg-gradient-to-r from-blue-100 to-rose-100 border-2 border-blue-300 rounded-2xl p-6">
+<h2 class="fjua text-2xl mb-3">📄 분석 보고서</h2>
+<button id="genBtn" class="bg-blue-600 text-white font-bold px-5 py-2.5 rounded-lg mr-2">📋 정리</button>
+<button onclick="window.print()" class="bg-slate-800 text-white font-bold px-5 py-2.5 rounded-lg">🖨 PDF</button>
+<div id="report" class="hidden mt-4 bg-white rounded-xl p-5 border-2 border-slate-800">
+<h3 class="fjua text-xl text-center border-b-2 pb-2 mb-3">🌐 세계화 분석 보고서</h3>
+<div class="text-sm space-y-2">
+<div><b>이름:</b> _________ <b>날짜:</b> _________</div>
+<div><b>분류 결과:</b> 빛 <span id="rLight"></span> · 그림자 <span id="rShadow"></span> · 양면 <span id="rBoth"></span></div>
+<div><b>나의 입장:</b> <span id="rStance"></span></div>
+<div><b>이유:</b> <span id="rReason"></span></div>
+</div></div></section>
+</main>
+<footer class="no-print text-center text-xs text-slate-400 py-6">풀어쓰는 사회학 정보부 · 통합사회 2 · 9단원</footer>
+
+<script>
+const CASES=[
+{icon:'🍔',title:'다국적 기업의 진출',desc:'맥도날드·스타벅스가 전 세계로 확산. 한국에도 수많은 다국적 브랜드가 들어왔다.'},
+{icon:'📱',title:'IT·SNS의 글로벌화',desc:'페이스북·인스타그램·유튜브가 국경을 넘어 정보·문화 전파를 가속화했다.'},
+{icon:'🌾',title:'농산물 무역 자유화',desc:'FTA로 외국 농산물 수입 증가. 소비자 가격 ↓ but 국내 농가 위기.'},
+{icon:'🏭',title:'생산 공정 글로벌 분업',desc:'한 제품이 미국 설계, 중국 생산, 한국 부품, 베트남 조립으로 만들어진다.'},
+{icon:'🦠',title:'전염병의 세계적 확산',desc:'코로나19처럼 한 지역에서 시작한 질병이 빠르게 전 세계로 번졌다.'},
+{icon:'💵',title:'국제 금융 시장 통합',desc:'한 나라 금융 위기가 즉시 전 세계로 파급된다 (2008 글로벌 금융위기).'},
+{icon:'🎬',title:'한류·문화 상호 교류',desc:'K-pop·K-drama 세계 진출, 외국 문화도 한국에 자연스럽게 들어왔다.'}];
+const records=CASES.map(()=>null);
+function build(){
+document.getElementById('cases').innerHTML=CASES.map((c,i)=>`
+<div class="case-card bg-white rounded-2xl p-5 mb-3 shadow-sm border">
+<div class="flex items-start gap-3"><div class="text-4xl">${c.icon}</div>
+<div class="flex-1"><h3 class="fjua text-lg">${c.title}</h3><p class="text-sm text-slate-600 mt-1">${c.desc}</p>
+<div class="grid grid-cols-3 gap-2 mt-3" data-i="${i}">
+<button class="judge bg-emerald-50 border-2 border-emerald-300 rounded-lg p-2 text-sm" data-v="light">🌟 빛</button>
+<button class="judge bg-rose-50 border-2 border-rose-300 rounded-lg p-2 text-sm" data-v="shadow">⚠️ 그림자</button>
+<button class="judge bg-amber-50 border-2 border-amber-300 rounded-lg p-2 text-sm" data-v="both">⚖️ 양면</button>
+</div>
+<textarea data-r="${i}" rows="2" class="rTxt mt-2 w-full bg-slate-50 border border-slate-300 rounded p-2 text-xs" placeholder="이유 (선택)"></textarea>
+</div></div></div>`).join('');
+document.querySelectorAll('[data-i]').forEach(g=>{
+const i=+g.dataset.i;
+g.querySelectorAll('.judge').forEach(b=>b.addEventListener('click',()=>{
+g.querySelectorAll('.judge').forEach(x=>x.classList.remove('picked'));b.classList.add('picked');
+records[i]=records[i]||{};records[i].v=b.dataset.v;updateCounts();
+}));});
+document.querySelectorAll('.rTxt').forEach(t=>t.addEventListener('input',e=>{const i=+e.target.dataset.r;records[i]=records[i]||{};records[i].r=e.target.value;}));
+}
+build();
+function updateCounts(){let l=0,s=0,b=0;records.forEach(r=>{if(r){if(r.v==='light')l++;else if(r.v==='shadow')s++;else if(r.v==='both')b++;}});document.getElementById('cLight').textContent=l;document.getElementById('cShadow').textContent=s;document.getElementById('cBoth').textContent=b;}
+const STANCE={pro:'🚀 세계화 적극 찬성',con:'🛡 세계화 비판/제한',balance:'⚖️ 균형·관리된 세계화',local:'🏠 지역화 우선'};
+document.getElementById('genBtn').addEventListener('click',()=>{
+document.getElementById('rLight').textContent=document.getElementById('cLight').textContent;
+document.getElementById('rShadow').textContent=document.getElementById('cShadow').textContent;
+document.getElementById('rBoth').textContent=document.getElementById('cBoth').textContent;
+const s=document.querySelector('input[name="stance"]:checked');
+document.getElementById('rStance').textContent=s?STANCE[s.value]:'(미선택)';
+document.getElementById('rReason').textContent=document.getElementById('reason').value||'-';
+document.getElementById('report').classList.remove('hidden');
+});
+</script><script>
+;(function(){
+  var KEY="sav_"+(location.pathname.split("/").pop()||"x").replace(/\.html$/,"");
+  function snap(){
+    var d={};
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(el.type==="checkbox"||el.type==="radio")d[k]=el.checked;else d[k]=el.value;
+    });
+    return d;
+  }
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(snap()));}catch(e){}}
+  function restore(){
+    try{var d=JSON.parse(localStorage.getItem(KEY)||"{}");
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(!(k in d))return;
+      if(el.type==="checkbox"||el.type==="radio")el.checked=d[k];
+      else el.value=d[k];
+      el.dispatchEvent(new Event("input",{bubbles:true}));
+      el.dispatchEvent(new Event("change",{bubbles:true}));
+    });}catch(e){}
+  }
+  function btn(label,onclick,bg){
+    var b=document.createElement("button");
+    b.textContent=label;b.className="text-xs no-print";
+    b.style.cssText="background:"+bg+";color:#fff;padding:6px 10px;border-radius:6px;border:0;font-weight:bold;cursor:pointer;margin:2px;font-family:inherit";
+    b.onclick=onclick;return b;
+  }
+  function csv(){
+    var rows=[];rows.push(["field","value"]);
+    var d=snap();
+    Object.keys(d).forEach(function(k){
+      var v=String(d[k]||"").replace(/"/g,"\"\"");
+      rows.push(["\""+k+"\"","\""+v+"\""]);
+    });
+    var s=rows.map(function(r){return r.join(",");}).join("\n");
+    var blob=new Blob(["﻿"+s],{type:"text/csv;charset=utf-8"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(blob);
+    a.download=KEY+"_"+(new Date().toISOString().slice(0,10))+".csv";a.click();
+  }
+  function code(){
+    try{
+      var d=snap();var s=JSON.stringify(d);
+      var b64=btoa(unescape(encodeURIComponent(s))).replace(/[+/=]/g,function(c){return {"+":"-","/":"_","=":""}[c];});
+      var name=(prompt("학생 이름을 입력하세요(결과 코드에 포함됩니다)")||"학생").slice(0,8);
+      prompt("📋 결과 코드 (복사해서 교사에게 제출):",name+"#"+b64.slice(0,400));
+    }catch(e){alert("결과 코드 생성 실패");}
+  }
+  function clr(){if(confirm("저장된 답을 모두 지울까요?")){localStorage.removeItem(KEY);location.reload();}}
+  window.addEventListener("load",function(){
+    setTimeout(restore,100);
+    document.body.addEventListener("input",save);
+    document.body.addEventListener("change",save);
+    document.body.addEventListener("click",function(e){if(e.target.matches("button,.opt,.choice,.judge,.crit,.princ,.policy-card,.problem-chip,.factor-card,.tag-pill,.iss,.sdg,.pol,.zone-btn,.czone,.dis-card,.case-pill,.stance-card,.adapt-card,.case-card,.cell"))save();});
+    var bar=document.createElement("div");
+    bar.className="no-print";
+    bar.style.cssText="position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.85);padding:6px;border-radius:10px;z-index:9999;display:flex;flex-wrap:wrap;max-width:90vw;box-shadow:0 4px 12px rgba(0,0,0,0.3)";
+    bar.appendChild(btn("💾 자동저장 ON","#",""));
+    bar.lastChild.style.cssText="font-size:10px;color:#10b981;padding:6px 8px;background:transparent;cursor:default";
+    bar.appendChild(btn("📤 CSV",csv,"#0891b2"));
+    bar.appendChild(btn("📋 결과코드",code,"#f59e0b"));
+    bar.appendChild(btn("🗑 지우기",clr,"#dc2626"));
+    document.body.appendChild(bar);
+  });
+})();
+
+</script>
+</body></html>

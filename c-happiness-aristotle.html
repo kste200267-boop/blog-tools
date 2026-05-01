@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>🏛 행복관 진단 — 아리스토텔레스 vs 공리주의</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#fde68a 0%,#fbcfe8 100%);min-height:100vh}
+.fjua{font-family:'Jua',sans-serif}
+.opt{transition:all .15s;cursor:pointer}.opt:hover{transform:scale(1.02)}.opt.picked{background:#fef08a!important;border-color:#ca8a04!important;box-shadow:0 0 0 3px #facc15}
+.fade{animation:fi .4s ease-out}@keyframes fi{from{opacity:0}to{opacity:1}}
+@media print{.no-print{display:none!important}}
+</style></head><body class="text-slate-800">
+<header class="no-print bg-white/80 backdrop-blur border-b sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="hub.html?mode=unit&id=happiness" class="font-bold">← 단원으로</a>
+<div class="text-xs text-slate-500">[10통사1-02-01] 행복의 의미와 기준</div>
+<button onclick="window.print()" class="text-sm bg-slate-100 px-3 py-1.5 rounded-lg">🖨</button></div></header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+<section class="bg-white rounded-2xl p-6 shadow-sm border mb-5">
+<div class="text-xs text-pink-600 font-bold mb-1">통합사회 1 · 2단원 행복</div>
+<h1 class="fjua text-3xl md:text-4xl mb-2">🏛 행복관 진단</h1>
+<p class="text-slate-600 text-sm">10가지 상황에서 학생의 선택이 어느 행복관에 가까운지 진단합니다.</p>
+</section>
+
+<details class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5">
+<summary class="font-bold cursor-pointer">📖 4가지 행복관 (펼치기)</summary>
+<div class="text-sm mt-3 space-y-2">
+<div><b>🏛 아리스토텔레스 (덕):</b> 행복은 인간의 고유한 기능(이성)을 탁월하게 발휘하는 것. 덕 있는 삶 = 좋은 삶.</div>
+<div><b>📊 공리주의 (벤담·밀):</b> 최대 다수의 최대 행복. 쾌락이 행복의 본질.</div>
+<div><b>🧘 동양 사상 (유교·불교):</b> 마음의 평정과 도덕적 완성. 안빈낙도, 자비.</div>
+<div><b>💎 현대 자기실현:</b> 자신의 잠재력을 실현하고 성장하는 것이 행복.</div>
+</div></details>
+
+<section id="quizArea"></section>
+
+<section id="resultBox" class="hidden bg-gradient-to-r from-amber-100 to-pink-100 border-2 border-amber-300 rounded-2xl p-6 mb-5 fade">
+<h2 class="fjua text-2xl mb-3">🎯 진단 결과</h2>
+<div class="bg-white rounded-xl p-5">
+<div class="text-center mb-4"><div class="text-xs text-slate-500">학생의 행복관 성향</div><div class="fjua text-3xl text-pink-600 mt-1" id="topType"></div></div>
+<div class="space-y-2">
+<div><div class="flex justify-between text-xs mb-1"><span>🏛 아리스토텔레스 (덕)</span><span id="s1V">0</span></div><div class="bg-slate-100 rounded-full h-2"><div id="s1B" class="bg-amber-500 h-2 rounded-full transition-all" style="width:0%"></div></div></div>
+<div><div class="flex justify-between text-xs mb-1"><span>📊 공리주의</span><span id="s2V">0</span></div><div class="bg-slate-100 rounded-full h-2"><div id="s2B" class="bg-blue-500 h-2 rounded-full transition-all" style="width:0%"></div></div></div>
+<div><div class="flex justify-between text-xs mb-1"><span>🧘 동양 사상</span><span id="s3V">0</span></div><div class="bg-slate-100 rounded-full h-2"><div id="s3B" class="bg-emerald-500 h-2 rounded-full transition-all" style="width:0%"></div></div></div>
+<div><div class="flex justify-between text-xs mb-1"><span>💎 자기실현</span><span id="s4V">0</span></div><div class="bg-slate-100 rounded-full h-2"><div id="s4B" class="bg-pink-500 h-2 rounded-full transition-all" style="width:0%"></div></div></div>
+</div>
+<div class="bg-slate-50 rounded-lg p-3 mt-4 text-sm" id="advice"></div>
+</div>
+<button onclick="window.print()" class="mt-4 bg-slate-800 text-white font-bold px-5 py-2.5 rounded-lg">🖨 PDF</button>
+</section>
+</main>
+<footer class="no-print text-center text-xs text-slate-400 py-6">풀어쓰는 사회학 정보부 · 통합사회 1 · 2단원</footer>
+
+<script>
+const Q=[
+{q:'시험 전날, 친구가 우는 모습을 봤다. 어떻게 할까?',o:[
+{t:'친구를 위로하는 게 옳은 일. 시험은 차선.',type:1},
+{t:'더 많은 사람에게 도움 되는 결정인지 따져본다.',type:2},
+{t:'마음의 동요 없이 나의 길을 간다.',type:3},
+{t:'친구를 도우면서 내 성장에도 의미가 있는지 본다.',type:4}]},
+{q:'10년 후 가장 갖고 싶은 것은?',o:[
+{t:'덕 있는 인격과 좋은 평판',type:1},
+{t:'많은 사람의 행복에 기여한 결과',type:2},
+{t:'마음의 평정과 자족',type:3},
+{t:'잠재력을 발휘한 자기실현',type:4}]},
+{q:'돈 vs 의미 있는 일, 어느 쪽?',o:[
+{t:'옳고 의미 있는 일이 우선',type:1},
+{t:'더 많은 사람에게 도움 되는 일',type:2},
+{t:'욕심 없이 만족할 수 있는 일',type:3},
+{t:'내 잠재력을 펼칠 수 있는 일',type:4}]},
+{q:'친구 100명 vs 진정한 친구 3명',o:[
+{t:'진정한 우정에서 덕이 자란다',type:1},
+{t:'더 많은 사람에게 영향을 주는 게 좋다',type:2},
+{t:'몇 명이든 마음을 비우면 충분',type:3},
+{t:'서로 성장시키는 관계가 핵심',type:4}]},
+{q:'행복은 무엇이라고 생각하나?',o:[
+{t:'좋은 인격과 덕을 갖추는 것',type:1},
+{t:'쾌락이 고통보다 큰 상태',type:2},
+{t:'마음의 평정과 깨달음',type:3},
+{t:'잠재력의 충분한 발휘',type:4}]},
+{q:'선택지 중 더 좋은 직업은?',o:[
+{t:'정직하고 사회에 옳은 일을 하는 직업',type:1},
+{t:'많은 사람의 삶을 개선하는 직업',type:2},
+{t:'마음 편하고 균형 있는 직업',type:3},
+{t:'내 재능을 가장 잘 살리는 직업',type:4}]},
+{q:'역사 속 인물 중 가장 매력적인 사람은?',o:[
+{t:'소크라테스 — 끝까지 옳은 길',type:1},
+{t:'마더 테레사 — 가장 많은 이를 도움',type:2},
+{t:'법정 스님 — 무소유의 삶',type:3},
+{t:'레오나르도 다빈치 — 다재다능한 자기 실현',type:4}]},
+{q:'좋은 부모란?',o:[
+{t:'자녀에게 옳은 가치를 가르치는 부모',type:1},
+{t:'자녀의 행복을 최대화하는 부모',type:2},
+{t:'자녀에게 평화로운 마음을 길러주는 부모',type:3},
+{t:'자녀의 잠재력을 발견·지원하는 부모',type:4}]},
+{q:'위기에 처했을 때 본인의 반응은?',o:[
+{t:'옳은 길을 끝까지 지킨다',type:1},
+{t:'결과적으로 가장 많이 살릴 길을 본다',type:2},
+{t:'마음을 비우고 받아들인다',type:3},
+{t:'이 위기로 내가 더 성장할 수 있는지 본다',type:4}]},
+{q:'한 단어로 표현한 행복은?',o:[
+{t:'덕(德)',type:1},{t:'쾌락(樂)',type:2},{t:'평정(靜)',type:3},{t:'성장(長)',type:4}]}
+];
+const scores={1:0,2:0,3:0,4:0};
+const labels={1:'🏛 아리스토텔레스 (덕)',2:'📊 공리주의 (쾌락)',3:'🧘 동양 사상 (평정)',4:'💎 자기실현 (성장)'};
+const advice={1:'덕과 옳음에 무게를 두는 학생입니다. 좋은 인격과 좋은 삶을 추구하며, 도덕적 일관성을 중시합니다.',2:'더 많은 사람의 행복을 추구하는 학생입니다. 결과와 영향력 있는 행동을 중요하게 봅니다.',3:'마음의 평정과 자족을 추구하는 학생입니다. 외부 변화에 흔들리지 않는 내면의 균형을 중시합니다.',4:'자신의 잠재력 실현에 무게를 두는 학생입니다. 끊임없는 성장과 자기 발견을 행복으로 봅니다.'};
+function build(){
+document.getElementById('quizArea').innerHTML=Q.map((q,i)=>`<div class="bg-white rounded-2xl p-5 mb-3 shadow-sm border"><div class="font-bold mb-2">Q${i+1}. ${q.q}</div><div class="space-y-2" data-i="${i}">${q.o.map((o,j)=>`<div class="opt bg-slate-50 border-2 border-slate-300 rounded-lg p-2.5 text-sm" data-j="${j}" data-type="${o.type}">${o.t}</div>`).join('')}</div></div>`).join('')+'<div class="text-center mb-5"><button id="calcBtn" class="bg-pink-600 text-white font-bold px-6 py-3 rounded-xl">🎯 결과 보기</button></div>';
+document.querySelectorAll('[data-i]').forEach(g=>{
+g.querySelectorAll('.opt').forEach(o=>o.addEventListener('click',()=>{
+g.querySelectorAll('.opt').forEach(x=>x.classList.remove('picked'));o.classList.add('picked');
+}));});
+document.getElementById('calcBtn').addEventListener('click',calc);
+}
+build();
+function calc(){
+[1,2,3,4].forEach(k=>scores[k]=0);
+document.querySelectorAll('[data-i]').forEach(g=>{const p=g.querySelector('.opt.picked');if(p)scores[+p.dataset.type]++;});
+[1,2,3,4].forEach(k=>{const v=scores[k];document.getElementById('s'+k+'V').textContent=v;document.getElementById('s'+k+'B').style.width=(v*10)+'%';});
+const top=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+document.getElementById('topType').textContent=labels[+top[0]];
+document.getElementById('advice').textContent=advice[+top[0]];
+document.getElementById('resultBox').classList.remove('hidden');
+document.getElementById('resultBox').scrollIntoView({behavior:'smooth'});
+}
+</script><script>
+;(function(){
+  var KEY="sav_"+(location.pathname.split("/").pop()||"x").replace(/\.html$/,"");
+  function snap(){
+    var d={};
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(el.type==="checkbox"||el.type==="radio")d[k]=el.checked;else d[k]=el.value;
+    });
+    return d;
+  }
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(snap()));}catch(e){}}
+  function restore(){
+    try{var d=JSON.parse(localStorage.getItem(KEY)||"{}");
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(!(k in d))return;
+      if(el.type==="checkbox"||el.type==="radio")el.checked=d[k];
+      else el.value=d[k];
+      el.dispatchEvent(new Event("input",{bubbles:true}));
+      el.dispatchEvent(new Event("change",{bubbles:true}));
+    });}catch(e){}
+  }
+  function btn(label,onclick,bg){
+    var b=document.createElement("button");
+    b.textContent=label;b.className="text-xs no-print";
+    b.style.cssText="background:"+bg+";color:#fff;padding:6px 10px;border-radius:6px;border:0;font-weight:bold;cursor:pointer;margin:2px;font-family:inherit";
+    b.onclick=onclick;return b;
+  }
+  function csv(){
+    var rows=[];rows.push(["field","value"]);
+    var d=snap();
+    Object.keys(d).forEach(function(k){
+      var v=String(d[k]||"").replace(/"/g,"\"\"");
+      rows.push(["\""+k+"\"","\""+v+"\""]);
+    });
+    var s=rows.map(function(r){return r.join(",");}).join("\n");
+    var blob=new Blob(["﻿"+s],{type:"text/csv;charset=utf-8"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(blob);
+    a.download=KEY+"_"+(new Date().toISOString().slice(0,10))+".csv";a.click();
+  }
+  function code(){
+    try{
+      var d=snap();var s=JSON.stringify(d);
+      var b64=btoa(unescape(encodeURIComponent(s))).replace(/[+/=]/g,function(c){return {"+":"-","/":"_","=":""}[c];});
+      var name=(prompt("학생 이름을 입력하세요(결과 코드에 포함됩니다)")||"학생").slice(0,8);
+      prompt("📋 결과 코드 (복사해서 교사에게 제출):",name+"#"+b64.slice(0,400));
+    }catch(e){alert("결과 코드 생성 실패");}
+  }
+  function clr(){if(confirm("저장된 답을 모두 지울까요?")){localStorage.removeItem(KEY);location.reload();}}
+  window.addEventListener("load",function(){
+    setTimeout(restore,100);
+    document.body.addEventListener("input",save);
+    document.body.addEventListener("change",save);
+    document.body.addEventListener("click",function(e){if(e.target.matches("button,.opt,.choice,.judge,.crit,.princ,.policy-card,.problem-chip,.factor-card,.tag-pill,.iss,.sdg,.pol,.zone-btn,.czone,.dis-card,.case-pill,.stance-card,.adapt-card,.case-card,.cell"))save();});
+    var bar=document.createElement("div");
+    bar.className="no-print";
+    bar.style.cssText="position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.85);padding:6px;border-radius:10px;z-index:9999;display:flex;flex-wrap:wrap;max-width:90vw;box-shadow:0 4px 12px rgba(0,0,0,0.3)";
+    bar.appendChild(btn("💾 자동저장 ON","#",""));
+    bar.lastChild.style.cssText="font-size:10px;color:#10b981;padding:6px 8px;background:transparent;cursor:default";
+    bar.appendChild(btn("📤 CSV",csv,"#0891b2"));
+    bar.appendChild(btn("📋 결과코드",code,"#f59e0b"));
+    bar.appendChild(btn("🗑 지우기",clr,"#dc2626"));
+    document.body.appendChild(bar);
+  });
+})();
+
+</script>
+</body></html>

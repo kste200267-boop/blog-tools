@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>🌋 자연재해 대응 시뮬레이터</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#1f2937 0%,#7c2d12 100%);min-height:100vh;color:#f1f5f9}
+.fjua{font-family:'Jua',sans-serif}
+.dis-card{transition:all .25s;cursor:pointer}.dis-card:hover{transform:translateY(-3px)}.dis-card.active{box-shadow:0 0 0 4px #fbbf24}
+.choice{transition:all .15s;cursor:pointer}.choice:hover{transform:scale(1.02)}.choice.picked{box-shadow:0 0 0 3px #06b6d4}
+.bar{transition:width .8s cubic-bezier(.4,0,.2,1)}
+.fade{animation:fi .4s ease-out}@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media print{body{background:#fff!important;color:#000!important}.no-print{display:none!important}}
+</style></head><body>
+<header class="no-print bg-slate-900/70 backdrop-blur border-b border-slate-700 sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="hub.html?mode=unit&id=nature" class="font-bold text-slate-200">← 단원으로</a>
+<div class="text-xs text-slate-400">[10통사1-03-02] 자연재해와 대응</div>
+<button onclick="window.print()" class="text-sm bg-slate-700 px-3 py-1.5 rounded-lg">🖨</button></div></header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+<section class="text-center mb-6">
+<div class="text-7xl mb-2">🌋</div>
+<h1 class="fjua text-4xl md:text-5xl mb-2 text-amber-300">자연재해 대응 시뮬레이터</h1>
+<p class="text-slate-300 text-sm">5가지 재해 상황에서 의사결정을 내리고, 생존·피해 점수로 결과를 확인합니다.</p>
+</section>
+
+<section class="bg-slate-800/60 rounded-2xl p-5 border border-slate-700 mb-5">
+<div class="grid grid-cols-3 gap-3">
+<div class="bg-emerald-900/40 rounded-xl p-3 text-center"><div class="text-xs text-emerald-300 font-bold">🛟 생존자</div><div class="fjua text-2xl text-emerald-200" id="vSurv">0</div></div>
+<div class="bg-rose-900/40 rounded-xl p-3 text-center"><div class="text-xs text-rose-300 font-bold">🏚 피해</div><div class="fjua text-2xl text-rose-200" id="vDmg">0</div></div>
+<div class="bg-blue-900/40 rounded-xl p-3 text-center"><div class="text-xs text-blue-300 font-bold">📊 대응 점수</div><div class="fjua text-2xl text-blue-200" id="vScore">0</div></div>
+</div></section>
+
+<section class="bg-slate-800/40 rounded-2xl p-5 border border-slate-700 mb-5">
+<h2 class="fjua text-xl mb-3 text-amber-300">📋 재해 상황 5가지</h2>
+<div id="disList" class="grid grid-cols-2 md:grid-cols-5 gap-2"></div>
+</section>
+
+<section id="disDetail" class="hidden bg-slate-800/80 rounded-2xl p-6 border-2 border-amber-500 mb-5 fade">
+<div class="flex items-center gap-3 mb-3"><span id="dEmoji" class="text-5xl"></span><div><div class="text-xs text-amber-400 font-bold">재해 #<span id="dNum"></span></div><h3 id="dTitle" class="fjua text-2xl"></h3></div></div>
+<div id="dDesc" class="bg-slate-900/60 rounded-xl p-4 text-sm mb-4"></div>
+<div class="text-amber-300 font-bold mb-2">🔮 어떻게 대응하시겠습니까?</div>
+<div id="dChoices" class="space-y-2"></div>
+<div id="dResult" class="hidden mt-4 fade"></div>
+</section>
+
+<section class="bg-slate-800/60 rounded-2xl p-5 border border-slate-700 mb-5">
+<h2 class="fjua text-xl mb-3 text-amber-300">📝 대응 원칙 정리</h2>
+<p class="text-sm text-slate-300 mb-3">이번 시뮬레이션을 통해 깨달은 자연재해 대응의 핵심 원칙 3가지를 작성하세요.</p>
+<div class="space-y-2">
+<input id="p1" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-2.5 text-sm" placeholder="① 예: 평소 대피로 숙지">
+<input id="p2" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-2.5 text-sm" placeholder="② 예: 정확한 정보원 확인">
+<input id="p3" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-2.5 text-sm" placeholder="③ 예: 공동체 협력">
+</div></section>
+
+<section class="bg-gradient-to-r from-amber-900/60 to-rose-900/60 rounded-2xl p-6 border-2 border-amber-500">
+<h2 class="fjua text-2xl mb-3 text-amber-200">📄 대응 보고서</h2>
+<button id="genBtn" class="bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-5 py-2.5 rounded-lg mr-2">📋 정리</button>
+<button onclick="window.print()" class="bg-slate-200 text-slate-900 font-bold px-5 py-2.5 rounded-lg">🖨 PDF</button>
+<div id="report" class="hidden mt-4 bg-white text-slate-900 p-5 rounded-xl">
+<h3 class="fjua text-xl text-center border-b-2 border-slate-800 pb-2 mb-3">🌋 자연재해 대응 결과</h3>
+<div class="text-sm space-y-2">
+<div><b>이름:</b> _________ <b>날짜:</b> _________</div>
+<div><b>최종 점수:</b> 생존 <span id="rSurv"></span> / 피해 <span id="rDmg"></span> / 대응 <span id="rScore"></span></div>
+<div><b>대응 원칙:</b><ol class="ml-4 list-decimal"><li id="r1"></li><li id="r2"></li><li id="r3"></li></ol></div>
+</div></div></section>
+</main>
+<footer class="no-print text-center text-xs text-slate-500 py-6">풀어쓰는 사회학 정보부 · 통합사회 1 · 3단원</footer>
+
+<script>
+const DIS=[
+{emoji:'🌊',title:'대형 쓰나미',desc:'해안 도시. 5분 후 10m 쓰나미 도달. 5만명 거주. 어떻게 대피?',
+choices:[
+{txt:'🏃 즉시 고지대로 도보 대피',surv:80,dmg:30,score:18,fb:'올바른 1차 대응. 자동차 이용 시 정체로 위험.'},
+{txt:'🚗 차량으로 빠르게 이동',surv:40,dmg:60,score:5,fb:'쓰나미 시 차량은 정체·낙하물로 매우 위험.'},
+{txt:'🏠 집에서 2층으로 대피',surv:20,dmg:90,score:0,fb:'쓰나미는 건물도 휩쓸어감. 무조건 고지대로.'},
+{txt:'📱 SNS로 도움 요청 후 대기',surv:10,dmg:95,score:-5,fb:'정보 확인보다 즉각적 대피가 1순위.'}]},
+{emoji:'🌋',title:'화산 폭발',desc:'근처 활화산이 폭발 전조. 화산재 + 용암 흐름 예상.',
+choices:[
+{txt:'🏃 즉시 80km 이상 떨어진 지역으로 이주',surv:90,dmg:40,score:20,fb:'화산재 영향권 밖이 안전권. 정부 대피 지시 따르기.'},
+{txt:'😷 마스크 쓰고 집에 머무르기',surv:50,dmg:70,score:8,fb:'화산재는 호흡기·심혈관에 치명적. 거주는 위험.'},
+{txt:'📷 가까이 가서 관찰',surv:5,dmg:100,score:-10,fb:'절대 금지. 용암·화산쇄설류는 매우 빠름.'},
+{txt:'🚗 자가용으로 도시 외곽으로',surv:65,dmg:55,score:12,fb:'정체 가능성 있으나 차선책. 가능하면 일찍.'}]},
+{emoji:'🌀',title:'태풍 (15호 강풍)',desc:'12시간 내 직격. 풍속 50m/s, 폭우 예상.',
+choices:[
+{txt:'🪟 창문 보강 + 비상식량 + 실내 대피',surv:85,dmg:35,score:18,fb:'정석 대응. 창문 X자 테이프·문단속 + 안전 위치 대기.'},
+{txt:'🌊 해안가에서 파도 구경',surv:5,dmg:100,score:-15,fb:'바람·낙하물·해일로 매년 사망 사고 다수.'},
+{txt:'🚗 외출하여 식료품 구매',surv:50,dmg:60,score:5,fb:'외출은 매우 위험. 미리 준비했어야 함.'},
+{txt:'🛏 그냥 잠들어 버리기',surv:30,dmg:80,score:0,fb:'정전·강풍 대응 불가. 깨어 있어야 함.'}]},
+{emoji:'🔥',title:'대형 산불',desc:'옆 산에서 발생. 연기 + 강풍 + 마을로 번지는 중.',
+choices:[
+{txt:'🚒 119 신고 후 정부 대피 지시 따라 즉시 이동',surv:90,dmg:45,score:20,fb:'정확. 개인 진화 시도는 위험.'},
+{txt:'💧 호스로 직접 진화 시도',surv:20,dmg:90,score:-5,fb:'대형 산불은 시민이 진화 불가. 도주가 1순위.'},
+{txt:'🏠 집 안에서 문 닫고 버티기',surv:35,dmg:80,score:0,fb:'연기 흡입·열기로 위험. 대피가 정답.'},
+{txt:'🚗 자가용으로 정해진 대피로 이동',surv:75,dmg:50,score:15,fb:'대피로 따라 이동. 정체에 주의.'}]},
+{emoji:'🌍',title:'대형 지진 (규모 7.0)',desc:'학교 수업 중 강한 지진. 책상이 흔들린다.',
+choices:[
+{txt:'🪑 책상 아래로 + 머리 보호 → 진동 멎으면 운동장으로',surv:90,dmg:30,score:20,fb:'정석 대응. 진동 중 이동은 매우 위험.'},
+{txt:'🏃 즉시 복도로 뛰어나간다',surv:30,dmg:70,score:0,fb:'진동 중 이동 시 낙하물·넘어짐 위험.'},
+{txt:'🪟 창문 옆에서 밖을 본다',surv:10,dmg:90,score:-10,fb:'유리 파편·낙하물 직격 위험.'},
+{txt:'⏸ 일단 가만히 있는다',surv:50,dmg:55,score:8,fb:'책상 아래가 더 안전.'}]}
+];
+const records=DIS.map(()=>null);
+let cur=null;
+function buildList(){
+document.getElementById('disList').innerHTML=DIS.map((d,i)=>`<button class="dis-card bg-slate-700 hover:bg-slate-600 rounded-xl p-3 text-center" data-i="${i}"><div class="text-3xl">${d.emoji}</div><div class="text-xs mt-1 font-bold">재해 ${i+1}</div><div id="b${i}" class="text-xs mt-1 text-emerald-400 hidden">✓</div></button>`).join('');
+document.querySelectorAll('.dis-card').forEach(b=>b.addEventListener('click',()=>open(+b.dataset.i)));
+}
+buildList();
+function open(i){
+cur=i;document.querySelectorAll('.dis-card').forEach(b=>b.classList.remove('active'));
+document.querySelectorAll('.dis-card')[i].classList.add('active');
+const d=DIS[i];document.getElementById('disDetail').classList.remove('hidden');
+document.getElementById('dNum').textContent=i+1;document.getElementById('dEmoji').textContent=d.emoji;
+document.getElementById('dTitle').textContent=d.title;document.getElementById('dDesc').textContent=d.desc;
+document.getElementById('dChoices').innerHTML=d.choices.map((c,j)=>`<div class="choice bg-slate-900/60 border-2 border-slate-600 rounded-xl p-3 text-sm" data-j="${j}">${c.txt}</div>`).join('');
+document.getElementById('dResult').classList.add('hidden');
+document.querySelectorAll('.choice').forEach(c=>c.addEventListener('click',()=>pick(+c.dataset.j)));
+document.getElementById('disDetail').scrollIntoView({behavior:'smooth'});
+}
+function pick(j){
+const d=DIS[cur],c=d.choices[j];records[cur]={j,...c};
+document.querySelectorAll('.choice').forEach(x=>x.classList.remove('picked'));
+document.querySelectorAll('.choice')[j].classList.add('picked');
+document.getElementById('b'+cur).classList.remove('hidden');
+const r=document.getElementById('dResult');r.classList.remove('hidden');
+r.innerHTML=`<div class="bg-blue-900/40 border border-blue-700 rounded-xl p-4"><div class="text-blue-300 font-bold mb-2">📊 결과</div><div class="grid grid-cols-3 gap-2 text-sm"><div>생존: <b class="text-emerald-300">${c.surv}</b></div><div>피해: <b class="text-rose-300">${c.dmg}</b></div><div>점수: <b class="text-amber-300">${c.score>0?'+':''}${c.score}</b></div></div><div class="text-sm mt-2 text-slate-200">💬 ${c.fb}</div></div>`;
+update();
+}
+function update(){
+let s=0,d=0,sc=0;records.forEach(r=>{if(r){s+=r.surv;d+=r.dmg;sc+=r.score;}});
+document.getElementById('vSurv').textContent=s;document.getElementById('vDmg').textContent=d;document.getElementById('vScore').textContent=sc;
+}
+document.getElementById('genBtn').addEventListener('click',()=>{
+document.getElementById('rSurv').textContent=document.getElementById('vSurv').textContent;
+document.getElementById('rDmg').textContent=document.getElementById('vDmg').textContent;
+document.getElementById('rScore').textContent=document.getElementById('vScore').textContent;
+document.getElementById('r1').textContent=document.getElementById('p1').value||'-';
+document.getElementById('r2').textContent=document.getElementById('p2').value||'-';
+document.getElementById('r3').textContent=document.getElementById('p3').value||'-';
+document.getElementById('report').classList.remove('hidden');
+});
+</script><script>
+;(function(){
+  var KEY="sav_"+(location.pathname.split("/").pop()||"x").replace(/\.html$/,"");
+  function snap(){
+    var d={};
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(el.type==="checkbox"||el.type==="radio")d[k]=el.checked;else d[k]=el.value;
+    });
+    return d;
+  }
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(snap()));}catch(e){}}
+  function restore(){
+    try{var d=JSON.parse(localStorage.getItem(KEY)||"{}");
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(!(k in d))return;
+      if(el.type==="checkbox"||el.type==="radio")el.checked=d[k];
+      else el.value=d[k];
+      el.dispatchEvent(new Event("input",{bubbles:true}));
+      el.dispatchEvent(new Event("change",{bubbles:true}));
+    });}catch(e){}
+  }
+  function btn(label,onclick,bg){
+    var b=document.createElement("button");
+    b.textContent=label;b.className="text-xs no-print";
+    b.style.cssText="background:"+bg+";color:#fff;padding:6px 10px;border-radius:6px;border:0;font-weight:bold;cursor:pointer;margin:2px;font-family:inherit";
+    b.onclick=onclick;return b;
+  }
+  function csv(){
+    var rows=[];rows.push(["field","value"]);
+    var d=snap();
+    Object.keys(d).forEach(function(k){
+      var v=String(d[k]||"").replace(/"/g,"\"\"");
+      rows.push(["\""+k+"\"","\""+v+"\""]);
+    });
+    var s=rows.map(function(r){return r.join(",");}).join("\n");
+    var blob=new Blob(["﻿"+s],{type:"text/csv;charset=utf-8"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(blob);
+    a.download=KEY+"_"+(new Date().toISOString().slice(0,10))+".csv";a.click();
+  }
+  function code(){
+    try{
+      var d=snap();var s=JSON.stringify(d);
+      var b64=btoa(unescape(encodeURIComponent(s))).replace(/[+/=]/g,function(c){return {"+":"-","/":"_","=":""}[c];});
+      var name=(prompt("학생 이름을 입력하세요(결과 코드에 포함됩니다)")||"학생").slice(0,8);
+      prompt("📋 결과 코드 (복사해서 교사에게 제출):",name+"#"+b64.slice(0,400));
+    }catch(e){alert("결과 코드 생성 실패");}
+  }
+  function clr(){if(confirm("저장된 답을 모두 지울까요?")){localStorage.removeItem(KEY);location.reload();}}
+  window.addEventListener("load",function(){
+    setTimeout(restore,100);
+    document.body.addEventListener("input",save);
+    document.body.addEventListener("change",save);
+    document.body.addEventListener("click",function(e){if(e.target.matches("button,.opt,.choice,.judge,.crit,.princ,.policy-card,.problem-chip,.factor-card,.tag-pill,.iss,.sdg,.pol,.zone-btn,.czone,.dis-card,.case-pill,.stance-card,.adapt-card,.case-card,.cell"))save();});
+    var bar=document.createElement("div");
+    bar.className="no-print";
+    bar.style.cssText="position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.85);padding:6px;border-radius:10px;z-index:9999;display:flex;flex-wrap:wrap;max-width:90vw;box-shadow:0 4px 12px rgba(0,0,0,0.3)";
+    bar.appendChild(btn("💾 자동저장 ON","#",""));
+    bar.lastChild.style.cssText="font-size:10px;color:#10b981;padding:6px 8px;background:transparent;cursor:default";
+    bar.appendChild(btn("📤 CSV",csv,"#0891b2"));
+    bar.appendChild(btn("📋 결과코드",code,"#f59e0b"));
+    bar.appendChild(btn("🗑 지우기",clr,"#dc2626"));
+    document.body.appendChild(bar);
+  });
+})();
+
+</script>
+</body></html>

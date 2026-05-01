@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>📡 정보화 사회의 두 얼굴 — 빛과 그림자</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0f172a 100%);min-height:100vh;color:#e2e8f0;-webkit-tap-highlight-color:transparent}
+.fjua{font-family:'Jua',sans-serif}
+.policy-card{transition:all .25s;cursor:pointer}
+.policy-card:hover{transform:translateY(-3px)}
+.policy-card.selected{box-shadow:0 0 0 3px #06b6d4,0 12px 28px rgba(6,182,212,.3);transform:translateY(-3px)}
+.policy-card.selected .check{display:flex!important}
+.scoreBar{transition:width 1s cubic-bezier(.4,0,.2,1)}
+.glow{box-shadow:0 0 20px rgba(6,182,212,.5)}
+.fade-in{animation:fi .4s ease-out}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.sx-row{transition:all .3s}
+@media print{body{background:#fff!important;color:#000!important}.no-print{display:none!important}}
+</style>
+</head>
+<body>
+
+<header class="no-print bg-slate-950/80 backdrop-blur border-b border-slate-700 sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+  <a href="hub.html?mode=unit&id=living-space" class="flex items-center gap-2 font-bold text-slate-200 hover:text-cyan-400">← 단원으로</a>
+  <div class="text-xs text-slate-400">[10통사1-05-02] 교통·통신·정보화</div>
+  <button onclick="window.print()" class="text-sm bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-lg">🖨 보고서</button>
+</div>
+</header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+
+<section class="text-center mb-6">
+  <div class="text-6xl mb-2">📡</div>
+  <h1 class="fjua text-4xl md:text-5xl mb-2 text-cyan-300">정보화 사회의 두 얼굴</h1>
+  <p class="text-slate-300 text-sm md:text-base">5개 정보화 정책을 선택하면 편익과 부작용 점수가 동시에 변합니다. 빛과 그림자의 균형을 직접 설계해보세요.</p>
+</section>
+
+<!-- 점수 패널 -->
+<section class="bg-slate-800/60 backdrop-blur rounded-2xl p-5 border border-slate-700 mb-5">
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <div class="flex justify-between items-center mb-1.5">
+        <span class="text-sm font-bold text-emerald-400">🌟 편익(빛)</span>
+        <span class="fjua text-2xl text-emerald-300" id="benefitV">0</span>
+      </div>
+      <div class="bg-slate-900 rounded-full h-3"><div id="benefitBar" class="scoreBar bg-gradient-to-r from-emerald-500 to-cyan-400 h-3 rounded-full" style="width:0%"></div></div>
+    </div>
+    <div>
+      <div class="flex justify-between items-center mb-1.5">
+        <span class="text-sm font-bold text-rose-400">⚠️ 부작용(그림자)</span>
+        <span class="fjua text-2xl text-rose-300" id="harmV">0</span>
+      </div>
+      <div class="bg-slate-900 rounded-full h-3"><div id="harmBar" class="scoreBar bg-gradient-to-r from-rose-500 to-amber-400 h-3 rounded-full" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="mt-3 text-center text-sm">균형 점수: <b id="balanceV" class="text-cyan-300">0</b> / 100 <span class="text-xs text-slate-400">(편익 - 부작용)</span></div>
+</section>
+
+<!-- 정책 -->
+<section class="bg-slate-800/40 backdrop-blur rounded-2xl p-5 border border-slate-700 mb-5">
+  <h2 class="fjua text-xl mb-3 text-cyan-300">📋 정보화 정책 5선 (다중 선택)</h2>
+  <p class="text-sm text-slate-300 mb-4">실시할 정책을 자유롭게 선택해보세요.</p>
+  <div id="policyGrid" class="grid md:grid-cols-2 gap-3"></div>
+</section>
+
+<!-- 사례 카드 -->
+<section class="bg-slate-800/40 backdrop-blur rounded-2xl p-5 border border-slate-700 mb-5">
+  <h2 class="fjua text-xl mb-3 text-cyan-300">🌗 정보화의 빛과 그림자 사례 분석</h2>
+  <p class="text-sm text-slate-300 mb-4">각 사례에서 학생이 생각하는 가장 큰 빛과 그림자를 골라보세요.</p>
+  <div id="caseList"></div>
+</section>
+
+<!-- 해결책 작성 -->
+<section class="bg-slate-800/40 backdrop-blur rounded-2xl p-5 border border-slate-700 mb-5">
+  <h2 class="fjua text-xl mb-3 text-cyan-300">💡 그림자 줄이기 — 학생 해결책</h2>
+  <p class="text-sm text-slate-300 mb-3">정보화의 가장 심각한 문제를 하나 골라, 학생만의 해결책을 제안하세요.</p>
+  <select id="probSel" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-2.5 text-sm mb-3">
+    <option value="">— 가장 심각한 문제 선택 —</option>
+    <option>정보 격차 (디지털 디바이드)</option>
+    <option>개인정보 침해</option>
+    <option>사이버 범죄·딥페이크</option>
+    <option>가짜뉴스·여론 조작</option>
+    <option>SNS 중독·사이버 폭력</option>
+    <option>비대면 사회의 인간 단절</option>
+    <option>플랫폼 노동 (긱이코노미) 불안정</option>
+  </select>
+  <textarea id="mySol" rows="4" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-sm text-slate-100" placeholder="정책·교육·기술적 해결책을 자유롭게 제안하세요. (예: 디지털 리터러시 교육 의무화, AI 윤리 가이드라인 등)"></textarea>
+</section>
+
+<!-- 결과 -->
+<section class="bg-gradient-to-r from-cyan-900/60 to-purple-900/60 backdrop-blur rounded-2xl p-6 border-2 border-cyan-500 mb-5">
+  <h2 class="fjua text-xl mb-3 text-cyan-200">📊 종합 점수</h2>
+  <canvas id="radarChart" height="180"></canvas>
+  <div class="mt-4 text-center">
+    <button id="genReport" class="bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold px-5 py-2.5 rounded-lg mr-2">📋 보고서 생성</button>
+    <button onclick="window.print()" class="bg-slate-200 hover:bg-white text-slate-900 font-bold px-5 py-2.5 rounded-lg">🖨 PDF</button>
+  </div>
+</section>
+
+<!-- 인쇄용 -->
+<section id="report" class="hidden bg-white text-slate-900 rounded-2xl p-6 border-2 border-slate-800">
+  <h2 class="fjua text-2xl text-center border-b-2 border-slate-800 pb-2 mb-3">📡 정보화 정책 분석 보고서</h2>
+  <div class="text-sm space-y-2">
+    <div><b>이름:</b> __________ <span class="ml-4"><b>날짜:</b> __________</span></div>
+    <div><b>편익 점수:</b> <span id="rBen"></span> / <b>부작용 점수:</b> <span id="rHarm"></span> / <b>균형:</b> <span id="rBal"></span></div>
+    <div><b>선택한 정책:</b><ul id="rPolicies" class="ml-4 list-disc"></ul></div>
+    <div><b>가장 심각한 문제:</b> <span id="rProb"></span></div>
+    <div><b>제안 해결책:</b> <span id="rSol"></span></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="no-print text-center text-xs text-slate-500 py-6">풀어쓰는 사회학 정보부 · 통합사회 1 · 5단원</footer>
+
+<script>
+const POLICIES = [
+  {id:'p1',icon:'📶',name:'전국 5G/6G 인프라 확장',desc:'농어촌까지 초고속 통신',ben:18,harm:5,benTxt:'정보 격차 해소',harmTxt:'설치 비용·전자파 우려'},
+  {id:'p2',icon:'🤖',name:'AI 행정 서비스 전면 도입',desc:'민원·복지 자동화',ben:20,harm:12,benTxt:'행정 효율↑',harmTxt:'일자리 감소·결정 책임 모호'},
+  {id:'p3',icon:'🏫',name:'에듀테크 의무화',desc:'온라인 수업·AI 튜터',ben:16,harm:10,benTxt:'학습 격차 완화',harmTxt:'화면 의존·교사 역할 변화'},
+  {id:'p4',icon:'💳',name:'디지털 신원·결제 통합',desc:'지갑·신분증 대체',ben:14,harm:18,benTxt:'편의성 극대화',harmTxt:'개인정보 집중·해킹 위험'},
+  {id:'p5',icon:'🏥',name:'원격의료·헬스케어 IoT',desc:'스마트 워치 진단',ben:15,harm:8,benTxt:'의료 접근성↑',harmTxt:'의료정보 유출·오진 위험'},
+  {id:'p6',icon:'🚗',name:'자율주행·스마트 교통',desc:'도시 이동 자동화',ben:13,harm:11,benTxt:'사고·정체 감소',harmTxt:'책임 소재·해킹 위협'},
+  {id:'p7',icon:'🛡',name:'온라인 콘텐츠 규제 강화',desc:'가짜뉴스·딥페이크 처벌',ben:12,harm:9,benTxt:'정보 신뢰↑',harmTxt:'표현의 자유 위축'},
+  {id:'p8',icon:'📚',name:'전국민 디지털 리터러시 교육',desc:'미디어·AI 활용 능력',ben:15,harm:3,benTxt:'역량 격차 완화',harmTxt:'교육 비용 부담'}
+];
+
+const sel = new Set();
+function buildPolicies(){
+  document.getElementById('policyGrid').innerHTML = POLICIES.map(p=>`
+    <div class="policy-card relative bg-slate-900/60 border-2 border-slate-700 rounded-xl p-4" data-id="${p.id}">
+      <div class="check absolute top-2 right-2 w-6 h-6 bg-cyan-400 rounded-full hidden items-center justify-center text-slate-900 font-bold text-sm">✓</div>
+      <div class="flex items-center gap-2 mb-2">
+        <span class="text-2xl">${p.icon}</span>
+        <span class="font-bold">${p.name}</span>
+      </div>
+      <div class="text-xs text-slate-400 mb-2">${p.desc}</div>
+      <div class="flex justify-between text-xs">
+        <span class="text-emerald-400">+${p.ben} 빛 (${p.benTxt})</span>
+        <span class="text-rose-400">+${p.harm} 그림자 (${p.harmTxt})</span>
+      </div>
+    </div>
+  `).join('');
+  document.querySelectorAll('.policy-card').forEach(c=>{
+    c.addEventListener('click',()=>{
+      const id = c.dataset.id;
+      if(sel.has(id)){sel.delete(id);c.classList.remove('selected','glow');}
+      else{sel.add(id);c.classList.add('selected','glow');}
+      updateScore();
+    });
+  });
+}
+buildPolicies();
+
+function updateScore(){
+  let ben=0,harm=0;
+  sel.forEach(id=>{const p=POLICIES.find(x=>x.id===id);ben+=p.ben;harm+=p.harm;});
+  ben = Math.min(ben,100); harm = Math.min(harm,100);
+  document.getElementById('benefitV').textContent = ben;
+  document.getElementById('harmV').textContent = harm;
+  document.getElementById('balanceV').textContent = ben-harm;
+  document.getElementById('benefitBar').style.width = ben+'%';
+  document.getElementById('harmBar').style.width = harm+'%';
+  if(radar){radar.data.datasets[0].data = [ben,harm,Math.max(0,ben-harm),sel.size*10,Math.min(sel.size*15,100)];radar.update();}
+}
+
+// 사례
+const SX = [
+  {title:'🛒 24시간 새벽배송',light:'시간·공간 제약 해소',shadow:'택배 노동자 과로·환경 부담'},
+  {title:'📱 SNS 인플루언서 경제',light:'개인 창작자 자립 가능',shadow:'중독·외모 강박·가짜정보'},
+  {title:'🏠 재택근무 확산',light:'워라밸·교통 분산',shadow:'고립감·일·가정 경계 모호'},
+  {title:'🎮 메타버스 교실',light:'몰입감·접근성',shadow:'현실 감각 약화·격차'}
+];
+function buildSX(){
+  document.getElementById('caseList').innerHTML = SX.map((s,i)=>`
+    <div class="sx-row bg-slate-900/60 rounded-xl p-4 mb-3">
+      <div class="font-bold mb-2">${s.title}</div>
+      <div class="grid md:grid-cols-2 gap-3">
+        <div class="bg-emerald-900/30 border border-emerald-700 rounded-lg p-3">
+          <div class="text-xs text-emerald-300 font-bold mb-1">🌟 빛</div>
+          <div class="text-sm">${s.light}</div>
+        </div>
+        <div class="bg-rose-900/30 border border-rose-700 rounded-lg p-3">
+          <div class="text-xs text-rose-300 font-bold mb-1">⚠️ 그림자</div>
+          <div class="text-sm">${s.shadow}</div>
+        </div>
+      </div>
+      <textarea data-i="${i}" class="sxNote mt-3 w-full bg-slate-900 border border-slate-600 rounded p-2 text-xs text-slate-200" rows="2" placeholder="이 사례에서 배운 점 / 본인 경험 (선택)"></textarea>
+    </div>
+  `).join('');
+}
+buildSX();
+
+// 레이더 차트
+let radar = null;
+window.addEventListener('load',()=>{
+  const ctx = document.getElementById('radarChart');
+  radar = new Chart(ctx,{
+    type:'radar',
+    data:{
+      labels:['편익(빛)','부작용(그림자)','순편익','정책 다양성','정책 강도'],
+      datasets:[{label:'정보화 점수',data:[0,0,0,0,0],backgroundColor:'rgba(6,182,212,.2)',borderColor:'#06b6d4',pointBackgroundColor:'#06b6d4'}]
+    },
+    options:{responsive:true,scales:{r:{beginAtZero:true,max:100,grid:{color:'rgba(148,163,184,.3)'},pointLabels:{color:'#cbd5e1',font:{size:11}},ticks:{color:'#94a3b8',backdropColor:'transparent'}}},plugins:{legend:{labels:{color:'#cbd5e1'}}}}
+  });
+  updateScore();
+});
+
+document.getElementById('genReport').addEventListener('click',()=>{
+  const polTxt = [...sel].map(id=>POLICIES.find(p=>p.id===id)).map(p=>`${p.icon} ${p.name}`);
+  document.getElementById('rBen').textContent = document.getElementById('benefitV').textContent;
+  document.getElementById('rHarm').textContent = document.getElementById('harmV').textContent;
+  document.getElementById('rBal').textContent = document.getElementById('balanceV').textContent;
+  document.getElementById('rPolicies').innerHTML = polTxt.length?polTxt.map(p=>`<li>${p}</li>`).join(''):'<li>(선택 없음)</li>';
+  document.getElementById('rProb').textContent = document.getElementById('probSel').value || '(미선택)';
+  document.getElementById('rSol').textContent = document.getElementById('mySol').value || '(미작성)';
+  document.getElementById('report').classList.remove('hidden');
+  document.getElementById('report').scrollIntoView({behavior:'smooth'});
+});
+</script>
+<script>
+;(function(){
+  var KEY="sav_"+(location.pathname.split("/").pop()||"x").replace(/\.html$/,"");
+  function snap(){
+    var d={};
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(el.type==="checkbox"||el.type==="radio")d[k]=el.checked;else d[k]=el.value;
+    });
+    return d;
+  }
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(snap()));}catch(e){}}
+  function restore(){
+    try{var d=JSON.parse(localStorage.getItem(KEY)||"{}");
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(!(k in d))return;
+      if(el.type==="checkbox"||el.type==="radio")el.checked=d[k];
+      else el.value=d[k];
+      el.dispatchEvent(new Event("input",{bubbles:true}));
+      el.dispatchEvent(new Event("change",{bubbles:true}));
+    });}catch(e){}
+  }
+  function btn(label,onclick,bg){
+    var b=document.createElement("button");
+    b.textContent=label;b.className="text-xs no-print";
+    b.style.cssText="background:"+bg+";color:#fff;padding:6px 10px;border-radius:6px;border:0;font-weight:bold;cursor:pointer;margin:2px;font-family:inherit";
+    b.onclick=onclick;return b;
+  }
+  function csv(){
+    var rows=[];rows.push(["field","value"]);
+    var d=snap();
+    Object.keys(d).forEach(function(k){
+      var v=String(d[k]||"").replace(/"/g,"\"\"");
+      rows.push(["\""+k+"\"","\""+v+"\""]);
+    });
+    var s=rows.map(function(r){return r.join(",");}).join("\n");
+    var blob=new Blob(["﻿"+s],{type:"text/csv;charset=utf-8"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(blob);
+    a.download=KEY+"_"+(new Date().toISOString().slice(0,10))+".csv";a.click();
+  }
+  function code(){
+    try{
+      var d=snap();var s=JSON.stringify(d);
+      var b64=btoa(unescape(encodeURIComponent(s))).replace(/[+/=]/g,function(c){return {"+":"-","/":"_","=":""}[c];});
+      var name=(prompt("학생 이름을 입력하세요(결과 코드에 포함됩니다)")||"학생").slice(0,8);
+      prompt("📋 결과 코드 (복사해서 교사에게 제출):",name+"#"+b64.slice(0,400));
+    }catch(e){alert("결과 코드 생성 실패");}
+  }
+  function clr(){if(confirm("저장된 답을 모두 지울까요?")){localStorage.removeItem(KEY);location.reload();}}
+  window.addEventListener("load",function(){
+    setTimeout(restore,100);
+    document.body.addEventListener("input",save);
+    document.body.addEventListener("change",save);
+    document.body.addEventListener("click",function(e){if(e.target.matches("button,.opt,.choice,.judge,.crit,.princ,.policy-card,.problem-chip,.factor-card,.tag-pill,.iss,.sdg,.pol,.zone-btn,.czone,.dis-card,.case-pill,.stance-card,.adapt-card,.case-card,.cell"))save();});
+    var bar=document.createElement("div");
+    bar.className="no-print";
+    bar.style.cssText="position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.85);padding:6px;border-radius:10px;z-index:9999;display:flex;flex-wrap:wrap;max-width:90vw;box-shadow:0 4px 12px rgba(0,0,0,0.3)";
+    bar.appendChild(btn("💾 자동저장 ON","#",""));
+    bar.lastChild.style.cssText="font-size:10px;color:#10b981;padding:6px 8px;background:transparent;cursor:default";
+    bar.appendChild(btn("📤 CSV",csv,"#0891b2"));
+    bar.appendChild(btn("📋 결과코드",code,"#f59e0b"));
+    bar.appendChild(btn("🗑 지우기",clr,"#dc2626"));
+    document.body.appendChild(bar);
+  });
+})();
+
+</script>
+</body>
+</html>

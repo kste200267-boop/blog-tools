@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>🎯 SDGs 17 카드 — 지속가능발전목표</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#ecfccb 0%,#dbeafe 100%);min-height:100vh}
+.fjua{font-family:'Jua',sans-serif}
+.sdg{transition:all .25s;cursor:pointer;aspect-ratio:1}.sdg:hover{transform:scale(1.05);z-index:10}
+.sdg.priority{box-shadow:0 0 0 4px #fbbf24,0 8px 24px rgba(251,191,36,.4)}
+@media print{.no-print{display:none!important}}
+</style></head><body class="text-slate-800">
+<header class="no-print bg-white/80 backdrop-blur border-b sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="hub.html?mode=unit&id=future" class="font-bold">← 단원으로</a>
+<div class="text-xs text-slate-500">[10통사2-05-01] 지속가능발전</div>
+<button onclick="window.print()" class="text-sm bg-slate-100 px-3 py-1.5 rounded-lg">🖨</button></div></header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+<section class="bg-white rounded-2xl p-6 shadow-sm border mb-5">
+<div class="text-xs text-emerald-600 font-bold mb-1">통합사회 2 · 10단원 미래와 지속가능</div>
+<h1 class="fjua text-3xl md:text-4xl mb-2">🎯 SDGs 17 카드</h1>
+<p class="text-slate-600 text-sm">UN 지속가능발전목표 17개 중 학생이 가장 중요하다고 생각하는 5개를 선택하고 실천 계획을 세워봅니다.</p>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<div class="flex items-center justify-between mb-3">
+<h2 class="fjua text-xl">🎯 17개 목표</h2>
+<div class="text-sm">선택: <b id="cnt" class="text-amber-600">0</b> / 5</div>
+</div>
+<p class="text-sm text-slate-600 mb-3">중요하다고 생각하는 5개를 골라보세요.</p>
+<div id="grid" class="grid grid-cols-3 md:grid-cols-6 gap-2"></div>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">💡 우선순위 5개에 대한 실천 계획</h2>
+<div id="planList"></div>
+</section>
+
+<section class="bg-gradient-to-r from-emerald-100 to-blue-100 border-2 border-emerald-300 rounded-2xl p-6">
+<h2 class="fjua text-2xl mb-3">📄 SDGs 실천 계획서</h2>
+<button id="genBtn" class="bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-lg mr-2">📋 정리</button>
+<button onclick="window.print()" class="bg-slate-800 text-white font-bold px-5 py-2.5 rounded-lg">🖨 PDF</button>
+<div id="report" class="hidden mt-4 bg-white rounded-xl p-5 border-2 border-slate-800">
+<h3 class="fjua text-xl text-center border-b-2 pb-2 mb-3">🎯 나의 SDGs 실천 계획서</h3>
+<div class="text-sm space-y-2">
+<div><b>이름:</b> _________ <b>날짜:</b> _________</div>
+<div id="rContent"></div>
+</div></div></section>
+</main>
+<footer class="no-print text-center text-xs text-slate-400 py-6">풀어쓰는 사회학 정보부 · 통합사회 2 · 10단원</footer>
+
+<script>
+const SDG=[
+{n:1,name:'빈곤 종식',color:'#e5243b',icon:'🚫💰'},
+{n:2,name:'기아 종식',color:'#dda63a',icon:'🌾'},
+{n:3,name:'건강한 삶',color:'#4c9f38',icon:'❤️'},
+{n:4,name:'양질의 교육',color:'#c5192d',icon:'🎓'},
+{n:5,name:'성평등',color:'#ff3a21',icon:'⚖️'},
+{n:6,name:'깨끗한 물',color:'#26bde2',icon:'💧'},
+{n:7,name:'청정 에너지',color:'#fcc30b',icon:'⚡'},
+{n:8,name:'양질의 일자리',color:'#a21942',icon:'💼'},
+{n:9,name:'산업·혁신',color:'#fd6925',icon:'🏭'},
+{n:10,name:'불평등 감소',color:'#dd1367',icon:'🤝'},
+{n:11,name:'지속가능 도시',color:'#fd9d24',icon:'🏙'},
+{n:12,name:'책임감 있는 소비',color:'#bf8b2e',icon:'♻️'},
+{n:13,name:'기후 행동',color:'#3f7e44',icon:'🌍'},
+{n:14,name:'해양 보호',color:'#0a97d9',icon:'🌊'},
+{n:15,name:'육상 생태계',color:'#56c02b',icon:'🌳'},
+{n:16,name:'평화·정의',color:'#00689d',icon:'🕊'},
+{n:17,name:'파트너십',color:'#19486a',icon:'🌐'}];
+const sel=new Set();
+function build(){
+document.getElementById('grid').innerHTML=SDG.map(s=>`<div class="sdg rounded-lg p-2 text-white text-center flex flex-col items-center justify-center text-xs font-bold" style="background:${s.color}" data-n="${s.n}"><div class="text-2xl">${s.icon}</div><div class="text-[10px] mt-1 leading-tight">${s.n}. ${s.name}</div></div>`).join('');
+document.querySelectorAll('.sdg').forEach(c=>c.addEventListener('click',()=>{
+const n=+c.dataset.n;
+if(sel.has(n)){sel.delete(n);c.classList.remove('priority');}
+else if(sel.size<5){sel.add(n);c.classList.add('priority');}
+else alert('최대 5개까지만 선택 가능합니다.');
+document.getElementById('cnt').textContent=sel.size;
+buildPlans();
+}));
+}
+build();
+const plans={};
+function buildPlans(){
+const list=[...sel].map(n=>SDG.find(s=>s.n===n));
+if(!list.length){document.getElementById('planList').innerHTML='<div class="text-sm text-slate-500 italic">위에서 5개를 선택하세요.</div>';return;}
+document.getElementById('planList').innerHTML=list.map(s=>`<div class="bg-slate-50 rounded-lg p-3 mb-2"><div class="font-bold text-sm" style="color:${s.color}">${s.icon} ${s.n}. ${s.name}</div><textarea data-n="${s.n}" rows="2" class="planTxt mt-2 w-full bg-white border border-slate-300 rounded p-2 text-xs" placeholder="이 목표를 위한 학교/생활 속 실천 1가지">${plans[s.n]||''}</textarea></div>`).join('');
+document.querySelectorAll('.planTxt').forEach(t=>t.addEventListener('input',e=>{plans[+e.target.dataset.n]=e.target.value;}));
+}
+buildPlans();
+document.getElementById('genBtn').addEventListener('click',()=>{
+const list=[...sel].map(n=>SDG.find(s=>s.n===n));
+document.getElementById('rContent').innerHTML='<b>우선순위 5목표 + 실천 계획:</b><ol class="ml-4 list-decimal mt-2 space-y-2">'+list.map(s=>`<li><b style="color:${s.color}">${s.icon} ${s.n}. ${s.name}</b><br><span class="text-xs text-slate-600">${plans[s.n]||'(미작성)'}</span></li>`).join('')+'</ol>';
+document.getElementById('report').classList.remove('hidden');
+});
+</script><script>
+;(function(){
+  var KEY="sav_"+(location.pathname.split("/").pop()||"x").replace(/\.html$/,"");
+  function snap(){
+    var d={};
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(el.type==="checkbox"||el.type==="radio")d[k]=el.checked;else d[k]=el.value;
+    });
+    return d;
+  }
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(snap()));}catch(e){}}
+  function restore(){
+    try{var d=JSON.parse(localStorage.getItem(KEY)||"{}");
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(!(k in d))return;
+      if(el.type==="checkbox"||el.type==="radio")el.checked=d[k];
+      else el.value=d[k];
+      el.dispatchEvent(new Event("input",{bubbles:true}));
+      el.dispatchEvent(new Event("change",{bubbles:true}));
+    });}catch(e){}
+  }
+  function btn(label,onclick,bg){
+    var b=document.createElement("button");
+    b.textContent=label;b.className="text-xs no-print";
+    b.style.cssText="background:"+bg+";color:#fff;padding:6px 10px;border-radius:6px;border:0;font-weight:bold;cursor:pointer;margin:2px;font-family:inherit";
+    b.onclick=onclick;return b;
+  }
+  function csv(){
+    var rows=[];rows.push(["field","value"]);
+    var d=snap();
+    Object.keys(d).forEach(function(k){
+      var v=String(d[k]||"").replace(/"/g,"\"\"");
+      rows.push(["\""+k+"\"","\""+v+"\""]);
+    });
+    var s=rows.map(function(r){return r.join(",");}).join("\n");
+    var blob=new Blob(["﻿"+s],{type:"text/csv;charset=utf-8"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(blob);
+    a.download=KEY+"_"+(new Date().toISOString().slice(0,10))+".csv";a.click();
+  }
+  function code(){
+    try{
+      var d=snap();var s=JSON.stringify(d);
+      var b64=btoa(unescape(encodeURIComponent(s))).replace(/[+/=]/g,function(c){return {"+":"-","/":"_","=":""}[c];});
+      var name=(prompt("학생 이름을 입력하세요(결과 코드에 포함됩니다)")||"학생").slice(0,8);
+      prompt("📋 결과 코드 (복사해서 교사에게 제출):",name+"#"+b64.slice(0,400));
+    }catch(e){alert("결과 코드 생성 실패");}
+  }
+  function clr(){if(confirm("저장된 답을 모두 지울까요?")){localStorage.removeItem(KEY);location.reload();}}
+  window.addEventListener("load",function(){
+    setTimeout(restore,100);
+    document.body.addEventListener("input",save);
+    document.body.addEventListener("change",save);
+    document.body.addEventListener("click",function(e){if(e.target.matches("button,.opt,.choice,.judge,.crit,.princ,.policy-card,.problem-chip,.factor-card,.tag-pill,.iss,.sdg,.pol,.zone-btn,.czone,.dis-card,.case-pill,.stance-card,.adapt-card,.case-card,.cell"))save();});
+    var bar=document.createElement("div");
+    bar.className="no-print";
+    bar.style.cssText="position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.85);padding:6px;border-radius:10px;z-index:9999;display:flex;flex-wrap:wrap;max-width:90vw;box-shadow:0 4px 12px rgba(0,0,0,0.3)";
+    bar.appendChild(btn("💾 자동저장 ON","#",""));
+    bar.lastChild.style.cssText="font-size:10px;color:#10b981;padding:6px 8px;background:transparent;cursor:default";
+    bar.appendChild(btn("📤 CSV",csv,"#0891b2"));
+    bar.appendChild(btn("📋 결과코드",code,"#f59e0b"));
+    bar.appendChild(btn("🗑 지우기",clr,"#dc2626"));
+    document.body.appendChild(bar);
+  });
+})();
+
+</script>
+</body></html>

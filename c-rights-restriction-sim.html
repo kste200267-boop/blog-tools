@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>⚖️ 기본권 제한 시뮬레이터</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#f1f5f9 0%,#fef3c7 100%);min-height:100vh}
+.fjua{font-family:'Jua',sans-serif}
+.crit{transition:all .2s;cursor:pointer}.crit:hover{background:#fef9c3}
+.crit.checked{background:#dcfce7!important;border-color:#16a34a!important}
+.crit.fail{background:#fee2e2!important;border-color:#dc2626!important}
+@media print{.no-print{display:none!important}}
+</style></head><body class="text-slate-800">
+<header class="no-print bg-white/80 backdrop-blur border-b sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="hub.html?mode=unit&id=human-rights" class="font-bold">← 단원으로</a>
+<div class="text-xs text-slate-500">[10통사2-01-02] 기본권 제한 4요건</div>
+<button onclick="window.print()" class="text-sm bg-slate-100 px-3 py-1.5 rounded-lg">🖨</button></div></header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+<section class="bg-white rounded-2xl p-6 shadow-sm border mb-5">
+<div class="text-xs text-amber-600 font-bold mb-1">통합사회 2 · 6단원 인권 보장과 헌법</div>
+<h1 class="fjua text-3xl md:text-4xl mb-2">⚖️ 기본권 제한 4요건 검증</h1>
+<p class="text-slate-600 text-sm">5가지 사례에서 기본권 제한이 정당한지 헌법 제37조 2항 4요건으로 직접 판단합니다.</p>
+</section>
+
+<details class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5">
+<summary class="font-bold cursor-pointer">📖 헌법 제37조 ② — 4요건 (펼치기)</summary>
+<div class="text-sm mt-3 space-y-2">
+<div><b>① 목적의 정당성:</b> 국가안전보장·질서유지·공공복리를 위해야 함</div>
+<div><b>② 방법의 적정성:</b> 목적 달성에 효과적·적합한 수단인가</div>
+<div><b>③ 피해의 최소성:</b> 가장 덜 침해적인 방법인가</div>
+<div><b>④ 법익의 균형성:</b> 얻는 이익이 침해되는 이익보다 크거나 같은가</div>
+<div class="bg-rose-100 rounded p-2 mt-2"><b>+ 본질적 내용 침해 금지:</b> 기본권의 본질적 내용은 절대 침해 X</div>
+</div></details>
+
+<section id="cases"></section>
+
+<section class="bg-gradient-to-r from-amber-100 to-rose-100 border-2 border-amber-300 rounded-2xl p-6">
+<h2 class="fjua text-2xl mb-3">📄 종합 결과</h2>
+<div class="text-sm mb-3">통과 사례: <b id="okCount" class="text-emerald-600">0</b> / 5</div>
+<button onclick="window.print()" class="bg-slate-800 text-white font-bold px-5 py-2.5 rounded-lg">🖨 PDF</button>
+</section>
+</main>
+<footer class="no-print text-center text-xs text-slate-400 py-6">풀어쓰는 사회학 정보부 · 통합사회 2 · 6단원</footer>
+
+<script>
+const CASES=[
+{title:'코로나19 모임 인원 제한',desc:'정부가 5인 이상 모임을 한시적으로 금지했다.',right:'집회·결사의 자유',
+checks:[true,true,true,true],guide:'공중보건·공공복리 + 한시적·인원 한정 → 4요건 충족 가능성↑'},
+{title:'CCTV 무단 설치 (가게 내부)',desc:'한 카페 사장이 직원 행동을 감시하려 손님 대기실까지 CCTV 설치.',right:'사생활의 비밀',
+checks:[false,true,false,false],guide:'관리 목적 정당성 약함 + 손님 사생활 침해 큼 → 4요건 모두 의문'},
+{title:'테러 방지 통신 감청',desc:'테러 위협이 있는 지역의 통신 일부를 법원 영장 받아 감청.',right:'통신의 비밀',
+checks:[true,true,true,true],guide:'국가 안전보장 + 영장 주의 + 한정적 → 4요건 충족 가능'},
+{title:'학교 두발·복장 단속',desc:'학교가 학생들의 머리 길이까지 자세히 규제.',right:'개성 자유',
+checks:[true,false,false,false],guide:'교육 목적은 정당하나 방법 과도 → 본질적 내용 침해 우려'},
+{title:'가짜뉴스 처벌법 (광범위)',desc:'정부 비판 글을 가짜뉴스로 분류해 처벌하는 광범위한 법.',right:'언론·출판의 자유',
+checks:[false,false,false,false],guide:'언론 자유의 본질적 내용 침해. 위헌 가능성 매우 높음'}];
+const records=CASES.map(()=>[null,null,null,null]);
+
+function build(){
+document.getElementById('cases').innerHTML=CASES.map((c,i)=>`
+<div class="bg-white rounded-2xl p-5 mb-4 shadow-sm border">
+<h3 class="fjua text-xl mb-1">사례 ${i+1}: ${c.title}</h3>
+<p class="text-sm text-slate-600 mb-2">${c.desc}</p>
+<div class="text-xs text-rose-600 font-bold mb-3">제한되는 기본권: ${c.right}</div>
+<div class="grid grid-cols-2 gap-2" data-c="${i}">
+<div class="crit bg-slate-50 border-2 border-slate-300 rounded-lg p-3 text-sm" data-k="0"><b>① 목적의 정당성</b><div class="text-xs text-slate-500">국가안전·공공복리?</div></div>
+<div class="crit bg-slate-50 border-2 border-slate-300 rounded-lg p-3 text-sm" data-k="1"><b>② 방법의 적정성</b><div class="text-xs text-slate-500">효과적·적합?</div></div>
+<div class="crit bg-slate-50 border-2 border-slate-300 rounded-lg p-3 text-sm" data-k="2"><b>③ 피해의 최소성</b><div class="text-xs text-slate-500">덜 침해적 방법?</div></div>
+<div class="crit bg-slate-50 border-2 border-slate-300 rounded-lg p-3 text-sm" data-k="3"><b>④ 법익의 균형성</b><div class="text-xs text-slate-500">이익 ≥ 침해?</div></div>
+</div>
+<div class="text-xs text-slate-500 mt-2">→ 클릭 시 ✓통과/✗미통과 토글</div>
+<button class="checkBtn mt-3 bg-blue-600 text-white text-sm font-bold px-4 py-2 rounded-lg" data-i="${i}">📊 정답 확인</button>
+<div class="hint hidden mt-3 bg-amber-50 border border-amber-200 rounded p-3 text-sm"></div>
+</div>`).join('');
+
+document.querySelectorAll('[data-c]').forEach(g=>{
+const ci=+g.dataset.c;
+g.querySelectorAll('.crit').forEach(c=>{
+c.addEventListener('click',()=>{
+const k=+c.dataset.k;
+const cur=records[ci][k];
+c.classList.remove('checked','fail');
+if(cur===null||cur===false){records[ci][k]=true;c.classList.add('checked');c.querySelector('.text-xs')?.classList.add('text-emerald-700');}
+else{records[ci][k]=false;c.classList.add('fail');}
+});});});
+
+document.querySelectorAll('.checkBtn').forEach(b=>b.addEventListener('click',()=>{
+const i=+b.dataset.i;const c=CASES[i];
+const g=document.querySelectorAll('[data-c]')[i];
+const crits=g.querySelectorAll('.crit');
+let correct=0;
+crits.forEach((cr,k)=>{const my=records[i][k];const right=c.checks[k];if(my===right)correct++;cr.style.outline=my===right?'3px solid #16a34a':'3px solid #dc2626';});
+const hint=b.parentElement.querySelector('.hint');
+hint.classList.remove('hidden');
+hint.innerHTML=`<b>점수: ${correct}/4</b><br>📖 ${c.guide}`;
+let ok=0;CASES.forEach((c,i)=>{if(c.checks.every(b=>b))ok++;});
+let myOk=0;records.forEach((r,i)=>{if(r.every((v,k)=>v===CASES[i].checks[k]))myOk++;});
+document.getElementById('okCount').textContent=myOk;
+}));}
+build();
+</script><script>
+;(function(){
+  var KEY="sav_"+(location.pathname.split("/").pop()||"x").replace(/\.html$/,"");
+  function snap(){
+    var d={};
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(el.type==="checkbox"||el.type==="radio")d[k]=el.checked;else d[k]=el.value;
+    });
+    return d;
+  }
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(snap()));}catch(e){}}
+  function restore(){
+    try{var d=JSON.parse(localStorage.getItem(KEY)||"{}");
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(!(k in d))return;
+      if(el.type==="checkbox"||el.type==="radio")el.checked=d[k];
+      else el.value=d[k];
+      el.dispatchEvent(new Event("input",{bubbles:true}));
+      el.dispatchEvent(new Event("change",{bubbles:true}));
+    });}catch(e){}
+  }
+  function btn(label,onclick,bg){
+    var b=document.createElement("button");
+    b.textContent=label;b.className="text-xs no-print";
+    b.style.cssText="background:"+bg+";color:#fff;padding:6px 10px;border-radius:6px;border:0;font-weight:bold;cursor:pointer;margin:2px;font-family:inherit";
+    b.onclick=onclick;return b;
+  }
+  function csv(){
+    var rows=[];rows.push(["field","value"]);
+    var d=snap();
+    Object.keys(d).forEach(function(k){
+      var v=String(d[k]||"").replace(/"/g,"\"\"");
+      rows.push(["\""+k+"\"","\""+v+"\""]);
+    });
+    var s=rows.map(function(r){return r.join(",");}).join("\n");
+    var blob=new Blob(["﻿"+s],{type:"text/csv;charset=utf-8"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(blob);
+    a.download=KEY+"_"+(new Date().toISOString().slice(0,10))+".csv";a.click();
+  }
+  function code(){
+    try{
+      var d=snap();var s=JSON.stringify(d);
+      var b64=btoa(unescape(encodeURIComponent(s))).replace(/[+/=]/g,function(c){return {"+":"-","/":"_","=":""}[c];});
+      var name=(prompt("학생 이름을 입력하세요(결과 코드에 포함됩니다)")||"학생").slice(0,8);
+      prompt("📋 결과 코드 (복사해서 교사에게 제출):",name+"#"+b64.slice(0,400));
+    }catch(e){alert("결과 코드 생성 실패");}
+  }
+  function clr(){if(confirm("저장된 답을 모두 지울까요?")){localStorage.removeItem(KEY);location.reload();}}
+  window.addEventListener("load",function(){
+    setTimeout(restore,100);
+    document.body.addEventListener("input",save);
+    document.body.addEventListener("change",save);
+    document.body.addEventListener("click",function(e){if(e.target.matches("button,.opt,.choice,.judge,.crit,.princ,.policy-card,.problem-chip,.factor-card,.tag-pill,.iss,.sdg,.pol,.zone-btn,.czone,.dis-card,.case-pill,.stance-card,.adapt-card,.case-card,.cell"))save();});
+    var bar=document.createElement("div");
+    bar.className="no-print";
+    bar.style.cssText="position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.85);padding:6px;border-radius:10px;z-index:9999;display:flex;flex-wrap:wrap;max-width:90vw;box-shadow:0 4px 12px rgba(0,0,0,0.3)";
+    bar.appendChild(btn("💾 자동저장 ON","#",""));
+    bar.lastChild.style.cssText="font-size:10px;color:#10b981;padding:6px 8px;background:transparent;cursor:default";
+    bar.appendChild(btn("📤 CSV",csv,"#0891b2"));
+    bar.appendChild(btn("📋 결과코드",code,"#f59e0b"));
+    bar.appendChild(btn("🗑 지우기",clr,"#dc2626"));
+    document.body.appendChild(bar);
+  });
+})();
+
+</script>
+</body></html>

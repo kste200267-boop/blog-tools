@@ -1,0 +1,147 @@
+{
+  "unit": "생활공간과 사회",
+  "unitSlug": "living-space",
+  "achievementStandard": "[10통사1-05-01] 산업화·도시화로 인해 나타난 변화 양상 / [10통사1-05-02] 교통·통신·정보화에 따른 변화 / [10통사1-05-03] 자기 지역 공간 변화 탐구",
+  "contents": [
+    {
+      "slug": "teaching-pack",
+      "file": "c-living-space-teaching-pack.html",
+      "title": "📚 5단원 수업 발행 패키지 (총괄)",
+      "type": "교사용",
+      "difficulty": "-",
+      "duration": "참고",
+      "tags": ["수업안","교사용","총괄","통사1","5단원"],
+      "desc": "차시별 수업안·PPT·학습지·웹교구·평가를 안내하는 교사용 허브"
+    },
+    {
+      "slug": "ppt-1",
+      "file": "c-living-space-ppt-1.html",
+      "title": "📊 PPT 5-1 산업화·도시화 (HTML)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": ["PPT","HTML","산업화","도시화","통사1","5단원","1~2차시"],
+      "desc": "1~2차시 수업용 10장 슬라이드 (도입→산업화→도시화→문제→해결)"
+    },
+    {
+      "slug": "ppt-1-pptx",
+      "file": "c-living-space-ppt-1.pptx",
+      "title": "📥 PPT 5-1 산업화·도시화 (PPTX 다운로드)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": ["PPT","PPTX","다운로드","산업화","도시화","통사1","5단원"],
+      "desc": "PowerPoint·KeyNote·Google Slides에서 편집 가능한 .pptx 파일"
+    },
+    {
+      "slug": "ppt-2",
+      "file": "c-living-space-ppt-2.html",
+      "title": "📊 PPT 5-2 교통·통신·정보화 (HTML)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": ["PPT","HTML","정보화","통사1","5단원","3~4차시"],
+      "desc": "3~4차시 수업용 11장 슬라이드 (교통→통신→정보화→빛/그림자)"
+    },
+    {
+      "slug": "ppt-2-pptx",
+      "file": "c-living-space-ppt-2.pptx",
+      "title": "📥 PPT 5-2 교통·통신·정보화 (PPTX 다운로드)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": ["PPT","PPTX","다운로드","정보화","통사1","5단원"],
+      "desc": "편집 가능한 .pptx 파일"
+    },
+    {
+      "slug": "ppt-3",
+      "file": "c-living-space-ppt-3.html",
+      "title": "📊 PPT 5-3 우리 동네 변화 (HTML)",
+      "type": "수업자료",
+      "difficulty": "심화",
+      "duration": "50분",
+      "tags": ["PPT","HTML","지역","프로젝트","통사1","5단원","5~6차시"],
+      "desc": "5~6차시 수업용 9장 슬라이드 (지역 변화 요인 + 프로젝트 안내)"
+    },
+    {
+      "slug": "ppt-3-pptx",
+      "file": "c-living-space-ppt-3.pptx",
+      "title": "📥 PPT 5-3 우리 동네 변화 (PPTX 다운로드)",
+      "type": "수업자료",
+      "difficulty": "심화",
+      "duration": "50분",
+      "tags": ["PPT","PPTX","다운로드","지역","통사1","5단원"],
+      "desc": "편집 가능한 .pptx 파일"
+    },
+    {
+      "slug": "worksheet-1",
+      "file": "c-living-space-worksheet-1.html",
+      "title": "📝 학습지 ① 산업화·도시화 분석",
+      "type": "학습지",
+      "difficulty": "보통",
+      "duration": "25분",
+      "tags": ["학습지","비교표","도시문제","통사1","5단원","1~2차시"],
+      "desc": "1960 vs 2025 비교표 + 도시 문제 분석 + 해결안 작성"
+    },
+    {
+      "slug": "worksheet-2",
+      "file": "c-living-space-worksheet-2.html",
+      "title": "📝 학습지 ② 정보화의 빛과 그림자",
+      "type": "학습지",
+      "difficulty": "보통",
+      "duration": "30분",
+      "tags": ["학습지","정보화","인터뷰","통사1","5단원","3~4차시"],
+      "desc": "7사례 분류 + 가족 인터뷰 + 학생 정책 제안"
+    },
+    {
+      "slug": "worksheet-3",
+      "file": "c-living-space-worksheet-3.html",
+      "title": "📝 학습지 ③ 우리 동네 탐구 보고서",
+      "type": "학습지",
+      "difficulty": "심화",
+      "duration": "40분",
+      "tags": ["학습지","프로젝트","지역탐구","통사1","5단원","5~6차시"],
+      "desc": "5단계 프로젝트 (정보→요인→진단→인터뷰→해결안)"
+    },
+    {
+      "slug": "eval",
+      "file": "c-living-space-eval.html",
+      "title": "📋 5단원 단원평가 (객관식 + 서술형)",
+      "type": "문항",
+      "difficulty": "보통",
+      "duration": "30분",
+      "tags": ["평가","단원평가","자동채점","통사1","5단원","7차시"],
+      "desc": "객관식 10문항 자동 채점 + 서술형 3문항 (총 100점)"
+    },
+    {
+      "slug": "industrialization",
+      "file": "c-living-space-industrialization.html",
+      "title": "🏗 [웹교구] 산업화·도시화 타임머신",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "25분",
+      "tags": ["웹교구","산업화","도시화","통사1","5단원"],
+      "desc": "1960~2030 슬라이더로 도시 인구·산업·환경 변화 시뮬"
+    },
+    {
+      "slug": "informatization",
+      "file": "c-living-space-informatization.html",
+      "title": "📡 [웹교구] 정보화 사회의 두 얼굴",
+      "type": "웹교구",
+      "difficulty": "심화",
+      "duration": "25분",
+      "tags": ["웹교구","정보화","정책","통사1","5단원"],
+      "desc": "8개 정책 선택 → 편익/부작용 동시 점수 + 레이더 차트"
+    },
+    {
+      "slug": "region",
+      "file": "c-living-space-region.html",
+      "title": "🗺 [웹교구] 우리 동네 변화 지도",
+      "type": "활동지",
+      "difficulty": "보통",
+      "duration": "30분",
+      "tags": ["웹교구","지역탐구","보고서","통사1","5단원"],
+      "desc": "학생 지역을 5단계로 분석 → 자동 보고서 생성"
+    }
+  ]
+}

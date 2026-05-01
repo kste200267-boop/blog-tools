@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>🌿 환경 윤리 딜레마 — 인간중심 vs 생태중심</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#dcfce7 0%,#fef3c7 100%);min-height:100vh;-webkit-tap-highlight-color:transparent}
+.fjua{font-family:'Jua',sans-serif}
+.s-input{appearance:none;width:100%;height:10px;background:linear-gradient(to right,#3b82f6 0%,#64748b 50%,#16a34a 100%);border-radius:99px;outline:none}
+.s-input::-webkit-slider-thumb{appearance:none;width:28px;height:28px;background:#fff;border-radius:50%;cursor:pointer;border:4px solid #1e293b}
+.fade{animation:fi .4s ease-out}@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+@media print{.no-print{display:none!important}}
+</style></head>
+<body class="text-slate-800">
+<header class="no-print bg-white/80 backdrop-blur border-b sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="hub.html?mode=unit&id=nature" class="font-bold">← 단원으로</a>
+<div class="text-xs text-slate-500">[10통사1-03-03] 환경 문제와 윤리</div>
+<button onclick="window.print()" class="text-sm bg-slate-100 px-3 py-1.5 rounded-lg">🖨</button></div></header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+<section class="bg-white rounded-2xl p-6 shadow-sm border mb-5">
+<div class="text-xs text-emerald-600 font-bold mb-1">통합사회 1 · 3단원 자연환경과 인간</div>
+<h1 class="fjua text-3xl md:text-4xl mb-2">🌿 환경 윤리 딜레마</h1>
+<p class="text-slate-600 text-sm">5가지 환경 딜레마에서 <b>인간중심주의 ↔ 생태중심주의</b> 사이 입장을 결정하고 정당화하세요.</p>
+</section>
+
+<details class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-5">
+<summary class="font-bold cursor-pointer text-emerald-800">📖 핵심 개념 (펼치기)</summary>
+<div class="text-sm mt-3 space-y-2">
+<div><b>인간중심주의:</b> 인간만이 도덕적 가치를 가지며 자연은 인간을 위한 수단. (베이컨, 데카르트)</div>
+<div><b>생태중심주의:</b> 자연 자체의 내재적 가치 인정. 모든 생명체는 평등. (레오폴드 — 대지윤리)</div>
+<div><b>온건한 인간중심주의:</b> 인간 이익을 인정하되 자연 보호도 의무. (패스모어)</div>
+<div><b>동물중심주의:</b> 고통 느낄 수 있는 동물까지 도덕 고려. (싱어, 레건)</div>
+</div></details>
+
+<section id="dilemmas"></section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">📊 나의 입장 분포</h2>
+<div class="bg-slate-50 rounded-xl p-4">
+<div class="flex justify-between text-xs mb-1"><span class="text-blue-600 font-bold">인간중심 ←</span><span class="text-emerald-600 font-bold">→ 생태중심</span></div>
+<div class="bg-slate-200 rounded-full h-4"><div id="avgBar" class="bg-gradient-to-r from-blue-500 to-emerald-500 h-4 rounded-full transition-all" style="width:0%"></div></div>
+<div class="text-center mt-2 text-sm">평균 위치: <b id="avgVal">50</b> / 100 <span id="avgLabel" class="text-xs text-slate-500"></span></div>
+</div></section>
+
+<section class="bg-gradient-to-r from-emerald-100 to-amber-100 border-2 border-emerald-300 rounded-2xl p-6">
+<h2 class="fjua text-2xl mb-3">📄 윤리 입장 분석 보고서</h2>
+<button id="genBtn" class="bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-lg mr-2">📋 정리</button>
+<button onclick="window.print()" class="bg-slate-800 text-white font-bold px-5 py-2.5 rounded-lg">🖨 PDF</button>
+<div id="report" class="hidden mt-4 bg-white rounded-xl p-5 border-2 border-slate-800 fade">
+<h3 class="fjua text-xl text-center border-b-2 border-slate-800 pb-2 mb-3">🌿 환경 윤리 입장 보고서</h3>
+<div class="text-sm space-y-2">
+<div><b>이름:</b> _________ <b>날짜:</b> _________</div>
+<div><b>나의 평균 입장:</b> <span id="rAvg"></span> / 100 (<span id="rLabel"></span>)</div>
+<div><b>딜레마별 응답:</b><div id="rList" class="ml-2 space-y-1"></div></div>
+</div></div></section>
+</main>
+<footer class="no-print text-center text-xs text-slate-400 py-6">풀어쓰는 사회학 정보부 · 통합사회 1 · 3단원</footer>
+
+<script>
+const DIL=[
+{title:'🌳 그린벨트 vs 주택 공급',desc:'서울 외곽 그린벨트를 풀어 주택 30만호를 공급할지 결정해야 한다. 청년 주거난 해소 vs 마지막 녹지 보존.',l:'주택 우선',r:'녹지 보존'},
+{title:'🐺 야생동물 복원 사업',desc:'한국에서 멸종한 늑대를 복원하면 생태계 균형은 회복되지만, 가축 피해와 주민 안전 문제가 생긴다.',l:'주민 안전 우선',r:'생태계 복원 우선'},
+{title:'🐔 공장식 축산 vs 동물 복지',desc:'고기값을 낮추는 공장식 축산을 유지할지, 동물 복지 농장으로 전환할지. 가격은 30~50% 상승 예상.',l:'저렴한 식량 공급',r:'동물 복지 보장'},
+{title:'⛏ 자원 개발 vs 토착 생태계',desc:'아마존 깊은 곳에 희토류 매장. 채굴 시 토착 부족과 동식물 파괴, 그러나 첨단 산업에 필수.',l:'자원 개발',r:'생태계 보존'},
+{title:'🌊 댐 건설 vs 강 생태계',desc:'대형 댐을 건설하면 가뭄 해소·전력 공급되지만, 강의 자연 흐름과 어류 산란지가 파괴된다.',l:'댐 건설',r:'강 보존'}
+];
+const vals=DIL.map(()=>50);
+const reasons=DIL.map(()=>'');
+function buildD(){
+document.getElementById('dilemmas').innerHTML=DIL.map((d,i)=>`
+<div class="bg-white rounded-2xl p-5 mb-4 shadow-sm border">
+<h3 class="fjua text-xl mb-2">${d.title}</h3>
+<p class="text-sm text-slate-600 mb-4">${d.desc}</p>
+<div class="bg-slate-50 rounded-lg p-4">
+<div class="flex justify-between text-xs font-bold mb-2"><span class="text-blue-600">${d.l}</span><span class="text-emerald-600">${d.r}</span></div>
+<input type="range" min="0" max="100" value="50" class="s-input" data-i="${i}">
+<div class="text-center text-sm mt-2">위치: <b class="vDisp">50</b> / 100</div>
+</div>
+<label class="text-sm font-bold mt-3 block">📝 그렇게 판단한 이유</label>
+<textarea data-r="${i}" rows="2" class="rTxt w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm" placeholder="예: 인간 생존이 우선이지만 미래 세대도 고려해야..."></textarea>
+</div>`).join('');
+document.querySelectorAll('.s-input').forEach(s=>s.addEventListener('input',e=>{const i=+e.target.dataset.i;vals[i]=+e.target.value;e.target.parentElement.querySelector('.vDisp').textContent=e.target.value;updateAvg();}));
+document.querySelectorAll('.rTxt').forEach(t=>t.addEventListener('input',e=>{reasons[+e.target.dataset.r]=e.target.value;}));
+}
+buildD();
+function updateAvg(){const a=Math.round(vals.reduce((s,v)=>s+v,0)/vals.length);document.getElementById('avgBar').style.width=a+'%';document.getElementById('avgVal').textContent=a;document.getElementById('avgLabel').textContent=a<35?'(인간중심 성향)':a>65?'(생태중심 성향)':'(중도/온건)';}
+updateAvg();
+document.getElementById('genBtn').addEventListener('click',()=>{
+const a=document.getElementById('avgVal').textContent;const lab=document.getElementById('avgLabel').textContent;
+document.getElementById('rAvg').textContent=a;document.getElementById('rLabel').textContent=lab;
+document.getElementById('rList').innerHTML=DIL.map((d,i)=>`<div class="text-xs">${d.title}: ${vals[i]}/100${reasons[i]?' — '+reasons[i]:''}</div>`).join('');
+document.getElementById('report').classList.remove('hidden');
+});
+</script><script>
+;(function(){
+  var KEY="sav_"+(location.pathname.split("/").pop()||"x").replace(/\.html$/,"");
+  function snap(){
+    var d={};
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(el.type==="checkbox"||el.type==="radio")d[k]=el.checked;else d[k]=el.value;
+    });
+    return d;
+  }
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(snap()));}catch(e){}}
+  function restore(){
+    try{var d=JSON.parse(localStorage.getItem(KEY)||"{}");
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(!(k in d))return;
+      if(el.type==="checkbox"||el.type==="radio")el.checked=d[k];
+      else el.value=d[k];
+      el.dispatchEvent(new Event("input",{bubbles:true}));
+      el.dispatchEvent(new Event("change",{bubbles:true}));
+    });}catch(e){}
+  }
+  function btn(label,onclick,bg){
+    var b=document.createElement("button");
+    b.textContent=label;b.className="text-xs no-print";
+    b.style.cssText="background:"+bg+";color:#fff;padding:6px 10px;border-radius:6px;border:0;font-weight:bold;cursor:pointer;margin:2px;font-family:inherit";
+    b.onclick=onclick;return b;
+  }
+  function csv(){
+    var rows=[];rows.push(["field","value"]);
+    var d=snap();
+    Object.keys(d).forEach(function(k){
+      var v=String(d[k]||"").replace(/"/g,"\"\"");
+      rows.push(["\""+k+"\"","\""+v+"\""]);
+    });
+    var s=rows.map(function(r){return r.join(",");}).join("\n");
+    var blob=new Blob(["﻿"+s],{type:"text/csv;charset=utf-8"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(blob);
+    a.download=KEY+"_"+(new Date().toISOString().slice(0,10))+".csv";a.click();
+  }
+  function code(){
+    try{
+      var d=snap();var s=JSON.stringify(d);
+      var b64=btoa(unescape(encodeURIComponent(s))).replace(/[+/=]/g,function(c){return {"+":"-","/":"_","=":""}[c];});
+      var name=(prompt("학생 이름을 입력하세요(결과 코드에 포함됩니다)")||"학생").slice(0,8);
+      prompt("📋 결과 코드 (복사해서 교사에게 제출):",name+"#"+b64.slice(0,400));
+    }catch(e){alert("결과 코드 생성 실패");}
+  }
+  function clr(){if(confirm("저장된 답을 모두 지울까요?")){localStorage.removeItem(KEY);location.reload();}}
+  window.addEventListener("load",function(){
+    setTimeout(restore,100);
+    document.body.addEventListener("input",save);
+    document.body.addEventListener("change",save);
+    document.body.addEventListener("click",function(e){if(e.target.matches("button,.opt,.choice,.judge,.crit,.princ,.policy-card,.problem-chip,.factor-card,.tag-pill,.iss,.sdg,.pol,.zone-btn,.czone,.dis-card,.case-pill,.stance-card,.adapt-card,.case-card,.cell"))save();});
+    var bar=document.createElement("div");
+    bar.className="no-print";
+    bar.style.cssText="position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.85);padding:6px;border-radius:10px;z-index:9999;display:flex;flex-wrap:wrap;max-width:90vw;box-shadow:0 4px 12px rgba(0,0,0,0.3)";
+    bar.appendChild(btn("💾 자동저장 ON","#",""));
+    bar.lastChild.style.cssText="font-size:10px;color:#10b981;padding:6px 8px;background:transparent;cursor:default";
+    bar.appendChild(btn("📤 CSV",csv,"#0891b2"));
+    bar.appendChild(btn("📋 결과코드",code,"#f59e0b"));
+    bar.appendChild(btn("🗑 지우기",clr,"#dc2626"));
+    document.body.appendChild(bar);
+  });
+})();
+
+</script>
+</body></html>

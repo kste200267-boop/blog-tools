@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>🔬 문화 변동 연구소 — 전통이 살아남는 법</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#f0fdf4 0%,#fef3c7 100%);min-height:100vh;-webkit-tap-highlight-color:transparent}
+.fjua{font-family:'Jua',sans-serif}
+.case-card{transition:all .2s}
+.case-card.open{box-shadow:0 8px 24px rgba(0,0,0,.1);transform:translateY(-2px)}
+.opt-btn{transition:all .15s}
+.opt-btn:hover{transform:scale(1.02)}
+.opt-btn.selected{box-shadow:0 0 0 3px #2563eb}
+.opt-btn.correct{background:#dcfce7!important;border-color:#16a34a!important;color:#166534}
+.opt-btn.wrong{background:#fee2e2!important;border-color:#dc2626!important;color:#991b1b}
+.fade-in{animation:fi .35s ease-out}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.bar{transition:width .8s cubic-bezier(.4,0,.2,1)}
+@media print{.no-print{display:none!important}body{background:#fff!important}}
+</style>
+</head>
+<body class="text-slate-800">
+
+<header class="no-print bg-white/80 backdrop-blur border-b border-slate-200 sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+  <a href="hub.html?mode=unit&id=culture" class="flex items-center gap-2 font-bold text-slate-700 hover:text-blue-600">← 단원으로</a>
+  <div class="text-xs text-slate-500">[10통사1-04-02] 문화 변동·전통 계승</div>
+  <button onclick="window.print()" class="text-sm bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg">🖨 인쇄</button>
+</div>
+</header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+
+<section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 mb-5">
+  <div class="text-xs text-emerald-600 font-bold mb-1">통합사회 1 · 4단원 문화와 다양성</div>
+  <h1 class="fjua text-3xl md:text-4xl mb-2">🔬 문화 변동 연구소</h1>
+  <p class="text-slate-600 text-sm md:text-base">5가지 문화 변동 사례를 분석하고, "내가 지키고 싶은 전통"의 보존 계획을 직접 설계합니다.</p>
+  <div class="mt-3 flex flex-wrap gap-2 text-xs">
+    <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full font-bold">⏱ 약 30분</span>
+    <span class="bg-rose-100 text-rose-800 px-3 py-1 rounded-full font-bold">난이도 심화</span>
+  </div>
+</section>
+
+<!-- 진행도 -->
+<div class="bg-white rounded-xl p-3 mb-5 shadow-sm">
+  <div class="flex items-center justify-between text-xs mb-1.5">
+    <span class="font-bold">분석 진행</span>
+    <span id="progTxt" class="text-slate-500">0 / 5 사례</span>
+  </div>
+  <div class="w-full bg-slate-100 rounded-full h-2"><div id="progBar" class="bar bg-gradient-to-r from-emerald-500 to-amber-500 h-2 rounded-full" style="width:0%"></div></div>
+  <div class="mt-2 text-xs text-slate-600">총 점수: <b id="totalScore">0</b> / 10 점</div>
+</div>
+
+<!-- 미니 가이드 -->
+<details class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-5">
+  <summary class="font-bold cursor-pointer text-emerald-800">📖 핵심 개념 (펼쳐보기)</summary>
+  <div class="text-sm mt-3 space-y-2">
+    <div><b>문화 변동의 요인</b><ul class="ml-4 list-disc"><li><b>내재적 요인</b>: 발명·발견 (사회 내부에서 새로 만들거나 찾아낸 것)</li><li><b>외재적 요인</b>: 직접 전파(직접 접촉) / 간접 전파(매체) / 자극 전파(자극 받아 새로 발명)</li></ul></div>
+    <div><b>문화 접변의 결과</b><ul class="ml-4 list-disc"><li><b>문화 동화</b>: 한쪽이 다른 쪽 문화에 흡수됨</li><li><b>문화 융합</b>: 두 문화가 합쳐져 새로운 문화 탄생</li><li><b>문화 병존</b>: 두 문화가 나란히 공존</li></ul></div>
+  </div>
+</details>
+
+<!-- 사례 5개 -->
+<section id="cases"></section>
+
+<!-- 보존 계획서 -->
+<section class="bg-gradient-to-r from-amber-100 to-rose-100 border-2 border-amber-300 rounded-2xl p-6 shadow-sm mt-6">
+  <h2 class="fjua text-2xl mb-2">📜 내가 지키고 싶은 전통 — 보존 계획서</h2>
+  <p class="text-sm text-slate-700 mb-4">위 분석을 토대로, 본인이 가장 지키고 싶은 우리 전통문화를 골라 보존 전략을 작성하세요.</p>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm font-bold mb-1">📌 지키고 싶은 전통문화</label>
+      <input id="pTrad" class="w-full bg-white border-2 border-slate-300 rounded-lg p-2.5 text-sm" placeholder="예: 한복, 김장, 판소리, 명절 차례 등">
+    </div>
+    <div>
+      <label class="block text-sm font-bold mb-1">⚠️ 위협 요인</label>
+      <input id="pThreat" class="w-full bg-white border-2 border-slate-300 rounded-lg p-2.5 text-sm" placeholder="예: 서구화, 디지털화, 세대 단절">
+    </div>
+  </div>
+  <label class="block text-sm font-bold mt-4 mb-1">💡 보존 전략 (3가지)</label>
+  <div class="space-y-2">
+    <input id="p1" class="w-full bg-white border-2 border-slate-300 rounded-lg p-2.5 text-sm" placeholder="① 예: 무형문화재 지정 추진 + 학교 동아리 운영">
+    <input id="p2" class="w-full bg-white border-2 border-slate-300 rounded-lg p-2.5 text-sm" placeholder="② 예: 디지털 아카이브 (유튜브/SNS) 제작">
+    <input id="p3" class="w-full bg-white border-2 border-slate-300 rounded-lg p-2.5 text-sm" placeholder="③ 예: 전통+현대 융합 상품 개발 (퓨전)">
+  </div>
+  <label class="block text-sm font-bold mt-4 mb-1">🎯 기대 효과</label>
+  <textarea id="pEffect" rows="3" class="w-full bg-white border-2 border-slate-300 rounded-lg p-2.5 text-sm" placeholder="이 전략들이 잘 실행된다면 어떤 변화가 일어날까요?"></textarea>
+  <div class="mt-4 flex gap-2 flex-wrap">
+    <button id="pSave" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-5 py-2.5 rounded-lg">💾 저장</button>
+    <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-5 py-2.5 rounded-lg">🖨 PDF/인쇄</button>
+  </div>
+  <div id="pOk" class="hidden mt-3 bg-white/80 border border-emerald-300 text-emerald-800 rounded-lg p-3 text-sm">계획서가 저장되었습니다 ✓ 인쇄 시 결과물에 포함됩니다.</div>
+</section>
+
+<!-- 인쇄용 결과 카드 -->
+<section id="printCard" class="hidden bg-white border-2 border-slate-800 rounded-xl p-6 mt-6">
+  <h2 class="fjua text-2xl text-center border-b-2 border-slate-800 pb-2 mb-4">문화 변동 연구 결과 보고서</h2>
+  <div class="text-sm space-y-2">
+    <div><b>이름:</b> _________ <span class="ml-4"><b>날짜:</b> _________</span></div>
+    <div><b>총점:</b> <span id="finalScore"></span> / 10 점</div>
+    <div><b>지키고 싶은 전통:</b> <span id="finalTrad"></span></div>
+    <div><b>위협 요인:</b> <span id="finalThreat"></span></div>
+    <div><b>보존 전략:</b><ol class="ml-4 list-decimal"><li id="finalP1"></li><li id="finalP2"></li><li id="finalP3"></li></ol></div>
+    <div><b>기대 효과:</b> <span id="finalEffect"></span></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="text-center text-xs text-slate-400 py-6">풀어쓰는 사회학 정보부 · 통합사회 1 · 4단원</footer>
+
+<script>
+const CASES = [
+  {
+    icon:'👘',
+    title:'한복의 현대화 — 생활한복·퓨전한복',
+    desc:'전통 한복의 형태를 유지하면서 일상에서 입기 편하게 디자인이 변형되었다. 외국인들도 즐겨 입고 SNS에서 화제가 되고 있다.',
+    qElement:'주요 요인',
+    qElementOpts:['내재적 요인 (자생적 발명)','외재적 직접 전파','외재적 자극 전파','외재적 간접 전파'],
+    qElementA:0,
+    qElementHint:'내부에서 디자이너들이 새롭게 변형 → 자생적 발명',
+    qResult:'결과 양상',
+    qResultOpts:['문화 동화','문화 융합','문화 병존','문화 소멸'],
+    qResultA:1,
+    qResultHint:'전통 한복 + 현대 디자인 → 새로운 형태 탄생'
+  },
+  {
+    icon:'🎤',
+    title:'K-pop의 세계화',
+    desc:'한국 가요(K-pop)가 SNS·유튜브 등을 통해 전 세계로 퍼졌고, 외국 가수들도 한국어 가사를 따라 부른다.',
+    qElement:'주요 요인',
+    qElementOpts:['내재적 요인','외재적 직접 전파','외재적 간접 전파','외재적 자극 전파'],
+    qElementA:2,
+    qElementHint:'직접 만남 없이 매체(인터넷)를 통한 전파 → 간접 전파',
+    qResult:'세계 음악과 만났을 때 결과',
+    qResultOpts:['문화 동화 (사라짐)','문화 융합 (새 장르 탄생)','문화 병존 (각자 존재)','전통 회귀'],
+    qResultA:1,
+    qResultHint:'K-pop + 라틴/힙합 등이 결합한 새로운 음악 장르가 등장'
+  },
+  {
+    icon:'🥢',
+    title:'명절 문화의 변화',
+    desc:'추석·설날에 차례 대신 가족 여행을 가거나, 간소화된 차례를 지내는 가정이 늘고 있다. 전통과 현대가 충돌하기도 한다.',
+    qElement:'주요 요인',
+    qElementOpts:['내재적 요인 (가치관 변화)','외재적 직접 전파','외재적 간접 전파','외재적 자극 전파'],
+    qElementA:0,
+    qElementHint:'사회 내부의 가치관·생활양식 변화 → 내재적',
+    qResult:'결과 양상',
+    qResultOpts:['문화 동화','문화 융합 (간소화 차례)','문화 병존','문화 소멸'],
+    qResultA:1,
+    qResultHint:'전통 차례의 정신은 유지하되 형식이 새롭게 변형'
+  },
+  {
+    icon:'🍕',
+    title:'한식의 퓨전화 — 김치 피자, 불고기 버거',
+    desc:'한국 전통 음식이 외국 음식과 결합해 새로운 메뉴로 탄생하고 있다. 외국에서도 인기다.',
+    qElement:'주요 요인',
+    qElementOpts:['내재적 요인','외재적 직접 전파 (이주민·체류자)','외재적 간접 전파','외재적 자극 전파'],
+    qElementA:1,
+    qElementHint:'외국 거주 한국인·외국인의 직접 접촉으로 문화 전파',
+    qResult:'결과 양상',
+    qResultOpts:['문화 동화','문화 융합','문화 병존','전통 소멸'],
+    qResultA:1,
+    qResultHint:'두 음식 문화가 결합해 새로운 음식이 만들어짐 → 융합'
+  },
+  {
+    icon:'🔤',
+    title:'한글의 디자인 활용',
+    desc:'외국 알파벳을 본 한국이 자극을 받아 한글을 창제했고, 현대에는 한글이 패션·디자인 요소로 세계에 활용된다.',
+    qElement:'창제 당시 주요 요인',
+    qElementOpts:['내재적 발명','외재적 직접 전파','외재적 간접 전파','외재적 자극 전파'],
+    qElementA:3,
+    qElementHint:'한자·산스크리트 등에서 자극을 받아 새로운 문자 발명 → 자극 전파',
+    qResult:'한글이 디자인으로 세계에 쓰이는 결과',
+    qResultOpts:['문화 동화','문화 융합','문화 병존 (각 문자 공존)','문화 소멸'],
+    qResultA:2,
+    qResultHint:'한글과 다른 문자가 각자 정체성을 유지하며 공존'
+  }
+];
+
+const state = CASES.map(()=>({elem:null,res:null,done:false}));
+
+function buildCases(){
+  const c = document.getElementById('cases');
+  c.innerHTML = CASES.map((cs,i)=>`
+    <div class="case-card bg-white rounded-2xl p-5 mb-4 border border-slate-200 shadow-sm">
+      <div class="flex items-start gap-3 mb-3">
+        <div class="text-4xl">${cs.icon}</div>
+        <div class="flex-1">
+          <div class="text-xs text-slate-500 font-bold">사례 ${i+1}</div>
+          <h3 class="fjua text-xl">${cs.title}</h3>
+          <p class="text-sm text-slate-600 mt-1">${cs.desc}</p>
+        </div>
+      </div>
+      <div class="bg-slate-50 rounded-lg p-4 mb-3">
+        <div class="font-bold text-sm mb-2">Q1. ${cs.qElement}</div>
+        <div class="grid grid-cols-2 gap-2" data-q="elem" data-i="${i}">
+          ${cs.qElementOpts.map((o,j)=>`<button class="opt-btn bg-white border-2 border-slate-300 rounded-lg p-2 text-xs md:text-sm text-left" data-j="${j}">${o}</button>`).join('')}
+        </div>
+        <div class="hint hidden mt-2 text-xs text-emerald-700 bg-emerald-50 rounded p-2"></div>
+      </div>
+      <div class="bg-slate-50 rounded-lg p-4">
+        <div class="font-bold text-sm mb-2">Q2. ${cs.qResult}</div>
+        <div class="grid grid-cols-2 gap-2" data-q="res" data-i="${i}">
+          ${cs.qResultOpts.map((o,j)=>`<button class="opt-btn bg-white border-2 border-slate-300 rounded-lg p-2 text-xs md:text-sm text-left" data-j="${j}">${o}</button>`).join('')}
+        </div>
+        <div class="hint hidden mt-2 text-xs text-emerald-700 bg-emerald-50 rounded p-2"></div>
+      </div>
+    </div>
+  `).join('');
+
+  c.querySelectorAll('[data-q]').forEach(group=>{
+    const i = +group.dataset.i, q = group.dataset.q;
+    group.querySelectorAll('button').forEach(b=>{
+      b.addEventListener('click',()=>{
+        if(state[i].done && state[i][q]!==null) return;
+        const j = +b.dataset.j;
+        const correct = q==='elem'?CASES[i].qElementA:CASES[i].qResultA;
+        const hintTxt = q==='elem'?CASES[i].qElementHint:CASES[i].qResultHint;
+        group.querySelectorAll('button').forEach(x=>x.classList.remove('selected','correct','wrong'));
+        if(j===correct){
+          b.classList.add('correct');
+          state[i][q] = true;
+        } else {
+          b.classList.add('wrong');
+          group.querySelectorAll('button')[correct].classList.add('correct');
+          state[i][q] = false;
+        }
+        const hint = group.parentElement.querySelector('.hint');
+        hint.classList.remove('hidden');
+        hint.textContent = '💡 '+hintTxt;
+        if(state[i].elem!==null && state[i].res!==null) state[i].done = true;
+        updateProgress();
+      });
+    });
+  });
+}
+buildCases();
+
+function updateProgress(){
+  const done = state.filter(s=>s.done).length;
+  const score = state.reduce((s,x)=>s+(x.elem?1:0)+(x.res?1:0),0);
+  document.getElementById('progTxt').textContent = done+' / 5 사례';
+  document.getElementById('progBar').style.width = (done*20)+'%';
+  document.getElementById('totalScore').textContent = score;
+}
+
+document.getElementById('pSave').addEventListener('click',()=>{
+  const t = document.getElementById('pTrad').value.trim();
+  if(!t){alert('지키고 싶은 전통을 입력해주세요.');return;}
+  document.getElementById('pOk').classList.remove('hidden');
+  // print card
+  document.getElementById('finalScore').textContent = document.getElementById('totalScore').textContent;
+  document.getElementById('finalTrad').textContent = t;
+  document.getElementById('finalThreat').textContent = document.getElementById('pThreat').value || '-';
+  document.getElementById('finalP1').textContent = document.getElementById('p1').value || '-';
+  document.getElementById('finalP2').textContent = document.getElementById('p2').value || '-';
+  document.getElementById('finalP3').textContent = document.getElementById('p3').value || '-';
+  document.getElementById('finalEffect').textContent = document.getElementById('pEffect').value || '-';
+  document.getElementById('printCard').classList.remove('hidden');
+});
+</script>
+<script>
+;(function(){
+  var KEY="sav_"+(location.pathname.split("/").pop()||"x").replace(/\.html$/,"");
+  function snap(){
+    var d={};
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(el.type==="checkbox"||el.type==="radio")d[k]=el.checked;else d[k]=el.value;
+    });
+    return d;
+  }
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(snap()));}catch(e){}}
+  function restore(){
+    try{var d=JSON.parse(localStorage.getItem(KEY)||"{}");
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(!(k in d))return;
+      if(el.type==="checkbox"||el.type==="radio")el.checked=d[k];
+      else el.value=d[k];
+      el.dispatchEvent(new Event("input",{bubbles:true}));
+      el.dispatchEvent(new Event("change",{bubbles:true}));
+    });}catch(e){}
+  }
+  function btn(label,onclick,bg){
+    var b=document.createElement("button");
+    b.textContent=label;b.className="text-xs no-print";
+    b.style.cssText="background:"+bg+";color:#fff;padding:6px 10px;border-radius:6px;border:0;font-weight:bold;cursor:pointer;margin:2px;font-family:inherit";
+    b.onclick=onclick;return b;
+  }
+  function csv(){
+    var rows=[];rows.push(["field","value"]);
+    var d=snap();
+    Object.keys(d).forEach(function(k){
+      var v=String(d[k]||"").replace(/"/g,"\"\"");
+      rows.push(["\""+k+"\"","\""+v+"\""]);
+    });
+    var s=rows.map(function(r){return r.join(",");}).join("\n");
+    var blob=new Blob(["﻿"+s],{type:"text/csv;charset=utf-8"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(blob);
+    a.download=KEY+"_"+(new Date().toISOString().slice(0,10))+".csv";a.click();
+  }
+  function code(){
+    try{
+      var d=snap();var s=JSON.stringify(d);
+      var b64=btoa(unescape(encodeURIComponent(s))).replace(/[+/=]/g,function(c){return {"+":"-","/":"_","=":""}[c];});
+      var name=(prompt("학생 이름을 입력하세요(결과 코드에 포함됩니다)")||"학생").slice(0,8);
+      prompt("📋 결과 코드 (복사해서 교사에게 제출):",name+"#"+b64.slice(0,400));
+    }catch(e){alert("결과 코드 생성 실패");}
+  }
+  function clr(){if(confirm("저장된 답을 모두 지울까요?")){localStorage.removeItem(KEY);location.reload();}}
+  window.addEventListener("load",function(){
+    setTimeout(restore,100);
+    document.body.addEventListener("input",save);
+    document.body.addEventListener("change",save);
+    document.body.addEventListener("click",function(e){if(e.target.matches("button,.opt,.choice,.judge,.crit,.princ,.policy-card,.problem-chip,.factor-card,.tag-pill,.iss,.sdg,.pol,.zone-btn,.czone,.dis-card,.case-pill,.stance-card,.adapt-card,.case-card,.cell"))save();});
+    var bar=document.createElement("div");
+    bar.className="no-print";
+    bar.style.cssText="position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.85);padding:6px;border-radius:10px;z-index:9999;display:flex;flex-wrap:wrap;max-width:90vw;box-shadow:0 4px 12px rgba(0,0,0,0.3)";
+    bar.appendChild(btn("💾 자동저장 ON","#",""));
+    bar.lastChild.style.cssText="font-size:10px;color:#10b981;padding:6px 8px;background:transparent;cursor:default";
+    bar.appendChild(btn("📤 CSV",csv,"#0891b2"));
+    bar.appendChild(btn("📋 결과코드",code,"#f59e0b"));
+    bar.appendChild(btn("🗑 지우기",clr,"#dc2626"));
+    document.body.appendChild(bar);
+  });
+})();
+
+</script>
+</body>
+</html>

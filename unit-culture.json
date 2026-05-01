@@ -1,0 +1,177 @@
+{
+  "unit": "문화와 다양성",
+  "unitSlug": "culture",
+  "achievementStandard": "[10통사1-04-01] 다양한 문화권 / [10통사1-04-02] 문화 변동·전통 계승 / [10통사1-04-03] 문화 상대주의·보편 윤리 / [10통사1-04-04] 다문화 사회·다양성 존중",
+  "contents": [
+    {
+      "slug": "teaching-pack",
+      "file": "c-culture-teaching-pack.html",
+      "title": "📚 4단원 수업 발행 패키지 (총괄)",
+      "type": "교사용",
+      "difficulty": "-",
+      "duration": "참고",
+      "tags": ["수업안","교사용","총괄","통사1","4단원"],
+      "desc": "차시별 수업안·PPT·학습지·웹교구·평가를 한 번에 안내하는 교사용 허브"
+    },
+    {
+      "slug": "ppt-1",
+      "file": "c-culture-ppt-1.html",
+      "title": "📊 PPT 4-1 세계의 다양한 문화권 (HTML)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": ["PPT","HTML","문화권","자연환경","통사1","4단원","1~2차시"],
+      "desc": "1~2차시 수업용 11장 슬라이드 (도입→6대 문화권→비교→활동→정리)"
+    },
+    {
+      "slug": "ppt-1-pptx",
+      "file": "c-culture-ppt-1.pptx",
+      "title": "📥 PPT 4-1 세계의 다양한 문화권 (PPTX 다운로드)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": ["PPT","PPTX","다운로드","문화권","통사1","4단원"],
+      "desc": "PowerPoint·KeyNote·Google Slides에서 편집 가능한 .pptx 파일"
+    },
+    {
+      "slug": "ppt-2",
+      "file": "c-culture-ppt-2.html",
+      "title": "📊 PPT 4-2 문화 변동과 전통 문화 (HTML)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": ["PPT","HTML","문화변동","전통","통사1","4단원","3~4차시"],
+      "desc": "3~4차시 수업용 11장 슬라이드"
+    },
+    {
+      "slug": "ppt-2-pptx",
+      "file": "c-culture-ppt-2.pptx",
+      "title": "📥 PPT 4-2 문화 변동과 전통 문화 (PPTX 다운로드)",
+      "type": "수업자료",
+      "difficulty": "보통",
+      "duration": "50분",
+      "tags": ["PPT","PPTX","다운로드","문화변동","통사1","4단원"],
+      "desc": "편집 가능한 .pptx 파일"
+    },
+    {
+      "slug": "ppt-3",
+      "file": "c-culture-ppt-3.html",
+      "title": "📊 PPT 4-3 문화 상대주의와 보편 윤리 (HTML)",
+      "type": "수업자료",
+      "difficulty": "심화",
+      "duration": "50분",
+      "tags": ["PPT","HTML","문화상대주의","보편윤리","통사1","4단원","5~6차시"],
+      "desc": "5~6차시 수업용 10장 슬라이드"
+    },
+    {
+      "slug": "ppt-3-pptx",
+      "file": "c-culture-ppt-3.pptx",
+      "title": "📥 PPT 4-3 문화 상대주의와 보편 윤리 (PPTX 다운로드)",
+      "type": "수업자료",
+      "difficulty": "심화",
+      "duration": "50분",
+      "tags": ["PPT","PPTX","다운로드","상대주의","통사1","4단원"],
+      "desc": "편집 가능한 .pptx 파일"
+    },
+    {
+      "slug": "ppt-4",
+      "file": "c-culture-ppt-4.html",
+      "title": "📊 PPT 4-4 다문화 사회와 다양성 존중 (HTML)",
+      "type": "수업자료",
+      "difficulty": "심화",
+      "duration": "50분",
+      "tags": ["PPT","HTML","다문화","갈등해결","통사1","4단원","7차시"],
+      "desc": "7차시 수업용 11장 슬라이드"
+    },
+    {
+      "slug": "ppt-4-pptx",
+      "file": "c-culture-ppt-4.pptx",
+      "title": "📥 PPT 4-4 다문화 사회와 다양성 존중 (PPTX 다운로드)",
+      "type": "수업자료",
+      "difficulty": "심화",
+      "duration": "50분",
+      "tags": ["PPT","PPTX","다운로드","다문화","통사1","4단원"],
+      "desc": "편집 가능한 .pptx 파일"
+    },
+    {
+      "slug": "worksheet-1",
+      "file": "c-culture-worksheet-1.html",
+      "title": "📝 학습지 ① 우리 동네는 어느 문화권?",
+      "type": "학습지",
+      "difficulty": "쉬움",
+      "duration": "20분",
+      "tags": ["학습지","문화권","자기지역","통사1","4단원","1~2차시"],
+      "desc": "8문항 — 자연·인문환경 분석, 한국 문화권 추정, 가상 시나리오"
+    },
+    {
+      "slug": "worksheet-2",
+      "file": "c-culture-worksheet-2.html",
+      "title": "📝 학습지 ② 6대 문화권 비교표",
+      "type": "학습지",
+      "difficulty": "보통",
+      "duration": "25분",
+      "tags": ["학습지","비교표","모둠","통사1","4단원","2차시"],
+      "desc": "6×4 매트릭스 채우기 + 형성 원리 + 모둠 발표용 1문장 요약"
+    },
+    {
+      "slug": "worksheet-3",
+      "file": "c-culture-worksheet-3.html",
+      "title": "📝 학습지 ③ 문화 변동 분류 + 보존 계획",
+      "type": "학습지",
+      "difficulty": "보통",
+      "duration": "30분",
+      "tags": ["학습지","문화변동","보존","통사1","4단원","3~4차시"],
+      "desc": "5사례 분류표 + 일상 변동 발견 + 전통 보존 계획서 작성"
+    },
+    {
+      "slug": "worksheet-4",
+      "file": "c-culture-worksheet-4.html",
+      "title": "📝 학습지 ④ 문화 상대주의 + 다문화 판결",
+      "type": "학습지",
+      "difficulty": "심화",
+      "duration": "35분",
+      "tags": ["학습지","상대주의","다문화","판결","통사1","4단원","5~7차시"],
+      "desc": "5사례 입장 매칭 + 판결문 작성 + 학급 다문화 약속 5개 합의"
+    },
+    {
+      "slug": "eval",
+      "file": "c-culture-eval.html",
+      "title": "📋 4단원 단원평가 (객관식 + 서술형)",
+      "type": "문항",
+      "difficulty": "보통",
+      "duration": "30분",
+      "tags": ["평가","단원평가","자동채점","통사1","4단원","8차시"],
+      "desc": "객관식 10문항 자동 채점 + 서술형 4문항 (총 100점)"
+    },
+    {
+      "slug": "world-zones",
+      "file": "c-culture-world-zones.html",
+      "title": "🌍 [웹교구] 세계 문화권 탐험가",
+      "type": "웹교구",
+      "difficulty": "보통",
+      "duration": "30분",
+      "tags": ["웹교구","문화권","매칭","퀴즈","통사1","4단원"],
+      "desc": "6대 문화권 클릭 → 자연·인문 매칭 → 추론 → 5문항 퀴즈"
+    },
+    {
+      "slug": "change-lab",
+      "file": "c-culture-change-lab.html",
+      "title": "🔬 [웹교구] 문화 변동 연구소",
+      "type": "웹교구",
+      "difficulty": "심화",
+      "duration": "30분",
+      "tags": ["웹교구","문화변동","보존","통사1","4단원"],
+      "desc": "5사례 자동 분류 + 보존 계획서 자동 정리 + PDF 출력"
+    },
+    {
+      "slug": "multicultural-court",
+      "file": "c-culture-multicultural-court.html",
+      "title": "⚖️ [웹교구] 다문화 시민 법정",
+      "type": "웹교구",
+      "difficulty": "심화",
+      "duration": "30분",
+      "tags": ["웹교구","상대주의","다문화","판결","통사1","4단원"],
+      "desc": "5사건 판결 + 입장 비교 + 균형 슬라이더 + AI 피드백"
+    }
+  ]
+}

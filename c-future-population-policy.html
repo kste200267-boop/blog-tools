@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>👶 인구문제 정책 시뮬레이터</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#fef3c7 0%,#fce7f3 100%);min-height:100vh}
+.fjua{font-family:'Jua',sans-serif}
+.pol{transition:all .25s;cursor:pointer}.pol:hover{transform:translateY(-2px)}.pol.picked{background:#fef08a!important;border-color:#ca8a04!important}
+@media print{.no-print{display:none!important}}
+</style></head><body class="text-slate-800">
+<header class="no-print bg-white/80 backdrop-blur border-b sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="hub.html?mode=unit&id=future" class="font-bold">← 단원으로</a>
+<div class="text-xs text-slate-500">[10통사2-05-02] 저출산·고령화</div>
+<button onclick="window.print()" class="text-sm bg-slate-100 px-3 py-1.5 rounded-lg">🖨</button></div></header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+<section class="bg-white rounded-2xl p-6 shadow-sm border mb-5">
+<div class="text-xs text-pink-600 font-bold mb-1">통합사회 2 · 10단원 미래와 지속가능</div>
+<h1 class="fjua text-3xl md:text-4xl mb-2">👶 인구문제 정책 시뮬레이터</h1>
+<p class="text-slate-600 text-sm">한국의 저출산·고령화 문제 해결을 위한 정책을 선택하고 30년 후 인구 변화를 예측합니다.</p>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">📊 현재 한국 (2026)</h2>
+<div class="grid grid-cols-3 gap-3 text-center">
+<div class="bg-amber-50 rounded-lg p-3"><div class="text-xs">합계출산율</div><div class="fjua text-2xl text-amber-600">0.72</div></div>
+<div class="bg-rose-50 rounded-lg p-3"><div class="text-xs">고령화율</div><div class="fjua text-2xl text-rose-600">19%</div></div>
+<div class="bg-blue-50 rounded-lg p-3"><div class="text-xs">총인구</div><div class="fjua text-2xl text-blue-600">5,150만</div></div>
+</div></section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">🎯 정책 선택 (다중)</h2>
+<div id="polGrid" class="grid md:grid-cols-2 gap-3"></div>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">📈 30년 후 예측</h2>
+<canvas id="chart" height="200"></canvas>
+<div class="grid grid-cols-3 gap-3 text-center mt-4">
+<div class="bg-amber-50 rounded-lg p-3"><div class="text-xs">예측 출산율</div><div class="fjua text-2xl text-amber-600" id="pBirth">0.72</div></div>
+<div class="bg-rose-50 rounded-lg p-3"><div class="text-xs">고령화율</div><div class="fjua text-2xl text-rose-600" id="pOld">35%</div></div>
+<div class="bg-blue-50 rounded-lg p-3"><div class="text-xs">총인구</div><div class="fjua text-2xl text-blue-600" id="pTot">3,800만</div></div>
+</div></section>
+
+<section class="bg-gradient-to-r from-pink-100 to-amber-100 border-2 border-pink-300 rounded-2xl p-6">
+<h2 class="fjua text-2xl mb-3">📄 정책 분석 보고서</h2>
+<button onclick="window.print()" class="bg-slate-800 text-white font-bold px-5 py-2.5 rounded-lg">🖨 PDF</button>
+</section>
+</main>
+<footer class="no-print text-center text-xs text-slate-400 py-6">풀어쓰는 사회학 정보부 · 통합사회 2 · 10단원</footer>
+
+<script>
+const POL=[
+{id:'a',icon:'💰',name:'아이당 월 100만원 지급',birth:0.15,old:0,pop:80,cost:5},
+{id:'b',icon:'🏠',name:'신혼부부 무이자 주택대출',birth:0.10,old:0,pop:60,cost:4},
+{id:'c',icon:'👶',name:'무상 보육 (24시간 어린이집)',birth:0.12,old:0,pop:70,cost:4},
+{id:'d',icon:'🌍',name:'외국인 노동 적극 수용',birth:0.02,old:-3,pop:200,cost:2},
+{id:'e',icon:'🎓',name:'고교까지 교육비 완전 무상',birth:0.06,old:0,pop:30,cost:3},
+{id:'f',icon:'💼',name:'육아휴직 1년 의무 + 100% 임금',birth:0.18,old:0,pop:90,cost:4},
+{id:'g',icon:'👴',name:'정년 70세로 연장',birth:0,old:-2,pop:0,cost:1},
+{id:'h',icon:'🤖',name:'AI·로봇 산업 집중 투자',birth:0,old:-1,pop:50,cost:5}];
+const sel=new Set();
+function build(){
+document.getElementById('polGrid').innerHTML=POL.map(p=>`
+<div class="pol bg-slate-50 border-2 border-slate-300 rounded-xl p-3" data-id="${p.id}">
+<div class="flex items-center gap-2"><span class="text-2xl">${p.icon}</span><b>${p.name}</b></div>
+<div class="text-xs text-slate-500 mt-1">출산${p.birth>=0?'+':''}${p.birth} 고령${p.old>=0?'+':''}${p.old}% 인구${p.pop>=0?'+':''}${p.pop}만 비용${p.cost}</div>
+</div>`).join('');
+document.querySelectorAll('.pol').forEach(c=>c.addEventListener('click',()=>{
+const id=c.dataset.id;
+if(sel.has(id)){sel.delete(id);c.classList.remove('picked');}
+else{sel.add(id);c.classList.add('picked');}
+update();
+}));
+}
+build();
+let chart;
+window.addEventListener('load',()=>{
+chart=new Chart(document.getElementById('chart'),{type:'line',data:{labels:['2026','2030','2035','2040','2045','2050','2055'],datasets:[{label:'예측 인구 (만)',data:[5150,5050,4850,4500,4200,3900,3800],borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.1)',fill:true}]},options:{responsive:true,scales:{y:{beginAtZero:false}}}});
+update();});
+function update(){
+let b=0.72,o=35,p=3800;
+sel.forEach(id=>{const x=POL.find(y=>y.id===id);b+=x.birth;o+=x.old;p+=x.pop;});
+document.getElementById('pBirth').textContent=b.toFixed(2);
+document.getElementById('pOld').textContent=Math.max(20,Math.min(45,o))+'%';
+document.getElementById('pTot').textContent=Math.round(p)+'만';
+if(chart){const newData=[5150,5050,4850,4500,4200,3900,Math.max(3500,p)];chart.data.datasets[0].data=newData;chart.update();}
+}
+</script><script>
+;(function(){
+  var KEY="sav_"+(location.pathname.split("/").pop()||"x").replace(/\.html$/,"");
+  function snap(){
+    var d={};
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(el.type==="checkbox"||el.type==="radio")d[k]=el.checked;else d[k]=el.value;
+    });
+    return d;
+  }
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(snap()));}catch(e){}}
+  function restore(){
+    try{var d=JSON.parse(localStorage.getItem(KEY)||"{}");
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(!(k in d))return;
+      if(el.type==="checkbox"||el.type==="radio")el.checked=d[k];
+      else el.value=d[k];
+      el.dispatchEvent(new Event("input",{bubbles:true}));
+      el.dispatchEvent(new Event("change",{bubbles:true}));
+    });}catch(e){}
+  }
+  function btn(label,onclick,bg){
+    var b=document.createElement("button");
+    b.textContent=label;b.className="text-xs no-print";
+    b.style.cssText="background:"+bg+";color:#fff;padding:6px 10px;border-radius:6px;border:0;font-weight:bold;cursor:pointer;margin:2px;font-family:inherit";
+    b.onclick=onclick;return b;
+  }
+  function csv(){
+    var rows=[];rows.push(["field","value"]);
+    var d=snap();
+    Object.keys(d).forEach(function(k){
+      var v=String(d[k]||"").replace(/"/g,"\"\"");
+      rows.push(["\""+k+"\"","\""+v+"\""]);
+    });
+    var s=rows.map(function(r){return r.join(",");}).join("\n");
+    var blob=new Blob(["﻿"+s],{type:"text/csv;charset=utf-8"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(blob);
+    a.download=KEY+"_"+(new Date().toISOString().slice(0,10))+".csv";a.click();
+  }
+  function code(){
+    try{
+      var d=snap();var s=JSON.stringify(d);
+      var b64=btoa(unescape(encodeURIComponent(s))).replace(/[+/=]/g,function(c){return {"+":"-","/":"_","=":""}[c];});
+      var name=(prompt("학생 이름을 입력하세요(결과 코드에 포함됩니다)")||"학생").slice(0,8);
+      prompt("📋 결과 코드 (복사해서 교사에게 제출):",name+"#"+b64.slice(0,400));
+    }catch(e){alert("결과 코드 생성 실패");}
+  }
+  function clr(){if(confirm("저장된 답을 모두 지울까요?")){localStorage.removeItem(KEY);location.reload();}}
+  window.addEventListener("load",function(){
+    setTimeout(restore,100);
+    document.body.addEventListener("input",save);
+    document.body.addEventListener("change",save);
+    document.body.addEventListener("click",function(e){if(e.target.matches("button,.opt,.choice,.judge,.crit,.princ,.policy-card,.problem-chip,.factor-card,.tag-pill,.iss,.sdg,.pol,.zone-btn,.czone,.dis-card,.case-pill,.stance-card,.adapt-card,.case-card,.cell"))save();});
+    var bar=document.createElement("div");
+    bar.className="no-print";
+    bar.style.cssText="position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.85);padding:6px;border-radius:10px;z-index:9999;display:flex;flex-wrap:wrap;max-width:90vw;box-shadow:0 4px 12px rgba(0,0,0,0.3)";
+    bar.appendChild(btn("💾 자동저장 ON","#",""));
+    bar.lastChild.style.cssText="font-size:10px;color:#10b981;padding:6px 8px;background:transparent;cursor:default";
+    bar.appendChild(btn("📤 CSV",csv,"#0891b2"));
+    bar.appendChild(btn("📋 결과코드",code,"#f59e0b"));
+    bar.appendChild(btn("🗑 지우기",clr,"#dc2626"));
+    document.body.appendChild(bar);
+  });
+})();
+
+</script>
+</body></html>

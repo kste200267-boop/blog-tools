@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>⚖️ 정의론 비교 — 롤스 vs 노직</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#eff6ff 0%,#fef3c7 100%);min-height:100vh}
+.fjua{font-family:'Jua',sans-serif}
+.s-input{appearance:none;width:100%;height:8px;background:linear-gradient(to right,#2563eb 0%,#94a3b8 50%,#dc2626 100%);border-radius:99px;outline:none}
+.s-input::-webkit-slider-thumb{appearance:none;width:24px;height:24px;background:#fff;border-radius:50%;border:3px solid #1e293b;cursor:pointer}
+@media print{.no-print{display:none!important}}
+</style></head><body class="text-slate-800">
+<header class="no-print bg-white/80 backdrop-blur border-b sticky top-0 z-40">
+<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="hub.html?mode=unit&id=justice" class="font-bold">← 단원으로</a>
+<div class="text-xs text-slate-500">[10통사2-02-01] 분배적 정의</div>
+<button onclick="window.print()" class="text-sm bg-slate-100 px-3 py-1.5 rounded-lg">🖨</button></div></header>
+
+<main class="max-w-5xl mx-auto px-4 py-6">
+<section class="bg-white rounded-2xl p-6 shadow-sm border mb-5">
+<div class="text-xs text-blue-600 font-bold mb-1">통합사회 2 · 7단원 사회 정의와 불평등</div>
+<h1 class="fjua text-3xl md:text-4xl mb-2">⚖️ 정의론 비교 진단</h1>
+<p class="text-slate-600 text-sm">롤스(평등 자유주의) vs 노직(자유지상주의) 사이 학생의 입장을 5개 사례로 진단.</p>
+</section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<div class="grid md:grid-cols-2 gap-3">
+<div class="bg-blue-50 border-2 border-blue-300 rounded-xl p-4">
+<div class="text-2xl">🤝</div>
+<div class="font-bold text-blue-800 mt-1">롤스 — 평등 자유주의</div>
+<ul class="text-xs space-y-1 mt-2 text-slate-700">
+<li>• 무지의 베일에서의 합의</li>
+<li>• 차등의 원칙: 최소수혜자에게 가장 큰 이익</li>
+<li>• 재분배 정당화</li></ul></div>
+<div class="bg-rose-50 border-2 border-rose-300 rounded-xl p-4">
+<div class="text-2xl">🦅</div>
+<div class="font-bold text-rose-800 mt-1">노직 — 자유지상주의</div>
+<ul class="text-xs space-y-1 mt-2 text-slate-700">
+<li>• 정당한 취득·이전이 정의</li>
+<li>• 재분배는 강제 노동에 가까움</li>
+<li>• 최소국가가 이상적</li></ul></div>
+</div></section>
+
+<section id="cases"></section>
+
+<section class="bg-white rounded-2xl p-5 shadow-sm border mb-5">
+<h2 class="fjua text-xl mb-3">📊 진단 결과</h2>
+<div class="bg-slate-50 rounded-xl p-4">
+<div class="flex justify-between text-xs mb-1"><span class="text-blue-600 font-bold">롤스 (평등 분배) ←</span><span class="text-rose-600 font-bold">→ 노직 (개인 자유)</span></div>
+<div class="bg-slate-200 rounded-full h-4"><div id="avgBar" class="bg-gradient-to-r from-blue-500 to-rose-500 h-4 rounded-full transition-all" style="width:50%"></div></div>
+<div class="text-center mt-2 text-sm">평균 위치: <b id="avgVal">50</b> / 100 <span id="avgLabel" class="text-xs text-slate-500"></span></div>
+</div></section>
+
+<section class="bg-gradient-to-r from-blue-100 to-rose-100 border-2 border-blue-300 rounded-2xl p-6">
+<h2 class="fjua text-2xl mb-3">📄 정의관 보고서</h2>
+<button id="genBtn" class="bg-blue-600 text-white font-bold px-5 py-2.5 rounded-lg mr-2">📋 정리</button>
+<button onclick="window.print()" class="bg-slate-800 text-white font-bold px-5 py-2.5 rounded-lg">🖨 PDF</button>
+<div id="report" class="hidden mt-4 bg-white rounded-xl p-5 border-2 border-slate-800">
+<h3 class="fjua text-xl text-center border-b-2 pb-2 mb-3">⚖️ 정의관 진단 결과</h3>
+<div class="text-sm space-y-2">
+<div><b>이름:</b> _________ <b>날짜:</b> _________</div>
+<div><b>평균 입장:</b> <span id="rAvg"></span> / 100 (<span id="rLabel"></span>)</div>
+<div id="rList" class="space-y-1"></div>
+</div></div></section>
+</main>
+<footer class="no-print text-center text-xs text-slate-400 py-6">풀어쓰는 사회학 정보부 · 통합사회 2 · 7단원</footer>
+
+<script>
+const CASES=[
+{title:'고소득자에 70% 누진세 부과',l:'적극 찬성',r:'적극 반대'},
+{title:'기본소득제 도입 (월 50만원 무조건)',l:'적극 찬성',r:'적극 반대'},
+{title:'대학 입학 시 사회적 약자 가산점 (어퍼머티브 액션)',l:'적극 찬성',r:'적극 반대'},
+{title:'상속세 100% — 부의 세대 이전 차단',l:'적극 찬성',r:'적극 반대'},
+{title:'의료·교육은 100% 국가 무상',l:'적극 찬성',r:'적극 반대'}];
+const vals=CASES.map(()=>50);
+function build(){
+document.getElementById('cases').innerHTML=CASES.map((c,i)=>`
+<div class="bg-white rounded-2xl p-5 mb-4 shadow-sm border">
+<h3 class="fjua text-xl mb-3">${c.title}</h3>
+<div class="bg-slate-50 rounded-lg p-4">
+<div class="flex justify-between text-xs font-bold mb-2"><span class="text-blue-600">${c.l}</span><span class="text-rose-600">${c.r}</span></div>
+<input type="range" min="0" max="100" value="50" class="s-input" data-i="${i}">
+<div class="text-center text-sm mt-2">위치: <b class="vDisp">50</b></div>
+</div></div>`).join('');
+document.querySelectorAll('.s-input').forEach(s=>s.addEventListener('input',e=>{const i=+e.target.dataset.i;vals[i]=+e.target.value;e.target.parentElement.querySelector('.vDisp').textContent=e.target.value;updateAvg();}));
+}
+build();
+function updateAvg(){const a=Math.round(vals.reduce((s,v)=>s+v,0)/vals.length);document.getElementById('avgBar').style.width=a+'%';document.getElementById('avgVal').textContent=a;document.getElementById('avgLabel').textContent=a<35?'(롤스 성향)':a>65?'(노직 성향)':'(중도)';}
+updateAvg();
+document.getElementById('genBtn').addEventListener('click',()=>{
+document.getElementById('rAvg').textContent=document.getElementById('avgVal').textContent;
+document.getElementById('rLabel').textContent=document.getElementById('avgLabel').textContent;
+document.getElementById('rList').innerHTML=CASES.map((c,i)=>`<div class="text-xs">${c.title}: ${vals[i]}/100</div>`).join('');
+document.getElementById('report').classList.remove('hidden');
+});
+</script><script>
+;(function(){
+  var KEY="sav_"+(location.pathname.split("/").pop()||"x").replace(/\.html$/,"");
+  function snap(){
+    var d={};
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(el.type==="checkbox"||el.type==="radio")d[k]=el.checked;else d[k]=el.value;
+    });
+    return d;
+  }
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(snap()));}catch(e){}}
+  function restore(){
+    try{var d=JSON.parse(localStorage.getItem(KEY)||"{}");
+    document.querySelectorAll("input,textarea,select").forEach(function(el,i){
+      var k=el.id||el.name||("_"+i);
+      if(!(k in d))return;
+      if(el.type==="checkbox"||el.type==="radio")el.checked=d[k];
+      else el.value=d[k];
+      el.dispatchEvent(new Event("input",{bubbles:true}));
+      el.dispatchEvent(new Event("change",{bubbles:true}));
+    });}catch(e){}
+  }
+  function btn(label,onclick,bg){
+    var b=document.createElement("button");
+    b.textContent=label;b.className="text-xs no-print";
+    b.style.cssText="background:"+bg+";color:#fff;padding:6px 10px;border-radius:6px;border:0;font-weight:bold;cursor:pointer;margin:2px;font-family:inherit";
+    b.onclick=onclick;return b;
+  }
+  function csv(){
+    var rows=[];rows.push(["field","value"]);
+    var d=snap();
+    Object.keys(d).forEach(function(k){
+      var v=String(d[k]||"").replace(/"/g,"\"\"");
+      rows.push(["\""+k+"\"","\""+v+"\""]);
+    });
+    var s=rows.map(function(r){return r.join(",");}).join("\n");
+    var blob=new Blob(["﻿"+s],{type:"text/csv;charset=utf-8"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(blob);
+    a.download=KEY+"_"+(new Date().toISOString().slice(0,10))+".csv";a.click();
+  }
+  function code(){
+    try{
+      var d=snap();var s=JSON.stringify(d);
+      var b64=btoa(unescape(encodeURIComponent(s))).replace(/[+/=]/g,function(c){return {"+":"-","/":"_","=":""}[c];});
+      var name=(prompt("학생 이름을 입력하세요(결과 코드에 포함됩니다)")||"학생").slice(0,8);
+      prompt("📋 결과 코드 (복사해서 교사에게 제출):",name+"#"+b64.slice(0,400));
+    }catch(e){alert("결과 코드 생성 실패");}
+  }
+  function clr(){if(confirm("저장된 답을 모두 지울까요?")){localStorage.removeItem(KEY);location.reload();}}
+  window.addEventListener("load",function(){
+    setTimeout(restore,100);
+    document.body.addEventListener("input",save);
+    document.body.addEventListener("change",save);
+    document.body.addEventListener("click",function(e){if(e.target.matches("button,.opt,.choice,.judge,.crit,.princ,.policy-card,.problem-chip,.factor-card,.tag-pill,.iss,.sdg,.pol,.zone-btn,.czone,.dis-card,.case-pill,.stance-card,.adapt-card,.case-card,.cell"))save();});
+    var bar=document.createElement("div");
+    bar.className="no-print";
+    bar.style.cssText="position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.85);padding:6px;border-radius:10px;z-index:9999;display:flex;flex-wrap:wrap;max-width:90vw;box-shadow:0 4px 12px rgba(0,0,0,0.3)";
+    bar.appendChild(btn("💾 자동저장 ON","#",""));
+    bar.lastChild.style.cssText="font-size:10px;color:#10b981;padding:6px 8px;background:transparent;cursor:default";
+    bar.appendChild(btn("📤 CSV",csv,"#0891b2"));
+    bar.appendChild(btn("📋 결과코드",code,"#f59e0b"));
+    bar.appendChild(btn("🗑 지우기",clr,"#dc2626"));
+    document.body.appendChild(bar);
+  });
+})();
+
+</script>
+</body></html>
