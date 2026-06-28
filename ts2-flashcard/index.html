@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>통합사회2 핵심 용어 플래시카드 · 뒤집기 암기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --main:#1D4ED8; --main-d:#1740ad; --main-l:#e7edfc; --main-ll:#f3f6fe;
+  --ink:#1E293B; --gray:#64748B; --line:#e2e8f0;
+  --ok:#16A34A; --ok-l:#e9f7ef; --no:#DC2626; --no-l:#fdecec; --warn:#E67E22; --gold:#F59E0B;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100%;}
+body{font-family:'Noto Sans KR',sans-serif;color:var(--ink);
+  background:linear-gradient(160deg,var(--main) 0%,var(--main-d) 60%,#0d1f55 100%);
+  min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:22px 16px;
+  transition:background .45s;}
+h1,h2,h3,.jua{font-family:'Jua',sans-serif;font-weight:400;}
+.wrap{width:100%;max-width:880px;}
+.shell{background:#fff;border-radius:26px;box-shadow:0 26px 64px rgba(8,24,72,.36);overflow:hidden;}
+
+/* ===== 시작화면 ===== */
+.start{padding:46px 38px 42px;text-align:center;}
+.badge{display:inline-block;background:var(--main-l);color:var(--main-d);
+  font-weight:700;font-size:13px;letter-spacing:.4px;padding:7px 16px;border-radius:999px;margin-bottom:18px;}
+.start h1{font-size:37px;color:var(--main-d);line-height:1.24;}
+.start .sub{font-size:16px;color:var(--gray);margin-top:12px;font-weight:500;line-height:1.65;}
+.feat{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin:24px 0 6px;}
+.feat span{background:var(--main-ll);border:1px solid var(--line);color:var(--main-d);
+  font-size:12.5px;font-weight:500;padding:8px 13px;border-radius:11px;}
+.units{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:28px 0 8px;}
+.unit{position:relative;border:none;border-radius:18px;padding:20px 16px 17px;cursor:pointer;color:#fff;
+  text-align:left;transition:transform .1s, box-shadow .15s;box-shadow:0 8px 18px rgba(15,30,80,.2);overflow:hidden;}
+.unit:hover{transform:translateY(-3px);box-shadow:0 14px 28px rgba(15,30,80,.3);}
+.unit:active{transform:translateY(0);}
+.unit .rn{font-family:'Jua';font-size:30px;line-height:1;opacity:.96;}
+.unit .nm{font-weight:700;font-size:15px;margin-top:9px;line-height:1.35;word-break:keep-all;}
+.unit .cnt{font-size:12px;margin-top:9px;opacity:.92;font-weight:500;}
+.unit .pbar{height:7px;background:rgba(255,255,255,.32);border-radius:99px;margin-top:9px;overflow:hidden;}
+.unit .pbar i{display:block;height:100%;width:0;background:#fff;border-radius:99px;transition:width .5s;}
+.unit .pc{font-size:11.5px;margin-top:6px;opacity:.95;font-weight:600;}
+.hint{font-size:12.5px;color:var(--gray);margin-top:22px;line-height:1.8;}
+.resetAll{margin-top:14px;background:none;border:none;color:#94a3b8;font-size:12px;cursor:pointer;text-decoration:underline;font-family:inherit;}
+kbd{background:#f1f5f9;border:1px solid #cbd5e1;border-bottom-width:2px;border-radius:6px;
+  padding:1px 7px;font-family:inherit;font-size:12px;color:#475569;}
+
+/* ===== 학습 헤더 ===== */
+.shead{background:var(--main-d);color:#fff;padding:13px 20px;display:flex;align-items:center;gap:13px;flex-wrap:wrap;}
+.shead .ix{font-family:'Jua';font-size:16.5px;white-space:nowrap;}
+.bar{flex:1;min-width:110px;height:9px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden;}
+.bar i{display:block;height:100%;width:0;background:#fff;border-radius:99px;transition:width .4s;}
+.shead .mast{font-size:13px;font-weight:700;white-space:nowrap;font-family:'Jua';}
+
+/* 모드 탭 */
+.modes{display:flex;gap:7px;padding:13px 20px 4px;flex-wrap:wrap;align-items:center;}
+.modes .mtab{background:#fff;border:2px solid var(--line);color:var(--gray);font-family:inherit;font-weight:700;
+  font-size:13px;padding:7px 14px;border-radius:11px;cursor:pointer;transition:.13s;}
+.modes .mtab.on{border-color:var(--main);background:var(--main-l);color:var(--main-d);}
+.modes .spacer{flex:1;}
+.modes .tool{background:#fff;border:2px solid var(--line);color:var(--gray);font-family:inherit;font-weight:700;
+  font-size:13px;padding:7px 12px;border-radius:11px;cursor:pointer;transition:.13s;}
+.modes .tool:hover{border-color:var(--main);color:var(--main-d);}
+
+/* ===== 카드 무대 ===== */
+.stage{padding:14px 22px 6px;}
+.counter{text-align:center;font-size:13px;color:var(--gray);font-weight:600;margin-bottom:10px;}
+.counter b{color:var(--main-d);font-family:'Jua';font-weight:400;font-size:15px;}
+.scene{perspective:1600px;margin:0 auto;max-width:560px;}
+.flip{position:relative;width:100%;min-height:300px;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.7,.2,1);cursor:pointer;}
+.flip.flipped{transform:rotateY(180deg);}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:22px;padding:34px 30px;display:flex;flex-direction:column;border:2px solid var(--line);
+  box-shadow:0 14px 34px rgba(15,30,80,.16);background:#fff;}
+.front{align-items:center;justify-content:center;text-align:center;}
+.front .ftag{font-size:12.5px;color:var(--gray);font-weight:600;letter-spacing:.5px;margin-bottom:16px;}
+.front .term{font-family:'Jua';font-size:40px;color:var(--main-d);line-height:1.3;word-break:keep-all;}
+.front .fliphint{margin-top:22px;font-size:12.5px;color:#94a3b8;font-weight:500;}
+.back{transform:rotateY(180deg);justify-content:flex-start;}
+.back .bterm{font-family:'Jua';font-size:23px;color:var(--main-d);line-height:1.35;word-break:keep-all;
+  padding-bottom:11px;border-bottom:2px dashed var(--main-l);margin-bottom:14px;}
+.back .def{font-size:16.5px;line-height:1.62;font-weight:500;color:var(--ink);word-break:keep-all;}
+.back .ex{margin-top:auto;background:var(--main-ll);border-left:4px solid var(--main);border-radius:0 10px 10px 0;
+  padding:11px 14px;font-size:14px;line-height:1.55;color:#334155;font-weight:500;word-break:keep-all;}
+.back .ex b{color:var(--main-d);font-weight:700;}
+/* 상태 배지 */
+.statebadge{position:absolute;top:13px;right:14px;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;z-index:3;display:none;}
+.flip.is-known .front .statebadge.k{display:block;background:var(--ok-l);color:var(--ok);}
+.flip.is-known .back .statebadge.k{display:block;background:var(--ok-l);color:var(--ok);}
+.star{position:absolute;top:11px;left:13px;font-size:21px;cursor:pointer;z-index:4;line-height:1;
+  filter:grayscale(1);opacity:.4;transition:.15s;background:none;border:none;}
+.star.on{filter:none;opacity:1;}
+.star:hover{transform:scale(1.18);}
+
+/* ===== 판정 버튼 ===== */
+.judge{display:flex;gap:12px;justify-content:center;padding:16px 22px 8px;}
+.jbtn{font-family:'Jua',sans-serif;font-size:18px;border:none;border-radius:14px;padding:14px 0;cursor:pointer;
+  flex:1;max-width:230px;box-shadow:0 8px 18px rgba(15,30,80,.18);transition:transform .08s, filter .15s;}
+.jbtn:active{transform:translateY(2px);}
+.jbtn.know{background:var(--ok);color:#fff;}
+.jbtn.dont{background:var(--no);color:#fff;}
+.jbtn:hover{filter:brightness(1.06);}
+.jbtn small{display:block;font-family:'Noto Sans KR';font-weight:500;font-size:11.5px;opacity:.9;margin-top:2px;}
+
+/* ===== 하단 내비 ===== */
+.nav{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 22px 22px;}
+.navbtn{font-family:'Jua',sans-serif;font-size:15px;background:#fff;color:var(--main-d);border:2px solid var(--main);
+  border-radius:12px;padding:11px 20px;cursor:pointer;transition:.12s;}
+.navbtn:hover{background:var(--main-l);}
+.navbtn:disabled{opacity:.35;cursor:default;border-color:var(--line);color:var(--gray);}
+.nav .home{border-color:var(--line);color:var(--gray);}
+.nav .home:hover{background:#f1f5f9;}
+
+/* ===== 완료 ===== */
+.done{padding:42px 36px;text-align:center;display:none;}
+.done .medal{font-size:54px;}
+.done h2{font-size:30px;color:var(--main-d);margin-top:6px;}
+.done .dsub{color:var(--gray);font-size:15px;font-weight:500;margin-top:9px;line-height:1.6;}
+.dbtns{display:flex;gap:12px;justify-content:center;margin-top:26px;flex-wrap:wrap;}
+.hide{display:none!important;}
+.toast{position:fixed;left:50%;top:18px;transform:translateX(-50%);background:var(--main-d);color:#fff;
+  font-family:'Jua';font-size:15px;padding:10px 22px;border-radius:999px;box-shadow:0 8px 20px rgba(0,0,0,.25);
+  opacity:0;pointer-events:none;transition:opacity .25s, top .25s;z-index:50;}
+.toast.show{opacity:1;top:26px;}
+.toast.no{background:var(--no);} .toast.ok{background:var(--ok);}
+@media(max-width:560px){
+  .start{padding:38px 22px 34px;} .start h1{font-size:30px;}
+  .face{padding:28px 22px;} .front .term{font-size:32px;}
+  .scene{max-width:100%;} .flip{min-height:330px;}
+  .jbtn{font-size:16px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="shell">
+
+    <!-- 시작화면 -->
+    <section class="start" id="startScreen">
+      <span class="badge">통합사회 2 · 핵심 용어 암기</span>
+      <h1>핵심 용어 플래시카드</h1>
+      <p class="sub">단원을 고르면 <b>용어 카드</b>가 한 장씩 나와요.<br>카드를 눌러 <b>뒤집으면</b> 뜻과 예시가 보입니다. <b>안다 / 모른다</b>로 표시하며 외워요!</p>
+      <div class="feat">
+        <span>🔄 3D 뒤집기</span><span>✅ 안다·모른다</span><span>🔁 모르는 것만 반복</span><span>⭐ 즐겨찾기</span><span>📈 정복률 저장</span>
+      </div>
+      <div class="units" id="unitGrid"></div>
+      <p class="hint">키보드 — <kbd>Space</kbd> 뒤집기 · <kbd>←</kbd><kbd>→</kbd> 이전·다음 · <kbd>1</kbd> 안다 · <kbd>2</kbd> 모른다<br>
+        ‘안다’로 표시한 카드는 <b>이 기기에 기억</b>되어 다음에 와도 정복률이 그대로 이어집니다.</p>
+      <button class="resetAll" id="resetAll">전체 학습 기록 지우기</button>
+    </section>
+
+    <!-- 학습화면 -->
+    <section id="studyScreen" class="hide">
+      <div class="shead">
+        <span class="ix" id="hUnit">Ⅰ단원</span>
+        <div class="bar"><i id="hBar"></i></div>
+        <span class="mast">🏅 정복률 <span id="hMast">0%</span></span>
+      </div>
+      <div class="modes">
+        <button class="mtab on" data-mode="all" id="mAll">전체</button>
+        <button class="mtab" data-mode="unknown" id="mUnknown">모르는 것만</button>
+        <button class="mtab" data-mode="fav" id="mFav">⭐ 즐겨찾기</button>
+        <span class="spacer"></span>
+        <button class="tool" id="shuffleBtn">🔀 섞기</button>
+      </div>
+      <div class="stage">
+        <div class="counter"><b id="cPos">1</b> / <span id="cTot">1</span> 장 <span id="cModeLbl"></span></div>
+        <div class="scene">
+          <div class="flip" id="flip">
+            <div class="face front">
+              <button class="star" id="starF" title="즐겨찾기">★</button>
+              <span class="statebadge k">✓ 아는 카드</span>
+              <span class="ftag" id="ftag">용어</span>
+              <div class="term" id="frontTerm">용어</div>
+              <span class="fliphint">카드를 누르거나 Space — 뒤집기</span>
+            </div>
+            <div class="face back">
+              <button class="star" id="starB" title="즐겨찾기">★</button>
+              <span class="statebadge k">✓ 아는 카드</span>
+              <div class="bterm" id="backTerm">용어</div>
+              <div class="def" id="backDef">뜻</div>
+              <div class="ex" id="backEx"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="judge">
+        <button class="jbtn dont" id="dontBtn">모른다<small>다시 볼래요 (2)</small></button>
+        <button class="jbtn know" id="knowBtn">안다<small>정복! (1)</small></button>
+      </div>
+      <div class="nav">
+        <button class="navbtn home" id="homeBtn">← 단원 선택</button>
+        <div style="display:flex;gap:10px;">
+          <button class="navbtn" id="prevBtn">‹ 이전</button>
+          <button class="navbtn" id="nextBtn">다음 ›</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 완료 -->
+    <section class="done" id="doneScreen">
+      <div class="medal" id="dMedal">🎉</div>
+      <h2 id="dTitle">한 바퀴 끝!</h2>
+      <p class="dsub" id="dSub"></p>
+      <div class="dbtns">
+        <button class="navbtn" id="dAgain" style="background:var(--main);color:#fff;border:none;">다시 돌기</button>
+        <button class="navbtn home" id="dHome">← 단원 선택</button>
+      </div>
+    </section>
+
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* =================================================================
+   데이터: 단원별 핵심 용어 (뜻·예시 문장 전부 새로 서술)
+   각 카드 = [용어, 뜻, 한 줄 예시/포인트]
+   ================================================================= */
+const UNITS = [
+  {
+    no:"Ⅰ", title:"인권 보장과 헌법",
+    color:"#0D9488", dark:"#0a6f66", light:"#d8f0ed", ll:"#eef9f7",
+    cards:[
+      ["인간 존엄성","사람을 수단이 아니라 목적으로 대해야 한다는, 모든 인권의 바탕이 되는 근본 가치","“그래도 되나?”라는 물음의 답이 늘 “사람이니까”로 돌아가는 출발점."],
+      ["천부성","국가나 법이 정해 주기 전에, 인간이라는 이유만으로 태어날 때부터 지니는 권리의 성질","신분증이 없어도 권리는 이미 내 안에 있다."],
+      ["보편성","인종·성별·신분과 관계없이 모든 사람에게 똑같이 적용되는 인권의 성질","국적이 달라도 누구도 함부로 괴롭힘당해서는 안 된다."],
+      ["불가침성","어떤 권력이나 타인도 함부로 빼앗거나 침해할 수 없는 인권의 성질","다수결로도 한 사람의 양심의 자유를 없앨 수는 없다."],
+      ["항구성","한때만이 아니라 영구히 보장되어 사라지지 않는 인권의 성질","시대와 정권이 바뀌어도 권리 자체는 폐기되지 않는다."],
+      ["시민 혁명","절대 군주의 억압에 맞서 시민이 자유와 평등을 쟁취해 낸 근대의 변혁","신분제를 무너뜨리고 ‘권리 선언’을 낳은 인권의 큰 전환점."],
+      ["기본권","헌법이 국민에게 보장하는 기본적 권리의 묶음","자유권·평등권·참정권·사회권·청구권으로 나뉜다."],
+      ["자유권","국가의 부당한 간섭을 받지 않고 자유롭게 행동할 권리","어디 살지, 무엇을 믿을지 스스로 정할 수 있게 한다."],
+      ["평등권","합리적 이유 없이 차별받지 않고 똑같이 대우받을 권리","같은 일을 하면 성별과 무관하게 같은 기준을 적용받는다."],
+      ["참정권","국가의 의사 결정과 정치 과정에 참여할 권리","선거에서 투표하고 공직을 맡을 수 있게 하는 권리."],
+      ["사회권","인간다운 생활을 누리도록 국가에 적극적 보장을 요구할 권리","교육·근로·사회 보장을 받을 수 있게 하는 ‘적극적’ 권리."],
+      ["청구권","다른 기본권이 침해됐을 때 그 구제를 요구할 수 있는 권리","재판을 청구하거나 국가 배상을 요구하는 ‘권리를 위한 권리’."],
+      ["시민 불복종","정의롭지 못한 법·정책에 비폭력으로 공개 저항하며 그 처벌까지 감수하는 행동","부당함을 드러내되 폭력은 쓰지 않고 결과까지 책임진다."],
+      ["주거권","인간다운 삶이 가능한 적절한 주거 환경에서 살아갈 권리","시대 변화로 새롭게 주목받는 ‘새로운 인권’의 하나."],
+      ["안전권","재난·범죄·각종 위험으로부터 보호받으며 안전하게 살 권리","“안전하게 지낼 권리도 인권이다”라는 인식의 확장."],
+      ["잊힐 권리","인터넷에 남은 자신의 정보를 삭제하거나 확산을 막아 달라고 요구할 권리","디지털 시대에 새로 등장한 대표적 인권."]
+    ]
+  },
+  {
+    no:"Ⅱ", title:"사회 정의와 불평등",
+    color:"#9333EA", dark:"#7e22ce", light:"#efe1fb", ll:"#f8f2ff",
+    cards:[
+      ["정의(正義)","각자가 마땅히 받아야 할 몫을 공정하게 받도록 하는 사회의 올바름","“이건 공정해”라고 느끼게 만드는 사회의 기준."],
+      ["분배 정의","사회가 만들어 낸 이익과 부담을 어떤 기준으로 나눌지에 관한 정의","가산점·복지 혜택을 누구에게 줄지 정하는 문제."],
+      ["업적에 따른 분배","실제로 이룬 성과와 기여도를 기준으로 몫을 나누는 방식","비교가 쉽고 동기를 높이지만 과열 경쟁을 부른다."],
+      ["능력에 따른 분배","지닌 능력과 잠재력을 기준으로 몫을 나누는 방식","효율적이지만 타고난 조건의 차이는 가려내기 어렵다."],
+      ["필요에 따른 분배","사람마다 처한 형편과 절실한 필요를 기준으로 몫을 나누는 방식","형편이 어려운 학생에게 장학금을 먼저 주는 방식."],
+      ["자유주의적 정의관","개인의 자유와 권리 보장을 가장 중요한 정의로 보는 관점","“국가는 최소한만 개입하라”는 입장에 가깝다."],
+      ["공동체주의적 정의관","개인이 공동체 안에서 맡은 역할과 공동선 실현을 중시하는 정의관","연고·책임·공동체에 대한 기여를 강조한다."],
+      ["절차적 정의","결과 그 자체보다 거기에 이르는 과정과 규칙이 공정한지를 따지는 정의","규칙만 공정하면 그에 따른 결과를 받아들인다."],
+      ["공동선","공동체 구성원 모두에게 두루 이로운 가치","깨끗한 환경·안전처럼 함께 누리는 ‘좋음’."],
+      ["공간 불평등","지역에 따라 발전 수준과 생활 기반이 크게 차이 나는 현상","수도권 집중과 지방 쇠퇴가 대표적인 모습."],
+      ["사회적 약자","사회 구조 속에서 불리한 위치에 놓여 우선 보호가 필요한 사람들","장애인·이주민·저소득층 등이 해당한다."],
+      ["적극적 우대 조치","오랫동안 차별받아 온 집단에게 기회를 더 주어 실질적 평등을 이루려는 정책","일정 비율을 우선 선발하는 방식 등이 있다."],
+      ["역차별","약자를 배려하려던 정책이 도리어 다른 쪽을 불리하게 만드는 문제","과도한 우대가 낳는 새로운 불공정."],
+      ["사회 복지 제도","모든 국민의 인간다운 삶을 위해 국가가 마련한 지원 장치","사회 보험·공공 부조처럼 안전망 역할을 한다."],
+      ["적정 임금·기본 소득 논의","불평등을 줄이려고 소득의 바닥을 어떻게 받칠지 모색하는 사회적 논의","‘얼마를 어떻게’를 두고 찬반이 갈리는 현재진행형 쟁점."]
+    ]
+  },
+  {
+    no:"Ⅲ", title:"시장 경제와 지속 가능 발전",
+    color:"#1D4ED8", dark:"#1740ad", light:"#e1eafd", ll:"#f1f5fe",
+    cards:[
+      ["희소성","사람의 욕구에 비해 자원이 부족해 선택을 피할 수 없는 상태","시간도 돈도 한정돼 있어 늘 무언가를 포기하게 만든다."],
+      ["기회비용","무언가를 선택할 때 포기하게 되는 대안들 중 가치가 가장 큰 것","영화 대신 알바를 골랐다면 영화의 즐거움이 곧 비용."],
+      ["합리적 선택","비용과 편익을 따져 만족이 가장 큰 쪽을 고르는 의사 결정","단, 이미 써 버린 매몰 비용은 계산에 넣지 않는다."],
+      ["매몰 비용","이미 지출해 돌이킬 수 없는 비용","환불 안 되는 표값 때문에 재미없는 공연을 끝까지 보면 비합리적."],
+      ["편익","어떤 선택에서 얻게 되는 만족이나 이득","비용보다 편익이 커야 그 선택은 합리적이다."],
+      ["자본주의","사유 재산과 시장의 자유로운 경쟁을 바탕으로 굴러가는 경제 체제","상업→산업→수정 자본주의로 모습을 바꿔 왔다."],
+      ["시장 실패","시장에만 맡겼을 때 자원이 효율적으로 배분되지 못하는 현상","독과점·공공재 부족·외부 효과 등이 원인이 된다."],
+      ["외부 효과","어떤 경제 활동이 대가 없이 제3자에게 이익이나 손해를 주는 현상","양봉은 이웃 과수원에 이익, 공장 매연은 주민에게 손해."],
+      ["공공재","대가를 내지 않아도 함께 쓸 수 있어 시장이 충분히 공급하지 못하는 재화","국방·가로등처럼 국가가 대신 공급해야 하는 경우가 많다."],
+      ["비교 우위","같은 상품을 다른 생산자보다 더 적은 기회비용으로 만들 수 있는 능력","무역과 분업이 생겨나는 근본 이유."],
+      ["특화와 교환","잘 만드는 것에 집중해 만들고 서로 바꿔 모두가 풍요로워지는 원리","개인의 분업을 국가 사이로 넓힌 모습."],
+      ["자산 관리","안전성·수익성·유동성을 함께 따져 재산을 운용하는 활동","세 가지를 모두 갖춘 완벽한 자산은 없다는 점이 핵심."],
+      ["분산 투자","손실 위험을 줄이려고 성격이 다른 여러 자산에 나누어 투자하는 전략","“달걀을 한 바구니에 담지 마라”라는 말로 요약된다."],
+      ["신용","나중에 갚겠다는 약속을 믿고 거래가 이루어지게 하는 능력","신용이 무너지면 대출·거래의 길이 함께 막힌다."],
+      ["지속 가능한 발전","미래 세대의 몫을 해치지 않으면서 현재 세대의 필요를 채우는 발전","환경·경제·사회 세 축의 균형을 함께 추구한다."],
+      ["기업의 사회적 책임","이윤 추구를 넘어 환경·노동·지역 사회에 대한 책임까지 지는 기업의 자세","‘잘 버는 기업’에서 ‘함께 잘 사는 기업’으로의 전환."]
+    ]
+  },
+  {
+    no:"Ⅳ", title:"세계화와 평화",
+    color:"#EA580C", dark:"#c2470a", light:"#fce0d0", ll:"#fff3ec",
+    cards:[
+      ["세계화","국경을 넘어 사람·상품·자본·문화가 활발히 오가며 하나로 이어지는 흐름","같은 영화와 음악을 전 세계가 거의 동시에 즐긴다."],
+      ["다국적 기업","여러 나라에 생산·판매 거점을 두고 국경을 넘나들며 활동하는 기업","세계화를 앞에서 이끄는 대표 주체."],
+      ["문화 획일화","세계화로 강한 문화가 퍼지며 고유문화가 서로 비슷해지는 현상","거리마다 닮은 간판과 프랜차이즈가 들어선 풍경."],
+      ["보편 윤리","문화가 서로 달라도 인류가 함께 지켜야 할 공통의 가치","생명 존중·인간 존엄처럼 어디서나 통하는 기준."],
+      ["문화 상대주의","각 문화를 그 사회의 맥락 속에서 이해하려는 태도","단, 인간 존엄을 해치는 관습까지 인정하지는 않는다."],
+      ["소극적 평화","전쟁·테러·폭행 같은 직접적 폭력이 사라진 상태","“총성이 멈춘” 상태에 해당한다."],
+      ["적극적 평화","직접적 폭력뿐 아니라 빈곤·차별 같은 구조적 폭력까지 사라진 상태","누구나 인간답게 살 수 있어야 진짜 평화라고 본다."],
+      ["직접적 폭력","눈에 보이는 물리적 가해","폭행·전쟁처럼 가해자가 분명히 드러나는 폭력."],
+      ["구조적 폭력","사회 제도나 관습 속에 숨어 사람을 억압하는 간접적 폭력","빈곤·차별처럼 굳어진 구조가 사람을 짓누른다."],
+      ["문화적 폭력","폭력을 정당한 것처럼 받아들이게 만드는 종교·이념·예술의 작용","차별을 “원래 그런 것”으로 포장해 버리는 힘."],
+      ["공정 무역","개발 도상국 생산자에게 정당한 대가를 보장하려는 무역 방식","생산자 몫을 늘린 커피·초콜릿이 대표적인 예."],
+      ["국제 비정부 기구","국경을 넘어 활동하는 시민 중심의 민간 국제 단체","인권·환경 분야에서 국가가 못 미치는 곳을 메운다."],
+      ["분단 비용","분단이 이어짐으로써 치르는 군사·경제·심리적 비용","사라지지 않고 계속 쌓이는 ‘소모성’ 비용."],
+      ["평화 비용","평화를 지키고 통일을 준비하는 데 드는 비용","분단 비용과 달리 미래의 편익으로 되돌아오는 ‘투자’."],
+      ["동아시아 역사 갈등","과거사 인식과 영토를 둘러싸고 이웃 나라 사이에 빚어지는 갈등","대화와 공동 연구로 신뢰를 쌓아 풀어 가야 할 과제."]
+    ]
+  },
+  {
+    no:"Ⅴ", title:"미래와 지속 가능한 삶",
+    color:"#16A34A", dark:"#12823b", light:"#dcf3e3", ll:"#eefbf2",
+    cards:[
+      ["인구 분포","사람들이 지표 위에 어떻게 흩어져 살아가는지의 모습","기후·지형과 일자리가 분포를 크게 좌우한다."],
+      ["인구 부양력","한 지역이 가진 자원으로 먹여 살릴 수 있는 인구의 규모","부양력을 넘어서면 여러 인구 문제가 나타난다."],
+      ["합계 출산율","여성 한 명이 평생 낳을 것으로 기대되는 평균 자녀 수","약 2.1명이 인구를 유지하는 기준선으로 통한다."],
+      ["저출산","태어나는 아이의 수가 크게 줄어드는 현상","고령화와 맞물려 인구 구조를 빠르게 바꾼다."],
+      ["고령화 사회","전체 인구에서 노인이 차지하는 비율이 높아진 사회","노동력 감소와 복지 부담 증가를 함께 불러온다."],
+      ["인구 절벽","일할 수 있는 생산 가능 인구가 갑자기 줄어드는 현상","경제의 활력을 떨어뜨리는 인구 변화의 한 단면."],
+      ["에너지 자원의 편재성","에너지 자원이 일부 지역에 치우쳐 분포하는 특성","자원을 둘러싼 국제 갈등이 생기는 씨앗이 된다."],
+      ["화석 에너지","석탄·석유처럼 매장량이 한정되고 온실가스를 많이 내뿜는 에너지","쓸수록 줄고 기후 변화의 주된 원인이 된다."],
+      ["신재생 에너지","햇빛·바람·물처럼 고갈되지 않고 오염이 적은 에너지","친환경적이지만 날씨에 따라 공급이 들쑥날쑥하다."],
+      ["기후 변화","온실가스 증가로 지구의 기온과 기상이 장기적으로 달라지는 현상","폭염·가뭄·해수면 상승 등으로 삶을 위협한다."],
+      ["탄소 중립","배출한 만큼 흡수·제거해 실제 탄소 배출량을 0으로 맞추려는 목표","“더하고 빼서 결국 0”을 만드는 기후 대응 방향."],
+      ["지속 가능 발전 목표","더 나은 미래를 위해 국제 사회가 함께 정한 공동의 발전 목표","빈곤·교육·환경 등 여러 과제를 묶어 함께 풀자는 약속."],
+      ["세계 시민","지구촌 문제를 함께 책임지려는 자세를 지닌 시민","“내 일이 아니어도 외면하지 않는다”는 태도."],
+      ["윤리적 소비","가격뿐 아니라 환경·인권에 미칠 영향까지 따져서 하는 소비","공정 무역·친환경 제품을 고르는 작은 실천."],
+      ["공정 여행","현지의 환경과 주민에게 도움이 되도록 배려하며 즐기는 여행","‘많이 보는’ 여행에서 ‘바르게 누리는’ 여행으로."]
+    ]
+  }
+];
+
+/* ================= 상태 ================= */
+const LS_KNOWN="tsf2_known_v1", LS_FAV="tsf2_fav_v1";
+const $=id=>document.getElementById(id);
+const ROMAN=["Ⅰ","Ⅱ","Ⅲ","Ⅳ","Ⅴ"];
+
+function loadSet(k){try{return new Set(JSON.parse(localStorage.getItem(k)||"[]"));}catch(e){return new Set();}}
+function saveSet(k,s){try{localStorage.setItem(k,JSON.stringify([...s]));}catch(e){}}
+let known=loadSet(LS_KNOWN), fav=loadSet(LS_FAV);
+const keyOf=(u,t)=>UNITS[u].no+"::"+t;
+
+let curU=-1, mode="all", deck=[], pos=0, flipped=false;
+
+function shuffleArr(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function setTheme(u){const r=document.documentElement.style;
+  r.setProperty("--main",u.color);r.setProperty("--main-d",u.dark);
+  r.setProperty("--main-l",u.light);r.setProperty("--main-ll",u.ll);}
+
+/* ================= 시작화면 ================= */
+function buildStart(){
+  const g=$("unitGrid"); g.innerHTML="";
+  UNITS.forEach((u,i)=>{
+    const total=u.cards.length;
+    const kc=u.cards.filter(c=>known.has(keyOf(i,c[0]))).length;
+    const pct=Math.round(kc/total*100);
+    const b=document.createElement("button");
+    b.className="unit";
+    b.style.background="linear-gradient(150deg,"+u.color+","+u.dark+")";
+    b.innerHTML='<div class="rn">'+u.no+'</div><div class="nm">'+u.title+'</div>'+
+      '<div class="cnt">용어 '+total+'개</div>'+
+      '<div class="pbar"><i style="width:'+pct+'%"></i></div>'+
+      '<div class="pc">정복 '+kc+' / '+total+' · '+pct+'%</div>';
+    b.onclick=()=>openUnit(i);
+    g.appendChild(b);
+  });
+}
+
+/* ================= 덱 구성 ================= */
+function buildDeck(keepKeyTerm){
+  const u=UNITS[curU];
+  let idx=u.cards.map((c,i)=>i);
+  if(mode==="unknown") idx=idx.filter(i=>!known.has(keyOf(curU,u.cards[i][0])));
+  else if(mode==="fav") idx=idx.filter(i=>fav.has(keyOf(curU,u.cards[i][0])));
+  deck=idx;
+  if(deck.length===0){ showEmpty(); return false; }
+  pos=0;
+  if(keepKeyTerm){ const p=deck.indexOf(keepKeyTerm); if(p>=0) pos=p; }
+  return true;
+}
+
+function openUnit(i){
+  curU=i; setTheme(UNITS[i]); mode="all";
+  $("startScreen").classList.add("hide");
+  $("doneScreen").style.display="none";
+  $("studyScreen").classList.remove("hide");
+  $("hUnit").textContent=UNITS[i].no+". "+UNITS[i].title;
+  setModeTabs();
+  if(buildDeck()) render();
+}
+
+function setModeTabs(){
+  document.querySelectorAll(".mtab").forEach(t=>t.classList.toggle("on",t.dataset.mode===mode));
+  const lbl={all:"",unknown:"· 모르는 것만",fav:"· 즐겨찾기"}[mode];
+  $("cModeLbl").textContent=lbl;
+}
+
+/* ================= 렌더 ================= */
+function render(){
+  $("doneScreen").style.display="none";
+  $("studyScreen").classList.remove("hide");
+  const u=UNITS[curU];
+  if(deck.length===0){ showEmpty(); return; }
+  if(pos<0) pos=0; if(pos>=deck.length) pos=deck.length-1;
+  const ci=deck[pos];
+  const card=u.cards[ci];
+  const k=keyOf(curU,card[0]);
+  flipped=false;
+  const flip=$("flip"); flip.classList.remove("flipped");
+  flip.classList.toggle("is-known",known.has(k));
+  $("ftag").textContent="용어";
+  $("frontTerm").textContent=card[0];
+  $("backTerm").textContent=card[0];
+  $("backDef").textContent=card[1];
+  $("backEx").innerHTML="<b>예시·포인트</b> "+escapeHTML(card[2]);
+  $("starF").classList.toggle("on",fav.has(k));
+  $("starB").classList.toggle("on",fav.has(k));
+  $("cPos").textContent=pos+1;
+  $("cTot").textContent=deck.length;
+  $("prevBtn").disabled=(pos===0);
+  $("nextBtn").disabled=(pos===deck.length-1);
+  updateMastery();
+}
+function escapeHTML(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function updateMastery(){
+  const u=UNITS[curU];
+  const kc=u.cards.filter(c=>known.has(keyOf(curU,c[0]))).length;
+  const pct=Math.round(kc/u.cards.length*100);
+  $("hMast").textContent=pct+"%";
+  $("hBar").style.width=pct+"%";
+}
+
+function flipCard(){
+  flipped=!flipped;
+  $("flip").classList.toggle("flipped",flipped);
+}
+
+/* ================= 판정 ================= */
+function judge(isKnown){
+  const u=UNITS[curU], ci=deck[pos], card=u.cards[ci], k=keyOf(curU,card[0]);
+  if(isKnown){ known.add(k); toast("✓ 안다 — 정복!","ok"); }
+  else { known.delete(k); toast("↻ 모른다 — 다시 볼게요","no"); }
+  saveSet(LS_KNOWN,known);
+  $("flip").classList.toggle("is-known",known.has(k));
+  updateMastery();
+  // 자동으로 다음 카드
+  setTimeout(()=>advance(isKnown),360);
+}
+
+function advance(wasKnown){
+  const u=UNITS[curU];
+  if(mode==="unknown" && wasKnown){
+    // 정복한 카드는 덱에서 빠진다 → 같은 위치에 다음 카드
+    const ci=deck[pos];
+    deck.splice(pos,1);
+    if(deck.length===0){ showDone(); return; }
+    if(pos>=deck.length) pos=0; // 한 바퀴 돌아 처음으로
+    render();
+    return;
+  }
+  if(pos<deck.length-1){ pos++; render(); }
+  else {
+    // 마지막 카드 이후
+    if(mode==="unknown"){
+      // 남은 모르는 카드가 있으면 처음으로 순환
+      pos=0; render(); toast("🔁 남은 카드를 한 번 더!");
+    } else {
+      showDone();
+    }
+  }
+}
+
+function move(d){
+  if(d<0 && pos>0){ pos--; render(); }
+  else if(d>0 && pos<deck.length-1){ pos++; render(); }
+}
+
+/* ================= 즐겨찾기 ================= */
+function toggleFav(){
+  const u=UNITS[curU], ci=deck[pos], k=keyOf(curU,u.cards[ci][0]);
+  if(fav.has(k)){ fav.delete(k); toast("☆ 즐겨찾기 해제"); }
+  else { fav.add(k); toast("⭐ 즐겨찾기 추가"); }
+  saveSet(LS_FAV,fav);
+  $("starF").classList.toggle("on",fav.has(k));
+  $("starB").classList.toggle("on",fav.has(k));
+  if(mode==="fav" && !fav.has(k)){ // 즐겨찾기 모드에서 해제 시 덱 갱신
+    deck.splice(pos,1);
+    if(deck.length===0){ showEmpty(); return; }
+    if(pos>=deck.length) pos=deck.length-1;
+    render();
+  }
+}
+
+/* ================= 모드/섞기 ================= */
+function switchMode(m){
+  if(m===mode) return;
+  mode=m; setModeTabs();
+  if(buildDeck()) render();
+}
+function doShuffle(){
+  if(deck.length<=1) return;
+  const curKey=deck[pos];
+  deck=shuffleArr(deck);
+  pos=0; render(); toast("🔀 카드를 섞었어요");
+}
+
+/* ================= 빈 덱 / 완료 ================= */
+function showEmpty(){
+  const u=UNITS[curU];
+  $("studyScreen").classList.add("hide");
+  const d=$("doneScreen"); d.style.display="block";
+  if(mode==="unknown"){
+    $("dMedal").textContent="🏆";
+    $("dTitle").textContent="이 단원 완전 정복!";
+    $("dSub").textContent=u.no+". "+u.title+" — 모르는 카드가 하나도 없어요. 정복률 100%!";
+  } else if(mode==="fav"){
+    $("dMedal").textContent="⭐";
+    $("dTitle").textContent="즐겨찾기가 비어 있어요";
+    $("dSub").textContent="카드 왼쪽 위 별(★)을 눌러 외우고 싶은 용어를 담아 보세요.";
+  } else {
+    $("dMedal").textContent="📭";
+    $("dTitle").textContent="카드가 없어요";
+    $("dSub").textContent="다른 모드를 선택해 보세요.";
+  }
+}
+function showDone(){
+  const u=UNITS[curU];
+  const kc=u.cards.filter(c=>known.has(keyOf(curU,c[0]))).length;
+  const pct=Math.round(kc/u.cards.length*100);
+  $("studyScreen").classList.add("hide");
+  const d=$("doneScreen"); d.style.display="block";
+  let medal="🎉",title="한 바퀴 끝!";
+  if(pct===100){medal="🏆";title="완전 정복!";}
+  else if(pct>=70){medal="🥇";title="거의 다 왔어요!";}
+  else if(pct>=40){medal="🥈";title="잘하고 있어요!";}
+  $("dMedal").textContent=medal; $("dTitle").textContent=title;
+  $("dSub").textContent=u.no+". "+u.title+" — 지금 정복률 "+pct+"% ("+kc+" / "+u.cards.length+"). "+
+    (pct<100?"‘모르는 것만’ 모드로 남은 카드를 마저 외워 보세요!":"모든 용어를 정복했어요. 대단해요!");
+}
+
+/* ================= 토스트 ================= */
+let toastT=null;
+function toast(msg,kind){
+  const t=$("toast"); t.textContent=msg;
+  t.classList.remove("ok","no");
+  if(kind) t.classList.add(kind);
+  t.classList.add("show");
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),900);
+}
+
+/* ================= 홈 ================= */
+function goHome(){
+  $("studyScreen").classList.add("hide");
+  $("doneScreen").style.display="none";
+  $("startScreen").classList.remove("hide");
+  document.documentElement.style.cssText="";
+  buildStart();
+}
+
+/* ================= 이벤트 ================= */
+$("flip").addEventListener("click",e=>{ if(e.target.closest(".star")) return; flipCard(); });
+$("starF").addEventListener("click",e=>{e.stopPropagation();toggleFav();});
+$("starB").addEventListener("click",e=>{e.stopPropagation();toggleFav();});
+$("knowBtn").onclick=()=>judge(true);
+$("dontBtn").onclick=()=>judge(false);
+$("prevBtn").onclick=()=>move(-1);
+$("nextBtn").onclick=()=>move(1);
+$("shuffleBtn").onclick=doShuffle;
+$("homeBtn").onclick=goHome;
+$("dHome").onclick=goHome;
+$("dAgain").onclick=()=>{ mode="all"; setModeTabs(); if(buildDeck()) render(); };
+document.querySelectorAll(".mtab").forEach(t=>t.onclick=()=>switchMode(t.dataset.mode));
+$("resetAll").onclick=()=>{
+  if(confirm("이 기기에 저장된 모든 단원의 ‘아는 카드’ 기록과 즐겨찾기를 지울까요?")){
+    known.clear(); fav.clear(); saveSet(LS_KNOWN,known); saveSet(LS_FAV,fav);
+    buildStart(); toast("학습 기록을 모두 지웠어요");
+  }
+};
+
+document.addEventListener("keydown",e=>{
+  if($("studyScreen").classList.contains("hide")) return;
+  if(e.key===" "||e.code==="Space"){ e.preventDefault(); flipCard(); }
+  else if(e.key==="ArrowLeft"){ e.preventDefault(); move(-1); }
+  else if(e.key==="ArrowRight"){ e.preventDefault(); move(1); }
+  else if(e.key==="1"){ e.preventDefault(); judge(true); }
+  else if(e.key==="2"){ e.preventDefault(); judge(false); }
+  else if(e.key.toLowerCase()==="f"){ e.preventDefault(); toggleFav(); }
+});
+
+buildStart();
+</script>
+</body>
+</html>

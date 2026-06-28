@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>통합사회2 Ⅴ. 미래와 지속가능한 삶 · 100문항 랜덤 복습 챌린지</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --main:#16A34A; --main-d:#15803D; --main-l:#dcfce7; --main-ll:#f0fdf4;
+  --ink:#1E293B; --gray:#64748B; --line:#e2e8f0;
+  --ok:#16A34A; --ok-l:#e9f7ef; --no:#DC2626; --no-l:#fdecec; --warn:#E67E22;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:'Noto Sans KR',sans-serif;color:var(--ink);
+  background:linear-gradient(160deg,#16A34A 0%,#15803D 45%,#14532d 100%);
+  min-height:100%;display:flex;align-items:center;justify-content:center;padding:20px;}
+h1,h2,.brand,.big{font-family:'Jua',sans-serif;font-weight:400;}
+.wrap{width:100%;max-width:720px;}
+.card{background:#fff;border-radius:22px;box-shadow:0 24px 60px rgba(8,55,30,.32);
+  overflow:hidden;}
+
+/* ===== 시작화면 ===== */
+.start{padding:46px 40px 40px;text-align:center;}
+.badge{display:inline-block;background:var(--main-l);color:var(--main-d);
+  font-weight:700;font-size:13px;letter-spacing:.5px;padding:7px 16px;border-radius:999px;margin-bottom:18px;}
+.start h1{font-size:34px;color:var(--main-d);line-height:1.25;}
+.start .sub{font-size:16px;color:var(--gray);margin-top:10px;font-weight:500;}
+.feat{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:26px 0 8px;}
+.feat span{background:var(--main-ll);border:1px solid var(--line);color:var(--main-d);
+  font-size:13px;font-weight:500;padding:8px 14px;border-radius:12px;}
+.rowset{display:flex;gap:12px;justify-content:center;margin:24px 0 6px;flex-wrap:wrap;}
+.pick{display:flex;flex-direction:column;align-items:flex-start;gap:6px;
+  background:var(--main-ll);border:1px solid var(--line);border-radius:14px;padding:12px 16px;}
+.pick label{font-size:12px;color:var(--gray);font-weight:700;}
+.pick select{font-family:inherit;font-size:15px;font-weight:700;color:var(--main-d);
+  border:none;background:transparent;outline:none;cursor:pointer;}
+.btn{font-family:'Jua',sans-serif;font-size:21px;background:var(--main);color:#fff;border:none;
+  border-radius:14px;padding:15px 40px;cursor:pointer;box-shadow:0 8px 18px rgba(22,163,74,.35);
+  transition:transform .08s, background .15s;}
+.btn:hover{background:var(--main-d);}
+.btn:active{transform:translateY(2px);}
+.btn.ghost{background:#fff;color:var(--main-d);border:2px solid var(--main);box-shadow:none;font-size:17px;padding:12px 26px;}
+.hint{font-size:12.5px;color:var(--gray);margin-top:20px;line-height:1.7;}
+kbd{background:#f1f5f9;border:1px solid #cbd5e1;border-bottom-width:2px;border-radius:6px;
+  padding:1px 7px;font-family:inherit;font-size:12px;color:#475569;}
+
+/* ===== 퀴즈 헤더 ===== */
+.qhead{background:var(--main-d);color:#fff;padding:14px 22px;display:flex;align-items:center;gap:14px;}
+.qhead .ix{font-family:'Jua';font-size:17px;white-space:nowrap;}
+.bar{flex:1;height:9px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden;}
+.bar i{display:block;height:100%;width:0;background:#fff;border-radius:99px;transition:width .35s;}
+.stat{display:flex;gap:14px;font-size:13.5px;font-weight:700;white-space:nowrap;}
+.stat .timer{font-family:'Jua';}
+
+/* ===== 문항 ===== */
+.qbody{padding:30px 30px 26px;min-height:330px;display:flex;flex-direction:column;}
+.tag{align-self:flex-start;font-size:12px;font-weight:700;padding:5px 12px;border-radius:8px;margin-bottom:14px;}
+.tag.mc{background:#dcfce7;color:var(--main-d);}
+.tag.ox{background:#fff4e6;color:#b45309;}
+.tag.short{background:#eef2ff;color:#4338ca;}
+.qtopic{font-size:12px;color:var(--gray);font-weight:500;margin-left:8px;}
+.qtext{font-size:20px;font-weight:700;line-height:1.55;margin-bottom:20px;word-break:keep-all;}
+.choices{display:flex;flex-direction:column;gap:11px;}
+.choice{display:flex;align-items:center;gap:13px;text-align:left;background:#fff;border:2px solid var(--line);
+  border-radius:13px;padding:14px 16px;font-family:inherit;font-size:16px;color:var(--ink);cursor:pointer;
+  transition:border-color .12s, background .12s;}
+.choice:hover:not(:disabled){border-color:var(--main);background:var(--main-ll);}
+.choice .num{flex:none;width:27px;height:27px;border-radius:50%;background:#f1f5f9;color:var(--gray);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;}
+.choice:disabled{cursor:default;}
+.choice.correct{border-color:var(--ok);background:var(--ok-l);}
+.choice.correct .num{background:var(--ok);color:#fff;}
+.choice.wrong{border-color:var(--no);background:var(--no-l);}
+.choice.wrong .num{background:var(--no);color:#fff;}
+.oxwrap{display:flex;gap:14px;}
+.oxwrap .choice{flex:1;justify-content:center;font-family:'Jua';font-size:24px;padding:24px 0;}
+.shortwrap{display:flex;gap:10px;}
+.shortwrap input{flex:1;font-family:inherit;font-size:17px;padding:14px 16px;border:2px solid var(--line);
+  border-radius:13px;outline:none;}
+.shortwrap input:focus{border-color:var(--main);}
+.shortwrap button{font-family:'Jua';font-size:17px;background:var(--main);color:#fff;border:none;
+  border-radius:13px;padding:0 24px;cursor:pointer;}
+
+/* ===== 해설 ===== */
+.explain{margin-top:18px;border-radius:13px;padding:16px 18px;font-size:15px;line-height:1.6;display:none;}
+.explain.show{display:block;animation:fade .25s;}
+.explain.right{background:var(--ok-l);border:1px solid #bbe6cc;}
+.explain.right .verdict{color:var(--ok);}
+.explain.wrongx{background:var(--no-l);border:1px solid #f3c9c9;}
+.explain.wrongx .verdict{color:var(--no);}
+.verdict{font-family:'Jua';font-size:17px;margin-bottom:6px;}
+.ansline{font-weight:700;margin-bottom:4px;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.qfoot{padding:0 30px 26px;display:flex;justify-content:flex-end;}
+.next{font-family:'Jua';font-size:18px;background:var(--main);color:#fff;border:none;border-radius:13px;
+  padding:13px 34px;cursor:pointer;visibility:hidden;}
+.next:active{transform:translateY(2px);}
+
+/* ===== 결과 ===== */
+.result{padding:40px 36px;text-align:center;display:none;}
+.result h2{font-size:30px;color:var(--main-d);}
+.scorebig{font-family:'Jua';font-size:62px;color:var(--main);line-height:1.1;margin:10px 0 2px;}
+.scoresub{color:var(--gray);font-size:15px;font-weight:500;}
+.rgrid{display:flex;gap:12px;justify-content:center;margin:24px 0;flex-wrap:wrap;}
+.rbox{background:var(--main-ll);border:1px solid var(--line);border-radius:14px;padding:14px 22px;min-width:96px;}
+.rbox .n{font-family:'Jua';font-size:26px;color:var(--main-d);}
+.rbox .l{font-size:12.5px;color:var(--gray);font-weight:600;margin-top:2px;}
+.medal{font-size:46px;}
+.wronglist{text-align:left;margin-top:14px;max-height:340px;overflow-y:auto;border-top:1px solid var(--line);padding-top:16px;}
+.wronglist h3{font-family:'Jua';font-size:17px;color:var(--no);margin-bottom:12px;}
+.witem{background:#fff;border:1px solid var(--line);border-left:4px solid var(--no);border-radius:10px;
+  padding:12px 14px;margin-bottom:10px;}
+.witem .wq{font-weight:700;font-size:14.5px;margin-bottom:6px;line-height:1.5;}
+.witem .wa{font-size:13.5px;color:var(--ink);}
+.witem .wa b{color:var(--ok);}
+.witem .we{font-size:13px;color:var(--gray);margin-top:4px;line-height:1.55;}
+.perfect{background:var(--ok-l);border:1px solid #bbe6cc;border-radius:12px;padding:18px;color:var(--ok);
+  font-weight:700;margin-top:8px;}
+.rbtns{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap;}
+@media(max-width:560px){
+  .start{padding:34px 22px;} .start h1{font-size:27px;} .qbody{padding:24px 20px;}
+  .qtext{font-size:18px;} .qfoot{padding:0 20px 22px;} .result{padding:32px 20px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+
+  <!-- 시작화면 -->
+  <section id="screen-start" class="start">
+    <div class="badge">통합사회 2 · 대단원 Ⅴ</div>
+    <h1>미래와 지속가능한 삶<br>100문항 랜덤 복습 챌린지</h1>
+    <p class="sub">객관식 · OX · 단답을 섞어 푸는 개념 완전 정복 게임</p>
+    <div class="feat">
+      <span>🔀 매번 새로 섞이는 랜덤 출제</span>
+      <span>⚡ 즉시 정오 · 한 줄 해설</span>
+      <span>⏱ 타이머 · 점수판 · 오답노트</span>
+    </div>
+    <div class="rowset">
+      <div class="pick">
+        <label>문항 수</label>
+        <select id="count">
+          <option value="20">20문항 (스피드)</option>
+          <option value="50">50문항 (중간)</option>
+          <option value="100" selected>100문항 (전체)</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:8px;"><button class="btn" id="startBtn">시작하기 ▶</button></div>
+    <p class="hint">
+      마우스 클릭 또는 키보드로 풀 수 있어요.<br>
+      객관식 <kbd>1</kbd>~<kbd>5</kbd> · OX는 <kbd>O</kbd><kbd>X</kbd> · 다음 문항 <kbd>Enter</kbd> 또는 <kbd>Space</kbd>
+    </p>
+  </section>
+
+  <!-- 퀴즈 -->
+  <section id="screen-quiz" style="display:none;">
+    <div class="qhead">
+      <div class="ix"><span id="cur">1</span>/<span id="tot">100</span></div>
+      <div class="bar"><i id="barFill"></i></div>
+      <div class="stat">
+        <span class="timer">⏱ <span id="timer">00:00</span></span>
+        <span>⭐ <span id="score">0</span></span>
+      </div>
+    </div>
+    <div class="qbody">
+      <div><span class="tag mc" id="qtag">객관식</span><span class="qtopic" id="qtopic"></span></div>
+      <div class="qtext" id="qtext">문항</div>
+      <div id="qarea"></div>
+      <div class="explain" id="explain"></div>
+    </div>
+    <div class="qfoot"><button class="next" id="nextBtn">다음 ▶</button></div>
+  </section>
+
+  <!-- 결과 -->
+  <section id="screen-result" class="result">
+    <div class="medal" id="medal">🎉</div>
+    <h2 id="rTitle">챌린지 완료!</h2>
+    <div class="scorebig"><span id="rScore">0</span><span style="font-size:30px;color:var(--gray);">점</span></div>
+    <p class="scoresub" id="rSub">100점 만점 기준</p>
+    <div class="rgrid">
+      <div class="rbox"><div class="n" id="rCorrect">0</div><div class="l">맞힌 문항</div></div>
+      <div class="rbox"><div class="n" id="rWrong">0</div><div class="l">틀린 문항</div></div>
+      <div class="rbox"><div class="n" id="rTime">00:00</div><div class="l">걸린 시간</div></div>
+    </div>
+    <div id="reviewArea"></div>
+    <div class="rbtns">
+      <button class="btn" id="retryBtn">다시 도전 🔁</button>
+      <button class="btn ghost" id="homeBtn">처음으로</button>
+    </div>
+  </section>
+
+</div>
+</div>
+
+<script>
+/* ====================== 문항 데이터 ======================
+   type: "mc"(객관식) | "ox" | "short"(단답)
+   mc  : choices[], answer = 정답 보기 인덱스(0부터)
+   ox  : answer = "O" | "X"
+   short: answer = 정답 문자열, accept = 허용 답안 배열(선택)
+   t   : 소단원 표시
+========================================================= */
+const Q = [
+/* ===== Ⅴ-01 세계의 인구와 인구 문제 (1~34) ===== */
+{type:"mc",t:"인구 변화",q:"한 지역의 인구를 끊임없이 변화시키는 요인 중 '자연적 요인'에 해당하는 것은?",choices:["출생과 사망","전입과 전출","취업과 이직","입학과 졸업"],answer:0,explain:"출생·사망은 자연적 요인, 전입·전출은 사회적 요인에 해당한다."},
+{type:"ox",t:"인구 성장",q:"세계의 인구는 산업 혁명을 기점으로 급격하게 증가하였다.",answer:"O",explain:"산업 혁명 이후 생활 환경과 의료 기술이 개선되며 인구가 급증하였다."},
+{type:"mc",t:"인구 성장",q:"18세기 이후 세계 인구가 빠르게 늘어난 주된 배경으로 보기 어려운 것은?",choices:["의료 기술의 발달","공공 위생 시설 개선","평균 수명의 연장","사망률의 급격한 상승"],answer:3,explain:"사망률이 낮아지고 평균 수명이 늘면서 인구가 증가하였다."},
+{type:"mc",t:"인구 변천 모형",q:"인구 변천 모형에서 출생률과 사망률이 모두 높아 인구 변화가 거의 없는 단계는?",choices:["1단계(고위 정체)","2단계(초기 팽창)","4단계(저위 정체)","5단계(감소)"],answer:0,explain:"1단계는 출생률·사망률이 모두 높아 인구 증가가 거의 나타나지 않는다."},
+{type:"short",t:"인구 변천 모형",q:"출생률보다 사망률이 높아져 인구가 자연적으로 줄어드는 인구 변천 모형의 마지막 단계는 몇 단계인가?",answer:"5단계",accept:["5","5단계","오단계"],explain:"5단계에서는 인구의 자연적 감소가 나타난다."},
+{type:"ox",t:"인구 성장",q:"앞으로의 세계 인구 성장은 주로 출생률이 높은 개발 도상국이 주도할 것으로 예상된다.",answer:"O",explain:"아프리카·아시아 등 개발 도상국의 높은 출생률이 인구 성장을 이끈다."},
+{type:"mc",t:"인구 분포",q:"인구 분포에 영향을 주는 요인 중 '자연적 요인'에 해당하는 것끼리 묶은 것은?",choices:["기후·지형·식생·토양","산업·교통·문화·교육","임금·복지·일자리","정치·종교·전쟁"],answer:0,explain:"기후·지형·식생·토양은 전통적으로 인구 분포에 큰 영향을 준 자연적 요인이다."},
+{type:"mc",t:"인구 분포",q:"인구가 밀집하기 유리한 지역의 특성으로 적절한 것은?",choices:["험준한 산지와 고원","건조·한대 기후 지역","온화한 기후의 평야·해안","극지방의 빙하 지역"],answer:2,explain:"기후가 온화하고 평야가 발달한 지역은 거주에 유리해 인구가 밀집한다."},
+{type:"short",t:"인구 분포",q:"어떤 지역이 가진 자원으로 그곳 인구가 생활할 수 있는 능력을 뜻하는 말은?",answer:"인구 부양력",accept:["인구부양력","부양력"],explain:"벼농사가 발달한 지역은 단위 면적당 생산량이 많아 인구 부양력이 크다."},
+{type:"ox",t:"인구 분포",q:"건조 기후나 한대 기후 지역은 거주에 불리하여 인구가 희박하게 나타난다.",answer:"O",explain:"기후나 지형이 불리한 지역은 인구가 희박하다."},
+{type:"mc",t:"인구 분포",q:"오늘날 대도시와 선진국에 인구가 밀집하는 데 영향을 주는 '사회·경제적 요인'은?",choices:["산업·교통·문화·교육","강수량과 기온","해발 고도","토양의 비옥도"],answer:0,explain:"산업·교통·교육 등 사회·경제적 요인이 현대의 인구 분포에 큰 영향을 준다."},
+{type:"short",t:"인구 구조",q:"인구의 성별·연령별 구성을 피라미드 모양으로 나타낸 그래프를 무엇이라 하는가?",answer:"인구 피라미드",accept:["인구피라미드","피라미드"],explain:"인구 피라미드를 통해 인구 구조를 한눈에 파악할 수 있다."},
+{type:"mc",t:"인구 구조",q:"생산 활동을 할 수 있는 '생산 연령 인구(청장년층)'의 연령 범위는?",choices:["0~14세","15~64세","20~50세","65세 이상"],answer:1,explain:"생산 연령 인구는 15~64세에 해당하는 청장년층 인구이다."},
+{type:"mc",t:"인구 구조",q:"유소년층 인구 100명에 대한 노년층 인구의 비율을 나타내는 지표는?",choices:["성비","노령화 지수","인구 부양비","중위 연령"],answer:1,explain:"노령화 지수는 유소년층 100명당 노년층 인구 비율로, 고령화 정도를 보여 준다."},
+{type:"short",t:"인구 구조",q:"청장년층 인구 100명에 대해 유소년층과 노년층을 합한 인구 비율을 뜻하는 지표는?",answer:"인구 부양비",accept:["인구부양비","부양비"],explain:"인구 부양비는 청장년층이 부양해야 할 유소년·노년층의 비율을 나타낸다."},
+{type:"mc",t:"인구 구조",q:"선진국의 인구 구조 특징으로 옳은 것은?",choices:["유소년층 비율이 높고 노년층 비율이 낮음","유소년층 비율이 낮고 노년층 비율이 높음","유소년층과 노년층 비율이 모두 높음","유소년층과 노년층 비율이 모두 낮음"],answer:1,explain:"선진국은 저출생·고령화로 유소년층 비율은 낮고 노년층 비율은 높다."},
+{type:"ox",t:"인구 구조",q:"1차 산업이 발달한 촌락 지역은 도시 지역보다 노년층 인구 비율이 높게 나타난다.",answer:"O",explain:"청장년층이 도시로 빠져나간 촌락은 노년층 비율이 상대적으로 높다."},
+{type:"mc",t:"인구 구조",q:"여자 100명당 남자의 수를 나타내며, 광업·중화학 공업이 발달한 지역에서 높게 나타나는 지표는?",choices:["성비","중위 연령","합계 출산율","노령화 지수"],answer:0,explain:"성비는 여자 100명당 남자 수로, 남성 노동력이 많은 지역에서 높다."},
+{type:"mc",t:"인구이동",q:"'경제적 요인'에 의한 인구이동의 일반적인 방향으로 옳은 것은?",choices:["선진국에서 개발 도상국으로","개발 도상국에서 선진국으로","도시에서 촌락으로","북반구에서 남반구로"],answer:1,explain:"경제적 요인에 의한 이동은 일자리를 찾아 개발 도상국에서 선진국으로 향한다."},
+{type:"short",t:"인구이동",q:"전쟁, 박해, 기근, 자연재해 등을 피해 다른 지역으로 이동한 사람을 뜻하는 말은?",answer:"난민",accept:["난민"],explain:"정치적 요인에 의한 인구이동의 대표적 사례가 난민의 이동이다."},
+{type:"mc",t:"인구이동",q:"사막화나 해수면 상승 등 기후변화에 따른 재해를 피해 이동하는 사람들을 가리키는 말은?",choices:["경제 난민","환경 난민","계절 이주민","통근 인구"],answer:1,explain:"기후변화로 삶터를 잃고 이동하는 사람들을 환경 난민이라 한다."},
+{type:"mc",t:"인구이동",q:"사람들을 특정 지역으로 끌어들이는 '흡인 요인'으로 적절한 것은?",choices:["낮은 임금과 실업","풍부한 일자리와 높은 임금","정치적 탄압","잦은 자연재해"],answer:1,explain:"풍부한 일자리·높은 임금·쾌적한 환경 등은 인구를 끌어들이는 흡인 요인이다."},
+{type:"ox",t:"인구이동",q:"인구가 유입된 국가에서는 노동력 확보와 문화 다양성 증대 같은 긍정적 효과가 나타날 수 있다.",answer:"O",explain:"인구 유입은 경제 활성화와 문화 다양성 증대 효과를 가져오기도 한다."},
+{type:"mc",t:"인구 문제",q:"선진국에서 저출생·고령화 현상이 나타나게 된 배경으로 적절한 것은?",choices:["자녀에 대한 가치관 변화와 평균 수명 연장","출산 장려금의 급증","사망률의 급격한 상승","대규모 전쟁의 발생"],answer:0,explain:"결혼·자녀관의 변화와 평균 수명 연장이 저출생·고령화의 배경이 되었다."},
+{type:"short",t:"인구 문제",q:"한 여성이 가임 기간(15~49세)에 낳을 것으로 예상되는 평균 출생아 수를 뜻하는 지표는?",answer:"합계 출산율",accept:["합계출산율","출산율"],explain:"합계 출산율이 낮을수록 저출생 현상이 심하다고 본다."},
+{type:"ox",t:"인구 문제",q:"저출생·고령화가 지속되면 생산 연령 인구가 줄어 노동 생산성이 감소할 수 있다.",answer:"O",explain:"생산 연령 인구 감소는 노동 생산성 저하와 경기 침체로 이어질 수 있다."},
+{type:"mc",t:"인구 문제",q:"전체 인구 중 65세 이상 인구 비율에 따른 사회 구분에서 '초고령 사회'의 기준은?",choices:["7% 이상","14% 이상","20% 이상","30% 이상"],answer:2,explain:"고령화 사회(7%)→고령 사회(14%)→초고령 사회(20%)로 구분한다."},
+{type:"mc",t:"인구 문제",q:"개발 도상국에서 나타나는 인구 과잉 현상으로 발생하는 문제로 보기 어려운 것은?",choices:["일자리 부족","도시의 주택·기반 시설 부족","식량 및 식수 부족","노년층 부양 부담 급증"],answer:3,explain:"노년층 부양 부담 급증은 인구 과잉이 아니라 고령화에 따른 문제이다."},
+{type:"short",t:"인구 문제 해결",q:"인구가 지나치게 많은 개발 도상국에서 출산을 줄이기 위해 시행하는 정책을 통틀어 무엇이라 하는가?",answer:"산아 제한 정책",accept:["산아제한","산아 제한","산아제한정책","출산 억제 정책"],explain:"개발 도상국은 인구 과잉 해결을 위해 산아 제한·식량 증산 정책 등을 편다."},
+{type:"mc",t:"인구 문제 해결",q:"선진국이 저출생 문제를 해결하기 위해 시행하는 정책으로 적절한 것은?",choices:["산아 제한 정책","출산 휴가·육아 휴직 보장 등 출산 장려 정책","이민 전면 금지","고령자 정년 단축"],answer:1,explain:"선진국은 출산 장려금, 육아 휴직 보장, 유연 근무제 등 출산 장려 정책을 편다."},
+{type:"ox",t:"인구 문제 해결",q:"'세대 간 정의'란 현세대와 미래 세대 간의 형평성을 고려하는 것을 의미한다.",answer:"O",explain:"세대 간 정의는 현세대의 복지가 미래 세대에게 과도한 부담이 되지 않도록 하는 것이다."},
+{type:"mc",t:"인구 문제",q:"가상 사례에서 추론할 수 있는 내용으로 가장 적절한 것은?  '바다해국은 합계 출산율이 0.8명대로 떨어졌고, 65세 이상 인구 비율은 22%에 이르렀다.'",choices:["인구 과잉으로 식량이 부족하다","저출생·고령화로 노동력 부족이 우려된다","유소년층 인구 비율이 매우 높다","개발 도상국의 전형적 인구 구조이다"],answer:1,explain:"낮은 출산율과 높은 노년층 비율은 저출생·고령화의 전형으로, 노동력 부족이 우려된다."},
+{type:"mc",t:"인구이동",q:"가상 사례와 가장 관련 깊은 인구이동 요인은?  '내전이 길어지자 라온국 주민 수십만 명이 국경을 넘어 이웃 나라로 피란하였다.'",choices:["경제적 요인","정치적 요인","문화적 요인","교육적 요인"],answer:1,explain:"내전을 피한 이동은 정치적 요인에 의한 인구이동(난민)에 해당한다."},
+/* ===== Ⅴ-02 에너지 자원과 지속가능한 발전 (35~67) ===== */
+{type:"mc",t:"자원의 의미",q:"자연에서 얻을 수 있는 것 중 인간에게 유용하고 기술적·경제적으로 이용 가치가 있는 것을 무엇이라 하는가?",choices:["자원","상품","폐기물","원자재 가격"],answer:0,explain:"이용 가치가 있는 것을 자원이라 하며, 그중 에너지를 얻는 것이 에너지 자원이다."},
+{type:"mc",t:"자원의 특성",q:"자원의 매장량이 한정되어 있어 언젠가는 고갈되는 특성을 무엇이라 하는가?",choices:["유한성","편재성","가변성","보편성"],answer:0,explain:"유한성은 자원의 매장량이 한정되어 결국 고갈되는 특성이다."},
+{type:"short",t:"자원의 특성",q:"자원이 지구상에 고르게 분포하지 않고 특정 지역에 치우쳐 분포하는 특성을 무엇이라 하는가?",answer:"편재성",accept:["편재성"],explain:"편재성 때문에 자원의 생산지와 소비지가 일치하지 않아 국제 이동이 발생한다."},
+{type:"mc",t:"자원의 특성",q:"자원의 가치가 과학기술의 발달이나 사회·문화적 배경에 따라 변화하는 특성은?",choices:["유한성","편재성","가변성","희소성"],answer:2,explain:"가변성은 시대와 기술에 따라 자원의 가치가 달라지는 특성이다."},
+{type:"ox",t:"화석 에너지",q:"석탄은 세계에서 소비량과 국제 이동량이 가장 많은 에너지 자원이다.",answer:"X",explain:"소비량과 국제 이동량이 가장 많은 자원은 석유이며, 석탄은 비교적 넓게 분포해 이동량이 적다."},
+{type:"mc",t:"화석 에너지",q:"세계 매장량의 절반 정도가 페르시아만 주변에 분포해 편재성이 매우 큰 에너지 자원은?",choices:["석탄","석유","천연가스","수력"],answer:1,explain:"석유는 페르시아만에 집중 분포하여 편재성이 크고 국제 이동량이 가장 많다."},
+{type:"short",t:"화석 에너지",q:"석유나 석탄보다 오염 물질 배출량이 적어 '청정에너지'라 불리는 화석 에너지 자원은?",answer:"천연가스",accept:["천연가스","천연 가스","LNG"],explain:"천연가스는 오염 물질 배출이 적어 청정에너지로 불리며 가정용·상업용으로 많이 쓰인다."},
+{type:"mc",t:"화석 에너지",q:"산업 혁명 이후 본격적으로 사용되었으며 오늘날 제철 공업이나 화력 발전에 주로 이용되는 자원은?",choices:["석탄","석유","천연가스","태양광"],answer:0,explain:"석탄은 가장 먼저 상용화된 화석 에너지로 제철·화력 발전에 주로 쓰인다."},
+{type:"ox",t:"화석 에너지",q:"천연가스는 다른 에너지 자원보다 가정용이나 상업용으로 많이 이용된다.",answer:"O",explain:"천연가스는 냉동 액화 기술 발달로 운반이 편리해졌고 가정용·상업용 비중이 높다."},
+{type:"mc",t:"신·재생 에너지",q:"다음 중 신·재생 에너지에 해당하지 않는 것은?",choices:["수력","풍력","태양광","석유"],answer:3,explain:"석유는 화석 에너지이며, 수력·풍력·태양광·수소 등이 신·재생 에너지이다."},
+{type:"mc",t:"자원 문제",q:"화석 에너지 사용 증가로 발생하는 환경 문제로 가장 적절한 것은?",choices:["온실가스 배출 증가로 기후변화 가속화","오존층 두께 증가","해수면 하강","대기 중 산소 농도 급증"],answer:0,explain:"화석 에너지 연소로 이산화 탄소 등 온실가스 배출이 늘어 기후변화가 빨라진다."},
+{type:"short",t:"자원 문제",q:"자원 보유국이 자국의 경제적·정치적 이익을 위해 자원을 전략적 무기로 이용하는 것을 무엇이라 하는가?",answer:"자원 민족주의",accept:["자원민족주의","자원 민족주의"],explain:"자원 민족주의의 예로 석유 수출국 기구가 생산량과 가격을 조절하는 것을 들 수 있다."},
+{type:"mc",t:"자원 문제",q:"주요 석유 수출국들이 원유 생산량과 가격을 조절하기 위해 결성한 국제 기구는?",choices:["OPEC(석유 수출국 기구)","WHO(세계 보건 기구)","WTO(세계 무역 기구)","IPCC"],answer:0,explain:"석유 수출국 기구(OPEC)는 원유 가격과 생산량을 조절하는 대표적 자원 민족주의 사례이다."},
+{type:"mc",t:"자원 문제",q:"현재 확인된 자원의 매장량을 연간 생산량으로 나누어 앞으로 몇 년간 생산 가능한지를 나타내는 지표는?",choices:["가채 연수","인구 부양비","중위 연령","노령화 지수"],answer:0,explain:"가채 연수는 매장량을 연간 생산량으로 나눈 값으로 자원의 고갈 시점을 가늠한다."},
+{type:"ox",t:"신·재생 에너지",q:"태양광·풍력 등 재생 에너지는 발전 과정에서 이산화 탄소를 거의 배출하지 않는다.",answer:"O",explain:"재생 에너지는 이산화 탄소와 대기 오염 물질을 거의 배출하지 않아 환경 문제 해결에 도움이 된다."},
+{type:"mc",t:"기후변화",q:"'기후변화'에 대한 설명으로 가장 적절한 것은?",choices:["하루 사이의 날씨 변동","일정 지역의 평균적 기후 상태가 장기간에 걸쳐 변화하는 것","계절이 바뀌는 자연 현상","특정 지역의 순간적인 기온 변화"],answer:1,explain:"기후변화는 어떤 지역의 평균적 기후 상태가 장기간 변화하는 현상이다."},
+{type:"mc",t:"기후변화",q:"기후변화의 '자연적 원인'으로 보기 어려운 것은?",choices:["태양 활동의 변화","대규모 화산 활동","태양과 지구의 위치 변화","화석 에너지 사용 증가"],answer:3,explain:"화석 에너지 사용 증가는 인위적 원인이며 나머지는 자연적 원인이다."},
+{type:"short",t:"기후변화",q:"오늘날 기후변화의 주된 인위적 원인으로, 화석 에너지 연소 과정에서 늘어나는 기체를 통틀어 무엇이라 하는가?",answer:"온실가스",accept:["온실가스","온실 가스","이산화탄소","이산화 탄소"],explain:"화석 에너지 사용으로 늘어난 온실가스가 오늘날 기후변화의 주요 원인이다."},
+{type:"mc",t:"기후변화",q:"기후변화로 나타나는 피해로 보기 어려운 것은?",choices:["해수면 상승에 따른 침수","태풍·폭우 등 기상 이변 증가","동식물 서식 환경 변화와 멸종 위기","오존층 복원과 생물 다양성 증가"],answer:3,explain:"기후변화는 기상 이변·해수면 상승·생물 멸종 위기를 가져온다."},
+{type:"mc",t:"기후변화 대응",q:"온실가스 배출권을 국가 간에 사고팔 수 있도록 한 '배출권 거래제'를 처음 도입한 국제 협약은?",choices:["교토 의정서","리우 선언","몬트리올 의정서","바젤 협약"],answer:0,explain:"교토 의정서는 온실가스 배출권 거래 제도를 도입한 대표적 기후 협약이다."},
+{type:"short",t:"기후변화 대응",q:"2015년 채택되어 선진국과 개발 도상국이 모두 온실가스 감축에 동참하기로 한 국제 협약은?",answer:"파리 협정",accept:["파리협정","파리 협정"],explain:"파리 협정은 모든 국가가 온실가스 감축 목표를 정해 실천하기로 한 협약이다."},
+{type:"mc",t:"기후변화 대응",q:"유럽 연합이 도입한 제도로, 탄소 배출이 많은 제품을 수입할 때 관세 형태의 부담을 매기는 것은?",choices:["탄소 국경 조정 제도(CBAM)","최저 임금 제도","공정 무역 인증","자유 무역 협정"],answer:0,explain:"탄소 국경 조정 제도는 제품 생산 시 배출된 탄소량을 추정해 부담을 매기는 제도이다."},
+{type:"ox",t:"기후변화 대응",q:"파리 협정은 선진국에만 온실가스 감축 의무를 부과하고 개발 도상국은 제외하였다.",answer:"X",explain:"파리 협정은 선진국뿐 아니라 개발 도상국까지 모두 감축에 동참하도록 한 점이 특징이다."},
+{type:"mc",t:"지속가능한 발전",q:"'지속가능한 발전'의 의미로 가장 적절한 것은?",choices:["미래 세대의 필요를 해치지 않으면서 현재 세대의 필요를 충족하는 발전","환경을 고려하지 않는 최대한의 경제 성장","현재 세대의 이익만을 우선하는 발전","자원 사용을 전면 중단하는 것"],answer:0,explain:"지속가능한 발전은 미래 세대를 배려하면서 현재 세대의 필요를 충족하는 발전이다."},
+{type:"short",t:"지속가능한 발전",q:"2015년 국제 연합 총회에서 채택한, 빈곤 퇴치·불평등 해소·환경 보호 등을 담은 17개 목표를 무엇이라 하는가?",answer:"지속가능발전목표",accept:["지속가능발전목표","SDGs","지속 가능 발전 목표","에스디지","지속가능발전 목표"],explain:"지속가능발전목표(SDGs)는 17개 목표와 169개 세부 목표로 구성되어 있다."},
+{type:"mc",t:"지속가능한 발전",q:"지속가능한 발전이 균형을 이루어야 한다고 보는 세 가지 축으로 옳은 것은?",choices:["경제·사회·환경","정치·군사·외교","과거·현재·미래","생산·소비·분배"],answer:0,explain:"지속가능한 발전은 경제 발전, 사회 안정과 통합, 환경 보전의 조화를 추구한다."},
+{type:"mc",t:"지속가능한 발전",q:"리우 선언과 의제 21이 채택된 1992년의 국제 회의는?",choices:["국제 연합 환경 개발 회의(UNCED)","세계 무역 기구 각료 회의","국제 노동 기구 총회","세계 보건 총회"],answer:0,explain:"1992년 국제 연합 환경 개발 회의(UNCED)에서 리우 선언과 의제 21이 채택되었다."},
+{type:"short",t:"지속가능한 발전",q:"먼 거리 운송을 거치지 않아 환경 오염이 적은 지역 농산물을 뜻하는 말은?",answer:"로컬 푸드",accept:["로컬푸드","로컬 푸드"],explain:"로컬 푸드 구매는 윤리적 소비를 실천하는 대표적 방법 중 하나이다."},
+{type:"mc",t:"지속가능한 발전",q:"소비가 사회·환경에 미치는 영향을 고려하는 '윤리적 소비'의 실천 사례로 적절한 것은?",choices:["공정 무역 제품과 로컬 푸드 이용","무조건 가장 싼 제품만 구매","일회용품의 적극적 사용","과대 포장 제품 선호"],answer:0,explain:"공정 무역 제품·로컬 푸드 이용은 윤리적 소비의 대표적 실천 사례이다."},
+{type:"ox",t:"자원의 특성",q:"자원은 편재성 때문에 생산지와 소비지가 일치하지 않아 국제적 이동이 발생한다.",answer:"O",explain:"편재성으로 생산지와 소비지가 달라 자원의 국제 이동과 갈등이 생긴다."},
+{type:"mc",t:"기후변화 대응",q:"가상 사례에서 알 수 있는 노력으로 가장 적절한 것은?  '늘솔국은 2035년까지 석탄 발전소를 모두 닫고 태양광·풍력 비중을 70%로 늘리기로 하였다.'",choices:["자원 민족주의 강화","신·재생 에너지 확대를 통한 기후변화 대응","화석 에너지 의존도 강화","인구 억제 정책"],answer:1,explain:"화석 발전을 줄이고 재생 에너지를 늘리는 것은 기후변화 대응 노력이다."},
+{type:"mc",t:"지속가능한 발전",q:"가상 사례에서 학생이 실천한 것으로 가장 적절한 것은?  '하늘이는 스마트폰을 꺼 두고, 전자 영수증을 받으며, 가까운 거리는 자전거로 다닌다.'",choices:["자원 민족주의","개인 차원의 탄소 줄이기 실천","산아 제한 정책","자유 무역 확대"],answer:1,explain:"에너지 절약과 친환경 생활 습관은 개인 차원의 탄소 줄이기 실천이다."},
+{type:"ox",t:"지속가능한 발전",q:"지속가능한 발전은 환경 보전만을 강조하며 경제 발전과 사회 통합은 고려하지 않는다.",answer:"X",explain:"지속가능한 발전은 경제·사회·환경 세 측면의 조화를 함께 추구한다."},
+/* ===== Ⅴ-03 미래 사회와 세계시민으로서의 삶 (68~100) ===== */
+{type:"mc",t:"미래 예측",q:"미래 사회를 예측하는 일이 중요한 이유로 가장 적절한 것은?",choices:["불확실한 미래에 유연하게 대응하고 위험을 줄이기 위해","과거를 그대로 되돌리기 위해","변화를 막고 현재 상태를 고정하기 위해","예측이 항상 100% 들어맞기 때문에"],answer:0,explain:"미래 예측은 변화를 미리 파악해 위험을 줄이고 기회를 활용하기 위함이다."},
+{type:"short",t:"미래학",q:"과거와 현재의 상황을 바탕으로 미래 사회의 모습을 예측하고 그 모델을 제공하는 학문은?",answer:"미래학",accept:["미래학","미래 연구"],explain:"미래학자들은 사회 변동 양상을 분석해 다가올 변화를 예측한다."},
+{type:"ox",t:"미래 예측",q:"미래는 불확실성이 높아 예측 결과를 무조건 받아들이기보다 유연하게 대응하는 자세가 필요하다.",answer:"O",explain:"미래는 조건에 따라 달라질 수 있으므로 예측을 맹신하지 말고 유연하게 대응해야 한다."},
+{type:"mc",t:"미래 사회 변화",q:"미래 사회의 정치·경제적 변화 양상에 대한 예측으로 적절한 것은?",choices:["국가 간 무역 경쟁 심화와 빈부 격차 확대","모든 국가의 경제 수준 완전 평준화","국가 간 교류의 완전한 단절","무역의 전면 소멸"],answer:0,explain:"자유 무역 확대로 무역 경쟁이 치열해지고 빈부 격차가 커질 것으로 예측된다."},
+{type:"mc",t:"미래 사회 변화",q:"과학기술 발전이 미래 사회에 가져올 '긍정적' 변화로 보기 어려운 것은?",choices:["자율 주행 자동차로 삶의 질 향상","생명 공학 발달로 수명 연장","정보 통신 발달로 활동 범위 확대","전자 감시 확대로 사생활 침해 증가"],answer:3,explain:"전자 감시 확대로 인한 사생활 침해는 과학기술 발전의 부정적 측면이다."},
+{type:"short",t:"미래 사회 변화",q:"국가나 기업이 축적된 개인 데이터를 이용해 개인의 행동이나 생각을 감시하는 것을 무엇이라 하는가?",answer:"전자 감시",accept:["전자감시","전자 감시"],explain:"전자 감시는 정보 통신 발달의 부작용으로, 사생활 침해 문제를 일으킬 수 있다."},
+{type:"mc",t:"미래 사회 변화",q:"인공지능을 학습시키는 데 쓰인 데이터가 사람이나 사회의 편견을 담고 있는 문제를 무엇이라 하는가?",choices:["데이터 편향성","정보 격차","인터넷 중독","전자 감시"],answer:0,explain:"데이터 편향성은 학습 데이터에 담긴 편견이 인공지능 판단에 반영되는 문제이다."},
+{type:"ox",t:"미래 사회 변화",q:"정보 통신 기술의 발달은 정보 격차나 인터넷 중독 같은 새로운 문제를 일으킬 수 있다.",answer:"O",explain:"정보 통신 발달은 편리함과 함께 정보 격차·전자 감시 등의 문제도 동반한다."},
+{type:"mc",t:"미래 사회 변화",q:"생명 공학과 유전 공학의 발달로 우려되는 문제로 가장 적절한 것은?",choices:["인간의 정체성과 도덕적 가치의 혼란","식량 생산의 완전한 중단","평균 수명의 급격한 단축","질병의 완전한 소멸"],answer:0,explain:"생명 복제·유전자 치료 등은 인간 정체성과 도덕적 가치의 혼란을 가져올 수 있다."},
+{type:"mc",t:"생태환경 변화",q:"미래 사회의 생태환경 변화에 대한 예측으로 적절한 것은?",choices:["자원 고갈과 환경 오염이 심화될 수 있음","환경 오염이 저절로 사라짐","자원이 무한히 늘어남","기후변화가 완전히 멈춤"],answer:0,explain:"경제 성장과 인구 증가로 자원 고갈과 환경 오염이 심해질 것으로 예측된다."},
+{type:"short",t:"세계시민",q:"자신이 지역·국가·지구촌과 상호 연결되어 있음을 깨닫고 인류 공동체의 일원으로 행동하는 사람을 무엇이라 하는가?",answer:"세계시민",accept:["세계시민","세계 시민"],explain:"세계화로 세계가 하나의 공동체가 되면서 세계시민으로서의 자세가 강조된다."},
+{type:"mc",t:"세계시민",q:"개인이 자아에서 가족·이웃·지역을 넘어 인류 전체로 확장되는 동심원에 둘러싸여 있다고 본 사상가는?",choices:["마사 누스바움","애덤 스미스","토머스 맬서스","장 보댕"],answer:0,explain:"마사 누스바움은 세계 시민주의 관점에서 인류 공동체의 일원으로서 책임을 강조하였다."},
+{type:"mc",t:"세계시민",q:"세계시민으로서 갖추어야 할 바람직한 자세로 적절한 것은?",choices:["인류의 보편적 가치를 중시하는 태도","자국의 이익만을 절대시하는 태도","다른 문화에 대한 배척","지구촌 문제에 대한 무관심"],answer:0,explain:"세계시민은 인류 보편 가치를 중시하고 다양한 문화를 존중해야 한다."},
+{type:"ox",t:"세계시민",q:"세계시민은 자국의 이익만을 우선시하며 지구촌 문제에는 관심을 두지 않는다.",answer:"X",explain:"세계시민은 개별 집단의 이익을 넘어 인류 전체의 이익을 함께 고려한다."},
+{type:"mc",t:"세계시민",q:"여러 국가의 협력이 반드시 필요한 '전 지구적 수준의 문제'로 보기 어려운 것은?",choices:["기후변화","감염병(전염병) 확산","국제 테러","개인의 진로 고민"],answer:3,explain:"기후변화·감염병·국제 테러는 전 지구적 협력이 필요한 문제이다."},
+{type:"short",t:"세대 간 정의",q:"현세대의 복지 정책이 미래 세대에게 과도한 부담을 주지 않도록 형평성을 고려하는 것을 무엇이라 하는가?",answer:"세대 간 정의",accept:["세대간정의","세대 간 정의","세대간 정의"],explain:"세대 간 정의는 지속가능한 발전을 위한 세대 간 형평성의 원칙이다."},
+{type:"mc",t:"미래 사회 변화",q:"가상 사례와 가장 관련 깊은 미래 기술은?  '바다 위 농장에서 날씨와 상관없이 자동화 설비로 채소를 대량 생산한다.'",choices:["식물 공장(자동화 농업)","전자 감시 시스템","자원 민족주의","공정 무역"],answer:0,explain:"외부 환경 영향 없이 작물을 생산하는 자동화 농업을 식물 공장이라 한다."},
+{type:"mc",t:"세계시민",q:"가상 사례에서 학생이 보인 태도로 가장 적절한 것은?  '온누리는 외국 친구들과 함께 기후 행동 캠페인에 참여하며 서로 다른 문화를 존중하였다.'",choices:["세계시민으로서의 책임 있는 자세","자원 민족주의","폐쇄적 민족주의","지구촌 문제에 대한 무관심"],answer:0,explain:"문화를 존중하며 지구촌 문제 해결에 동참하는 것은 세계시민의 자세이다."},
+{type:"ox",t:"미래 예측",q:"정부나 기업은 미래 예측을 바탕으로 새로운 정책이나 위기관리 전략을 세울 수 있다.",answer:"O",explain:"미래 예측은 정부의 정책 수립과 기업의 위기관리 전략에 활용된다."},
+{type:"mc",t:"미래 직업",q:"미래 사회에 중요성이 커질 것으로 예상되는 직업으로 보기 어려운 것은?",choices:["기후변화 대응 전문가","신·재생 에너지 전문가","정보 보호 전문가","수동 전화 교환원"],answer:3,explain:"기후·에너지·정보 보호 분야 직업의 중요성이 커질 것으로 예상된다."},
+{type:"mc",t:"미래 사회 변화",q:"과학기술 발전에 따른 운송 수단의 변화로 보기 어려운 것은?",choices:["자율 주행 자동차의 보급","무인기(드론)를 이용한 배송","사람들의 활동 범위 축소","소형 도심 항공 교통수단(UAM) 상용화"],answer:2,explain:"교통·정보 통신 발달로 시공간 제약이 줄어 활동 범위는 오히려 확대될 것으로 예측된다."},
+{type:"short",t:"미래 사회 변화",q:"인간의 학습 능력과 추리 능력 등을 갖추어 스스로 판단하는 컴퓨터 시스템을 무엇이라 하는가?",answer:"인공지능",accept:["인공지능","AI","에이아이"],explain:"인공지능과 자동화 기술의 발전은 미래 사회의 산업과 일자리에 큰 변화를 가져올 것이다."},
+{type:"mc",t:"미래 사회 변화",q:"가상 사례와 가장 관련 깊은 미래 교통 기술은?  '늘솔시는 도심 위를 나는 드론 택시 정류장을 곳곳에 설치하기로 하였다.'",choices:["소형 도심 항공 교통수단(UAM)","고속 철도","지하 송유관","해저 케이블"],answer:0,explain:"하늘을 나는 드론 택시 등은 소형 도심 항공 교통수단(UAM)의 사례이다."},
+{type:"ox",t:"생태환경 변화",q:"미래 사회에서는 발전된 과학기술을 활용해 멸종 위기에 처하거나 사라진 생물종을 복원하려는 시도가 이루어질 것으로 보인다.",answer:"O",explain:"유전자 연구 등을 활용한 멸종 생물 복원 사업이 미래 생태환경 대응의 한 사례로 제시된다."},
+{type:"mc",t:"생태환경 변화",q:"가상 사례에서 알 수 있는 미래 시설의 특징으로 가장 적절한 것은?  '바다해시는 쓰레기를 태워 전기를 만들고 그 열로 주변 지역에 난방을 공급한다.'",choices:["환경 문제와 에너지 문제에 함께 대응","화석 에너지 의존도를 높임","자원 민족주의를 강화함","온실가스 배출을 크게 늘림"],answer:0,explain:"폐기물을 활용한 에너지 생산 시설은 환경 보호와 에너지 자립을 동시에 추구한다."},
+{type:"short",t:"생태환경 변화",q:"인간과 자연이 공존하도록 도시 곳곳에 녹지를 늘려 '자연 속 도시'를 지향하는 미래 도시를 통틀어 무엇이라 하는가?",answer:"친환경 도시",accept:["친환경도시","친환경 도시","생태 도시","자연 속 도시"],explain:"친환경 도시는 지속가능한 교통·건물 설계와 자원 재활용으로 환경친화적 도시 환경을 만든다."},
+{type:"mc",t:"미래 사회 변화",q:"미래의 식량 문제 해결에 도움을 줄 것으로 기대되는 기술로 적절한 것은?",choices:["외부 환경 영향 없이 작물을 기르는 식물 공장","화석 에너지 발전소 확대","산아 제한 정책","전자 감시 시스템"],answer:0,explain:"식물 공장은 기후·계절의 영향 없이 작물을 대량 생산해 식량 문제 해결에 기여할 수 있다."},
+{type:"short",t:"미래 사회 변화",q:"태양광·풍력 등으로 만든 에너지를 저장해 두었다가 필요할 때 꺼내 쓰는 시설을 통틀어 무엇이라 하는가?",answer:"에너지 스토리지",accept:["에너지스토리지","에너지 저장 장치","ESS","에너지 저장"],explain:"에너지 스토리지는 재생 에너지의 활용을 넓히고 에너지 자립을 돕는 미래 기술이다."},
+{type:"mc",t:"세계시민",q:"세계시민으로서 자신의 진로를 설정하는 바람직한 태도로 가장 적절한 것은?",choices:["흥미·적성과 함께 지구촌에 어떻게 기여할지 고민함","오직 높은 소득만을 기준으로 삼음","사회 문제와 무관하게 선택함","남의 선택을 그대로 따름"],answer:0,explain:"세계시민은 흥미·적성과 더불어 지구촌 기여 방안을 고민해 진로를 정한다."},
+{type:"mc",t:"세계시민",q:"세계시민 의식의 핵심으로 가장 적절한 것은?",choices:["개별 집단의 이익을 넘어 인류 전체의 이익을 우선시함","자국의 이익만을 절대시함","다른 문화를 배척함","지구촌 문제를 외면함"],answer:0,explain:"세계시민 의식은 개별 집단을 넘어 인류 전체의 이익을 중시하는 태도이다."},
+{type:"ox",t:"미래 예측",q:"미래학자들은 과거와 현재의 사회 변동 양상을 분석하여 다가올 변화를 예측한다.",answer:"O",explain:"미래학은 과거·현재 분석을 바탕으로 미래 사회의 모습을 그려 모델을 제공한다."},
+{type:"mc",t:"미래 사회 변화",q:"미래 사회에서 국가 간 갈등을 줄이려는 '협력'의 모습으로 적절한 것은?",choices:["협정·조약 체결과 협력 프로그램 마련","무역의 전면 중단","교류의 완전한 단절","자원의 독점 강화"],answer:0,explain:"미래 사회에서는 갈등과 함께 협정·조약 체결 등 국가 간 협력도 강화될 것으로 예측된다."},
+{type:"ox",t:"세계시민",q:"세계화로 각 국가가 밀접하게 연결되면서 세계가 하나의 공동체로서의 성격이 강해지고 있다.",answer:"O",explain:"세계화로 상호 연결이 깊어지며 세계시민으로서의 책임 의식이 강조된다."},
+{type:"mc",t:"세계시민",q:"전 지구적 문제 해결을 위해 세계시민으로서 할 수 있는 노력으로 적절한 것은?",choices:["여러 국가·조직의 협력에 적극 참여","지구촌 문제에 대한 무관심","자국 문화만 옳다고 여김","다른 문화에 대한 배척"],answer:0,explain:"세계시민은 기후변화·감염병 등 전 지구적 문제 해결을 위한 협력에 동참해야 한다."}
+];
+
+/* ====================== 엔진 ====================== */
+const $=s=>document.querySelector(s);
+const els={
+  start:$('#screen-start'),quiz:$('#screen-quiz'),result:$('#screen-result'),
+  cur:$('#cur'),tot:$('#tot'),bar:$('#barFill'),timer:$('#timer'),score:$('#score'),
+  tag:$('#qtag'),topic:$('#qtopic'),qtext:$('#qtext'),area:$('#qarea'),
+  explain:$('#explain'),next:$('#nextBtn')
+};
+let pool=[],idx=0,score=0,correctN=0,wrongN=0,answered=false,startT=0,timerId=null,wrongList=[];
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function norm(s){return String(s).replace(/\s+/g,'').replace(/[.,·]/g,'').toLowerCase();}
+function fmt(sec){const m=String(Math.floor(sec/60)).padStart(2,'0');const s=String(sec%60).padStart(2,'0');return m+':'+s;}
+
+function startQuiz(){
+  const n=parseInt($('#count').value,10);
+  pool=shuffle(Q).slice(0,Math.min(n,Q.length));
+  idx=0;score=0;correctN=0;wrongN=0;wrongList=[];
+  els.start.style.display='none';els.result.style.display='none';els.quiz.style.display='block';
+  els.tot.textContent=pool.length;
+  startT=Date.now();
+  clearInterval(timerId);
+  timerId=setInterval(()=>{els.timer.textContent=fmt(Math.floor((Date.now()-startT)/1000));},250);
+  render();
+}
+
+function render(){
+  answered=false;
+  const q=pool[idx];
+  els.cur.textContent=idx+1;
+  els.bar.style.width=((idx)/pool.length*100)+'%';
+  els.score.textContent=score;
+  els.explain.className='explain';els.explain.innerHTML='';
+  els.next.style.visibility='hidden';
+  els.next.textContent=(idx===pool.length-1)?'결과 보기 ▶':'다음 ▶';
+  const tagmap={mc:['mc','객관식'],ox:['ox','O X 문제'],short:['short','단답형']};
+  els.tag.className='tag '+tagmap[q.type][0];
+  els.tag.textContent=tagmap[q.type][1];
+  els.topic.textContent=q.t?('· '+q.t):'';
+  els.qtext.textContent=q.q;
+  els.area.innerHTML='';
+
+  if(q.type==='mc'){
+    const wrap=document.createElement('div');wrap.className='choices';
+    q.choices.forEach((c,i)=>{
+      const b=document.createElement('button');b.className='choice';
+      b.innerHTML='<span class="num">'+(i+1)+'</span><span>'+c+'</span>';
+      b.onclick=()=>pickMC(i);
+      wrap.appendChild(b);
+    });
+    els.area.appendChild(wrap);
+  }else if(q.type==='ox'){
+    const wrap=document.createElement('div');wrap.className='oxwrap';
+    ['O','X'].forEach(v=>{
+      const b=document.createElement('button');b.className='choice';b.textContent=v;
+      b.dataset.v=v;b.onclick=()=>pickOX(v);
+      wrap.appendChild(b);
+    });
+    els.area.appendChild(wrap);
+  }else{
+    const wrap=document.createElement('div');wrap.className='shortwrap';
+    const inp=document.createElement('input');inp.type='text';inp.id='shortInput';
+    inp.placeholder='정답을 입력하고 Enter';inp.autocomplete='off';
+    inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();submitShort();}};
+    const b=document.createElement('button');b.textContent='제출';b.onclick=submitShort;
+    wrap.appendChild(inp);wrap.appendChild(b);
+    els.area.appendChild(wrap);
+    setTimeout(()=>inp.focus(),40);
+  }
+}
+
+function lockChoices(){els.area.querySelectorAll('button').forEach(b=>b.disabled=true);}
+
+function judge(ok,userText){
+  if(answered)return;
+  answered=true;
+  const q=pool[idx];
+  const ansText=answerText(q);
+  if(ok){score+=1;correctN++;}
+  else{wrongN++;wrongList.push({q:q.q,ans:ansText,explain:q.explain,user:userText});}
+  els.score.textContent=score;
+  els.explain.className='explain show '+(ok?'right':'wrongx');
+  els.explain.innerHTML='<div class="verdict">'+(ok?'⭕ 정답입니다!':'❌ 아쉬워요')+'</div>'+
+    (ok?'':'<div class="ansline">정답 : '+ansText+'</div>')+
+    '<div>'+q.explain+'</div>';
+  els.next.style.visibility='visible';
+  els.next.focus();
+}
+
+function answerText(q){
+  if(q.type==='mc')return (q.answer+1)+'번. '+q.choices[q.answer];
+  if(q.type==='ox')return q.answer;
+  return q.answer;
+}
+
+function pickMC(i){
+  if(answered)return;
+  const q=pool[idx];const ok=(i===q.answer);
+  lockChoices();
+  const btns=els.area.querySelectorAll('.choice');
+  btns[q.answer].classList.add('correct');
+  if(!ok)btns[i].classList.add('wrong');
+  judge(ok,(i+1)+'번');
+}
+function pickOX(v){
+  if(answered)return;
+  const q=pool[idx];const ok=(v===q.answer);
+  lockChoices();
+  els.area.querySelectorAll('.choice').forEach(b=>{
+    if(b.dataset.v===q.answer)b.classList.add('correct');
+    else if(b.dataset.v===v)b.classList.add('wrong');
+  });
+  judge(ok,v);
+}
+function submitShort(){
+  if(answered)return;
+  const q=pool[idx];
+  const inp=$('#shortInput');const val=inp.value.trim();
+  if(!val){inp.focus();return;}
+  const cands=[q.answer].concat(q.accept||[]).map(norm);
+  const ok=cands.includes(norm(val));
+  inp.disabled=true;els.area.querySelector('button').disabled=true;
+  judge(ok,val);
+}
+
+function nextQ(){
+  if(!answered)return;
+  if(idx<pool.length-1){idx++;render();}
+  else finish();
+}
+
+function finish(){
+  clearInterval(timerId);
+  const elapsed=Math.floor((Date.now()-startT)/1000);
+  const total=pool.length;
+  const scaled=Math.round(score/total*100);
+  els.quiz.style.display='none';els.result.style.display='block';
+  els.bar.style.width='100%';
+  $('#rScore').textContent=scaled;
+  $('#rSub').textContent='총 '+total+'문항 중 '+correctN+'개 정답 (100점 만점 환산)';
+  $('#rCorrect').textContent=correctN;
+  $('#rWrong').textContent=wrongN;
+  $('#rTime').textContent=fmt(elapsed);
+  let medal='🎯',title='완료! 복습을 이어가요';
+  if(scaled===100){medal='🏆';title='완벽해요! 만점 달성';}
+  else if(scaled>=90){medal='🥇';title='훌륭해요!';}
+  else if(scaled>=70){medal='🥈';title='잘했어요!';}
+  else if(scaled>=50){medal='🥉';title='절반 넘었어요';}
+  $('#medal').textContent=medal;$('#rTitle').textContent=title;
+  const area=$('#reviewArea');
+  if(wrongList.length===0){
+    area.innerHTML='<div class="perfect">✨ 틀린 문항이 없습니다. 개념을 완벽하게 이해했어요!</div>';
+  }else{
+    let h='<div class="wronglist"><h3>📝 오답 노트 ('+wrongList.length+'문항)</h3>';
+    wrongList.forEach((w,i)=>{
+      h+='<div class="witem"><div class="wq">Q'+(i+1)+'. '+w.q+'</div>'+
+         '<div class="wa">정답 : <b>'+w.ans+'</b></div>'+
+         '<div class="we">'+w.explain+'</div></div>';
+    });
+    h+='</div>';area.innerHTML=h;
+  }
+}
+
+function goHome(){clearInterval(timerId);els.quiz.style.display='none';els.result.style.display='none';els.start.style.display='block';}
+
+$('#startBtn').onclick=startQuiz;
+$('#retryBtn').onclick=startQuiz;
+$('#homeBtn').onclick=goHome;
+els.next.onclick=nextQ;
+
+document.addEventListener('keydown',e=>{
+  if(els.quiz.style.display==='none')return;
+  const q=pool[idx];
+  if(!answered){
+    if(q.type==='mc'&&/^[1-9]$/.test(e.key)){
+      const i=parseInt(e.key,10)-1;if(i<q.choices.length)pickMC(i);
+    }else if(q.type==='ox'){
+      if(e.key==='o'||e.key==='O'||e.key==='ㅐ')pickOX('O');
+      if(e.key==='x'||e.key==='X'||e.key==='ㅌ')pickOX('X');
+    }
+  }else{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();nextQ();}
+  }
+});
+</script>
+</body>
+</html>

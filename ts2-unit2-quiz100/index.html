@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>통합사회2 Ⅱ. 사회 정의와 불평등 · 100문항 랜덤 복습 챌린지</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --main:#9333EA; --main-d:#7c22ce; --main-l:#f3e8ff; --main-ll:#faf5ff;
+  --ink:#1E293B; --gray:#64748B; --line:#e2e8f0;
+  --ok:#16A34A; --ok-l:#e9f7ef; --no:#DC2626; --no-l:#fdecec; --warn:#E67E22;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:'Noto Sans KR',sans-serif;color:var(--ink);
+  background:linear-gradient(160deg,#9333EA 0%,#7c22ce 45%,#641aac 100%);
+  min-height:100%;display:flex;align-items:center;justify-content:center;padding:20px;}
+h1,h2,.brand,.big{font-family:'Jua',sans-serif;font-weight:400;}
+.wrap{width:100%;max-width:720px;}
+.card{background:#fff;border-radius:22px;box-shadow:0 24px 60px rgba(60,15,90,.32);overflow:hidden;}
+
+.start{padding:46px 40px 40px;text-align:center;}
+.badge{display:inline-block;background:var(--main-l);color:var(--main-d);
+  font-weight:700;font-size:13px;letter-spacing:.5px;padding:7px 16px;border-radius:999px;margin-bottom:18px;}
+.start h1{font-size:34px;color:var(--main-d);line-height:1.25;}
+.start .sub{font-size:16px;color:var(--gray);margin-top:10px;font-weight:500;}
+.feat{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:26px 0 8px;}
+.feat span{background:var(--main-ll);border:1px solid var(--line);color:var(--main-d);
+  font-size:13px;font-weight:500;padding:8px 14px;border-radius:12px;}
+.rowset{display:flex;gap:12px;justify-content:center;margin:24px 0 6px;flex-wrap:wrap;}
+.pick{display:flex;flex-direction:column;align-items:flex-start;gap:6px;
+  background:var(--main-ll);border:1px solid var(--line);border-radius:14px;padding:12px 16px;}
+.pick label{font-size:12px;color:var(--gray);font-weight:700;}
+.pick select{font-family:inherit;font-size:15px;font-weight:700;color:var(--main-d);
+  border:none;background:transparent;outline:none;cursor:pointer;}
+.btn{font-family:'Jua',sans-serif;font-size:21px;background:var(--main);color:#fff;border:none;
+  border-radius:14px;padding:15px 40px;cursor:pointer;box-shadow:0 8px 18px rgba(147,51,234,.35);
+  transition:transform .08s, background .15s;}
+.btn:hover{background:var(--main-d);}
+.btn:active{transform:translateY(2px);}
+.btn.ghost{background:#fff;color:var(--main-d);border:2px solid var(--main);box-shadow:none;font-size:17px;padding:12px 26px;}
+.hint{font-size:12.5px;color:var(--gray);margin-top:20px;line-height:1.7;}
+kbd{background:#f1f5f9;border:1px solid #cbd5e1;border-bottom-width:2px;border-radius:6px;
+  padding:1px 7px;font-family:inherit;font-size:12px;color:#475569;}
+
+.qhead{background:var(--main-d);color:#fff;padding:14px 22px;display:flex;align-items:center;gap:14px;}
+.qhead .ix{font-family:'Jua';font-size:17px;white-space:nowrap;}
+.bar{flex:1;height:9px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden;}
+.bar i{display:block;height:100%;width:0;background:#fff;border-radius:99px;transition:width .35s;}
+.stat{display:flex;gap:14px;font-size:13.5px;font-weight:700;white-space:nowrap;}
+.stat .timer{font-family:'Jua';}
+
+.qbody{padding:30px 30px 26px;min-height:330px;display:flex;flex-direction:column;}
+.tag{align-self:flex-start;font-size:12px;font-weight:700;padding:5px 12px;border-radius:8px;margin-bottom:14px;}
+.tag.mc{background:#f3e8ff;color:var(--main-d);}
+.tag.ox{background:#fff4e6;color:#b45309;}
+.tag.short{background:#e0f2fe;color:#0369a1;}
+.qtopic{font-size:12px;color:var(--gray);font-weight:500;margin-left:8px;}
+.qtext{font-size:20px;font-weight:700;line-height:1.55;margin-bottom:20px;word-break:keep-all;}
+.choices{display:flex;flex-direction:column;gap:11px;}
+.choice{display:flex;align-items:center;gap:13px;text-align:left;background:#fff;border:2px solid var(--line);
+  border-radius:13px;padding:14px 16px;font-family:inherit;font-size:16px;color:var(--ink);cursor:pointer;
+  transition:border-color .12s, background .12s;}
+.choice:hover:not(:disabled){border-color:var(--main);background:var(--main-ll);}
+.choice .num{flex:none;width:27px;height:27px;border-radius:50%;background:#f1f5f9;color:var(--gray);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;}
+.choice:disabled{cursor:default;}
+.choice.correct{border-color:var(--ok);background:var(--ok-l);}
+.choice.correct .num{background:var(--ok);color:#fff;}
+.choice.wrong{border-color:var(--no);background:var(--no-l);}
+.choice.wrong .num{background:var(--no);color:#fff;}
+.oxwrap{display:flex;gap:14px;}
+.oxwrap .choice{flex:1;justify-content:center;font-family:'Jua';font-size:24px;padding:24px 0;}
+.shortwrap{display:flex;gap:10px;}
+.shortwrap input{flex:1;font-family:inherit;font-size:17px;padding:14px 16px;border:2px solid var(--line);
+  border-radius:13px;outline:none;}
+.shortwrap input:focus{border-color:var(--main);}
+.shortwrap button{font-family:'Jua';font-size:17px;background:var(--main);color:#fff;border:none;
+  border-radius:13px;padding:0 24px;cursor:pointer;}
+
+.explain{margin-top:18px;border-radius:13px;padding:16px 18px;font-size:15px;line-height:1.6;display:none;}
+.explain.show{display:block;animation:fade .25s;}
+.explain.right{background:var(--ok-l);border:1px solid #bbe6cc;}
+.explain.right .verdict{color:var(--ok);}
+.explain.wrongx{background:var(--no-l);border:1px solid #f3c9c9;}
+.explain.wrongx .verdict{color:var(--no);}
+.verdict{font-family:'Jua';font-size:17px;margin-bottom:6px;}
+.ansline{font-weight:700;margin-bottom:4px;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.qfoot{padding:0 30px 26px;display:flex;justify-content:flex-end;}
+.next{font-family:'Jua';font-size:18px;background:var(--main);color:#fff;border:none;border-radius:13px;
+  padding:13px 34px;cursor:pointer;visibility:hidden;}
+.next:active{transform:translateY(2px);}
+
+.result{padding:40px 36px;text-align:center;display:none;}
+.result h2{font-size:30px;color:var(--main-d);}
+.scorebig{font-family:'Jua';font-size:62px;color:var(--main);line-height:1.1;margin:10px 0 2px;}
+.scoresub{color:var(--gray);font-size:15px;font-weight:500;}
+.rgrid{display:flex;gap:12px;justify-content:center;margin:24px 0;flex-wrap:wrap;}
+.rbox{background:var(--main-ll);border:1px solid var(--line);border-radius:14px;padding:14px 22px;min-width:96px;}
+.rbox .n{font-family:'Jua';font-size:26px;color:var(--main-d);}
+.rbox .l{font-size:12.5px;color:var(--gray);font-weight:600;margin-top:2px;}
+.medal{font-size:46px;}
+.wronglist{text-align:left;margin-top:14px;max-height:340px;overflow-y:auto;border-top:1px solid var(--line);padding-top:16px;}
+.wronglist h3{font-family:'Jua';font-size:17px;color:var(--no);margin-bottom:12px;}
+.witem{background:#fff;border:1px solid var(--line);border-left:4px solid var(--no);border-radius:10px;
+  padding:12px 14px;margin-bottom:10px;}
+.witem .wq{font-weight:700;font-size:14.5px;margin-bottom:6px;line-height:1.5;}
+.witem .wa{font-size:13.5px;color:var(--ink);}
+.witem .wa b{color:var(--ok);}
+.witem .we{font-size:13px;color:var(--gray);margin-top:4px;line-height:1.55;}
+.perfect{background:var(--ok-l);border:1px solid #bbe6cc;border-radius:12px;padding:18px;color:var(--ok);
+  font-weight:700;margin-top:8px;}
+.rbtns{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap;}
+@media(max-width:560px){
+  .start{padding:34px 22px;} .start h1{font-size:27px;} .qbody{padding:24px 20px;}
+  .qtext{font-size:18px;} .qfoot{padding:0 20px 22px;} .result{padding:32px 20px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+
+  <section id="screen-start" class="start">
+    <div class="badge">통합사회 2 · 대단원 Ⅱ</div>
+    <h1>사회 정의와 불평등<br>100문항 랜덤 복습 챌린지</h1>
+    <p class="sub">객관식 · OX · 단답을 섞어 푸는 개념 완전 정복 게임</p>
+    <div class="feat">
+      <span>🔀 매번 새로 섞이는 랜덤 출제</span>
+      <span>⚡ 즉시 정오 · 한 줄 해설</span>
+      <span>⏱ 타이머 · 점수판 · 오답노트</span>
+    </div>
+    <div class="rowset">
+      <div class="pick">
+        <label>문항 수</label>
+        <select id="count">
+          <option value="20">20문항 (스피드)</option>
+          <option value="50">50문항 (중간)</option>
+          <option value="100" selected>100문항 (전체)</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:8px;"><button class="btn" id="startBtn">시작하기 ▶</button></div>
+    <p class="hint">
+      마우스 클릭 또는 키보드로 풀 수 있어요.<br>
+      객관식 <kbd>1</kbd>~<kbd>5</kbd> · OX는 <kbd>O</kbd><kbd>X</kbd> · 다음 문항 <kbd>Enter</kbd> 또는 <kbd>Space</kbd>
+    </p>
+  </section>
+
+  <section id="screen-quiz" style="display:none;">
+    <div class="qhead">
+      <div class="ix"><span id="cur">1</span>/<span id="tot">100</span></div>
+      <div class="bar"><i id="barFill"></i></div>
+      <div class="stat">
+        <span class="timer">⏱ <span id="timer">00:00</span></span>
+        <span>⭐ <span id="score">0</span></span>
+      </div>
+    </div>
+    <div class="qbody">
+      <div><span class="tag mc" id="qtag">객관식</span><span class="qtopic" id="qtopic"></span></div>
+      <div class="qtext" id="qtext">문항</div>
+      <div id="qarea"></div>
+      <div class="explain" id="explain"></div>
+    </div>
+    <div class="qfoot"><button class="next" id="nextBtn">다음 ▶</button></div>
+  </section>
+
+  <section id="screen-result" class="result">
+    <div class="medal" id="medal">🎉</div>
+    <h2 id="rTitle">챌린지 완료!</h2>
+    <div class="scorebig"><span id="rScore">0</span><span style="font-size:30px;color:var(--gray);">점</span></div>
+    <p class="scoresub" id="rSub">100점 만점 기준</p>
+    <div class="rgrid">
+      <div class="rbox"><div class="n" id="rCorrect">0</div><div class="l">맞힌 문항</div></div>
+      <div class="rbox"><div class="n" id="rWrong">0</div><div class="l">틀린 문항</div></div>
+      <div class="rbox"><div class="n" id="rTime">00:00</div><div class="l">걸린 시간</div></div>
+    </div>
+    <div id="reviewArea"></div>
+    <div class="rbtns">
+      <button class="btn" id="retryBtn">다시 도전 🔁</button>
+      <button class="btn ghost" id="homeBtn">처음으로</button>
+    </div>
+  </section>
+
+</div>
+</div>
+
+<script>
+/* ====================== 문항 데이터 ======================
+   type: "mc" | "ox" | "short"
+   mc: choices[], answer=정답 인덱스 / ox: answer="O"|"X" / short: answer=문자열, accept=허용 배열
+========================================================= */
+const Q = [
+{type:"mc",t:"정의의 의미",q:"옳음·공정함·평등함과 같은 의미로 쓰이며, 사회가 지향해야 할 핵심 가치로 여겨지는 것은?",choices:["정의","효율","경쟁","권위"],answer:0,explain:"정의는 옳음·공정함·평등함을 뜻하는 사회의 기본 가치이다."},
+{type:"mc",t:"정의의 구분",q:"각자가 받아야 할 몫을 공정하게 받도록 하는, 사회적 자원의 분배 원칙과 관련된 정의는?",choices:["분배적 정의","교정적 정의","절차적 정의","형벌적 정의"],answer:0,explain:"분배적 정의는 사회적 자원을 공정하게 나누는 원칙과 관련된다."},
+{type:"short",t:"정의의 구분",q:"불공정한 행위나 잘못된 행동을 바로잡는 것과 관련된 정의를 무엇이라 하는가?",answer:"교정적 정의",accept:["교정적 정의","교정적정의"],explain:"교정적 정의는 잘못에 대한 대응이 공정한지를 다루는 정의이다."},
+{type:"ox",t:"정의의 의미",q:"정의의 의미는 시대와 공간에 따라 달라질 수 있다.",answer:"O",explain:"정의에 대한 해석은 시간·공간과 사상에 따라 다양하게 나타난다."},
+{type:"mc",t:"정의 사상가",q:"'각자 타고난 성향에 따라 자신의 일을 다하는 것'을 정의로 본 고대 그리스 사상가는?",choices:["플라톤","아리스토텔레스","맹자","노직"],answer:0,explain:"플라톤은 각자 자기 역할에 충실한 것을 정의로 보았다."},
+{type:"mc",t:"정의 사상가",q:"'동등하다면 동등한 몫을, 동등하지 않다면 동등하지 않은 몫을 가지는 것'이라고 정의를 설명한 사상가는?",choices:["아리스토텔레스","플라톤","롤스","왈처"],answer:0,explain:"아리스토텔레스는 같음과 다름에 따른 몫의 분배를 정의로 보았다."},
+{type:"short",t:"정의 사상가",q:"'의(義)란 잘못을 부끄러워하고 이익에 집착하지 않는 올곧음'이라고 본 동양 사상가는?",answer:"맹자",accept:["맹자"],explain:"맹자는 올바른 행동과 이익에 얽매이지 않음을 정의(義)로 보았다."},
+{type:"ox",t:"정의 사상가",q:"동양 사상가들은 대체로 사적 이익이나 결과에 얽매이지 않는 것을 정의로 보았다.",answer:"O",explain:"동양에서는 올바른 행동·이익에 얽매이지 않음을 정의로 보는 경향이 있었다."},
+{type:"mc",t:"정의의 필요성",q:"정의가 사회에 필요한 이유로 보기 어려운 것은?",choices:["인간이 존엄하게 살 수 있게 함","구성원 간 신뢰와 협력을 이끔","사회 통합과 발전에 기여","특정 집단의 특권을 보장"],answer:3,explain:"정의는 특권 보장이 아니라 공정한 분배와 신뢰·협력을 위한 것이다."},
+{type:"ox",t:"정의의 필요성",q:"잘못을 저지른 사람이 합당한 처벌을 받지 않으면 구성원 간 신뢰가 무너질 수 있다.",answer:"O",explain:"공정한 처벌이 이루어지지 않으면 신뢰가 깨져 사회 질서 유지가 어렵다."},
+{type:"mc",t:"정의의 필요성",q:"롤스가 케이크 나누기 사례로 설명하려 한, 절차를 공정하게 함으로써 결과의 공정성을 보장하는 정의는?",choices:["순수 절차적 정의","교정적 정의","연고주의","능력주의"],answer:0,explain:"절차와 과정을 공정하게 하면 결과의 공정성도 보장된다는 것이 순수 절차적 정의이다."},
+{type:"ox",t:"정의의 필요성",q:"정당한 이유 없이 차별받는 사회에서도 인간 존엄성은 충분히 유지될 수 있다.",answer:"X",explain:"부당한 차별이 있는 사회에서는 인간 존엄성이 유지되기 어렵다."},
+{type:"mc",t:"분배의 대상",q:"분배의 대상 중 '부담이 되는 대상'에 해당하는 것은?",choices:["세금·의무·사회적 책임","부·권리·명예","기회·사회적 지위","권력·소득"],answer:0,explain:"세금·의무·책임은 부담이 되는 대상, 부·권리·명예 등은 이익이 되는 대상이다."},
+{type:"ox",t:"분배의 기준",q:"분배적 정의의 실질적 기준에는 능력, 업적, 필요 등이 있다.",answer:"O",explain:"능력·업적·필요는 사회적 이익과 부담을 나누는 대표적 분배 기준이다."},
+{type:"mc",t:"능력에 따른 분배",q:"개인의 신체적·정신적 능력을 기준으로 지위나 자격을 부여하는 분배 방식은?",choices:["능력에 따른 분배","업적에 따른 분배","필요에 따른 분배","균등 분배"],answer:0,explain:"능력에 따른 분배는 뛰어난 자질을 가진 사람에게 자격·지위를 주는 방식이다."},
+{type:"mc",t:"능력에 따른 분배",q:"능력에 따른 분배의 단점으로 가장 적절한 것은?",choices:["선천적·우연적 요소가 개입하고 평가 기준이 모호함","성취동기를 떨어뜨림","사회적 약자만 보호함","빈부 격차를 줄임"],answer:0,explain:"타고난 재능·환경 등 우연적 요소가 개입하고 능력 평가 기준이 모호하다는 단점이 있다."},
+{type:"ox",t:"능력에 따른 분배",q:"능력에 따른 분배는 개인이 잠재력을 발휘하도록 동기를 자극해 사회 발전에 기여할 수 있다.",answer:"O",explain:"능력에 비례한 보상은 성취 동기를 높여 사회 발전에 기여할 수 있다."},
+{type:"mc",t:"능력에 따른 분배",q:"다음 가상 사례에 적용된 분배 기준은?  '음악 대학이 절대 음감 등 뛰어난 자질을 지닌 학생에게 입학 자격을 부여하였다.'",choices:["능력","업적","필요","추첨"],answer:0,explain:"타고난 자질·능력을 기준으로 자격을 주었으므로 능력에 따른 분배이다."},
+{type:"mc",t:"업적에 따른 분배",q:"공동의 목표 달성에 더 많이 기여한 사람에게 더 많은 보상을 주는 분배 방식은?",choices:["업적에 따른 분배","능력에 따른 분배","필요에 따른 분배","무작위 분배"],answer:0,explain:"업적에 따른 분배는 기여·성과가 큰 사람에게 더 많은 보상을 주는 방식이다."},
+{type:"mc",t:"업적에 따른 분배",q:"업적에 따른 분배의 장점으로 가장 적절한 것은?",choices:["주관적 편견을 배제하고 각자의 몫을 정하기 쉬움","사회적 약자를 우선 보호함","결과의 평등을 보장함","선천적 요소를 모두 제거함"],answer:0,explain:"업적은 수량화가 비교적 쉬워 편견을 배제하고 몫을 정하기 쉽다."},
+{type:"ox",t:"업적에 따른 분배",q:"업적을 지나치게 강조하면 경쟁이 과열되고 사회적 약자에 대한 배려가 부족해질 수 있다.",answer:"O",explain:"과도한 업적주의는 경쟁 과열·약자 배려 부족·빈부 격차 심화를 부를 수 있다."},
+{type:"mc",t:"업적에 따른 분배",q:"다음 가상 사례에 적용된 분배 기준은?  '기업이 한 해 동안 높은 실적을 낸 직원들에게 성과급을 지급하였다.'",choices:["업적","필요","능력","연고"],answer:0,explain:"실적이라는 성과를 기준으로 보상했으므로 업적에 따른 분배이다."},
+{type:"mc",t:"필요에 따른 분배",q:"인간의 기본적 욕구 충족을 위해 도움이 필요한 사람에게 자원을 나누는 분배 방식은?",choices:["필요에 따른 분배","업적에 따른 분배","능력에 따른 분배","추첨 분배"],answer:0,explain:"필요에 따른 분배는 사회적 약자를 우선 배려하는 방식이다."},
+{type:"mc",t:"필요에 따른 분배",q:"필요에 따른 분배의 단점으로 가장 적절한 것은?",choices:["성취동기·생산 의욕을 떨어뜨릴 수 있음","주관적 편견이 개입함","경쟁을 과열시킴","빈부 격차를 키움"],answer:0,explain:"필요에 따른 분배는 성취동기와 경제적 효율성을 떨어뜨릴 수 있다는 단점이 있다."},
+{type:"ox",t:"필요에 따른 분배",q:"필요에 따른 분배는 기회의 평등을 넘어 결과의 평등을 추구하는 측면이 있다.",answer:"O",explain:"사회적 약자를 우선 배려하므로 결과의 평등을 지향하는 면이 있다."},
+{type:"mc",t:"필요에 따른 분배",q:"다음 가상 사례에 적용된 분배 기준은?  '정부가 갑작스러운 재난을 당한 주민들에게 생활필수품 구호 상자를 지원하였다.'",choices:["필요","업적","능력","연고"],answer:0,explain:"도움이 필요한 사람에게 지원했으므로 필요에 따른 분배이다."},
+{type:"short",t:"필요에 따른 분배",q:"65세 이상 노인 중 소득·재산이 일정 수준 이하인 사람에게 매달 일정액을 지급하는, 필요에 따른 분배의 예가 되는 제도는?",answer:"기초 연금",accept:["기초연금","기초 연금"],explain:"기초 연금은 고령 인구의 빈곤 완화를 위한 필요 기반의 제도이다."},
+{type:"ox",t:"분배 기준",q:"각 사례에 적합한 분배 기준은 분배의 목적과 대상의 특성을 고려해 정해야 한다.",answer:"O",explain:"하나의 기준만 정답은 아니며 목적·대상에 맞는 기준을 선택해야 한다."},
+{type:"mc",t:"자유주의적 정의관",q:"개인의 자유와 권리를 최우선으로 여기고 국가의 중립을 강조하는 정의관은?",choices:["자유주의적 정의관","공동체주의적 정의관","전체주의","연고주의"],answer:0,explain:"자유주의적 정의관은 개인의 권리 보장과 국가 중립성을 강조한다."},
+{type:"ox",t:"자유주의적 정의관",q:"자유주의적 정의관은 다른 사람에게 피해를 주는 행위까지 무제한 허용해야 한다고 본다.",answer:"X",explain:"자유주의도 타인에게 피해를 주는 행위는 제한될 수 있다고 본다."},
+{type:"mc",t:"자유주의적 정의관",q:"'무지의 베일을 쓴 원초적 입장에서 정의의 두 원칙이 채택된다'고 주장한 사상가는?",choices:["롤스","노직","매킨타이어","왈처"],answer:0,explain:"롤스는 무지의 베일과 원초적 입장을 통해 공정한 정의 원칙을 도출하였다."},
+{type:"short",t:"자유주의적 정의관",q:"공정한 정의 원칙을 만들기 위해 자신의 지위·능력·가치관 등을 알 수 없게 한 상태를 롤스는 무엇이라 불렀는가?",answer:"무지의 베일",accept:["무지의 베일","무지의베일"],explain:"무지의 베일은 자신의 처지를 모르는 상태에서 공정한 원칙을 정하게 한다."},
+{type:"mc",t:"자유주의적 정의관",q:"롤스의 정의의 두 원칙 중 사회·경제적 불평등이 허용되는 조건으로 옳은 것은?",choices:["최소 수혜자에게 최대 이익이 되고 기회가 균등할 것","강자에게 최대 이익이 될 것","불평등을 모두 없앨 것","국가가 모든 것을 분배할 것"],answer:0,explain:"롤스는 최소 수혜자 최대 이익과 공정한 기회 균등을 불평등 허용 조건으로 보았다."},
+{type:"mc",t:"자유주의적 정의관",q:"'최소 국가만이 정당하며, 그보다 포괄적인 국가는 개인의 권리를 침해한다'고 본 자유 지상주의 사상가는?",choices:["노직","롤스","플라톤","맹자"],answer:0,explain:"노직은 치안·국방 등 최소한의 역할만 하는 최소 국가를 정당하다고 보았다."},
+{type:"ox",t:"자유주의적 정의관",q:"노직은 국가가 개인의 권리를 보호하는 소극적 역할만 해야 한다고 보았다.",answer:"O",explain:"노직은 국가가 최소한의 역할만 하는 소극적 국가를 지지하였다."},
+{type:"mc",t:"공동체주의적 정의관",q:"공동체의 문화·역사·전통을 중시하고 개인의 책임과 의무를 강조하는 정의관은?",choices:["공동체주의적 정의관","자유주의적 정의관","자유 지상주의","능력주의"],answer:0,explain:"공동체주의적 정의관은 공동체에 대한 개인의 책임·의무를 강조한다."},
+{type:"ox",t:"공동체주의적 정의관",q:"공동체주의적 정의관은 국가가 중립을 유지하는 것을 공동체의 목표 포기와 같다고 본다.",answer:"O",explain:"공동체주의는 국가가 개인의 삶에 일정 부분 개입할 수 있다고 본다."},
+{type:"mc",t:"공동체주의적 정의관",q:"'우리는 누군가의 아들·딸이며 공동체로부터 다양한 유산과 의무를 물려받는다'고 본 공동체주의 사상가는?",choices:["매킨타이어","왈처","롤스","노직"],answer:0,explain:"매킨타이어는 사회적 역할 속에서 정체성과 의무가 형성된다고 보았다."},
+{type:"mc",t:"공동체주의적 정의관",q:"'서로 다른 사회적 가치는 서로 다른 절차와 주체에 의해 분배되어야 한다'며 다원적 평등을 주장한 사상가는?",choices:["왈처","매킨타이어","롤스","아리스토텔레스"],answer:0,explain:"왈처는 가치 영역마다 고유한 분배 기준이 있어야 다원적 평등이 실현된다고 보았다."},
+{type:"short",t:"공동체주의적 정의관",q:"혈연·지연·학연 등 전통적 사회관계를 우선시하는 태도로, 공동체주의의 부작용이 될 수 있는 것은?",answer:"연고주의",accept:["연고주의"],explain:"연고주의는 공동체 기준으로 개인을 평가해 불평등을 초래할 수 있다."},
+{type:"ox",t:"공동체주의적 정의관",q:"공동체주의적 정의관은 나치즘·파시즘 같은 전체주의(집단주의)와 동일한 입장이다.",answer:"X",explain:"공동체주의는 개인의 자유를 억압하는 전체주의와 구분된다."},
+{type:"mc",t:"공동체주의적 정의관",q:"공동체주의적 정의관의 한계로 가장 적절한 것은?",choices:["개인의 자유·권리가 침해되거나 희생이 강요될 수 있음","국가의 역할을 부정함","개인의 이익만 강조함","공동체를 무시함"],answer:0,explain:"공동체 목표를 지나치게 강조하면 개인의 자유·권리가 침해될 수 있다."},
+{type:"mc",t:"사익과 공익",q:"개인의 행복 추구나 자아실현 등 개인이 사적으로 얻는 이익을 무엇이라 하는가?",choices:["사익","공익","공동선","연대"],answer:0,explain:"사익은 개인이 사적으로 누리는 이익으로, 개인의 권리 보장과 연결된다."},
+{type:"short",t:"사익과 공익",q:"공동체의 가치를 추구함으로써 구성원 모두가 얻게 되는 이익을 무엇이라 하는가?",answer:"공익",accept:["공익","공동선"],explain:"공익(공동선)은 공동체에 대한 의무 수행을 통해 실현된다."},
+{type:"ox",t:"사익과 공익",q:"사익은 자유주의적 정의관에서 강조하는 개인의 권리를 보장함으로써 실현될 수 있다.",answer:"O",explain:"사익은 개인의 권리 보장과, 공익은 공동체에 대한 의무 수행과 연결된다."},
+{type:"mc",t:"정의관 적용",q:"공공의 이익은 되지만 자신이 속한 지역에는 이익이 안 되는 일을 반대하는 지역 이기주의를 뜻하는 말은?",choices:["님비(NIMBY)","유리 천장","연고주의","역차별"],answer:0,explain:"님비는 혐오 시설 등의 유치를 거부하는 지역 이기주의 현상이다."},
+{type:"mc",t:"정의관 적용",q:"다음 가상 갈등에서 '개인의 자유·권리'를 우선하는 입장에 가까운 주장은?  '감염병 확산 시 마스크 착용 의무화'에 대하여",choices:["착용 여부는 개인이 선택할 자유가 있다","공동체 건강을 위해 반드시 착용해야 한다","공익을 위해 자유를 제한해야 한다","의무를 다해야 한다"],answer:0,explain:"개인의 선택할 자유를 강조하는 것은 자유주의적 정의관에 가깝다."},
+{type:"ox",t:"정의관 적용",q:"자유주의적 정의관과 공동체주의적 정의관은 모두 사익과 공익의 조화를 추구한다.",answer:"O",explain:"두 정의관은 강조점은 다르지만 상호 보완적으로 조화를 추구한다."},
+{type:"mc",t:"정의관 적용",q:"사익과 공익이 조화를 이루기 위한 바람직한 자세로 가장 적절한 것은?",choices:["개인은 의무를 이행하고 공동체는 권리를 최대한 보장","사익만 끝까지 추구","공익을 위해 개인을 무조건 희생","어느 한쪽만 강조"],answer:0,explain:"개인의 의무 이행과 공동체의 권리 보장이 함께할 때 조화가 이루어진다."},
+{type:"short",t:"정의관 적용",q:"종교·양심상의 이유로 병역을 거부하는 것을 가리키는 말은?",answer:"양심적 병역 거부",accept:["양심적 병역 거부","양심적병역거부","병역 거부"],explain:"양심적 병역 거부는 개인의 권리와 공동체의 의무가 충돌하는 대표적 사례이다."},
+{type:"mc",t:"불평등 양상",q:"사회적 희소가치가 구성원에게 차등적으로 분배되어 나타나는 현상을 통틀어 무엇이라 하는가?",choices:["사회 및 공간 불평등 현상","적극적 평등 실현 조치","사회 복지 제도","연고주의"],answer:0,explain:"희소가치의 차등 분배로 사회 계층 양극화·공간 불평등·차별 등이 나타난다."},
+{type:"mc",t:"사회 계층 양극화",q:"중층의 비중이 줄고 상층과 하층으로 사람들이 몰리는 현상은?",choices:["사회 계층의 양극화","공간 불평등","유리 천장","역차별"],answer:0,explain:"사회 계층의 양극화는 중층이 줄고 양극단으로 몰리는 현상이다."},
+{type:"short",t:"사회 계층 양극화",q:"사회 계층 양극화를 일으키는 주요 원인으로, 부의 대물림과 비정규직 증가 등이 초래하는 것은?",answer:"경제적 격차",accept:["경제적 격차","경제적격차","소득 격차"],explain:"경제적 격차는 교육 격차 등으로 이어져 계층 대물림을 낳는다."},
+{type:"ox",t:"사회 계층 양극화",q:"부모의 경제적 격차가 교육 기회의 격차로 이어져 계층이 대물림될 수 있다.",answer:"O",explain:"소득 격차와 교육 격차가 서로 맞물려 계층 대물림이 나타날 수 있다."},
+{type:"mc",t:"공간 불평등",q:"지역 간에 사회적 희소가치가 불균등하게 분배되어 경제·사회·문화 수준 차이가 나는 현상은?",choices:["공간 불평등","사회 계층 양극화","적극적 평등 실현","유리 천장"],answer:0,explain:"공간 불평등은 주로 수도권과 비수도권 사이에서 나타난다."},
+{type:"mc",t:"공간 불평등",q:"우리나라에서 공간 불평등이 심해진 주된 원인으로 지목되는 개발 방식은?",choices:["성장 거점 개발","균형 개발","지역 격차 완화 정책","적극적 평등 실현 조치"],answer:0,explain:"성장 거점 개발은 효율성을 강조하여 수도권 집중과 지역 격차를 낳았다."},
+{type:"ox",t:"공간 불평등",q:"성장 거점 개발은 지역 간 균형 발전이라는 형평성을 최우선으로 하는 방식이다.",answer:"X",explain:"성장 거점 개발은 효율성을 강조하며, 형평성을 추구하는 것은 균형 개발이다."},
+{type:"short",t:"공간 불평등",q:"20~39세 여성 인구를 65세 이상 고령 인구로 나눈 값이 0.5 미만인, 인구가 줄어들 위험이 큰 지역을 무엇이라 하는가?",answer:"소멸 위험 지역",accept:["소멸 위험 지역","인구 소멸 위험 지역","소멸위험지역"],explain:"소멸 위험 지역은 주로 비수도권에 몰려 있어 공간 불평등을 보여 준다."},
+{type:"mc",t:"사회적 약자",q:"성별·나이·신체 조건·경제적 지위 등을 이유로 한 사회에서 불리한 위치에 있는 사람을 무엇이라 하는가?",choices:["사회적 약자","주류 집단","세계시민","공동체주의자"],answer:0,explain:"사회적 약자는 여러 측면에서 불평등한 대우를 받는 사람들을 말한다."},
+{type:"mc",t:"사회적 약자",q:"여성·소수자가 고위직 승진 과정에서 부딪히는, 눈에 보이지 않는 장벽을 가리키는 말은?",choices:["유리 천장","님비","연고주의","역차별"],answer:0,explain:"유리 천장은 보이지 않는 차별로 고위직 진출을 가로막는 현상이다."},
+{type:"ox",t:"사회적 약자",q:"사회적 소수자는 모두 사회적 약자에 포함되지만, 사회적 약자가 모두 사회적 소수자인 것은 아니다.",answer:"O",explain:"소수자는 소속 의식이 필요하므로, 어린이처럼 약자이나 소수자가 아닐 수 있다."},
+{type:"mc",t:"사회적 약자",q:"사회적 약자에 대한 차별이 발생하는 원인으로 보기 어려운 것은?",choices:["사람들의 선입견과 편견","차별을 용인하는 사회 환경","불평등한 사회 구조","다양성을 존중하는 태도"],answer:3,explain:"다양성 존중은 차별을 줄이는 태도이지 차별의 원인이 아니다."},
+{type:"mc",t:"사회 복지 제도",q:"질병·노령·실업 등 사회적 위험을 보험 방식으로 대비하는 사회 복지 제도는?",choices:["사회 보험","공공 부조","사회 서비스","적극적 평등 실현 조치"],answer:0,explain:"사회 보험은 가입자가 보험료를 내고 위험에 대비하는 제도이다."},
+{type:"mc",t:"사회 복지 제도",q:"생활 유지 능력이 없거나 어려운 국민의 최저 생활을 보장하고 자립을 지원하는 제도는?",choices:["공공 부조","사회 보험","사회 서비스","장소 마케팅"],answer:0,explain:"공공 부조는 최저 생활 보장과 자립 지원을 목적으로 한다."},
+{type:"short",t:"사회 복지 제도",q:"여성·노인·장애인 등에게 상담·재활·돌봄 등 비금전적 지원을 제공하는 사회 복지 제도는?",answer:"사회 서비스",accept:["사회 서비스","사회서비스","사회 복지 서비스"],explain:"사회 서비스는 비금전적 지원을 원칙으로 하는 복지 제도이다."},
+{type:"ox",t:"사회 복지 제도",q:"사회 보험과 공공 부조는 금전적 지원을, 사회 서비스는 비금전적 지원을 원칙으로 한다.",answer:"O",explain:"사회 보험·공공 부조는 금전적, 사회 서비스는 비금전적 지원이 원칙이다."},
+{type:"mc",t:"사회 복지 제도",q:"다음 중 사회 보험에 해당하는 제도로 묶인 것은?",choices:["국민연금·고용 보험·국민 건강 보험","국민 기초 생활 보장·기초 연금","노인 맞춤 돌봄·가사 간병","장애인 의무 고용·여성 할당"],answer:0,explain:"국민연금·고용 보험·건강 보험 등은 사회 보험에 속한다."},
+{type:"mc",t:"사회 복지 제도",q:"다음 가상 사례에 가장 적합한 제도는?  '경기 불황으로 해고된 근로자가 재취업 활동 중 생계 지원이 필요하다.'",choices:["고용 보험의 실업 급여","장소 마케팅","적극적 평등 실현 조치","장애인 의무 고용제"],answer:0,explain:"실직자에게 실업 급여를 주는 고용 보험이 가장 적합하다."},
+{type:"mc",t:"사회 복지 제도",q:"모든 국민을 대상으로 하여 보편적 복지에 해당하는 사회 보험의 예로 적절한 것은?",choices:["국민연금","국민 기초 생활 보장 제도","기초 연금","생계 급여"],answer:0,explain:"국민연금은 모든 국민을 대상으로 한 보편적 복지에 해당한다."},
+{type:"mc",t:"지역 격차 완화",q:"공공 기관 지방 이전, 지역 특산품·축제 개발 등으로 공간 불평등을 줄이려는 정책은?",choices:["지역 격차 완화 정책","성장 거점 개발","유리 천장 정책","연고주의"],answer:0,explain:"지역 격차 완화 정책은 국토 균형 발전으로 공간 불평등을 해소하려 한다."},
+{type:"short",t:"지역 격차 완화",q:"특정 장소를 상품화하여 지역 이미지를 높이고 경제를 살리는 전략으로, 함평 나비 축제 등이 그 예인 것은?",answer:"장소 마케팅",accept:["장소 마케팅","장소마케팅"],explain:"장소 마케팅은 축제·특구 지정 등으로 지역 경제를 활성화하는 전략이다."},
+{type:"mc",t:"적극적 평등 실현",q:"사회적으로 불리한 위치에 있는 약자에게 일정한 혜택을 제공해 실질적 평등을 꾀하는 조치는?",choices:["적극적 평등 실현 조치","성장 거점 개발","님비","연고주의"],answer:0,explain:"적극적 평등 실현 조치는 약자에게 혜택을 주어 실질적 평등을 추구한다."},
+{type:"mc",t:"적극적 평등 실현",q:"우리나라의 적극적 평등 실현 조치의 사례로 보기 어려운 것은?",choices:["성장 거점 개발","장애인 의무 고용제","여성 이사 할당제","비례 대표 여성 의무 배정"],answer:0,explain:"성장 거점 개발은 지역 개발 방식으로, 적극적 평등 실현 조치가 아니다."},
+{type:"short",t:"적극적 평등 실현",q:"약자를 보호하려는 제도 때문에 오히려 반대편이 차별받는 것을 무엇이라 하는가?",answer:"역차별",accept:["역차별"],explain:"적극적 평등 실현 조치는 혜택이 과도하면 역차별을 낳을 수 있다."},
+{type:"ox",t:"적극적 평등 실현",q:"적극적 평등 실현 조치는 혜택의 정도가 과도하여 역차별이 생기지 않도록 유의해야 한다.",answer:"O",explain:"적극적 평등 실현 조치는 역차별을 경계하며 시행해야 한다."},
+{type:"mc",t:"시민의 노력",q:"정의로운 사회를 만들기 위한 시민의 노력으로 적절하지 않은 것은?",choices:["불평등에 무관심한 태도","기부·봉사 활동 참여","시민 단체 가입과 활동","사회적 약자에 대한 공감"],answer:0,explain:"불평등에 대한 문제의식과 공감·실천이 필요하며 무관심은 바람직하지 않다."},
+{type:"ox",t:"시민의 노력",q:"제도가 마련되어 있어도 개인의 노력 없이는 불평등 문제를 해결하기 어렵다.",answer:"O",explain:"제도와 함께 시민의 문제의식과 실천이 있어야 불평등이 완화된다."},
+{type:"mc",t:"시민의 노력",q:"'선량한 차별주의자'의 시외버스 사례가 강조하는 바로 가장 적절한 것은?",choices:["평범한 사람도 자신이 가진 특권을 발견해 보아야 한다","교통수단은 특권이 아니다","차별은 존재하지 않는다","약자는 스스로 해결해야 한다"],answer:0,explain:"자신의 특권을 성찰하는 것이 약자의 고통에 공감하는 출발점이 된다."},
+{type:"mc",t:"정의의 구분",q:"잘못한 사람에게 합당한 처벌을 내려 공정함을 회복하는 것과 가장 관련 깊은 정의는?",choices:["교정적 정의","분배적 정의","능력에 따른 분배","연고주의"],answer:0,explain:"잘못을 바로잡는 것은 교정적 정의와 관련된다."},
+{type:"ox",t:"능력에 따른 분배",q:"능력은 타고난 재능이나 환경 같은 우연적 요소와 전혀 무관하게 형성된다.",answer:"X",explain:"능력 획득에는 선천적·우연적 요소가 개입할 수 있다."},
+{type:"mc",t:"자유주의적 정의관",q:"자유주의적 정의관에서 바라보는 사회(국가)의 모습으로 가장 적절한 것은?",choices:["개인 간 합의와 계약으로 구성된 산물","개인이 유기체적으로 결합한 집합체","개인보다 우월한 존재","전통이 개인을 규정하는 공동체"],answer:0,explain:"자유주의는 사회를 개인의 합의·계약으로 구성된 산물로 본다."},
+{type:"mc",t:"공동체주의적 정의관",q:"공동체주의적 정의관에서 바라보는 개인의 모습으로 가장 적절한 것은?",choices:["공동체의 역사·문화 속에서 정체성을 형성하는 존재","공동체로부터 완전히 독립된 존재","계약으로만 묶인 존재","전통과 무관한 존재"],answer:0,explain:"공동체주의는 개인을 공동체 속에서 정체성을 형성하는 존재로 본다."},
+{type:"ox",t:"정의관 적용",q:"자유주의적 정의관은 사익의 추구가 공익의 실현으로 이어진다고 본다.",answer:"O",explain:"자유주의는 공정한 경쟁을 통한 사익 추구가 공동체 발전에 기여한다고 본다."},
+{type:"mc",t:"사회적 약자",q:"고용 형태에 따른 임금 차별을 보여 주는 지표로, 정규직 대비 비정규직 근로자의 임금 수준을 비교한 것과 관련된 개념은?",choices:["임금 격차","유리 천장 지수","소멸 지수","역차별"],answer:0,explain:"정규직과 비정규직의 임금 차이는 고용 형태에 따른 임금 격차를 보여 준다."},
+{type:"ox",t:"불평등 양상",q:"불평등 현상은 어느 사회에서나 나타나는 보편적 현상이지만, 지나친 불평등은 사회 정의 실현을 저해한다.",answer:"O",explain:"불평등 자체는 보편적이나 정도가 심하면 사회 통합과 정의를 해친다."},
+{type:"mc",t:"사회 복지 제도",q:"사회 구성원이 기본적 욕구를 충족하고 정상적 생활을 하도록 지원하는 제도를 통틀어 무엇이라 하는가?",choices:["사회 복지 제도","적극적 평등 실현 조치","지역 격차 완화 정책","장소 마케팅"],answer:0,explain:"사회 복지 제도는 사회 보험·공공 부조·사회 서비스를 포괄한다."},
+{type:"short",t:"적극적 평등 실현",q:"일정 비율 이상 장애인을 의무적으로 고용하도록 한 제도로, 적극적 평등 실현 조치의 대표적 예는?",answer:"장애인 의무 고용제",accept:["장애인 의무 고용제","장애인의무고용제","장애인 의무고용제"],explain:"장애인 의무 고용제는 약자의 실질적 평등을 위한 적극적 조치이다."},
+{type:"mc",t:"지역 격차 완화",q:"지역 격차 완화를 위한 정부의 노력으로 보기 어려운 것은?",choices:["수도권 집중을 더욱 강화","공공 기관 지방 이전","기업의 지방 이전 유도","낙후 지역 기반 시설 확충"],answer:0,explain:"수도권 집중 강화는 격차를 키우므로 격차 완화 노력과 반대된다."},
+{type:"ox",t:"공간 불평등",q:"공간 불평등은 수도권과 비수도권 사이뿐 아니라 한 도시 내부에서도 나타날 수 있다.",answer:"O",explain:"공간 불평등은 도시·농촌 간은 물론 도시 내부에서도 발생한다."},
+{type:"mc",t:"정의의 필요성",q:"정의로운 사회의 특징으로 가장 적절한 것은?",choices:["공정한 절차와 기준에 따라 받아야 할 몫을 받는다","강자가 모든 것을 차지한다","처벌이 자의적으로 이루어진다","차별이 정당화된다"],answer:0,explain:"정의로운 사회에서는 공정한 기준에 따라 정당한 몫을 받을 수 있다."},
+{type:"mc",t:"사익과 공익",q:"공익(공동선)이 실현되는 방식으로 가장 적절한 것은?",choices:["공동체에 대한 의무를 수행함으로써","개인의 권리만 주장함으로써","사익을 끝까지 추구함으로써","국가가 중립을 지킴으로써"],answer:0,explain:"공익은 공동체에 대한 의무 수행을 통해 실현된다."},
+{type:"mc",t:"적극적 평등 실현",q:"여성 이사 할당제에 대한 설명으로 옳은 것은?",choices:["이사회를 특정 성별로만 구성하지 못하게 한 제도","남성만 임원이 되게 한 제도","능력만으로 임원을 뽑는 제도","장애인을 고용하는 제도"],answer:0,explain:"여성 이사 할당제는 이사회의 성별 다양성을 위한 적극적 평등 실현 조치이다."},
+{type:"mc",t:"시민의 노력",q:"사회 불평등 완화를 위한 공동체 의식 기반의 실천으로 적절하지 않은 것은?",choices:["사회적 약자에 대한 고정 관념 강화","기부 참여","봉사 활동","시민 단체 가입"],answer:0,explain:"고정 관념·편견을 성찰하고 버려야 하며 강화하는 것은 옳지 않다."},
+{type:"mc",t:"분배의 기준",q:"다음 가상 사례에 적용된 분배 기준은?  '국가에 크게 기여한 국제 대회 수상자에게 연금을 지급하였다.'",choices:["업적","필요","능력","연고"],answer:0,explain:"국가에 기여한 성과(업적)를 기준으로 보상한 것이다."},
+{type:"short",t:"불평등 양상",q:"부·권력·지위·쾌적한 공간처럼 가치 있지만 한정되어 사람들이 더 가지려 경쟁하는 것을 무엇이라 하는가?",answer:"사회적 희소가치",accept:["사회적 희소가치","희소가치","사회적희소가치"],explain:"사회적 희소가치의 차등 분배가 사회·공간 불평등을 낳는다."},
+{type:"mc",t:"정의의 의미",q:"다음 중 '정의롭다'고 말할 때의 의미로 보기 어려운 것은?",choices:["자신의 이익만 극대화하는 것","올바르게 행동하는 것","공정한 방법으로 결정하는 것","모든 사람을 평등하게 대우하는 것"],answer:0,explain:"정의는 사익 극대화가 아니라 옳음·공정·평등과 관련된다."},
+{type:"ox",t:"사회 복지 제도",q:"기초 연금은 소득이 일정 수준 이하인 노인에게 지급된다는 점에서 선별적 복지에 해당한다.",answer:"O",explain:"기초 연금은 대상을 선별해 지급하므로 선별적 복지에 해당한다."},
+{type:"mc",t:"공간 불평등",q:"성장 거점 개발의 결과로 나타난 현상으로 보기 어려운 것은?",choices:["수도권과 비수도권의 균형 발전","수도권으로의 인구·자본 집중","비수도권의 성장 정체·낙후","지역 간 사회·문화적 불평등"],answer:0,explain:"성장 거점 개발은 균형 발전이 아니라 수도권 집중과 지역 격차를 낳았다."},
+{type:"mc",t:"정의관 적용",q:"공동체주의적 정의관이 양심적 병역 거부를 비판할 수 있는 근거로 가장 적절한 것은?",choices:["국방의 의무를 공동체 구성원의 당연한 의무로 보기 때문","개인의 자유가 최우선이기 때문","국가는 중립을 지켜야 하기 때문","종교의 자유가 절대적이기 때문"],answer:0,explain:"공동체주의는 국방의 의무를 공동체에 대한 당연한 의무로 본다."},
+{type:"ox",t:"사회적 약자",q:"노인·어린이·장애인 등은 신체적·정신적 능력의 부족을 이유로 차별받거나 소외되기도 한다.",answer:"O",explain:"사회적 약자는 다양한 이유로 불평등한 대우를 받을 수 있다."}
+];
+
+/* ====================== 엔진 ====================== */
+const $=s=>document.querySelector(s);
+const els={
+  start:$('#screen-start'),quiz:$('#screen-quiz'),result:$('#screen-result'),
+  cur:$('#cur'),tot:$('#tot'),bar:$('#barFill'),timer:$('#timer'),score:$('#score'),
+  tag:$('#qtag'),topic:$('#qtopic'),qtext:$('#qtext'),area:$('#qarea'),
+  explain:$('#explain'),next:$('#nextBtn')
+};
+let pool=[],idx=0,score=0,correctN=0,wrongN=0,answered=false,startT=0,timerId=null,wrongList=[];
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function norm(s){return String(s).replace(/\s+/g,'').replace(/[.,·]/g,'').toLowerCase();}
+function fmt(sec){const m=String(Math.floor(sec/60)).padStart(2,'0');const s=String(sec%60).padStart(2,'0');return m+':'+s;}
+
+function startQuiz(){
+  const n=parseInt($('#count').value,10);
+  pool=shuffle(Q).slice(0,Math.min(n,Q.length));
+  idx=0;score=0;correctN=0;wrongN=0;wrongList=[];
+  els.start.style.display='none';els.result.style.display='none';els.quiz.style.display='block';
+  els.tot.textContent=pool.length;
+  startT=Date.now();
+  clearInterval(timerId);
+  timerId=setInterval(()=>{els.timer.textContent=fmt(Math.floor((Date.now()-startT)/1000));},250);
+  render();
+}
+
+function render(){
+  answered=false;
+  const q=pool[idx];
+  els.cur.textContent=idx+1;
+  els.bar.style.width=((idx)/pool.length*100)+'%';
+  els.score.textContent=score;
+  els.explain.className='explain';els.explain.innerHTML='';
+  els.next.style.visibility='hidden';
+  els.next.textContent=(idx===pool.length-1)?'결과 보기 ▶':'다음 ▶';
+  const tagmap={mc:['mc','객관식'],ox:['ox','O X 문제'],short:['short','단답형']};
+  els.tag.className='tag '+tagmap[q.type][0];
+  els.tag.textContent=tagmap[q.type][1];
+  els.topic.textContent=q.t?('· '+q.t):'';
+  els.qtext.textContent=q.q;
+  els.area.innerHTML='';
+
+  if(q.type==='mc'){
+    const wrap=document.createElement('div');wrap.className='choices';
+    q.choices.forEach((c,i)=>{
+      const b=document.createElement('button');b.className='choice';
+      b.innerHTML='<span class="num">'+(i+1)+'</span><span>'+c+'</span>';
+      b.onclick=()=>pickMC(i);
+      wrap.appendChild(b);
+    });
+    els.area.appendChild(wrap);
+  }else if(q.type==='ox'){
+    const wrap=document.createElement('div');wrap.className='oxwrap';
+    ['O','X'].forEach(v=>{
+      const b=document.createElement('button');b.className='choice';b.textContent=v;
+      b.dataset.v=v;b.onclick=()=>pickOX(v);
+      wrap.appendChild(b);
+    });
+    els.area.appendChild(wrap);
+  }else{
+    const wrap=document.createElement('div');wrap.className='shortwrap';
+    const inp=document.createElement('input');inp.type='text';inp.id='shortInput';
+    inp.placeholder='정답을 입력하고 Enter';inp.autocomplete='off';
+    inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();submitShort();}};
+    const b=document.createElement('button');b.textContent='제출';b.onclick=submitShort;
+    wrap.appendChild(inp);wrap.appendChild(b);
+    els.area.appendChild(wrap);
+    setTimeout(()=>inp.focus(),40);
+  }
+}
+
+function lockChoices(){els.area.querySelectorAll('button').forEach(b=>b.disabled=true);}
+
+function judge(ok,userText){
+  if(answered)return;
+  answered=true;
+  const q=pool[idx];
+  const ansText=answerText(q);
+  if(ok){score+=1;correctN++;}
+  else{wrongN++;wrongList.push({q:q.q,ans:ansText,explain:q.explain,user:userText});}
+  els.score.textContent=score;
+  els.explain.className='explain show '+(ok?'right':'wrongx');
+  els.explain.innerHTML='<div class="verdict">'+(ok?'⭕ 정답입니다!':'❌ 아쉬워요')+'</div>'+
+    (ok?'':'<div class="ansline">정답 : '+ansText+'</div>')+
+    '<div>'+q.explain+'</div>';
+  els.next.style.visibility='visible';
+  els.next.focus();
+}
+
+function answerText(q){
+  if(q.type==='mc')return (q.answer+1)+'번. '+q.choices[q.answer];
+  if(q.type==='ox')return q.answer;
+  return q.answer;
+}
+
+function pickMC(i){
+  if(answered)return;
+  const q=pool[idx];const ok=(i===q.answer);
+  lockChoices();
+  const btns=els.area.querySelectorAll('.choice');
+  btns[q.answer].classList.add('correct');
+  if(!ok)btns[i].classList.add('wrong');
+  judge(ok,(i+1)+'번');
+}
+function pickOX(v){
+  if(answered)return;
+  const q=pool[idx];const ok=(v===q.answer);
+  lockChoices();
+  els.area.querySelectorAll('.choice').forEach(b=>{
+    if(b.dataset.v===q.answer)b.classList.add('correct');
+    else if(b.dataset.v===v)b.classList.add('wrong');
+  });
+  judge(ok,v);
+}
+function submitShort(){
+  if(answered)return;
+  const q=pool[idx];
+  const inp=$('#shortInput');const val=inp.value.trim();
+  if(!val){inp.focus();return;}
+  const cands=[q.answer].concat(q.accept||[]).map(norm);
+  const ok=cands.includes(norm(val));
+  inp.disabled=true;els.area.querySelector('button').disabled=true;
+  judge(ok,val);
+}
+
+function nextQ(){
+  if(!answered)return;
+  if(idx<pool.length-1){idx++;render();}
+  else finish();
+}
+
+function finish(){
+  clearInterval(timerId);
+  const elapsed=Math.floor((Date.now()-startT)/1000);
+  const total=pool.length;
+  const scaled=Math.round(score/total*100);
+  els.quiz.style.display='none';els.result.style.display='block';
+  els.bar.style.width='100%';
+  $('#rScore').textContent=scaled;
+  $('#rSub').textContent='총 '+total+'문항 중 '+correctN+'개 정답 (100점 만점 환산)';
+  $('#rCorrect').textContent=correctN;
+  $('#rWrong').textContent=wrongN;
+  $('#rTime').textContent=fmt(elapsed);
+  let medal='🎯',title='완료! 복습을 이어가요';
+  if(scaled===100){medal='🏆';title='완벽해요! 만점 달성';}
+  else if(scaled>=90){medal='🥇';title='훌륭해요!';}
+  else if(scaled>=70){medal='🥈';title='잘했어요!';}
+  else if(scaled>=50){medal='🥉';title='절반 넘었어요';}
+  $('#medal').textContent=medal;$('#rTitle').textContent=title;
+  const area=$('#reviewArea');
+  if(wrongList.length===0){
+    area.innerHTML='<div class="perfect">✨ 틀린 문항이 없습니다. 개념을 완벽하게 이해했어요!</div>';
+  }else{
+    let h='<div class="wronglist"><h3>📝 오답 노트 ('+wrongList.length+'문항)</h3>';
+    wrongList.forEach((w,i)=>{
+      h+='<div class="witem"><div class="wq">Q'+(i+1)+'. '+w.q+'</div>'+
+         '<div class="wa">정답 : <b>'+w.ans+'</b></div>'+
+         '<div class="we">'+w.explain+'</div></div>';
+    });
+    h+='</div>';area.innerHTML=h;
+  }
+}
+
+function goHome(){clearInterval(timerId);els.quiz.style.display='none';els.result.style.display='none';els.start.style.display='block';}
+
+$('#startBtn').onclick=startQuiz;
+$('#retryBtn').onclick=startQuiz;
+$('#homeBtn').onclick=goHome;
+els.next.onclick=nextQ;
+
+document.addEventListener('keydown',e=>{
+  if(els.quiz.style.display==='none')return;
+  const q=pool[idx];
+  if(!answered){
+    if(q.type==='mc'&&/^[1-9]$/.test(e.key)){
+      const i=parseInt(e.key,10)-1;if(i<q.choices.length)pickMC(i);
+    }else if(q.type==='ox'){
+      if(e.key==='o'||e.key==='O'||e.key==='ㅐ')pickOX('O');
+      if(e.key==='x'||e.key==='X'||e.key==='ㅌ')pickOX('X');
+    }
+  }else{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();nextQ();}
+  }
+});
+</script>
+</body>
+</html>

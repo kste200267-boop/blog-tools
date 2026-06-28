@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>통합사회2 Ⅲ. 시장경제와 지속가능발전 · 100문항 랜덤 복습 챌린지</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --main:#1D4ED8; --main-d:#1E3A8A; --main-l:#e7edfd; --main-ll:#f4f7fe;
+  --ink:#1E293B; --gray:#64748B; --line:#e2e8f0;
+  --ok:#16A34A; --ok-l:#e9f7ef; --no:#DC2626; --no-l:#fdecec; --warn:#E67E22;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:'Noto Sans KR',sans-serif;color:var(--ink);
+  background:linear-gradient(160deg,#1D4ED8 0%,#1E3A8A 50%,#172554 100%);
+  min-height:100%;display:flex;align-items:center;justify-content:center;padding:20px;}
+h1,h2,.brand,.big{font-family:'Jua',sans-serif;font-weight:400;}
+.wrap{width:100%;max-width:720px;}
+.card{background:#fff;border-radius:22px;box-shadow:0 24px 60px rgba(15,30,80,.34);
+  overflow:hidden;}
+
+/* ===== 시작화면 ===== */
+.start{padding:46px 40px 40px;text-align:center;}
+.badge{display:inline-block;background:var(--main-l);color:var(--main-d);
+  font-weight:700;font-size:13px;letter-spacing:.5px;padding:7px 16px;border-radius:999px;margin-bottom:18px;}
+.start h1{font-size:34px;color:var(--main-d);line-height:1.25;}
+.start .sub{font-size:16px;color:var(--gray);margin-top:10px;font-weight:500;}
+.feat{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:26px 0 8px;}
+.feat span{background:var(--main-ll);border:1px solid var(--line);color:var(--main-d);
+  font-size:13px;font-weight:500;padding:8px 14px;border-radius:12px;}
+.rowset{display:flex;gap:12px;justify-content:center;margin:24px 0 6px;flex-wrap:wrap;}
+.pick{display:flex;flex-direction:column;align-items:flex-start;gap:6px;
+  background:var(--main-ll);border:1px solid var(--line);border-radius:14px;padding:12px 16px;}
+.pick label{font-size:12px;color:var(--gray);font-weight:700;}
+.pick select{font-family:inherit;font-size:15px;font-weight:700;color:var(--main-d);
+  border:none;background:transparent;outline:none;cursor:pointer;}
+.btn{font-family:'Jua',sans-serif;font-size:21px;background:var(--main);color:#fff;border:none;
+  border-radius:14px;padding:15px 40px;cursor:pointer;box-shadow:0 8px 18px rgba(29,78,216,.35);
+  transition:transform .08s, background .15s;}
+.btn:hover{background:var(--main-d);}
+.btn:active{transform:translateY(2px);}
+.btn.ghost{background:#fff;color:var(--main-d);border:2px solid var(--main);box-shadow:none;font-size:17px;padding:12px 26px;}
+.hint{font-size:12.5px;color:var(--gray);margin-top:20px;line-height:1.7;}
+kbd{background:#f1f5f9;border:1px solid #cbd5e1;border-bottom-width:2px;border-radius:6px;
+  padding:1px 7px;font-family:inherit;font-size:12px;color:#475569;}
+
+/* ===== 퀴즈 헤더 ===== */
+.qhead{background:var(--main-d);color:#fff;padding:14px 22px;display:flex;align-items:center;gap:14px;}
+.qhead .ix{font-family:'Jua';font-size:17px;white-space:nowrap;}
+.bar{flex:1;height:9px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden;}
+.bar i{display:block;height:100%;width:0;background:#fff;border-radius:99px;transition:width .35s;}
+.stat{display:flex;gap:14px;font-size:13.5px;font-weight:700;white-space:nowrap;}
+.stat .timer{font-family:'Jua';}
+
+/* ===== 문항 ===== */
+.qbody{padding:30px 30px 26px;min-height:330px;display:flex;flex-direction:column;}
+.tag{align-self:flex-start;font-size:12px;font-weight:700;padding:5px 12px;border-radius:8px;margin-bottom:14px;}
+.tag.mc{background:#e7edfd;color:var(--main-d);}
+.tag.ox{background:#fff4e6;color:#b45309;}
+.tag.short{background:#eef2ff;color:#4338ca;}
+.qtopic{font-size:12px;color:var(--gray);font-weight:500;margin-left:8px;}
+.qtext{font-size:20px;font-weight:700;line-height:1.55;margin-bottom:20px;word-break:keep-all;}
+.choices{display:flex;flex-direction:column;gap:11px;}
+.choice{display:flex;align-items:center;gap:13px;text-align:left;background:#fff;border:2px solid var(--line);
+  border-radius:13px;padding:14px 16px;font-family:inherit;font-size:16px;color:var(--ink);cursor:pointer;
+  transition:border-color .12s, background .12s;}
+.choice:hover:not(:disabled){border-color:var(--main);background:var(--main-ll);}
+.choice .num{flex:none;width:27px;height:27px;border-radius:50%;background:#f1f5f9;color:var(--gray);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;}
+.choice:disabled{cursor:default;}
+.choice.correct{border-color:var(--ok);background:var(--ok-l);}
+.choice.correct .num{background:var(--ok);color:#fff;}
+.choice.wrong{border-color:var(--no);background:var(--no-l);}
+.choice.wrong .num{background:var(--no);color:#fff;}
+.oxwrap{display:flex;gap:14px;}
+.oxwrap .choice{flex:1;justify-content:center;font-family:'Jua';font-size:24px;padding:24px 0;}
+.shortwrap{display:flex;gap:10px;}
+.shortwrap input{flex:1;font-family:inherit;font-size:17px;padding:14px 16px;border:2px solid var(--line);
+  border-radius:13px;outline:none;}
+.shortwrap input:focus{border-color:var(--main);}
+.shortwrap button{font-family:'Jua';font-size:17px;background:var(--main);color:#fff;border:none;
+  border-radius:13px;padding:0 24px;cursor:pointer;}
+
+/* ===== 해설 ===== */
+.explain{margin-top:18px;border-radius:13px;padding:16px 18px;font-size:15px;line-height:1.6;display:none;}
+.explain.show{display:block;animation:fade .25s;}
+.explain.right{background:var(--ok-l);border:1px solid #bbe6cc;}
+.explain.right .verdict{color:var(--ok);}
+.explain.wrongx{background:var(--no-l);border:1px solid #f3c9c9;}
+.explain.wrongx .verdict{color:var(--no);}
+.verdict{font-family:'Jua';font-size:17px;margin-bottom:6px;}
+.ansline{font-weight:700;margin-bottom:4px;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.qfoot{padding:0 30px 26px;display:flex;justify-content:flex-end;}
+.next{font-family:'Jua';font-size:18px;background:var(--main);color:#fff;border:none;border-radius:13px;
+  padding:13px 34px;cursor:pointer;visibility:hidden;}
+.next:active{transform:translateY(2px);}
+
+/* ===== 결과 ===== */
+.result{padding:40px 36px;text-align:center;display:none;}
+.result h2{font-size:30px;color:var(--main-d);}
+.scorebig{font-family:'Jua';font-size:62px;color:var(--main);line-height:1.1;margin:10px 0 2px;}
+.scoresub{color:var(--gray);font-size:15px;font-weight:500;}
+.rgrid{display:flex;gap:12px;justify-content:center;margin:24px 0;flex-wrap:wrap;}
+.rbox{background:var(--main-ll);border:1px solid var(--line);border-radius:14px;padding:14px 22px;min-width:96px;}
+.rbox .n{font-family:'Jua';font-size:26px;color:var(--main-d);}
+.rbox .l{font-size:12.5px;color:var(--gray);font-weight:600;margin-top:2px;}
+.medal{font-size:46px;}
+.wronglist{text-align:left;margin-top:14px;max-height:340px;overflow-y:auto;border-top:1px solid var(--line);padding-top:16px;}
+.wronglist h3{font-family:'Jua';font-size:17px;color:var(--no);margin-bottom:12px;}
+.witem{background:#fff;border:1px solid var(--line);border-left:4px solid var(--no);border-radius:10px;
+  padding:12px 14px;margin-bottom:10px;}
+.witem .wq{font-weight:700;font-size:14.5px;margin-bottom:6px;line-height:1.5;}
+.witem .wa{font-size:13.5px;color:var(--ink);}
+.witem .wa b{color:var(--ok);}
+.witem .we{font-size:13px;color:var(--gray);margin-top:4px;line-height:1.55;}
+.perfect{background:var(--ok-l);border:1px solid #bbe6cc;border-radius:12px;padding:18px;color:var(--ok);
+  font-weight:700;margin-top:8px;}
+.rbtns{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap;}
+@media(max-width:560px){
+  .start{padding:34px 22px;} .start h1{font-size:27px;} .qbody{padding:24px 20px;}
+  .qtext{font-size:18px;} .qfoot{padding:0 20px 22px;} .result{padding:32px 20px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+
+  <!-- 시작화면 -->
+  <section id="screen-start" class="start">
+    <div class="badge">통합사회 2 · 대단원 Ⅲ</div>
+    <h1>시장경제와 지속가능발전<br>100문항 랜덤 복습 챌린지</h1>
+    <p class="sub">객관식 · OX · 단답을 섞어 푸는 개념 완전 정복 게임</p>
+    <div class="feat">
+      <span>🔀 매번 새로 섞이는 랜덤 출제</span>
+      <span>⚡ 즉시 정오 · 한 줄 해설</span>
+      <span>⏱ 타이머 · 점수판 · 오답노트</span>
+    </div>
+    <div class="rowset">
+      <div class="pick">
+        <label>문항 수</label>
+        <select id="count">
+          <option value="20">20문항 (스피드)</option>
+          <option value="50">50문항 (중간)</option>
+          <option value="100" selected>100문항 (전체)</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:8px;"><button class="btn" id="startBtn">시작하기 ▶</button></div>
+    <p class="hint">
+      마우스 클릭 또는 키보드로 풀 수 있어요.<br>
+      객관식 <kbd>1</kbd>~<kbd>5</kbd> · OX는 <kbd>O</kbd><kbd>X</kbd> · 다음 문항 <kbd>Enter</kbd> 또는 <kbd>Space</kbd>
+    </p>
+  </section>
+
+  <!-- 퀴즈 -->
+  <section id="screen-quiz" style="display:none;">
+    <div class="qhead">
+      <div class="ix"><span id="cur">1</span>/<span id="tot">100</span></div>
+      <div class="bar"><i id="barFill"></i></div>
+      <div class="stat">
+        <span class="timer">⏱ <span id="timer">00:00</span></span>
+        <span>⭐ <span id="score">0</span></span>
+      </div>
+    </div>
+    <div class="qbody">
+      <div><span class="tag mc" id="qtag">객관식</span><span class="qtopic" id="qtopic"></span></div>
+      <div class="qtext" id="qtext">문항</div>
+      <div id="qarea"></div>
+      <div class="explain" id="explain"></div>
+    </div>
+    <div class="qfoot"><button class="next" id="nextBtn">다음 ▶</button></div>
+  </section>
+
+  <!-- 결과 -->
+  <section id="screen-result" class="result">
+    <div class="medal" id="medal">🎉</div>
+    <h2 id="rTitle">챌린지 완료!</h2>
+    <div class="scorebig"><span id="rScore">0</span><span style="font-size:30px;color:var(--gray);">점</span></div>
+    <p class="scoresub" id="rSub">100점 만점 기준</p>
+    <div class="rgrid">
+      <div class="rbox"><div class="n" id="rCorrect">0</div><div class="l">맞힌 문항</div></div>
+      <div class="rbox"><div class="n" id="rWrong">0</div><div class="l">틀린 문항</div></div>
+      <div class="rbox"><div class="n" id="rTime">00:00</div><div class="l">걸린 시간</div></div>
+    </div>
+    <div id="reviewArea"></div>
+    <div class="rbtns">
+      <button class="btn" id="retryBtn">다시 도전 🔁</button>
+      <button class="btn ghost" id="homeBtn">처음으로</button>
+    </div>
+  </section>
+
+</div>
+</div>
+
+<script>
+/* ====================== 문항 데이터 ======================
+   type: "mc"(객관식) | "ox" | "short"(단답)
+   mc  : choices[], answer = 정답 보기 인덱스(0부터)
+   ox  : answer = "O" | "X"
+   short: answer = 정답 문자열, accept = 허용 답안 배열(선택)
+   t   : 소단원 표시
+   ※ 모든 문항은 개념을 바탕으로 새로 출제하였으며, 사례형 소재는 신규 창안하였습니다.
+========================================================= */
+const Q = [
+/* ===== 중단원 1. 자본주의의 전개 과정과 경제 체제 ===== */
+{type:"mc",t:"자본주의",q:"사유 재산 제도를 바탕으로 시장을 통해 기본적인 경제 문제를 해결하는 경제 체제는?",choices:["자본주의","봉건제","중상주의","길드 체제"],answer:0,explain:"자본주의는 사유 재산권을 보장하고 시장을 통해 경제 문제를 해결하는 체제이다."},
+{type:"mc",t:"자본주의",q:"자본주의의 기본 특징으로 보기 어려운 것은?",choices:["사유 재산권 보장","계약·직업 선택의 자유","사적 이익 추구 인정","생산 수단의 국가 독점"],answer:3,explain:"생산 수단의 국가 독점은 계획경제의 특징이며, 자본주의는 개인의 재산 소유를 인정한다."},
+{type:"ox",t:"자본주의",q:"자본주의에서는 토지·공장 같은 생산 수단을 개인이 소유할 수 있다.",answer:"O",explain:"자본주의는 생산 수단을 포함한 재산을 개인이 소유할 수 있는 사유 재산권을 보장한다."},
+{type:"short",t:"시장 가격",q:"애덤 스미스가 시장의 자율적 조정 기능을 비유적으로 표현한 말로, 개인이 사익을 추구하는 과정에서 효율적 자원 배분이 이루어진다는 것을 뜻하는 다섯 글자 표현은?",answer:"보이지 않는 손",accept:["보이지않는손","보이지 않는 손"],explain:"'보이지 않는 손'은 시장 가격의 자율 조정 기능을 가리키는 표현이다."},
+{type:"mc",t:"자유방임주의",q:"애덤 스미스가 제시하여 자본주의 경제 체제 확립의 사상적 기초가 된 것은?",choices:["자유방임주의","수정 자본주의","신중상주의","사회주의"],answer:0,explain:"애덤 스미스는 국가의 개입을 줄이고 개인의 경제활동 자유를 보장하는 자유방임주의를 제시하였다."},
+{type:"mc",t:"자본주의 전개",q:"신항로 개척 이후 16세기부터 상품의 유통 과정에서 이윤을 얻으며 발전한 자본주의 단계는?",choices:["상업 자본주의","산업 자본주의","독점 자본주의","수정 자본주의"],answer:0,explain:"상업 자본주의는 상업과 무역의 유통 과정에서 이윤을 창출하던 초기 단계이다."},
+{type:"mc",t:"자본주의 전개",q:"18세기 중반 대량 생산 체제가 갖추어지면서 생산 과정에서 이윤을 얻게 된 배경이 된 사건은?",choices:["산업 혁명","대공황","석유 파동","세계 대전"],answer:0,explain:"산업 혁명으로 공장제 기계 공업이 확산되어 산업 자본주의가 전개되었다."},
+{type:"short",t:"자본주의 전개",q:"19세기 후반 소수의 거대 기업이 시장을 지배하며 자유로운 경쟁이 어려워진 자본주의 단계를 무엇이라 하는가?",answer:"독점 자본주의",accept:["독점자본주의","독점 자본주의"],explain:"독점 자본주의는 거대 기업의 시장 지배로 경쟁이 제한된 단계이다."},
+{type:"mc",t:"대공황",q:"1929년 발생하여 대량 실업과 기업 도산을 불러온, 자본주의의 큰 위기로 꼽히는 사건은?",choices:["대공황","스태그플레이션","외환 위기","튤립 파동"],answer:0,explain:"대공황은 수요 부족으로 발생한 대규모 경제 침체로, 정부 개입론이 대두된 계기가 되었다."},
+{type:"mc",t:"케인스",q:"대공황의 원인을 유효 수요 부족에서 찾고 정부의 시장 개입을 주장한 경제학자는?",choices:["케인스","애덤 스미스","마르크스","슘페터"],answer:0,explain:"케인스는 부족한 수요를 정부 지출로 보완해야 한다고 주장하였다."},
+{type:"short",t:"수정 자본주의",q:"대공황 이후 자본주의를 유지하면서 정부의 시장 개입을 일부 허용한 자본주의 형태를 무엇이라 하는가?",answer:"수정 자본주의",accept:["수정자본주의","수정 자본주의"],explain:"수정 자본주의는 케인스 이론을 받아들여 정부의 적극적 역할을 인정한 형태이다."},
+{type:"mc",t:"수정 자본주의",q:"대공황 극복을 위해 대규모 공공사업으로 일자리를 늘려 수요 부족을 해결하려 한 정책의 대표 사례는?",choices:["뉴딜 정책","민영화 정책","금 본위제","구조 조정"],answer:0,explain:"뉴딜 정책은 정부가 공공사업에 직접 개입해 일자리와 수요를 창출한 대표 사례이다."},
+{type:"ox",t:"신자유주의",q:"경기 침체와 물가 상승이 동시에 나타나는 스태그플레이션은 정부의 시장 개입을 강화해야 한다는 주장에 힘을 실어 주었다.",answer:"X",explain:"스태그플레이션은 오히려 정부 개입의 비효율을 부각시켜 시장 기능을 강조하는 신자유주의 등장 배경이 되었다."},
+{type:"mc",t:"신자유주의",q:"1980년대 이후 정부의 역할을 줄이고 시장의 자율성을 강조한 신자유주의의 정책으로 보기 어려운 것은?",choices:["공기업 민영화","규제 완화","감세","복지 지출의 대폭 확대"],answer:3,explain:"신자유주의는 복지 축소·민영화·규제 완화·감세를 추진하였으므로 복지 확대는 거리가 멀다."},
+{type:"mc",t:"신자유주의",q:"신자유주의가 비판받는 한계로 가장 적절한 것은?",choices:["빈부 격차 확대와 시장 불안정","과도한 복지로 인한 재정 파탄","생산 수단의 국유화","계획에 따른 물자 부족"],answer:0,explain:"신자유주의는 규제 완화와 자본의 국제 이동으로 빈부 격차와 시장 불안정을 키울 수 있다는 비판을 받는다."},
+{type:"short",t:"시장경제 체제",q:"민간 경제 주체의 자유로운 경쟁과 시장 가격을 통해 경제 문제를 해결하는 경제 체제는?",answer:"시장경제 체제",accept:["시장경제체제","시장경제 체제","시장 경제 체제"],explain:"시장경제 체제는 가계·기업이 중심이 되어 시장 가격으로 자원을 배분하는 체제이다."},
+{type:"mc",t:"시장경제 체제",q:"시장경제 체제의 장점으로 가장 적절한 것은?",choices:["효율적인 자원 배분","완전한 소득 평등 실현","경기 변동의 완전한 제거","정부 계획에 의한 물자 보장"],answer:0,explain:"시장경제 체제는 가격 신호를 통해 자원을 효율적으로 배분하는 장점이 있다."},
+{type:"mc",t:"시장경제 체제",q:"시장경제 체제에서 나타날 수 있는 한계로 보기 어려운 것은?",choices:["빈부 격차 발생","급격한 경기 변동","근로 의욕 저하로 인한 생산성 둔화","실업·인플레이션 발생"],answer:2,explain:"근로 의욕 저하와 생산성 둔화는 분배 형평성을 앞세운 계획경제의 한계에 해당한다."},
+{type:"mc",t:"계획경제 체제",q:"정부의 계획과 명령에 따라 경제 문제를 해결하는 경제 체제의 특징으로 옳은 것은?",choices:["생산 수단을 정부가 대부분 소유","개인의 자유로운 경쟁 보장","시장 가격에 의한 자원 배분","정부 개입의 최소화"],answer:0,explain:"계획경제 체제는 정부가 생산 수단을 소유하고 경제활동 전반을 통제한다."},
+{type:"ox",t:"계획경제 체제",q:"계획경제 체제는 자원이 특정 계층에 편중되는 것을 막아 분배의 형평성을 추구한다는 점이 강점으로 꼽힌다.",answer:"O",explain:"계획경제 체제는 분배의 형평성 실현을 목표로 한다는 점에서 의의가 있다."},
+{type:"mc",t:"계획경제 체제",q:"계획경제 체제의 한계로 가장 적절한 것은?",choices:["근로 의욕 저하와 효율성 하락","과도한 빈부 격차","독과점 기업의 횡포","급격한 물가 상승"],answer:0,explain:"일한 만큼 분배받지 못해 근로 의욕과 생산성이 떨어지고 효율성이 낮아질 수 있다."},
+{type:"short",t:"혼합 경제 체제",q:"오늘날 대부분의 국가가 채택한, 시장경제 요소와 계획경제 요소가 함께 들어 있는 경제 체제는?",answer:"혼합 경제 체제",accept:["혼합경제체제","혼합 경제 체제","혼합 경제"],explain:"혼합 경제 체제는 시장 기능을 기본으로 하되 정부 개입으로 한계를 보완한다."},
+{type:"mc",t:"사회주의 사상",q:"자본가 계급이 노동자 계급을 착취한다고 보아 생산 수단의 공동 소유를 주장한 사상가는?",choices:["마르크스","케인스","애덤 스미스","슘페터"],answer:0,explain:"마르크스는 계급 간 투쟁을 강조하며 생산 수단의 공동 소유를 주장하였다."},
+{type:"ox",t:"시장 가격",q:"시장경제에서 가격은 생산자와 소비자에게 무엇을 얼마나 만들고 사야 할지 알려 주는 신호 역할을 한다.",answer:"O",explain:"가격은 경제 주체의 의사 결정을 이끄는 신호등 같은 역할을 한다."},
+{type:"mc",t:"혼합 경제 체제",q:"다음 가상 사례에서 알 수 있는 경제 체제의 특징으로 가장 적절한 것은?  '가람국은 기업의 자유로운 생산을 보장하지만, 물가가 급등하자 정부가 비축 물량을 풀어 가격을 안정시켰다.'",choices:["시장을 기본으로 하되 정부가 개입하는 혼합 경제","생산 수단을 모두 국유화한 계획경제","정부 개입을 전혀 허용하지 않는 체제","사유 재산을 부정하는 사회주의"],answer:0,explain:"민간의 자율을 보장하면서 필요 시 정부가 개입하는 모습은 혼합 경제 체제의 특징이다."},
+
+/* ===== 중단원 2. 합리적 선택과 경제 주체의 역할 ===== */
+{type:"short",t:"희소성",q:"인간의 욕구는 무한한 데 비해 이를 충족할 자원이 상대적으로 부족한 상태를 무엇이라 하는가?",answer:"희소성",accept:["희소성","자원의 희소성"],explain:"자원의 희소성 때문에 우리는 끊임없이 선택의 상황에 놓인다."},
+{type:"mc",t:"편익과 비용",q:"어떤 선택으로 얻는 이익이나 만족감을 뜻하는 말은?",choices:["편익","비용","매몰","손실"],answer:0,explain:"편익은 선택으로 얻는 이익·만족이며, 비용은 그 선택에 치르는 대가이다."},
+{type:"mc",t:"기회비용",q:"기회비용에 대한 설명으로 옳은 것은?",choices:["명시적 비용과 암묵적 비용을 합한 것","실제로 지출한 돈만 가리키는 것","이미 지출해 회수 불가능한 비용","포기한 대안과 무관한 비용"],answer:0,explain:"기회비용은 실제 지출하는 명시적 비용과 포기한 대안의 가치인 암묵적 비용을 합한 것이다."},
+{type:"mc",t:"기회비용",q:"다음 가상 사례에서 '주말에 영화 관람'을 선택할 때의 기회비용으로 가장 적절한 것은?  '하늬는 주말에 ① 영화 관람, ② 카페 아르바이트(일당 6만 원) 중 하나만 할 수 있고, 영화 관람에는 1만 5천 원이 든다.'",choices:["7만 5천 원","6만 원","1만 5천 원","4만 5천 원"],answer:0,explain:"기회비용은 명시적 비용 1만 5천 원에 포기한 아르바이트 소득(암묵적 비용) 6만 원을 더한 7만 5천 원이다."},
+{type:"ox",t:"매몰 비용",q:"이미 지출하여 회수할 수 없는 매몰 비용은 합리적 선택을 할 때 고려해야 한다.",answer:"X",explain:"매몰 비용은 회수가 불가능하므로 합리적 선택 시 고려 대상에서 제외해야 한다."},
+{type:"short",t:"합리적 선택",q:"여러 대안 중 편익에서 기회비용을 뺀 값이 가장 큰 대안을 고르는 것을 무엇이라 하는가?",answer:"합리적 선택",accept:["합리적선택","합리적 선택"],explain:"합리적 선택은 순편익(편익-기회비용)이 가장 큰 대안을 선택하는 것이다."},
+{type:"mc",t:"시장 실패",q:"시장에서 자원이 효율적으로 배분되지 못해 사회 전체의 이익이 커지지 않는 현상은?",choices:["시장 실패","정부 실패","외부 경제","규모의 경제"],answer:0,explain:"시장 실패는 시장 기능만으로 효율적 배분이 이루어지지 못하는 상태이다."},
+{type:"mc",t:"시장 실패",q:"시장 실패의 대표적 유형으로 보기 어려운 것은?",choices:["독과점의 폐해","공공재의 부족","외부 효과의 발생","완전 경쟁의 실현"],answer:3,explain:"완전 경쟁은 효율적 배분에 가까우며 시장 실패의 유형이 아니다."},
+{type:"mc",t:"독과점",q:"독과점 시장에서 공급자가 이윤을 늘리려는 일반적인 방식으로 옳은 것은?",choices:["생산량을 줄이고 가격을 올린다","생산량을 늘리고 가격을 내린다","가격과 생산량을 모두 정부가 정한다","항상 최저 가격에 판매한다"],answer:0,explain:"독과점 공급자는 생산량을 줄여 가격을 올림으로써 이윤을 극대화하려 한다."},
+{type:"short",t:"담합",q:"비슷한 상품을 만드는 기업들이 더 높은 이익을 얻으려고 생산량·가격을 사전에 협의해 정하는 행위는?",answer:"담합",accept:["담합"],explain:"담합은 과점 기업들이 경쟁을 회피해 가격·생산량을 짜는 불공정 행위이다."},
+{type:"mc",t:"공공재",q:"국방·치안·가로등 같은 공공재의 특징으로 옳은 것은?",choices:["비경합성과 비배제성을 가진다","대가를 낸 사람만 소비할 수 있다","한 사람이 쓰면 다른 사람 몫이 줄어든다","항상 시장에서 충분히 공급된다"],answer:0,explain:"공공재는 함께 써도 줄지 않고(비경합성) 대가 없이도 배제하기 어려워(비배제성) 무임승차가 발생한다."},
+{type:"ox",t:"공공재",q:"공공재는 대가를 내지 않아도 소비할 수 있어 무임승차자 문제가 발생하고, 시장에 맡기면 필요량보다 적게 공급되기 쉽다.",answer:"O",explain:"무임승차 때문에 기업이 이윤을 얻기 어려워 공공재는 과소 공급되는 경향이 있다."},
+{type:"mc",t:"외부 효과",q:"어떤 경제 주체의 활동이 대가를 주고받지 않은 채 다른 주체에게 이익이나 피해를 주는 현상은?",choices:["외부 효과","규모의 경제","기회비용","유동성"],answer:0,explain:"외부 효과는 시장을 거치지 않고 타인에게 영향을 주어 자원 배분을 왜곡한다."},
+{type:"mc",t:"외부 효과",q:"부정적 외부 효과(외부 불경제)의 사례로 가장 적절한 것은?",choices:["공장의 대기 오염 물질 배출","예방 접종","과수원 옆 양봉","신기술의 무상 공개"],answer:0,explain:"오염 물질 배출은 타인에게 대가 없는 피해를 주는 부정적 외부 효과이다."},
+{type:"mc",t:"외부 효과",q:"긍정적 외부 효과(외부 경제)가 나타나는 활동의 일반적인 공급 수준으로 옳은 것은?",choices:["사회적 적정 수준보다 적게 생산된다","사회적 적정 수준보다 많이 생산된다","항상 적정 수준으로 생산된다","전혀 생산되지 않는다"],answer:0,explain:"긍정적 외부 효과는 대가를 못 받아 시장에서 적정 수준보다 적게 공급되는 경향이 있다."},
+{type:"mc",t:"정부의 역할",q:"부정적 외부 효과가 지나친 경제활동을 줄이기 위한 정부의 대표적 수단은?",choices:["세금이나 과징금 부과","보조금 지급","가격 통제 해제","민영화"],answer:0,explain:"과다한 활동에는 세금·과징금을 매겨 억제하고, 부족한 활동에는 보조금을 주어 장려한다."},
+{type:"short",t:"정부의 역할",q:"담합 등 불공정 거래 행위를 규제하기 위해 우리나라에 설치된 정부 기관은?",answer:"공정 거래 위원회",accept:["공정거래위원회","공정 거래 위원회","공정위"],explain:"공정 거래 위원회는 시장의 공정한 경쟁 질서를 지키는 정부 기관이다."},
+{type:"mc",t:"기업가 정신",q:"위험과 불확실성을 무릅쓰고 새로운 시장을 개척하는 기업가의 도전 정신을 무엇이라 하는가?",choices:["기업가 정신","소비자 주권","유동성","외부 효과"],answer:0,explain:"기업가 정신은 혁신과 도전으로 시장경제를 역동적으로 만드는 원천이다."},
+{type:"mc",t:"기업가 정신",q:"기업가 정신의 핵심을 '창조적 파괴', 즉 혁신으로 본 경제학자는?",choices:["슘페터","케인스","마르크스","캐롤"],answer:0,explain:"슘페터는 낡은 것을 허물고 새로운 것을 만드는 혁신을 기업가 정신의 핵심으로 보았다."},
+{type:"mc",t:"기업의 사회적 책임",q:"캐롤이 제시한 기업의 사회적 책임에서 가장 기초가 되는 단계는?",choices:["경제적 책임","법적 책임","윤리적 책임","자선적 책임"],answer:0,explain:"캐롤의 피라미드에서 가장 토대가 되는 단계는 이윤 창출과 관련된 경제적 책임이다."},
+{type:"short",t:"기업의 사회적 책임",q:"환경 보호, 사회적 책임, 투명한 지배 구조 등 기업의 비재무적 요소를 함께 고려하는 경영을 일컫는 영문 약칭은?",answer:"ESG",accept:["ESG","이에스지","esg"],explain:"ESG 경영은 환경·사회·투명성을 고려해야 지속가능발전이 가능하다는 관점이다."},
+{type:"mc",t:"노동자의 권리",q:"노동자가 사용자와 대등하게 협상할 수 있도록 헌법이 보장하는 단결권·단체 교섭권·단체 행동권을 통틀어 무엇이라 하는가?",choices:["노동 3권","청구권","참정권","재산권"],answer:0,explain:"노동 3권은 노동자의 권익과 근로 조건 향상을 위한 헌법상 권리이다."},
+{type:"ox",t:"소비자 주권",q:"시장경제에서 생산물의 종류와 수량을 결정하는 최종 권한이 소비자에게 있다는 것을 소비자 주권이라 한다.",answer:"O",explain:"소비자의 선택이 기업의 생산을 좌우한다는 점에서 소비자 주권이라 한다."},
+{type:"mc",t:"윤리적 소비",q:"지속가능발전을 고려해 친환경 제품이나 공정 무역 제품을 구매하려는 소비 태도는?",choices:["윤리적 소비","과시 소비","충동 소비","모방 소비"],answer:0,explain:"윤리적 소비는 생산의 전 과정을 고려해 가치를 반영하는 소비이다."},
+{type:"mc",t:"행동 경제학",q:"다음 가상 사례에 나타난 현상으로 가장 적절한 것은?  '한 매장이 같은 할인 상품에 1인당 4개 구매 제한 안내판을 붙이자, 제한이 없을 때보다 사람들이 더 많이 사 갔다.'",choices:["닻 내림 효과","규모의 경제","외부 효과","유동성 위기"],answer:0,explain:"처음 제시된 숫자가 기준점(닻)이 되어 이후 판단에 영향을 주는 닻 내림 효과이다."},
+
+/* ===== 중단원 3. 자산 관리와 금융 생활 ===== */
+{type:"short",t:"금융",q:"돈을 빌리거나 빌려줌으로써 자금이 융통되는 것을 무엇이라 하는가?",answer:"금융",accept:["금융"],explain:"금융은 자금이 부족한 곳과 남는 곳 사이에서 자금을 융통하는 활동이다."},
+{type:"mc",t:"예금",q:"예금의 일반적인 특징으로 옳은 것은?",choices:["안전성이 높고 수익성이 낮다","수익성이 높고 안전성이 낮다","원금 손실 위험이 매우 크다","배당 수익을 기대할 수 있다"],answer:0,explain:"예금은 예금자 보호로 안전성이 높지만 이자율이 낮아 큰 수익은 기대하기 어렵다."},
+{type:"mc",t:"예금",q:"자유롭게 입출금이 가능하지만 이자 수익이 낮은, 거래의 편의가 주목적인 예금은?",choices:["요구불 예금","저축성 예금","정기 적금","정기 예금"],answer:0,explain:"요구불 예금은 입출금이 자유로운 대신 이자가 낮고, 저축성 예금은 그 반대이다."},
+{type:"short",t:"예금자 보호 제도",q:"금융 기관이 파산해도 동일 금융 기관에서 원금과 이자를 합해 1인당 최대 1억 원까지 보장해 주는 제도는?",answer:"예금자 보호 제도",accept:["예금자보호제도","예금자 보호 제도","예금자 보호"],explain:"예금자 보호 제도는 예금 보험 공사가 예금자에게 보험금을 지급하는 제도이다."},
+{type:"mc",t:"채권",q:"채권에 대한 설명으로 옳은 것은?",choices:["정부·기업 등이 돈을 빌리며 발행하는 증서","회사 지분을 표시하는 증서","위험에 대비해 보험료를 내는 상품","노후를 위해 적립하는 상품"],answer:0,explain:"채권은 발행 기관이 이자 지급을 약속하고 돈을 빌리며 발행하는 증서이다."},
+{type:"mc",t:"주식",q:"주식 투자자가 회사 지분을 소유한 대가로 받을 수 있는 이익 분배를 무엇이라 하는가?",choices:["배당","이자","보험금","연금"],answer:0,explain:"주주는 보유 지분에 따라 회사 이익의 일부를 배당으로 받을 수 있다."},
+{type:"ox",t:"주식",q:"주식은 높은 수익을 기대할 수 있지만 기업이 파산하거나 주가가 내리면 원금을 잃을 수 있다.",answer:"O",explain:"주식은 수익성이 높은 만큼 원금 손실 위험도 큰 자산이다."},
+{type:"mc",t:"펀드",q:"투자자들이 모은 자금을 전문 운용 기관이 주식·채권 등에 투자해 수익을 돌려주는 간접 투자 상품은?",choices:["펀드","예금","연금","보험"],answer:0,explain:"펀드는 전문가가 대신 운용하지만 수수료가 있고 원금 손실 가능성이 있다."},
+{type:"mc",t:"연금과 보험",q:"노후 등 소득이 줄어드는 시기에 대비해 미리 적립했다가 지급받는 금융 상품은?",choices:["연금","채권","주식","요구불 예금"],answer:0,explain:"연금은 노후 생활 안정을 위한 상품으로 국민연금·퇴직 연금·개인연금 등이 있다."},
+{type:"short",t:"자산 관리 원칙",q:"투자한 자산으로부터 이익을 기대할 수 있는 정도를 뜻하는 자산 관리의 원칙은?",answer:"수익성",accept:["수익성"],explain:"수익성은 자산이 가져다줄 이익의 크기를 나타내는 원칙이다."},
+{type:"mc",t:"자산 관리 원칙",q:"투자한 자산의 가치가 줄지 않고 안전하게 보호될 수 있는 정도를 뜻하는 원칙은?",choices:["안전성","수익성","유동성","형평성"],answer:0,explain:"안전성은 원금이 손실되지 않을 가능성을 나타내는 원칙이다."},
+{type:"short",t:"자산 관리 원칙",q:"보유한 자산을 필요할 때 쉽게 현금으로 바꿀 수 있는 정도를 뜻하며 '환금성'이라고도 하는 원칙은?",answer:"유동성",accept:["유동성","환금성"],explain:"유동성은 자산을 현금화하기 쉬운 정도로, 예금은 높고 부동산은 낮다."},
+{type:"ox",t:"자산 관리 원칙",q:"일반적으로 수익성이 높은 금융 상품은 그만큼 투자 위험이 커서 안전성이 낮은 상충 관계가 나타난다.",answer:"O",explain:"수익성과 안전성은 서로 상충하여 둘 다 높은 자산은 현실에서 찾기 어렵다."},
+{type:"mc",t:"포트폴리오",q:"'달걀을 한 바구니에 담지 마라'라는 조언이 강조하는 자산 관리 방법은?",choices:["여러 자산에 나누어 투자(분산 투자)","한 종목에 집중 투자","현금만 보유","위험 자산만 투자"],answer:0,explain:"분산 투자(포트폴리오)는 위험을 여러 자산에 나누어 손실 위험을 줄인다."},
+{type:"mc",t:"자산 관리 전략",q:"'100-나이 법칙'에 따를 때, 나이가 젊을수록 권장되는 투자 방향으로 옳은 것은?",choices:["수익성이 높은 자산의 비중을 늘린다","안전 자산만 100% 보유한다","모든 자산을 예금에 둔다","투자를 전혀 하지 않는다"],answer:0,explain:"100에서 나이를 뺀 비율만큼 위험 자산에 투자하므로 젊을수록 공격적 투자를 권장한다."},
+{type:"mc",t:"자산 관리",q:"소득 중 소비하고 남은 자금으로 어떤 자산을 얼마나 사고 언제 처분할지 합리적으로 선택하는 과정은?",choices:["자산 관리","무임승차","담합","특화"],answer:0,explain:"자산 관리는 한정된 소득을 평생에 걸쳐 합리적으로 운용하는 과정이다."},
+{type:"short",t:"금융 생활 설계",q:"재무 목표 달성에 필요한 비용을 산정하고 이를 마련하기 위한 저축·투자 계획을 세우는 과정을 무엇이라 하는가?",answer:"금융 생활 설계",accept:["금융생활설계","금융 생활 설계","재무 설계"],explain:"금융 생활 설계는 장기적 관점에서 소득을 배분해 안정적 미래를 준비하는 과정이다."},
+{type:"mc",t:"금융 생활 설계",q:"금융 생활 설계의 일반적인 순서로 가장 적절한 것은?",choices:["재무 목표 설정 → 재무 상태 파악 → 계획 수립·실행 → 검토·평가","검토·평가 → 목표 설정 → 실행 → 상태 파악","계획 실행 → 목표 설정 → 검토 → 상태 파악","상태 파악 → 검토 → 목표 설정 → 실행"],answer:0,explain:"목표 설정, 재무 상태 파악, 계획 수립·실행, 검토·평가의 순으로 이루어진다."},
+{type:"mc",t:"금융 의사 결정",q:"한국은행이 기준 금리를 인상할 때 나타나는 일반적 영향으로 옳은 것은?",choices:["예금 금리 상승으로 주식의 상대적 매력 감소","주식 시장으로 자금 대거 유입","대출 부담 감소로 기업 실적 호전","예금 금리 하락"],answer:0,explain:"금리 인상은 예금 매력을 높이고 대출 비용을 늘려 대체로 주식 시장에 부정적이다."},
+{type:"ox",t:"금융 의사 결정",q:"환율이 상승했다는 것은 자기 나라 돈의 가치가 다른 나라 돈에 비해 올랐다는 의미이다.",answer:"X",explain:"환율 상승은 자국 화폐 가치가 상대적으로 떨어졌음을 의미한다."},
+{type:"mc",t:"금융 의사 결정",q:"세계 경제가 급격히 침체하는 불안정한 시기에 개인이 금융 의사 결정 시 더 중시하게 되는 요소는?",choices:["안전성과 유동성","수익성과 위험성","배당과 시세 차익","공격적 투자"],answer:0,explain:"불확실성이 큰 시기에는 수익성보다 안전성·유동성에 초점을 두는 경향이 강해진다."},
+{type:"mc",t:"금융 의사 결정",q:"정치적 상황 변화가 금융 환경에 미치는 영향에 대한 설명으로 옳은 것은?",choices:["정치가 불안하면 경제 위기 가능성이 커진다","정치는 금융과 무관하다","전쟁은 항상 주가를 올린다","정치 안정은 투자를 위축시킨다"],answer:0,explain:"정치 불안은 유가 상승·주가 폭락 등으로 이어져 금융 환경을 악화시킬 수 있다."},
+{type:"mc",t:"금융 의사 결정",q:"다음 가상 사례가 금융 의사 결정에 주는 시사점으로 가장 적절한 것은?  '대규모 전염병이 퍼지자 여행·항공 업종 주가는 급락한 반면, 배달·온라인 교육 업종은 호황을 누렸다.'",choices:["사회 환경 변화에 따라 업종별 영향이 다르므로 분산·점검이 필요하다","어떤 상황에서도 결과는 항상 같다","주가는 외부 환경과 무관하다","한 업종에 전부 투자해야 한다"],answer:0,explain:"감염병 같은 환경 변화는 업종마다 다른 영향을 주므로 재무 계획을 꾸준히 점검해야 한다."},
+{type:"mc",t:"주식과 채권",q:"주식과 채권의 차이로 옳은 것은?",choices:["주식 투자금은 자본금, 채권 투자금은 회사의 부채가 된다","둘 다 회사의 부채가 된다","주식에는 만기가 있고 채권에는 없다","채권 보유자는 회사의 주주가 된다"],answer:0,explain:"주식은 지분을 표시해 자본금이 되고, 채권은 돈을 빌린 증서라 부채가 된다."},
+{type:"ox",t:"금융 생활 설계",q:"개인의 소비 활동은 평생 지속되지만 소득을 얻는 기간은 한정되어 있어 장기적 관점의 자산 관리가 필요하다.",answer:"O",explain:"생애 주기에서 소득과 소비의 시점이 다르므로 장기적 금융 설계가 중요하다."},
+
+/* ===== 중단원 4. 국제 무역과 지속가능발전 ===== */
+{type:"short",t:"무역",q:"국경을 넘어 국가 간에 상품·서비스·생산 요소 등을 거래하는 것을 무엇이라 하는가?",answer:"무역",accept:["무역","국제 거래","국제거래"],explain:"국가 간 거래인 무역을 통해 부족한 자원을 확보하고 소비의 폭을 넓힌다."},
+{type:"mc",t:"무역 발생 이유",q:"국가 간 무역이 발생하는 근본적인 이유로 가장 적절한 것은?",choices:["나라마다 생산 여건이 달라 생산비에 차이가 나기 때문","모든 나라의 기술 수준이 같기 때문","자원이 모든 나라에 똑같이 분포하기 때문","정부가 거래를 금지하기 때문"],answer:0,explain:"자연환경·생산 요소·기술 차이로 생산비가 달라지기 때문에 무역이 발생한다."},
+{type:"short",t:"특화",q:"각 나라가 상대적으로 더 적은 생산비로 잘 만들 수 있는 상품을 전문적으로 생산하는 것을 무엇이라 하는가?",answer:"특화",accept:["특화"],explain:"특화한 상품을 서로 교환하는 국제 분업으로 거래 당사국 모두 이익을 얻는다."},
+{type:"mc",t:"국제 분업",q:"각 나라가 무역에 유리한 상품을 특화해 생산하고 교환하는 것을 무엇이라 하는가?",choices:["국제 분업","무임승차","담합","규모의 경제"],answer:0,explain:"국제 분업은 특화와 교환을 통해 세계 전체의 생산성을 높인다."},
+{type:"mc",t:"절대 우위",q:"한 나라가 어떤 상품을 다른 나라보다 적은 비용으로 생산할 수 있는 것을 무엇이라 하는가?",choices:["절대 우위","비교 우위","기회비용","유동성"],answer:0,explain:"절대 우위는 생산비 자체가 다른 나라보다 적게 드는 경우를 가리킨다."},
+{type:"mc",t:"비교 우위",q:"비교 우위에 대한 설명으로 옳은 것은?",choices:["상대적으로 더 낮은 기회비용으로 생산할 수 있는 것","무조건 생산비가 가장 적게 드는 것","생산량이 가장 많은 것","인구가 가장 많은 나라가 갖는 것"],answer:0,explain:"비교 우위는 기회비용이 상대적으로 낮은 상품에서 갖게 되며 무역의 핵심 원리이다."},
+{type:"mc",t:"비교 우위",q:"다음 가상 자료에서 비교 우위에 따른 특화 방향으로 옳은 것은?  '하루에 마루국은 신발 20켤레 또는 빵 40개, 보라국은 신발 10켤레 또는 빵 30개를 만들 수 있다.'",choices:["마루국은 신발, 보라국은 빵에 특화","마루국은 빵, 보라국은 신발에 특화","두 나라 모두 신발에 특화","무역하지 않는 것이 유리"],answer:0,explain:"신발 1켤레의 기회비용은 마루국이 빵 2개, 보라국이 빵 3개이므로 마루국이 신발에, 보라국이 빵에 비교 우위가 있다."},
+{type:"mc",t:"교환의 이익",q:"비교 우위에 따라 특화하여 교환할 때 나타나는 결과로 옳은 것은?",choices:["거래 당사국 모두 소비 가능량이 늘어난다","한 나라만 이익을 본다","두 나라 모두 손해를 본다","무역 전과 똑같다"],answer:0,explain:"비교 우위 상품에 특화해 교환하면 양국 모두 이전보다 더 많이 소비할 수 있다."},
+{type:"ox",t:"비교 우위",q:"한 나라가 모든 상품을 다른 나라보다 적은 비용으로 만들 수 있다면, 두 나라 사이에는 무역의 이익이 발생하지 않는다.",answer:"X",explain:"모든 상품에 절대 우위가 있어도 상대적으로 유리한 상품(비교 우위)에 특화하면 무역의 이익이 생긴다."},
+{type:"short",t:"생산비",q:"같은 제품을 만들더라도 나라마다 차이가 나며, 무역과 특화의 기준이 되는 '제품을 생산하는 데 드는 비용'을 무엇이라 하는가?",answer:"생산비",accept:["생산비","생산 비용"],explain:"국가 간 생산비 차이가 비교 우위와 무역 발생의 출발점이 된다."},
+{type:"mc",t:"국제 무역 기구",q:"자유 무역의 실현을 목표로 1995년 출범하여 무역 규제 완화를 이끈 국제기구는?",choices:["세계 무역 기구(WTO)","국제 통화 기금(IMF)","세계 보건 기구(WHO)","유엔 안전 보장 이사회"],answer:0,explain:"세계 무역 기구(WTO)는 자유 무역 질서 확대를 목적으로 설립되었다."},
+{type:"short",t:"자유 무역 협정",q:"국가 간 상품의 자유로운 이동을 위해 관세 등 무역 장벽을 완화·제거하는 협정을 가리키는 영문 약칭은?",answer:"FTA",accept:["FTA","에프티에이","자유 무역 협정","자유무역협정"],explain:"FTA(자유 무역 협정)는 협정국 간 무역 장벽을 낮추어 교역을 늘린다."},
+{type:"mc",t:"지역주의",q:"지리적으로 가깝거나 경제적 상호 의존도가 높은 국가들이 경제 블록을 형성해 무역 장벽을 낮추려는 움직임은?",choices:["지역주의","보호주의","고립주의","중상주의"],answer:0,explain:"지역주의는 경제 블록·FTA를 통해 국가 간 경제적 상호 의존을 강화한다."},
+{type:"mc",t:"무역 장벽",q:"수입 할당제, 수출 보조금처럼 관세 이외의 방법으로 무역을 제한하는 장벽을 무엇이라 하는가?",choices:["비관세 장벽","관세 장벽","환율 장벽","유동성 장벽"],answer:0,explain:"관세 이외의 수입 규제 수단을 통틀어 비관세 장벽이라 한다."},
+{type:"ox",t:"무역의 영향",q:"국제 무역은 이익을 주기도 하지만, 선진국과 개발 도상국 간 경제적 불평등을 심화할 수 있다는 부정적 측면도 있다.",answer:"O",explain:"무역은 성장을 돕지만 국가 간 불평등 심화라는 그늘도 함께 가지고 있다."},
+{type:"mc",t:"무역의 영향",q:"국제 무역의 확대가 지속가능발전을 저해할 수 있는 사례로 보기 어려운 것은?",choices:["환경친화적 기술의 국가 간 공유","자연 자원의 남용","환경 오염의 심화","노동자의 인권 침해"],answer:0,explain:"환경친화적 기술 공유는 지속가능발전에 기여하며, 나머지는 저해 요인이다."},
+{type:"mc",t:"지속가능한 소비",q:"환경과 사회에 미치는 영향을 고려해 상품을 구매·소비하는 것을 무엇이라 하는가?",choices:["지속가능한 소비","과시 소비","충동 소비","대량 소비"],answer:0,explain:"지속가능한 소비는 소비가 환경·사회에 주는 영향을 함께 고려하는 태도이다."},
+{type:"mc",t:"지속가능한 생산",q:"친환경 생산 기술을 개발하고 재활용이 쉽도록 설계해 환경에 미치는 영향을 최소화하는 생산 방식은?",choices:["지속가능한 생산","대량 생산","독점 생산","계획 생산"],answer:0,explain:"지속가능한 생산은 생산 과정의 환경 부담을 최소화하는 방식이다."},
+{type:"short",t:"공정 무역",q:"개발 도상국 생산자에게 정당한 대가가 돌아가도록 하여 그들의 자립을 돕는 무역 방식을 무엇이라 하는가?",answer:"공정 무역",accept:["공정무역","공정 무역"],explain:"공정 무역은 무역의 혜택을 노동자·생산자가 넓게 공유하도록 돕는다."},
+{type:"mc",t:"지속가능 무역",q:"국제 무역이 지속가능발전에 기여하기 위한 방안으로 보기 어려운 것은?",choices:["개발 도상국에 대한 선진국의 무역 봉쇄","지속가능한 소비·생산 촉진","개발 도상국에 대한 기술 지원","노동자 권리와 적정 임금 보장"],answer:0,explain:"무역 봉쇄는 협력과 거리가 멀며, 기술 지원·권리 보장 등이 지속가능 무역의 방안이다."},
+{type:"ox",t:"국제 협력",q:"지속가능발전을 위한 무역 방안은 아무리 좋아도 국가 간 협력과 이행이 없으면 성과를 거두기 어렵다.",answer:"O",explain:"과거 일부 국가의 비협조로 국제 약속이 무산된 사례처럼, 국제 협력과 이행이 필수적이다."},
+{type:"mc",t:"신보호 무역주의",q:"환경 오염을 유발하는 수입품에 탄소 배출량을 추정해 비용을 부과하는 제도로, 개발 도상국이 '신보호 무역주의'라며 반발하기도 하는 것은?",choices:["탄소 국경 조정 제도","자유 무역 협정","공정 무역","예금자 보호 제도"],answer:0,explain:"탄소 국경 조정 제도는 자국 산업 보호 성격이 있어 신보호 무역주의 논쟁을 일으킨다."},
+{type:"short",t:"신보호 무역주의",q:"환경·자국 산업 보호 등을 명분으로 수입을 제한하는 새로운 형태의 무역 제한 흐름을 무엇이라 하는가?",answer:"신보호 무역주의",accept:["신보호무역주의","신보호 무역주의","신보호주의"],explain:"신보호 무역주의는 환경 규제 등을 내세워 자국 산업을 보호하려는 흐름이다."},
+{type:"mc",t:"비교 우위",q:"다음 가상 자료에서 두 나라의 특화 방향으로 옳은 것은?  '하루에 가온국은 쌀 12가마 또는 천 6필, 다온국은 쌀 8가마 또는 천 8필을 만들 수 있다.'",choices:["가온국은 쌀, 다온국은 천에 특화","가온국은 천, 다온국은 쌀에 특화","두 나라 모두 쌀에 특화","무역의 이익이 없다"],answer:0,explain:"쌀 1가마의 기회비용은 가온국이 천 0.5필, 다온국이 천 1필이므로 가온국이 쌀에, 다온국이 천에 비교 우위가 있다."},
+{type:"mc",t:"지속가능발전",q:"미래 세대가 사용할 자원을 낭비하지 않으면서 현재 세대의 필요를 충족하는 발전을 무엇이라 하는가?",choices:["지속가능발전","독점 자본주의","자유방임","규모의 경제"],answer:0,explain:"지속가능발전은 현재와 미래 세대의 필요를 함께 고려하는 발전 방식이다."}
+];
+
+/* ====================== 엔진 ====================== */
+const $=s=>document.querySelector(s);
+const els={
+  start:$('#screen-start'),quiz:$('#screen-quiz'),result:$('#screen-result'),
+  cur:$('#cur'),tot:$('#tot'),bar:$('#barFill'),timer:$('#timer'),score:$('#score'),
+  tag:$('#qtag'),topic:$('#qtopic'),qtext:$('#qtext'),area:$('#qarea'),
+  explain:$('#explain'),next:$('#nextBtn')
+};
+let pool=[],idx=0,score=0,correctN=0,wrongN=0,answered=false,startT=0,timerId=null,wrongList=[];
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function norm(s){return String(s).replace(/\s+/g,'').replace(/[.,·]/g,'').toLowerCase();}
+function fmt(sec){const m=String(Math.floor(sec/60)).padStart(2,'0');const s=String(sec%60).padStart(2,'0');return m+':'+s;}
+
+function startQuiz(){
+  const n=parseInt($('#count').value,10);
+  pool=shuffle(Q).slice(0,Math.min(n,Q.length));
+  idx=0;score=0;correctN=0;wrongN=0;wrongList=[];
+  els.start.style.display='none';els.result.style.display='none';els.quiz.style.display='block';
+  els.tot.textContent=pool.length;
+  startT=Date.now();
+  clearInterval(timerId);
+  timerId=setInterval(()=>{els.timer.textContent=fmt(Math.floor((Date.now()-startT)/1000));},250);
+  render();
+}
+
+function render(){
+  answered=false;
+  const q=pool[idx];
+  els.cur.textContent=idx+1;
+  els.bar.style.width=((idx)/pool.length*100)+'%';
+  els.score.textContent=score;
+  els.explain.className='explain';els.explain.innerHTML='';
+  els.next.style.visibility='hidden';
+  els.next.textContent=(idx===pool.length-1)?'결과 보기 ▶':'다음 ▶';
+  const tagmap={mc:['mc','객관식'],ox:['ox','O X 문제'],short:['short','단답형']};
+  els.tag.className='tag '+tagmap[q.type][0];
+  els.tag.textContent=tagmap[q.type][1];
+  els.topic.textContent=q.t?('· '+q.t):'';
+  els.qtext.textContent=q.q;
+  els.area.innerHTML='';
+
+  if(q.type==='mc'){
+    const wrap=document.createElement('div');wrap.className='choices';
+    q.choices.forEach((c,i)=>{
+      const b=document.createElement('button');b.className='choice';
+      b.innerHTML='<span class="num">'+(i+1)+'</span><span>'+c+'</span>';
+      b.onclick=()=>pickMC(i);
+      wrap.appendChild(b);
+    });
+    els.area.appendChild(wrap);
+  }else if(q.type==='ox'){
+    const wrap=document.createElement('div');wrap.className='oxwrap';
+    ['O','X'].forEach(v=>{
+      const b=document.createElement('button');b.className='choice';b.textContent=v;
+      b.dataset.v=v;b.onclick=()=>pickOX(v);
+      wrap.appendChild(b);
+    });
+    els.area.appendChild(wrap);
+  }else{
+    const wrap=document.createElement('div');wrap.className='shortwrap';
+    const inp=document.createElement('input');inp.type='text';inp.id='shortInput';
+    inp.placeholder='정답을 입력하고 Enter';inp.autocomplete='off';
+    inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();submitShort();}};
+    const b=document.createElement('button');b.textContent='제출';b.onclick=submitShort;
+    wrap.appendChild(inp);wrap.appendChild(b);
+    els.area.appendChild(wrap);
+    setTimeout(()=>inp.focus(),40);
+  }
+}
+
+function lockChoices(){els.area.querySelectorAll('button').forEach(b=>b.disabled=true);}
+
+function judge(ok,userText){
+  if(answered)return;
+  answered=true;
+  const q=pool[idx];
+  const ansText=answerText(q);
+  if(ok){score+=1;correctN++;}
+  else{wrongN++;wrongList.push({q:q.q,ans:ansText,explain:q.explain,user:userText});}
+  els.score.textContent=score;
+  els.explain.className='explain show '+(ok?'right':'wrongx');
+  els.explain.innerHTML='<div class="verdict">'+(ok?'⭕ 정답입니다!':'❌ 아쉬워요')+'</div>'+
+    (ok?'':'<div class="ansline">정답 : '+ansText+'</div>')+
+    '<div>'+q.explain+'</div>';
+  els.next.style.visibility='visible';
+  els.next.focus();
+}
+
+function answerText(q){
+  if(q.type==='mc')return (q.answer+1)+'번. '+q.choices[q.answer];
+  if(q.type==='ox')return q.answer;
+  return q.answer;
+}
+
+function pickMC(i){
+  if(answered)return;
+  const q=pool[idx];const ok=(i===q.answer);
+  lockChoices();
+  const btns=els.area.querySelectorAll('.choice');
+  btns[q.answer].classList.add('correct');
+  if(!ok)btns[i].classList.add('wrong');
+  judge(ok,(i+1)+'번');
+}
+function pickOX(v){
+  if(answered)return;
+  const q=pool[idx];const ok=(v===q.answer);
+  lockChoices();
+  els.area.querySelectorAll('.choice').forEach(b=>{
+    if(b.dataset.v===q.answer)b.classList.add('correct');
+    else if(b.dataset.v===v)b.classList.add('wrong');
+  });
+  judge(ok,v);
+}
+function submitShort(){
+  if(answered)return;
+  const q=pool[idx];
+  const inp=$('#shortInput');const val=inp.value.trim();
+  if(!val){inp.focus();return;}
+  const cands=[q.answer].concat(q.accept||[]).map(norm);
+  const ok=cands.includes(norm(val));
+  inp.disabled=true;els.area.querySelector('button').disabled=true;
+  judge(ok,val);
+}
+
+function nextQ(){
+  if(!answered)return;
+  if(idx<pool.length-1){idx++;render();}
+  else finish();
+}
+
+function finish(){
+  clearInterval(timerId);
+  const elapsed=Math.floor((Date.now()-startT)/1000);
+  const total=pool.length;
+  const scaled=Math.round(score/total*100);
+  els.quiz.style.display='none';els.result.style.display='block';
+  els.bar.style.width='100%';
+  $('#rScore').textContent=scaled;
+  $('#rSub').textContent='총 '+total+'문항 중 '+correctN+'개 정답 (100점 만점 환산)';
+  $('#rCorrect').textContent=correctN;
+  $('#rWrong').textContent=wrongN;
+  $('#rTime').textContent=fmt(elapsed);
+  let medal='🎯',title='완료! 복습을 이어가요';
+  if(scaled===100){medal='🏆';title='완벽해요! 만점 달성';}
+  else if(scaled>=90){medal='🥇';title='훌륭해요!';}
+  else if(scaled>=70){medal='🥈';title='잘했어요!';}
+  else if(scaled>=50){medal='🥉';title='절반 넘었어요';}
+  $('#medal').textContent=medal;$('#rTitle').textContent=title;
+  const area=$('#reviewArea');
+  if(wrongList.length===0){
+    area.innerHTML='<div class="perfect">✨ 틀린 문항이 없습니다. 개념을 완벽하게 이해했어요!</div>';
+  }else{
+    let h='<div class="wronglist"><h3>📝 오답 노트 ('+wrongList.length+'문항)</h3>';
+    wrongList.forEach((w,i)=>{
+      h+='<div class="witem"><div class="wq">Q'+(i+1)+'. '+w.q+'</div>'+
+         '<div class="wa">정답 : <b>'+w.ans+'</b></div>'+
+         '<div class="we">'+w.explain+'</div></div>';
+    });
+    h+='</div>';area.innerHTML=h;
+  }
+}
+
+function goHome(){clearInterval(timerId);els.quiz.style.display='none';els.result.style.display='none';els.start.style.display='block';}
+
+$('#startBtn').onclick=startQuiz;
+$('#retryBtn').onclick=startQuiz;
+$('#homeBtn').onclick=goHome;
+els.next.onclick=nextQ;
+
+document.addEventListener('keydown',e=>{
+  if(els.quiz.style.display==='none')return;
+  const q=pool[idx];
+  if(!answered){
+    if(q.type==='mc'&&/^[1-9]$/.test(e.key)){
+      const i=parseInt(e.key,10)-1;if(i<q.choices.length)pickMC(i);
+    }else if(q.type==='ox'){
+      if(e.key==='o'||e.key==='O'||e.key==='ㅐ')pickOX('O');
+      if(e.key==='x'||e.key==='X'||e.key==='ㅌ')pickOX('X');
+    }
+  }else{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();nextQ();}
+  }
+});
+</script>
+</body>
+</html>

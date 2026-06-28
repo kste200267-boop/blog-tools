@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>통합사회2 Ⅰ. 인권 보장과 헌법 · 100문항 랜덤 복습 챌린지</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --main:#0D9488; --main-d:#0a766c; --main-l:#e6f5f3; --main-ll:#f2faf9;
+  --ink:#1E293B; --gray:#64748B; --line:#e2e8f0;
+  --ok:#16A34A; --ok-l:#e9f7ef; --no:#DC2626; --no-l:#fdecec; --warn:#E67E22;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:'Noto Sans KR',sans-serif;color:var(--ink);
+  background:linear-gradient(160deg,#0D9488 0%,#0a766c 45%,#0b5e57 100%);
+  min-height:100%;display:flex;align-items:center;justify-content:center;padding:20px;}
+h1,h2,.brand,.big{font-family:'Jua',sans-serif;font-weight:400;}
+.wrap{width:100%;max-width:720px;}
+.card{background:#fff;border-radius:22px;box-shadow:0 24px 60px rgba(8,60,55,.32);
+  overflow:hidden;}
+
+/* ===== 시작화면 ===== */
+.start{padding:46px 40px 40px;text-align:center;}
+.badge{display:inline-block;background:var(--main-l);color:var(--main-d);
+  font-weight:700;font-size:13px;letter-spacing:.5px;padding:7px 16px;border-radius:999px;margin-bottom:18px;}
+.start h1{font-size:34px;color:var(--main-d);line-height:1.25;}
+.start .sub{font-size:16px;color:var(--gray);margin-top:10px;font-weight:500;}
+.feat{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:26px 0 8px;}
+.feat span{background:var(--main-ll);border:1px solid var(--line);color:var(--main-d);
+  font-size:13px;font-weight:500;padding:8px 14px;border-radius:12px;}
+.rowset{display:flex;gap:12px;justify-content:center;margin:24px 0 6px;flex-wrap:wrap;}
+.pick{display:flex;flex-direction:column;align-items:flex-start;gap:6px;
+  background:var(--main-ll);border:1px solid var(--line);border-radius:14px;padding:12px 16px;}
+.pick label{font-size:12px;color:var(--gray);font-weight:700;}
+.pick select{font-family:inherit;font-size:15px;font-weight:700;color:var(--main-d);
+  border:none;background:transparent;outline:none;cursor:pointer;}
+.btn{font-family:'Jua',sans-serif;font-size:21px;background:var(--main);color:#fff;border:none;
+  border-radius:14px;padding:15px 40px;cursor:pointer;box-shadow:0 8px 18px rgba(13,148,136,.35);
+  transition:transform .08s, background .15s;}
+.btn:hover{background:var(--main-d);}
+.btn:active{transform:translateY(2px);}
+.btn.ghost{background:#fff;color:var(--main-d);border:2px solid var(--main);box-shadow:none;font-size:17px;padding:12px 26px;}
+.hint{font-size:12.5px;color:var(--gray);margin-top:20px;line-height:1.7;}
+kbd{background:#f1f5f9;border:1px solid #cbd5e1;border-bottom-width:2px;border-radius:6px;
+  padding:1px 7px;font-family:inherit;font-size:12px;color:#475569;}
+
+/* ===== 퀴즈 헤더 ===== */
+.qhead{background:var(--main-d);color:#fff;padding:14px 22px;display:flex;align-items:center;gap:14px;}
+.qhead .ix{font-family:'Jua';font-size:17px;white-space:nowrap;}
+.bar{flex:1;height:9px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden;}
+.bar i{display:block;height:100%;width:0;background:#fff;border-radius:99px;transition:width .35s;}
+.stat{display:flex;gap:14px;font-size:13.5px;font-weight:700;white-space:nowrap;}
+.stat .timer{font-family:'Jua';}
+
+/* ===== 문항 ===== */
+.qbody{padding:30px 30px 26px;min-height:330px;display:flex;flex-direction:column;}
+.tag{align-self:flex-start;font-size:12px;font-weight:700;padding:5px 12px;border-radius:8px;margin-bottom:14px;}
+.tag.mc{background:#e6f5f3;color:var(--main-d);}
+.tag.ox{background:#fff4e6;color:#b45309;}
+.tag.short{background:#eef2ff;color:#4338ca;}
+.qtopic{font-size:12px;color:var(--gray);font-weight:500;margin-left:8px;}
+.qtext{font-size:20px;font-weight:700;line-height:1.55;margin-bottom:20px;word-break:keep-all;}
+.choices{display:flex;flex-direction:column;gap:11px;}
+.choice{display:flex;align-items:center;gap:13px;text-align:left;background:#fff;border:2px solid var(--line);
+  border-radius:13px;padding:14px 16px;font-family:inherit;font-size:16px;color:var(--ink);cursor:pointer;
+  transition:border-color .12s, background .12s;}
+.choice:hover:not(:disabled){border-color:var(--main);background:var(--main-ll);}
+.choice .num{flex:none;width:27px;height:27px;border-radius:50%;background:#f1f5f9;color:var(--gray);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;}
+.choice:disabled{cursor:default;}
+.choice.correct{border-color:var(--ok);background:var(--ok-l);}
+.choice.correct .num{background:var(--ok);color:#fff;}
+.choice.wrong{border-color:var(--no);background:var(--no-l);}
+.choice.wrong .num{background:var(--no);color:#fff;}
+.oxwrap{display:flex;gap:14px;}
+.oxwrap .choice{flex:1;justify-content:center;font-family:'Jua';font-size:24px;padding:24px 0;}
+.shortwrap{display:flex;gap:10px;}
+.shortwrap input{flex:1;font-family:inherit;font-size:17px;padding:14px 16px;border:2px solid var(--line);
+  border-radius:13px;outline:none;}
+.shortwrap input:focus{border-color:var(--main);}
+.shortwrap button{font-family:'Jua';font-size:17px;background:var(--main);color:#fff;border:none;
+  border-radius:13px;padding:0 24px;cursor:pointer;}
+
+/* ===== 해설 ===== */
+.explain{margin-top:18px;border-radius:13px;padding:16px 18px;font-size:15px;line-height:1.6;display:none;}
+.explain.show{display:block;animation:fade .25s;}
+.explain.right{background:var(--ok-l);border:1px solid #bbe6cc;}
+.explain.right .verdict{color:var(--ok);}
+.explain.wrongx{background:var(--no-l);border:1px solid #f3c9c9;}
+.explain.wrongx .verdict{color:var(--no);}
+.verdict{font-family:'Jua';font-size:17px;margin-bottom:6px;}
+.ansline{font-weight:700;margin-bottom:4px;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.qfoot{padding:0 30px 26px;display:flex;justify-content:flex-end;}
+.next{font-family:'Jua';font-size:18px;background:var(--main);color:#fff;border:none;border-radius:13px;
+  padding:13px 34px;cursor:pointer;visibility:hidden;}
+.next:active{transform:translateY(2px);}
+
+/* ===== 결과 ===== */
+.result{padding:40px 36px;text-align:center;display:none;}
+.result h2{font-size:30px;color:var(--main-d);}
+.scorebig{font-family:'Jua';font-size:62px;color:var(--main);line-height:1.1;margin:10px 0 2px;}
+.scoresub{color:var(--gray);font-size:15px;font-weight:500;}
+.rgrid{display:flex;gap:12px;justify-content:center;margin:24px 0;flex-wrap:wrap;}
+.rbox{background:var(--main-ll);border:1px solid var(--line);border-radius:14px;padding:14px 22px;min-width:96px;}
+.rbox .n{font-family:'Jua';font-size:26px;color:var(--main-d);}
+.rbox .l{font-size:12.5px;color:var(--gray);font-weight:600;margin-top:2px;}
+.medal{font-size:46px;}
+.wronglist{text-align:left;margin-top:14px;max-height:340px;overflow-y:auto;border-top:1px solid var(--line);padding-top:16px;}
+.wronglist h3{font-family:'Jua';font-size:17px;color:var(--no);margin-bottom:12px;}
+.witem{background:#fff;border:1px solid var(--line);border-left:4px solid var(--no);border-radius:10px;
+  padding:12px 14px;margin-bottom:10px;}
+.witem .wq{font-weight:700;font-size:14.5px;margin-bottom:6px;line-height:1.5;}
+.witem .wa{font-size:13.5px;color:var(--ink);}
+.witem .wa b{color:var(--ok);}
+.witem .we{font-size:13px;color:var(--gray);margin-top:4px;line-height:1.55;}
+.perfect{background:var(--ok-l);border:1px solid #bbe6cc;border-radius:12px;padding:18px;color:var(--ok);
+  font-weight:700;margin-top:8px;}
+.rbtns{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap;}
+@media(max-width:560px){
+  .start{padding:34px 22px;} .start h1{font-size:27px;} .qbody{padding:24px 20px;}
+  .qtext{font-size:18px;} .qfoot{padding:0 20px 22px;} .result{padding:32px 20px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+
+  <!-- 시작화면 -->
+  <section id="screen-start" class="start">
+    <div class="badge">통합사회 2 · 대단원 Ⅰ</div>
+    <h1>인권 보장과 헌법<br>100문항 랜덤 복습 챌린지</h1>
+    <p class="sub">객관식 · OX · 단답을 섞어 푸는 개념 완전 정복 게임</p>
+    <div class="feat">
+      <span>🔀 매번 새로 섞이는 랜덤 출제</span>
+      <span>⚡ 즉시 정오 · 한 줄 해설</span>
+      <span>⏱ 타이머 · 점수판 · 오답노트</span>
+    </div>
+    <div class="rowset">
+      <div class="pick">
+        <label>문항 수</label>
+        <select id="count">
+          <option value="20">20문항 (스피드)</option>
+          <option value="50">50문항 (중간)</option>
+          <option value="100" selected>100문항 (전체)</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:8px;"><button class="btn" id="startBtn">시작하기 ▶</button></div>
+    <p class="hint">
+      마우스 클릭 또는 키보드로 풀 수 있어요.<br>
+      객관식 <kbd>1</kbd>~<kbd>5</kbd> · OX는 <kbd>O</kbd><kbd>X</kbd> · 다음 문항 <kbd>Enter</kbd> 또는 <kbd>Space</kbd>
+    </p>
+  </section>
+
+  <!-- 퀴즈 -->
+  <section id="screen-quiz" style="display:none;">
+    <div class="qhead">
+      <div class="ix"><span id="cur">1</span>/<span id="tot">100</span></div>
+      <div class="bar"><i id="barFill"></i></div>
+      <div class="stat">
+        <span class="timer">⏱ <span id="timer">00:00</span></span>
+        <span>⭐ <span id="score">0</span></span>
+      </div>
+    </div>
+    <div class="qbody">
+      <div><span class="tag mc" id="qtag">객관식</span><span class="qtopic" id="qtopic"></span></div>
+      <div class="qtext" id="qtext">문항</div>
+      <div id="qarea"></div>
+      <div class="explain" id="explain"></div>
+    </div>
+    <div class="qfoot"><button class="next" id="nextBtn">다음 ▶</button></div>
+  </section>
+
+  <!-- 결과 -->
+  <section id="screen-result" class="result">
+    <div class="medal" id="medal">🎉</div>
+    <h2 id="rTitle">챌린지 완료!</h2>
+    <div class="scorebig"><span id="rScore">0</span><span style="font-size:30px;color:var(--gray);">점</span></div>
+    <p class="scoresub" id="rSub">100점 만점 기준</p>
+    <div class="rgrid">
+      <div class="rbox"><div class="n" id="rCorrect">0</div><div class="l">맞힌 문항</div></div>
+      <div class="rbox"><div class="n" id="rWrong">0</div><div class="l">틀린 문항</div></div>
+      <div class="rbox"><div class="n" id="rTime">00:00</div><div class="l">걸린 시간</div></div>
+    </div>
+    <div id="reviewArea"></div>
+    <div class="rbtns">
+      <button class="btn" id="retryBtn">다시 도전 🔁</button>
+      <button class="btn ghost" id="homeBtn">처음으로</button>
+    </div>
+  </section>
+
+</div>
+</div>
+
+<script>
+/* ====================== 문항 데이터 ======================
+   type: "mc"(객관식) | "ox" | "short"(단답)
+   mc  : choices[], answer = 정답 보기 인덱스(0부터)
+   ox  : answer = "O" | "X"
+   short: answer = 정답 문자열, accept = 허용 답안 배열(선택)
+   t   : 소단원 표시
+========================================================= */
+const Q = [
+{type:"mc",t:"인권의 의미",q:"인간이 인간답게 살기 위해 마땅히 누려야 할 기본적인 권리를 뜻하는 말은?",choices:["인권","주권","참정권","공무 담임권"],answer:0,explain:"인권은 인간이라는 이유만으로 누구나 누리는 기본적 권리이다."},
+{type:"ox",t:"인권의 특성",q:"인권은 국가가 법이나 문서로 보장해야만 비로소 생겨나는 권리이다.",answer:"X",explain:"인권은 법으로 보장하기 전부터 자연적으로 부여된 천부적 권리이다."},
+{type:"mc",t:"인권의 특성",q:"'인종·성별·종교·언어와 관계없이 인간이라면 누구나 가진다'는 인권의 특성은?",choices:["천부성","보편성","불가침성","상대성"],answer:1,explain:"보편성은 인간이라면 누구에게나 차별 없이 인정되는 인권의 성질이다."},
+{type:"short",t:"인권의 특성",q:"국가나 다른 사람이 함부로 빼앗거나 침해할 수 없는 인권의 특성을 무엇이라 하는가?",answer:"불가침성",accept:["불가침","불가침의 권리","불가침성"],explain:"불가침성은 인권을 어느 누구도 함부로 침해할 수 없다는 특성이다."},
+{type:"mc",t:"인권의 특성",q:"인권이 '천부적 권리'라는 말의 의미로 가장 적절한 것은?",choices:["국가가 시험을 통해 부여한다","태어나면서부터 당연히 가진다","성인이 되어야 인정된다","재산이 많을수록 커진다"],answer:1,explain:"천부적 권리는 하늘이 준 권리, 즉 태어날 때부터 자연적으로 갖는 권리를 뜻한다."},
+{type:"ox",t:"인권의 역할",q:"인권은 국가 권력이 부당한 정책을 운용할 때 이를 비판하는 기준으로 작용할 수 있다.",answer:"O",explain:"인권은 정의롭지 못한 제도를 비판하고 바로잡는 잣대 역할을 한다."},
+{type:"mc",t:"인권 사상가",q:"국가나 정치 공동체에 속하지 못한 난민·무국적자의 인권이 보장되지 않는 현실을 비판한 사상가는?",choices:["롤스","아렌트","소로","노직"],answer:1,explain:"한나 아렌트는 공동체에 속하지 못한 이들의 '권리를 가질 권리' 박탈 문제를 지적하였다."},
+{type:"mc",t:"인권 보장의 역사",q:"근대 시민 혁명을 통해 가장 먼저 강하게 선언된 인권의 유형은?",choices:["사회권","연대권","자유권·평등권","청구권"],answer:2,explain:"근대 시민 혁명은 왕과 귀족의 억압에서 벗어나 자유권과 평등권을 선언하였다."},
+{type:"ox",t:"인권 보장의 역사",q:"영국 명예혁명의 결과 권리 장전이 승인되어 의회 중심의 입헌 군주제가 등장하였다.",answer:"O",explain:"명예혁명(1688)으로 권리 장전이 승인되며 의회의 권한과 시민의 권리가 확대되었다."},
+{type:"mc",t:"인권 보장의 역사",q:"'모든 인간은 태어날 때부터 자유롭고 평등하다'는 내용을 담아 프랑스 혁명의 결과로 발표된 문서는?",choices:["권리 장전","미국 독립 선언","인간과 시민의 권리 선언","세계 인권 선언"],answer:2,explain:"프랑스 혁명의 결과 채택된 인간과 시민의 권리 선언은 자연권·자유·평등을 선언하였다."},
+{type:"short",t:"인권 보장의 역사",q:"19세기 영국 노동자들이 선거권 확대와 비밀 투표를 요구하며 인민헌장을 내걸고 전개한 참정권 운동은?",answer:"차티스트 운동",accept:["차티스트운동","차티스트 운동"],explain:"차티스트 운동은 재산·신분에 따른 선거권 제한에 맞선 참정권 확대 운동이다."},
+{type:"mc",t:"인권 보장의 역사",q:"성별·재산·인종에 관계없이 일정 연령 이상이면 누구나 정치에 참여할 수 있는 권리를 무엇이라 하는가?",choices:["사회권","참정권","청구권","자유권"],answer:1,explain:"참정권은 차티스트 운동·여성 참정권 운동 등을 거쳐 보편적으로 보장되었다."},
+{type:"mc",t:"인권 보장의 역사",q:"세계 최초로 사회권을 명시하여 '인간다운 생활의 보장'을 규정한 헌법은?",choices:["미국 연방 헌법","독일 바이마르 헌법","영국 권리 장전","일본 평화 헌법"],answer:1,explain:"1919년 독일 바이마르 헌법은 사회권을 최초로 헌법에 명시하였다."},
+{type:"ox",t:"인권 보장의 역사",q:"사회권은 산업 혁명 이후 빈부 격차와 열악한 노동 환경 문제를 배경으로 등장하였다.",answer:"O",explain:"자본주의 발전으로 사회적 약자 보호의 필요성이 커지며 사회권이 등장하였다."},
+{type:"mc",t:"인권 보장의 역사",q:"두 차례의 세계 대전을 겪은 뒤 1948년 국제 연합(UN) 총회가 채택하여 인권을 인류 보편의 가치로 선언한 문서는?",choices:["세계 인권 선언","바이마르 헌법","권리 청원","대서양 헌장"],answer:0,explain:"세계 인권 선언(1948)은 인권 보호를 위한 국제 협력의 토대가 되었다."},
+{type:"short",t:"인권 보장의 역사",q:"특정 집단을 없애려고 그 구성원을 대량 학살하는 행위를 가리키는 말은?",answer:"제노사이드",accept:["제노사이드","집단 학살","집단학살"],explain:"제노사이드는 민족·인종 등 특정 집단에 대한 대량 학살 행위를 뜻한다."},
+{type:"mc",t:"인권의 세대 구분",q:"카렐 바작의 구분에서 '국가의 개입을 경계하는 개인의 자유'를 핵심으로 하는 1세대 인권은?",choices:["자유권","사회권","연대권","청구권"],answer:0,explain:"1세대 인권은 신체·양심·표현의 자유 등 국가의 간섭을 막는 자유권이다."},
+{type:"mc",t:"인권의 세대 구분",q:"교육받을 권리, 근로의 권리, 인간다운 생활을 할 권리 등이 속하는 인권의 세대는?",choices:["1세대","2세대","3세대","4세대"],answer:1,explain:"2세대 인권은 국가의 적극적 개입을 통해 보장되는 사회권이다."},
+{type:"ox",t:"인권의 세대 구분",q:"3세대 인권인 연대권은 한 국가의 노력만으로 쉽게 실현할 수 있는 권리이다.",answer:"X",explain:"연대권은 환경·평화·발전 등 국제적 협력이 필수적인 집단적 권리이다."},
+{type:"mc",t:"인권의 세대 구분",q:"평화의 권리, 발전의 권리, 지속가능한 환경에 대한 권리를 포함하는 인권의 세대는?",choices:["1세대(자유권)","2세대(사회권)","3세대(연대권)","해당 없음"],answer:2,explain:"3세대 인권(연대권)은 전 지구적 차원의 협력을 요구하는 집단적 권리이다."},
+{type:"mc",t:"새로운 인권",q:"쾌적하고 안정적인 환경에서 인간다운 주거 생활을 할 권리는?",choices:["주거권","안전권","환경권","문화권"],answer:0,explain:"주거권은 적절한 주거 환경에서 살 권리로, 우리나라는 주거 기본법에 명시하였다."},
+{type:"short",t:"새로운 인권",q:"자연재해나 과학기술 발전에 따른 위험 등 각종 위험으로부터 안전을 보호받을 권리는?",answer:"안전권",accept:["안전권"],explain:"안전권은 재해·범죄·사고 등으로부터 보호받을 권리이다."},
+{type:"mc",t:"새로운 인권",q:"미세 먼지, 소음 공해 등이 문제가 되면서 강조된, 건강하고 쾌적한 환경에서 살 권리는?",choices:["주거권","환경권","문화권","참정권"],answer:1,explain:"환경권은 건강하고 쾌적한 환경에서 살 권리로, 환경 정책 기본법 등이 뒷받침한다."},
+{type:"mc",t:"새로운 인권",q:"성별·인종·종교와 관계없이 문화 활동에 자유롭게 참여하고 누릴 권리는?",choices:["문화권","주거권","안전권","청구권"],answer:0,explain:"문화권은 문화를 누리고 고유한 언어·생활양식을 보장받을 권리를 포함한다."},
+{type:"ox",t:"새로운 인권",q:"인권은 사회의 변화와 무관하게 한번 정해지면 그 범위가 고정된다.",answer:"X",explain:"인권은 사회 변화에 따라 끊임없이 변화하며 그 범위가 확장된다."},
+{type:"mc",t:"새로운 인권",q:"인터넷에서 자신과 관련된 정보의 수정·삭제를 요청할 수 있는 권리는?",choices:["알권리","잊힐 권리","청원권","저항권"],answer:1,explain:"잊힐 권리는 정보 사회에서 개인 정보에 대한 통제를 강화한 새로운 권리이다."},
+{type:"short",t:"새로운 인권",q:"공공 기관이 보유한 정보의 공개를 청구할 수 있는, 알권리와 관련된 권리는?",answer:"정보 공개 청구권",accept:["정보공개청구권","정보 공개 청구권","알권리","정보 접근권"],explain:"정보 공개 청구권은 알권리를 실현하는 권리로, 관련 법률이 이를 보장한다."},
+{type:"mc",t:"새로운 인권",q:"다음 가상 사례에서 보장이 요구되는 인권으로 가장 적절한 것은?  '대학가 원룸 임대료가 급등해 청년들이 비용 부담을 줄여 달라며 시위하였다.'",choices:["문화권","주거권","안전권","참정권"],answer:1,explain:"주거 비용 부담과 안정적 거주의 문제이므로 주거권과 관련된다."},
+{type:"mc",t:"새로운 인권",q:"다음 가상 사례와 관련된 인권은?  '비수도권 지역 주민들이 공연·전시 시설이 부족하다며 문화 향유 기회를 늘려 달라고 요구하였다.'",choices:["환경권","안전권","문화권","주거권"],answer:2,explain:"문화 활동에 참여하고 누릴 기회의 문제이므로 문화권과 관련된다."},
+{type:"mc",t:"인권과 헌법",q:"국가의 통치 조직·운영 원리와 국민의 기본적 인권을 규정한 국가의 최고법은?",choices:["민법","헌법","형법","조례"],answer:1,explain:"헌법은 국가의 최고법으로, 모든 법령의 기준이 되며 인권 보장의 토대이다."},
+{type:"short",t:"인권과 헌법",q:"인간의 존엄과 가치 및 행복 추구권을 규정한 우리 헌법의 조항은 제 몇 조인가?",answer:"제10조",accept:["10조","제10조","10"],explain:"헌법 제10조는 인간의 존엄과 가치, 행복 추구권을 핵심 가치로 규정한다."},
+{type:"mc",t:"인권과 헌법",q:"국가의 모든 권력이 헌법에 따르도록 하여 권력의 자의적 행사를 막는 정치 원리는?",choices:["입헌주의","전체주의","연고주의","능력주의"],answer:0,explain:"입헌주의는 국가 권력을 헌법으로 제한해 국민의 기본권을 실질적으로 보장한다."},
+{type:"ox",t:"인권과 헌법",q:"인권과 기본권은 완전히 같은 말로, 둘 사이에는 아무런 차이가 없다.",answer:"X",explain:"기본권은 헌법에 규정된 기본적 인권으로, 보편적 권리인 인권과 구분된다."},
+{type:"mc",t:"기본권",q:"신체의 자유, 거주·이전의 자유, 종교의 자유처럼 국가의 간섭을 받지 않을 권리는?",choices:["자유권","평등권","참정권","청구권"],answer:0,explain:"자유권은 국가 권력의 간섭 없이 자유롭게 생활할 권리이다."},
+{type:"mc",t:"기본권",q:"선거권, 공무 담임권, 국민 투표권 등 국가 의사 결정에 참여할 권리는?",choices:["사회권","참정권","청구권","평등권"],answer:1,explain:"참정권은 주권자인 국민이 정치에 참여할 수 있는 권리이다."},
+{type:"mc",t:"기본권",q:"교육받을 권리, 근로의 권리처럼 국가에 인간다운 생활의 보장을 요구할 권리는?",choices:["자유권","사회권","청구권","참정권"],answer:1,explain:"사회권은 국가에 인간다운 생활 보장을 요구하는 적극적 권리이다."},
+{type:"mc",t:"기본권",q:"청원권, 재판 청구권, 국가 배상 청구권처럼 다른 기본권이 침해되었을 때 구제받기 위한 수단적 권리는?",choices:["청구권","자유권","평등권","사회권"],answer:0,explain:"청구권은 기본권 침해 시 구제를 받기 위한 수단적 성격의 권리이다."},
+{type:"short",t:"기본권",q:"합리적 이유 없이 불평등한 대우를 받지 않도록 국가에 요구할 수 있는, 헌법 제11조와 관련된 기본권은?",answer:"평등권",accept:["평등권"],explain:"평등권은 '법 앞에 평등'을 규정한 헌법 제11조에 근거한다."},
+{type:"ox",t:"기본권",q:"일조권·수면권처럼 헌법에 구체적으로 열거되지 않은 권리는 어떤 경우에도 보장되지 않는다.",answer:"X",explain:"헌법 제37조 1항에 따라 열거되지 않은 권리도 경시되지 않고 보장될 수 있다."},
+{type:"mc",t:"기본권 제한",q:"헌법 제37조 2항에서 기본권을 제한할 수 있는 목적으로 규정하지 않은 것은?",choices:["국가 안전 보장","질서 유지","공공복리","특정 정당의 이익"],answer:3,explain:"기본권은 국가 안전 보장·질서 유지·공공복리를 위해서만 제한할 수 있다."},
+{type:"ox",t:"기본권 제한",q:"기본권을 제한할 때에도 자유와 권리의 본질적인 내용은 침해할 수 없다.",answer:"O",explain:"본질적 내용 침해 금지는 국가의 자의적 기본권 제한을 막는 한계이다."},
+{type:"mc",t:"기본권 제한",q:"기본권 제한은 정당한 목적 달성에 필요한 범위 안에서만 해야 한다는 원칙은?",choices:["과잉 금지의 원칙","영장주의","권력 분립","입헌주의"],answer:0,explain:"과잉 금지의 원칙은 기본권 제한이 필요 최소한에 그쳐야 함을 뜻한다."},
+{type:"short",t:"기본권 제한",q:"우리 헌법상 기본권은 국회가 제정한 무엇으로써만 제한할 수 있는가?",answer:"법률",accept:["법률","법"],explain:"기본권 제한은 반드시 국회가 제정한 법률의 형식을 통해서만 가능하다."},
+{type:"mc",t:"제도적 장치",q:"체포·구속·압수·수색 시 법관이 발부한 영장을 제시해야 한다는, 자유권 보장 장치는?",choices:["영장주의","과잉 금지","연고주의","적극적 평등 실현"],answer:0,explain:"영장주의는 적법 절차에 따라 신체의 자유를 보장하는 제도적 장치이다."},
+{type:"mc",t:"제도적 장치",q:"법원과 별도로 헌법을 기준으로 분쟁을 심판하기 위해 우리나라에 설치된 기관은?",choices:["대법원","헌법재판소","감사원","국가 인권 위원회"],answer:1,explain:"헌법재판소는 헌법을 수호하고 국민의 기본권을 보장하는 기관이다."},
+{type:"mc",t:"제도적 장치",q:"재판의 전제가 된 법률이 헌법에 위반되는지를 심판하는 헌법재판소의 심판은?",choices:["위헌 법률 심판","탄핵 심판","정당 해산 심판","권한 쟁의 심판"],answer:0,explain:"위헌 법률 심판은 법원의 제청으로 법률의 위헌 여부를 가린다."},
+{type:"short",t:"제도적 장치",q:"법률이나 공권력이 국민의 기본권을 침해하는지를 판단하는, 국민이 직접 청구하는 헌법재판소 심판은?",answer:"헌법 소원 심판",accept:["헌법소원심판","헌법 소원 심판","헌법소원"],explain:"헌법 소원 심판은 기본권 침해를 받은 국민이 최후 수단으로 활용할 수 있다."},
+{type:"mc",t:"제도적 장치",q:"입법권은 국회, 행정권은 정부, 사법권은 법원이 나누어 맡아 권력 남용을 막는 제도는?",choices:["권력 분립 제도","연고주의","적극적 평등 실현 조치","성장 거점 개발"],answer:0,explain:"권력 분립 제도는 권력의 견제와 균형으로 인권 침해를 방지한다."},
+{type:"ox",t:"제도적 장치",q:"헌법에 제도적 장치가 마련되어 있으면 시민의 노력 없이도 모든 인권이 저절로 보장된다.",answer:"X",explain:"제도만으로는 부족하며, 시민의 적극적 참여가 함께 필요하다."},
+{type:"mc",t:"시민 참여",q:"시민이 인권 의식을 바탕으로 국가의 정책 결정이나 공공 문제 해결에 적극적으로 참여하는 것은?",choices:["시민 참여","시민불복종","권력 분립","연고주의"],answer:0,explain:"시민 참여는 인권 보장을 실질화하기 위한 시민의 적극적 활동이다."},
+{type:"mc",t:"시민 참여",q:"다음 중 합법적인 시민 참여의 방안으로 보기 어려운 것은?",choices:["선거 참여","공청회 참여","청원·서명 운동","법에 대한 의도적 거부"],answer:3,explain:"법에 대한 의도적 거부는 시민불복종으로, 일반적 시민 참여 방안과 구분된다."},
+{type:"short",t:"시민 참여",q:"국민이 국가 기관에 문서로 일정한 요구를 제출할 수 있는, 시민 참여 방안의 하나는?",answer:"청원",accept:["청원","청원권","청원 운동"],explain:"청원은 헌법이 보장하는 시민 참여 방안으로, 제도 개선을 요구할 수 있다."},
+{type:"mc",t:"시민불복종",q:"잘못된 법이나 정책을 바로잡기 위해 의도적으로 법에 대한 복종을 거부하는 행위는?",choices:["시민불복종","권한 쟁의","행정 심판","위헌 법률 심판"],answer:0,explain:"시민불복종은 불이익을 감수하며 부당한 제도에 저항하는 최후의 수단이다."},
+{type:"ox",t:"시민불복종",q:"롤스에 따르면 시민불복종은 폭력적 방법을 사용해도 정당성을 얻을 수 있다.",answer:"X",explain:"롤스는 비폭력성, 처벌 감수, 최후의 수단 등을 정당화 조건으로 보았다."},
+{type:"mc",t:"시민불복종",q:"롤스가 제시한 시민불복종의 정당화 조건으로 보기 어려운 것은?",choices:["사회 정의 실현을 목표로 함","비폭력적 방법 사용","처벌을 감수함","개인적 이익 추구를 목표로 함"],answer:3,explain:"시민불복종은 사익이 아니라 사회 정의 실현을 목표로 해야 정당화된다."},
+{type:"short",t:"시민불복종",q:"전쟁과 노예 제도에 반대해 세금 납부를 거부하고 투옥된, 시민불복종 개념을 제안한 인물은?",answer:"소로",accept:["소로","헨리 데이비드 소로","헨리 소로"],explain:"소로의 사상은 이후 간디와 마틴 루서 킹의 비폭력 저항에 영향을 주었다."},
+{type:"mc",t:"사회적 소수자",q:"신체적·문화적 특징 때문에 차별받으며 스스로 차별받는 집단에 속한다고 인식하는 사람들은?",choices:["사회적 소수자","주류 집단","공동체주의자","세계시민"],answer:0,explain:"사회적 소수자는 차별 인식을 가진 집단으로, 인원수와는 관계가 없다."},
+{type:"ox",t:"사회적 소수자",q:"사회적 소수자는 그 집단의 인원수가 많고 적음에 따라 결정된다.",answer:"X",explain:"인원수가 아니라 사회적 영향력이 작고 약자의 위치인지가 기준이다."},
+{type:"ox",t:"사회적 소수자",q:"사회적 소수자는 사회마다 다를 수 있는 상대적 개념이다.",answer:"O",explain:"사회적 영향력을 고려해 구분하므로 사회마다 해당 구성원이 다를 수 있다."},
+{type:"mc",t:"사회적 소수자",q:"사회적 소수자 차별 문제의 해결 방안 중 '사회적 차원'의 노력으로 가장 적절한 것은?",choices:["차별 금지 법률 제정과 정책 마련","개인적 편견 버리기","다양성 존중 태도","역지사지의 마음"],answer:0,explain:"법률 제정·정책 마련은 제도적·사회적 차원의 해결 노력에 해당한다."},
+{type:"mc",t:"사회적 소수자",q:"다음 가상 사례에서 침해된 권리와 가장 관련 깊은 것은?  '시각 장애인이 약 포장에 점자 표시가 없어 약을 잘못 먹을까 불안해한다.'",choices:["정보 접근에서의 평등권","참정권","재산권","저항권"],answer:0,explain:"필요한 정보에 동등하게 접근하지 못하는 차별 문제로 평등권과 관련된다."},
+{type:"mc",t:"청소년 노동권",q:"근로 기준법에서 특별한 보호를 받는 '연소 근로자'의 연령 범위는?",choices:["13세 이상 15세 미만","15세 이상 18세 미만","18세 이상 19세 미만","19세 이상 20세 미만"],answer:1,explain:"근로 기준법상 연소 근로자는 15세 이상 18세 미만인 사람을 말한다."},
+{type:"ox",t:"청소년 노동권",q:"청소년 근로자도 성인과 동일하게 노동 조건에 대한 권리를 보장받아야 한다.",answer:"O",explain:"청소년도 노동 조건에 대한 권리의 주체이며 부당한 대우를 받아서는 안 된다."},
+{type:"ox",t:"청소년 노동권",q:"청소년은 나이가 어리므로 최저 임금을 적용받지 않는다.",answer:"X",explain:"청소년 근로자에게도 최저 임금이 동일하게 적용된다."},
+{type:"short",t:"청소년 노동권",q:"근로 내용·시간·임금 등을 적어 사용자와 근로자가 각 1부씩 가져야 하는 서류는?",answer:"근로 계약서",accept:["근로계약서","근로 계약서"],explain:"근로 계약서는 서면으로 작성해 권리를 보장받는 기초가 된다."},
+{type:"mc",t:"청소년 노동권",q:"청소년이 노동권을 침해당했을 때 도움을 받을 수 있는 기관으로 보기 어려운 것은?",choices:["고용 노동부","노동 위원회","근로 복지 공단","헌법재판소"],answer:3,explain:"노동권 침해 구제는 고용 노동부·노동 위원회·근로 복지 공단 등이 담당한다."},
+{type:"mc",t:"청소년 노동권",q:"다음 가상의 근로 계약 내용 중 법에 어긋나는 부분은?  '16세 근로자, 시급은 최저 임금보다 적게 지급, 휴게 시간 없음.'",choices:["연령이 16세인 점","최저 임금보다 적은 시급","근로 장소를 정한 점","계약 기간을 정한 점"],answer:1,explain:"연소 근로자에게도 최저 임금이 적용되므로 더 적게 주는 것은 위법이다."},
+{type:"mc",t:"세계 인권 문제",q:"국제기구나 비정부 기구가 인권의 실태와 변동을 파악하고자 계량화하여 발표하는 지표는?",choices:["인권 지수","물가 지수","행복 지수","신용 지수"],answer:0,explain:"인권 지수는 인권 상황을 수치로 나타내 비교·분석하는 데 활용된다."},
+{type:"ox",t:"세계 인권 문제",q:"인권 지수는 측정 방식과 목적을 따지지 않고 순위만 비교해도 한 국가의 절대적 인권 수준을 정확히 알 수 있다.",answer:"X",explain:"개발 목적과 측정 방식을 이해하지 않고 순위만 비교하면 오해할 수 있다."},
+{type:"mc",t:"세계 인권 문제",q:"언론 자유의 정도를 평가하여 국경 없는 기자회가 발표하는 인권 지수는?",choices:["성 격차 지수","세계 언론 자유 지수","인간 개발 지수","유리 천장 지수"],answer:1,explain:"세계 언론 자유 지수는 언론 자유에 영향을 미치는 여러 지표로 측정된다."},
+{type:"ox",t:"세계 인권 문제",q:"국제 사회의 인권 문제는 개별 국가의 노력만으로는 해결하기 어려운 경우가 많다.",answer:"O",explain:"세계 인권 문제는 다양한 국제 행위 주체의 협력이 함께 필요하다."},
+{type:"mc",t:"세계 인권 문제",q:"인권 보장 관련 의제를 다루고 해당 국가에 권고안을 제시하는 대표적 국제기구는?",choices:["국제 연합(UN)","다국적 기업","지방 자치 단체","개별 정당"],answer:0,explain:"국제 연합은 인권 의제를 다루고 권고안을 제시해 문제 해결에 노력한다."},
+{type:"short",t:"세계 인권 문제",q:"개인과 민간단체를 가입 주체로 하는 시민 사회 단체로, 국제 사면 위원회·국경 없는 의사회 등이 속하는 것은?",answer:"비정부 기구",accept:["비정부기구","비정부 기구","NGO","엔지오"],explain:"비정부 기구(NGO)는 인권 문제 해결에 적극 동참하는 국제 행위 주체이다."},
+{type:"mc",t:"세계 인권 문제",q:"세계시민으로서 책임 의식을 가지고 인권 문제에 동참하는 개인의 노력으로 적절하지 않은 것은?",choices:["SNS로 인권 문제 제기에 동참","해외 인권 침해에 무관심","온라인 연대 시위 참여","인권 캠페인 동참"],answer:1,explain:"세계시민은 국내외 인권 문제에 관심을 가지고 적극적으로 동참해야 한다."},
+{type:"ox",t:"인권의 의미",q:"인권이 보장될 때 인간은 존엄성을 보장받고 행복하게 살아갈 수 있다.",answer:"O",explain:"인권 보장은 인간 존엄성 실현과 행복한 삶의 전제 조건이다."},
+{type:"mc",t:"인권 보장의 역사",q:"미국 독립 선언문에 명시된 내용으로 보기 어려운 것은?",choices:["국민 주권의 원리","행복 추구권","저항권","사회 보장을 받을 권리"],answer:3,explain:"사회 보장 권리는 후대의 사회권에 해당하며 독립 선언에는 명시되지 않았다."},
+{type:"mc",t:"인권의 세대 구분",q:"각 민족이나 집단이 자신의 일을 스스로 결정할 수 있는, 3세대 인권에 속하는 권리는?",choices:["자결권","신체의 자유","재판 청구권","선거권"],answer:0,explain:"자결권은 집단적 권리인 3세대 인권(연대권)에 속한다."},
+{type:"ox",t:"새로운 인권",q:"오늘날 정보 사회에서는 개인 정보 자기 결정권 같은 새로운 권리가 주목받고 있다.",answer:"O",explain:"정보 사회로 이행하며 정보 접근·통제와 관련한 새로운 권리가 등장하였다."},
+{type:"mc",t:"인권과 헌법",q:"헌법에 국민의 기본적 인권 보장을 명시하는 가장 핵심적인 이유는?",choices:["국가 권력이 인권을 침해하지 못하도록 하기 위해","세금을 더 걷기 위해","공무원 수를 늘리기 위해","국제 대회를 유치하기 위해"],answer:0,explain:"헌법은 국가 권력을 제한해 인간의 존엄과 가치를 보호하는 장치이다."},
+{type:"mc",t:"기본권",q:"다음 권리 중 성격이 다른 하나는?",choices:["선거권","공무 담임권","국민 투표권","재판 청구권"],answer:3,explain:"재판 청구권은 청구권이고 나머지는 모두 참정권에 속한다."},
+{type:"ox",t:"기본권",q:"평등권은 모든 사람을 기계적으로 똑같이 대우할 것만을 요구한다.",answer:"X",explain:"평등권은 합리적 이유 없는 차별 금지를 의미하며, 합리적 차등은 허용된다."},
+{type:"short",t:"제도적 장치",q:"성별·종교·사회적 신분에 따른 차별을 금지하는 헌법 규정이 보장하려는 기본권은?",answer:"평등권",accept:["평등권"],explain:"차별 금지 규정은 평등권을 보장하기 위한 제도적 장치이다."},
+{type:"mc",t:"시민 참여",q:"시민이 권리를 침해당했을 때 가져야 할 바람직한 태도로 적절한 것은?",choices:["현 법질서를 존중하며 적극적으로 권리 회복을 위해 노력","어떤 경우에도 침묵","즉시 폭력으로 대응","무조건 법을 무시"],answer:0,explain:"시민은 법질서를 존중하면서도 적극적으로 권리 보장을 위해 노력해야 한다."},
+{type:"ox",t:"시민불복종",q:"시민불복종은 합법적 수단으로 해결이 불가능할 때 선택하는 최후의 수단이다.",answer:"O",explain:"시민불복종은 합법적 방법이 통하지 않을 때 사용하는 최후의 수단이다."},
+{type:"mc",t:"사회적 소수자",q:"우리 사회에서 사회적 소수자에 해당하는 사례로 보기 어려운 것은?",choices:["이주 외국인","북한 이탈 주민","장애인","다수 주류 집단 구성원"],answer:3,explain:"사회적 소수자는 차별받는 약자 집단으로, 다수 주류 집단과 구분된다."},
+{type:"ox",t:"청소년 노동권",q:"15세 미만인 사람은 원칙적으로 근로자로 사용할 수 없다.",answer:"O",explain:"근로 기준법상 15세 미만은 원칙적으로 근로자로 사용할 수 없다(취직 인허증 예외)."},
+{type:"mc",t:"세계 인권 문제",q:"세계 곳곳에서 발생하는 인권 문제의 사례로 보기 어려운 것은?",choices:["독재 국가의 기본권 침해","전쟁·내전에 따른 난민 문제","제3세계의 아동 노동","공정한 선거의 정착"],answer:3,explain:"공정한 선거의 정착은 인권 침해 사례가 아니라 인권 보장의 성과이다."},
+{type:"short",t:"세계 인권 문제",q:"SNS에서 핵심어 표시(해시태그)를 달거나 이미지를 공유하며 인권 문제 해결에 동참하는 시민들의 활동은 '온라인 ( )'(이)라 할 수 있다. 괄호에 들어갈 말은?",answer:"연대",accept:["연대","온라인 연대","시민 연대"],explain:"정보화 사회에서 시민들은 온라인 연대로 인권 문제 해결에 동참한다."},
+{type:"mc",t:"새로운 인권",q:"현대 사회에서 새로운 인권이 등장하게 된 주된 배경으로 적절하지 않은 것은?",choices:["급격한 산업화·도시화","환경·안전 문제의 증가","시민의 인권 의식 향상","인권에 대한 무관심 확산"],answer:3,explain:"새로운 인권은 사회 변화와 인권 의식 향상 속에서 요구가 커지며 등장하였다."},
+{type:"mc",t:"기본권 제한",q:"국가가 기본권을 제한할 때 지켜야 할 요건으로 옳지 않은 것은?",choices:["정당한 목적이 있을 것","법률의 형식을 갖출 것","필요한 범위에 그칠 것","본질적 내용까지 제한할 것"],answer:3,explain:"기본권을 제한해도 자유와 권리의 본질적 내용은 침해할 수 없다."},
+{type:"short",t:"인권과 헌법",q:"헌법에 규정되어 있는 기본적인 인권을 특별히 무엇이라 부르는가?",answer:"기본권",accept:["기본권"],explain:"기본권은 헌법에 규정된 기본적 인권을 가리키는 말이다."},
+{type:"mc",t:"제도적 장치",q:"기본권을 침해받은 국민이 활용할 수 있는 구제 수단으로 보기 어려운 것은?",choices:["법원의 재판","행정 심판","청원","사회적 소수자 지정"],answer:3,explain:"재판·행정 심판·청원 등이 구제 수단이며, 소수자 지정은 구제 수단이 아니다."},
+{type:"mc",t:"청소년 노동권",q:"청소년 노동권을 보장하기 위한 개인적 차원의 노력으로 적절한 것은?",choices:["노동권 내용을 숙지하고 부당 요구에 문제 제기","무조건 참고 일하기","근로 계약서 작성 생략","임금 미지급을 당연하게 여기기"],answer:0,explain:"청소년은 자신의 노동권을 알고 부당한 요구에 문제를 제기해야 한다."},
+{type:"short",t:"세계 인권 문제",q:"국제 사회가 함께 협력하여 인권 침해국에 비판 여론을 형성하고 경고하는 것을 가능하게 하는, 국가 단위 행위 주체를 통틀어 부르는 말은?",answer:"국제기구",accept:["국제기구","국제 기구","주권 국가","국제 사회"],explain:"국제기구·주권 국가 등 국제 행위 주체의 공조로 인권 문제에 대응한다."},
+{type:"mc",t:"새로운 인권",q:"다음 가상 사례와 가장 관련 깊은 인권은?  '흉악 범죄가 늘자 지자체가 심야 안심 귀가 서비스를 운영하였다.'",choices:["문화권","안전권","주거권","참정권"],answer:1,explain:"각종 위험으로부터 보호받을 권리이므로 안전권과 관련된다."},
+{type:"mc",t:"시민불복종",q:"소로의 사상에서 영향을 받아 비폭력 저항 운동을 전개한 인물로 묶인 것은?",choices:["간디·마틴 루서 킹","롤스·노직","맹자·플라톤","아렌트·왈처"],answer:0,explain:"소로의 시민불복종 사상은 간디와 마틴 루서 킹에게 영향을 주었다."},
+{type:"mc",t:"세계 인권 문제",q:"양성평등과 관련된 두 인권 지수의 국가 순위가 서로 다르게 나타날 수 있는 이유로 옳은 것은?",choices:["측정 항목과 방식이 서로 다르기 때문","조사 연도가 항상 같기 때문","모든 지수가 동일한 기준을 쓰기 때문","순위는 늘 무작위로 정해지기 때문"],answer:0,explain:"지수마다 측정 부문과 방식이 달라 같은 나라라도 순위가 다를 수 있다."},
+{type:"mc",t:"인권과 헌법",q:"우리 헌법에서 '인간의 존엄과 가치'가 갖는 위상으로 가장 적절한 것은?",choices:["모든 국가 작용이 따라야 하는 최고의 가치","상황에 따라 무시할 수 있는 가치","경제 성장 다음의 가치","국회만 따르면 되는 가치"],answer:0,explain:"인간의 존엄과 가치는 헌법의 핵심이자 모든 국가 작용의 최고 가치이다."},
+{type:"short",t:"인권의 의미",q:"인권은 하늘이 인간에게 부여한 권리라는 의미에서 '( ) 인권'이라고도 한다. 괄호에 들어갈 말은?",answer:"천부",accept:["천부","천부 인권","천부인권"],explain:"천부 인권은 하늘이 준 권리라는 의미로 인권의 천부성을 강조한다."},
+{type:"ox",t:"세계 인권 문제",q:"숫자로 표현되지 않는 인권 문제를 이해하려면 인권을 침해받은 당사자의 목소리에 귀 기울여야 한다.",answer:"O",explain:"계량 지수만으로는 한계가 있어 당사자의 목소리를 듣는 태도가 필요하다."}
+];
+
+/* ====================== 엔진 ====================== */
+const $=s=>document.querySelector(s);
+const els={
+  start:$('#screen-start'),quiz:$('#screen-quiz'),result:$('#screen-result'),
+  cur:$('#cur'),tot:$('#tot'),bar:$('#barFill'),timer:$('#timer'),score:$('#score'),
+  tag:$('#qtag'),topic:$('#qtopic'),qtext:$('#qtext'),area:$('#qarea'),
+  explain:$('#explain'),next:$('#nextBtn')
+};
+let pool=[],idx=0,score=0,correctN=0,wrongN=0,answered=false,startT=0,timerId=null,wrongList=[];
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function norm(s){return String(s).replace(/\s+/g,'').replace(/[.,·]/g,'').toLowerCase();}
+function fmt(sec){const m=String(Math.floor(sec/60)).padStart(2,'0');const s=String(sec%60).padStart(2,'0');return m+':'+s;}
+
+function startQuiz(){
+  const n=parseInt($('#count').value,10);
+  pool=shuffle(Q).slice(0,Math.min(n,Q.length));
+  idx=0;score=0;correctN=0;wrongN=0;wrongList=[];
+  els.start.style.display='none';els.result.style.display='none';els.quiz.style.display='block';
+  els.tot.textContent=pool.length;
+  startT=Date.now();
+  clearInterval(timerId);
+  timerId=setInterval(()=>{els.timer.textContent=fmt(Math.floor((Date.now()-startT)/1000));},250);
+  render();
+}
+
+function render(){
+  answered=false;
+  const q=pool[idx];
+  els.cur.textContent=idx+1;
+  els.bar.style.width=((idx)/pool.length*100)+'%';
+  els.score.textContent=score;
+  els.explain.className='explain';els.explain.innerHTML='';
+  els.next.style.visibility='hidden';
+  els.next.textContent=(idx===pool.length-1)?'결과 보기 ▶':'다음 ▶';
+  const tagmap={mc:['mc','객관식'],ox:['ox','O X 문제'],short:['short','단답형']};
+  els.tag.className='tag '+tagmap[q.type][0];
+  els.tag.textContent=tagmap[q.type][1];
+  els.topic.textContent=q.t?('· '+q.t):'';
+  els.qtext.textContent=q.q;
+  els.area.innerHTML='';
+
+  if(q.type==='mc'){
+    const wrap=document.createElement('div');wrap.className='choices';
+    q.choices.forEach((c,i)=>{
+      const b=document.createElement('button');b.className='choice';
+      b.innerHTML='<span class="num">'+(i+1)+'</span><span>'+c+'</span>';
+      b.onclick=()=>pickMC(i);
+      wrap.appendChild(b);
+    });
+    els.area.appendChild(wrap);
+  }else if(q.type==='ox'){
+    const wrap=document.createElement('div');wrap.className='oxwrap';
+    ['O','X'].forEach(v=>{
+      const b=document.createElement('button');b.className='choice';b.textContent=v;
+      b.dataset.v=v;b.onclick=()=>pickOX(v);
+      wrap.appendChild(b);
+    });
+    els.area.appendChild(wrap);
+  }else{
+    const wrap=document.createElement('div');wrap.className='shortwrap';
+    const inp=document.createElement('input');inp.type='text';inp.id='shortInput';
+    inp.placeholder='정답을 입력하고 Enter';inp.autocomplete='off';
+    inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();submitShort();}};
+    const b=document.createElement('button');b.textContent='제출';b.onclick=submitShort;
+    wrap.appendChild(inp);wrap.appendChild(b);
+    els.area.appendChild(wrap);
+    setTimeout(()=>inp.focus(),40);
+  }
+}
+
+function lockChoices(){els.area.querySelectorAll('button').forEach(b=>b.disabled=true);}
+
+function judge(ok,userText){
+  if(answered)return;
+  answered=true;
+  const q=pool[idx];
+  const ansText=answerText(q);
+  if(ok){score+=1;correctN++;}
+  else{wrongN++;wrongList.push({q:q.q,ans:ansText,explain:q.explain,user:userText});}
+  els.score.textContent=score;
+  els.explain.className='explain show '+(ok?'right':'wrongx');
+  els.explain.innerHTML='<div class="verdict">'+(ok?'⭕ 정답입니다!':'❌ 아쉬워요')+'</div>'+
+    (ok?'':'<div class="ansline">정답 : '+ansText+'</div>')+
+    '<div>'+q.explain+'</div>';
+  els.next.style.visibility='visible';
+  els.next.focus();
+}
+
+function answerText(q){
+  if(q.type==='mc')return (q.answer+1)+'번. '+q.choices[q.answer];
+  if(q.type==='ox')return q.answer;
+  return q.answer;
+}
+
+function pickMC(i){
+  if(answered)return;
+  const q=pool[idx];const ok=(i===q.answer);
+  lockChoices();
+  const btns=els.area.querySelectorAll('.choice');
+  btns[q.answer].classList.add('correct');
+  if(!ok)btns[i].classList.add('wrong');
+  judge(ok,(i+1)+'번');
+}
+function pickOX(v){
+  if(answered)return;
+  const q=pool[idx];const ok=(v===q.answer);
+  lockChoices();
+  els.area.querySelectorAll('.choice').forEach(b=>{
+    if(b.dataset.v===q.answer)b.classList.add('correct');
+    else if(b.dataset.v===v)b.classList.add('wrong');
+  });
+  judge(ok,v);
+}
+function submitShort(){
+  if(answered)return;
+  const q=pool[idx];
+  const inp=$('#shortInput');const val=inp.value.trim();
+  if(!val){inp.focus();return;}
+  const cands=[q.answer].concat(q.accept||[]).map(norm);
+  const ok=cands.includes(norm(val));
+  inp.disabled=true;els.area.querySelector('button').disabled=true;
+  judge(ok,val);
+}
+
+function nextQ(){
+  if(!answered)return;
+  if(idx<pool.length-1){idx++;render();}
+  else finish();
+}
+
+function finish(){
+  clearInterval(timerId);
+  const elapsed=Math.floor((Date.now()-startT)/1000);
+  const total=pool.length;
+  const scaled=Math.round(score/total*100);
+  els.quiz.style.display='none';els.result.style.display='block';
+  els.bar.style.width='100%';
+  $('#rScore').textContent=scaled;
+  $('#rSub').textContent='총 '+total+'문항 중 '+correctN+'개 정답 (100점 만점 환산)';
+  $('#rCorrect').textContent=correctN;
+  $('#rWrong').textContent=wrongN;
+  $('#rTime').textContent=fmt(elapsed);
+  let medal='🎯',title='완료! 복습을 이어가요';
+  if(scaled===100){medal='🏆';title='완벽해요! 만점 달성';}
+  else if(scaled>=90){medal='🥇';title='훌륭해요!';}
+  else if(scaled>=70){medal='🥈';title='잘했어요!';}
+  else if(scaled>=50){medal='🥉';title='절반 넘었어요';}
+  $('#medal').textContent=medal;$('#rTitle').textContent=title;
+  const area=$('#reviewArea');
+  if(wrongList.length===0){
+    area.innerHTML='<div class="perfect">✨ 틀린 문항이 없습니다. 개념을 완벽하게 이해했어요!</div>';
+  }else{
+    let h='<div class="wronglist"><h3>📝 오답 노트 ('+wrongList.length+'문항)</h3>';
+    wrongList.forEach((w,i)=>{
+      h+='<div class="witem"><div class="wq">Q'+(i+1)+'. '+w.q+'</div>'+
+         '<div class="wa">정답 : <b>'+w.ans+'</b></div>'+
+         '<div class="we">'+w.explain+'</div></div>';
+    });
+    h+='</div>';area.innerHTML=h;
+  }
+}
+
+function goHome(){clearInterval(timerId);els.quiz.style.display='none';els.result.style.display='none';els.start.style.display='block';}
+
+$('#startBtn').onclick=startQuiz;
+$('#retryBtn').onclick=startQuiz;
+$('#homeBtn').onclick=goHome;
+els.next.onclick=nextQ;
+
+document.addEventListener('keydown',e=>{
+  if(els.quiz.style.display==='none')return;
+  const q=pool[idx];
+  if(!answered){
+    if(q.type==='mc'&&/^[1-9]$/.test(e.key)){
+      const i=parseInt(e.key,10)-1;if(i<q.choices.length)pickMC(i);
+    }else if(q.type==='ox'){
+      if(e.key==='o'||e.key==='O'||e.key==='ㅐ')pickOX('O');
+      if(e.key==='x'||e.key==='X'||e.key==='ㅌ')pickOX('X');
+    }
+  }else{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();nextQ();}
+  }
+});
+</script>
+</body>
+</html>
