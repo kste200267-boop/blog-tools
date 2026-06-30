@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>미래 예측실 — 통합사회2 Ⅴ.미래와 지속가능한 삶</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Pretendard','Noto Sans KR',sans-serif;}
+  :root{--card:#1a1832;--line:#322c55;--gold:#818cf8;--ink:#eef0ff;--sub:#b6b2e0;}
+  body{background:linear-gradient(160deg,#100e22,#1a1736);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px;}
+  .wrap{width:100%;max-width:680px;}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 24px;box-shadow:0 18px 50px rgba(0,0,0,.45);}
+  .badge{display:inline-block;font-size:12px;font-weight:700;color:#100e22;background:var(--gold);padding:4px 12px;border-radius:20px;letter-spacing:.5px;}
+  h1{font-size:30px;margin:14px 0 6px;letter-spacing:-.5px;}
+  h1 .em{color:var(--gold);}
+  .lead{color:var(--sub);font-size:15px;line-height:1.7;margin-bottom:18px;}
+  .rights{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0 22px;}
+  .rchip{text-align:center;font-size:12.5px;font-weight:700;padding:9px 4px;border-radius:10px;border:1px solid var(--line);color:var(--ink);}
+  .btn{display:block;width:100%;background:var(--gold);color:#100e22;border:none;font-size:16px;font-weight:800;padding:15px;border-radius:12px;cursor:pointer;transition:.15s;}
+  .btn:hover{filter:brightness(1.07);transform:translateY(-1px);}
+  .meta{margin-top:16px;text-align:center;font-size:12.5px;color:var(--sub);}
+  .top{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+  .bar{flex:1;height:8px;background:#15122b;border-radius:6px;overflow:hidden;}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#c7d2fe);width:0;transition:width .4s;}
+  .score{font-size:13px;font-weight:700;color:var(--gold);white-space:nowrap;}
+  .case-tag{font-size:12px;font-weight:700;color:var(--sub);}
+  .case{font-size:18.5px;line-height:1.65;margin:8px 0 18px;font-weight:500;}
+  .q{font-size:14px;color:var(--sub);margin-bottom:10px;}
+  .opts{display:grid;grid-template-columns:1fr;gap:10px;}
+  .opt{background:#14112a;border:1.5px solid var(--line);color:var(--ink);font-size:15px;font-weight:700;padding:14px;border-radius:12px;cursor:pointer;transition:.15s;text-align:left;}
+  .opt:hover{border-color:var(--gold);}
+  .opt:disabled{cursor:default;opacity:.65;}
+  .opt.right{background:rgba(129,140,248,.2);border-color:#818cf8;color:#dde2ff;}
+  .opt.wrong{background:rgba(239,68,68,.16);border-color:#ef4444;color:#fdb4b4;}
+  .feed{margin-top:16px;background:#15122b;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 16px;font-size:14px;line-height:1.7;color:#e3e6ff;display:none;}
+  .feed b{color:var(--gold);}
+  .next{margin-top:14px;display:none;}
+  .res-grade{font-size:38px;font-weight:800;color:var(--gold);text-align:center;margin:6px 0;}
+  .res-line{text-align:center;color:var(--sub);font-size:15px;line-height:1.7;margin-bottom:16px;}
+  .res-stat{background:#15122b;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.8;color:#e3e6ff;margin-bottom:18px;}
+  .hide{display:none;}
+  @media(max-width:520px){h1{font-size:25px;}.rights{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="panel" id="start">
+    <span class="badge">통합사회2 · Ⅴ. 미래와 지속가능한 삶</span>
+    <h1>🔮 미래 <span class="em">예측실</span></h1>
+    <p class="lead">미래학자는 미래를 ‘맞히는’ 사람이 아니라 ‘대비하는’ 사람입니다. 다가올 변화가 <b>어느 갈래</b>에 속하는지 읽어 내고, 그 빛과 그늘을 함께 살펴보세요.</p>
+    <div class="rights">
+      <div class="rchip" style="border-color:#3b82f6">정치·경제 변화</div>
+      <div class="rchip" style="border-color:#22c55e">과학기술 변화</div>
+      <div class="rchip" style="border-color:#f97316">생태·환경 변화</div>
+    </div>
+    <button class="btn" onclick="start()">예측 시작하기 ▶</button>
+    <p class="meta">교육 목적 수업 활동용 · 사례는 학습용으로 재구성한 예시입니다(특정 보도·실명 아님).</p>
+  </div>
+
+  <div class="panel hide" id="play">
+    <div class="top">
+      <span class="case-tag" id="ctag">1 / 6</span>
+      <div class="bar"><i id="barfill"></i></div>
+      <span class="score">🔮 <span id="score">0</span></span>
+    </div>
+    <div class="case" id="caseText"></div>
+    <div class="q">이 변화는 어느 갈래에 가장 가까운가?</div>
+    <div class="opts" id="opts"></div>
+    <div class="feed" id="feed"></div>
+    <button class="btn next" id="nextBtn" onclick="next()">다음 변화 →</button>
+  </div>
+
+  <div class="panel hide" id="result">
+    <span class="badge">예측 종료</span>
+    <div class="res-grade" id="grade"></div>
+    <div class="res-line" id="resLine"></div>
+    <div class="res-stat" id="resStat"></div>
+    <button class="btn" onclick="location.reload()">↺ 다시 예측하기</button>
+    <p class="meta">좋기만 한 미래도, 나쁘기만 한 미래도 없습니다 — 균형 잡힌 시선이 지속가능함을 만듭니다.</p>
+  </div>
+</div>
+<script>
+const RIGHTS={정치:'정치·경제 변화',과학:'과학기술 변화',생태:'생태·환경 변화'};
+const CASES=[
+ {t:'인공지능이 회사의 1차 면접을 맡고, 자율주행 로봇이 골목까지 물건을 배달한다. 생활은 편리해졌지만 일자리가 줄고 데이터 편향 문제가 생긴다.', a:'과학', why:'AI·로봇·생명공학의 발전은 <b>과학기술 변화</b>입니다. 편리함(빛)과 일자리 감소·윤리 문제(그늘)를 함께 가져와요.'},
+ {t:'세계화가 깊어지며 지역 공동체와 국제기구의 힘이 커지고, 인터넷으로 시민이 직접 의견을 내는 전자 민주주의가 넓어진다. 대신 한 나라가 스스로 정하는 힘은 약해진다.', a:'정치', why:'세계화·거버넌스·전자 민주주의의 변화는 <b>정치·경제 변화</b>입니다. 참여 확대(빛)와 주권 약화·격차(그늘)가 함께 와요.'},
+ {t:'기후위기로 해수면이 오르고 이상기후가 잦아진다. 한편으로는 신재생에너지와 생태도시 같은 지속가능 기술이 빠르게 늘어난다.', a:'생태', why:'기후·자원·에너지의 변화는 <b>생태·환경 변화</b>입니다. 위기(그늘)와 전환의 기회(빛)가 동시에 존재해요.'},
+ {t:'생명공학이 발전해 난치병 치료의 길이 열렸지만, 유전자 조작과 생명의 경계를 둘러싼 새로운 윤리 논쟁이 커진다.', a:'과학', why:'생명공학은 <b>과학기술 변화</b>입니다. 의료 혁신(빛)과 생명윤리 문제(그늘)를 함께 안고 있어요.'},
+ {t:'한 나라가 저출생·고령화로 일할 사람이 줄자, 정년을 늘리고 외국 인력을 받아들이며 복지 제도를 다시 설계한다.', a:'정치', why:'인구 구조 변화에 따른 제도·노동·복지의 재편은 <b>정치·경제 변화</b>에 가깝습니다(빛: 적응, 그늘: 부담 증가).'},
+ {t:'화석연료가 고갈되어 가자, 태양광·풍력으로 에너지를 바꾸고 자원을 아껴 쓰는 순환 경제가 확산된다.', a:'생태', why:'에너지·자원의 전환은 <b>생태·환경 변화</b>입니다. 지속가능발전으로 가는 핵심 길(빛)이지만 전환 비용(그늘)도 따라요.'},
+];
+let i=0,score=0;
+function start(){document.getElementById('start').classList.add('hide');document.getElementById('play').classList.remove('hide');render();}
+function render(){
+ const c=CASES[i];
+ document.getElementById('ctag').textContent=(i+1)+' / '+CASES.length;
+ document.getElementById('barfill').style.width=(i/CASES.length*100)+'%';
+ document.getElementById('caseText').textContent=c.t;
+ const op=document.getElementById('opts');op.innerHTML='';
+ document.getElementById('feed').style.display='none';
+ document.getElementById('nextBtn').style.display='none';
+ Object.keys(RIGHTS).forEach(k=>{
+   const b=document.createElement('button');b.className='opt';b.textContent=RIGHTS[k];
+   b.onclick=()=>judge(k,b);op.appendChild(b);
+ });
+}
+function judge(key,btn){
+ const c=CASES[i];const correct=key===c.a;
+ [...document.querySelectorAll('.opt')].forEach(b=>{b.disabled=true;if(b.textContent===RIGHTS[c.a])b.classList.add('right');});
+ if(!correct)btn.classList.add('wrong');else score++;
+ document.getElementById('score').textContent=score;
+ const f=document.getElementById('feed');
+ f.innerHTML=(correct?'✅ <b>정확한 예측!</b> ':'🔮 <b>정답은 '+RIGHTS[c.a]+'</b> ')+c.why;
+ f.style.display='block';
+ document.getElementById('nextBtn').style.display='block';
+ document.getElementById('nextBtn').textContent=(i<CASES.length-1)?'다음 변화 →':'예측 결과 보기 →';
+}
+function next(){i++;if(i<CASES.length){render();}else{showResult();}}
+function showResult(){
+ document.getElementById('play').classList.add('hide');
+ document.getElementById('result').classList.remove('hide');
+ const n=score,total=CASES.length;let grade,line;
+ if(n>=6){grade='미래학자';line='정치·경제, 과학기술, 생태·환경 세 갈래를 완벽히 꿰뚫었습니다. 어떤 변화든 빛과 그늘을 함께 읽는군요.';}
+ else if(n>=4){grade='미래 설계가';line='큰 흐름을 잘 잡았어요. 헷갈린 변화만 다시 보면 완벽합니다.';}
+ else if(n>=2){grade='관찰자';line='절반은 잡았습니다. 세 갈래의 경계를 한 번 더 정리해 봐요.';}
+ else{grade='수습 예측가';line='괜찮아요, 미래 단원은 반복이 핵심입니다. 한 번 더 예측해 보면 손에 붙습니다.';}
+ document.getElementById('grade').textContent='🔮 '+grade;
+ document.getElementById('resLine').textContent=line;
+ document.getElementById('resStat').innerHTML='예측 정확도 <b style="color:var(--gold)">'+n+' / '+total+'</b><br>오늘 다룬 갈래: 정치·경제 / 과학기술 / 생태·환경<br>한 줄 정리: <b>미래는 맞히는 게 아니라 대비하는 것</b>이고, 모든 변화는 빛과 그늘을 함께 가집니다.';
+ document.getElementById('barfill').style.width='100%';
+}
+</script>
+</body>
+</html>
