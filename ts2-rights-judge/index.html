@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>인권 재판관 — 통합사회2 Ⅰ.인권 보장과 헌법</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Pretendard','Noto Sans KR',sans-serif;}
+  :root{--bg:#0e1424;--card:#161f36;--line:#2a3550;--gold:#e6b450;--ink:#eaf0ff;--sub:#9fb0d4;
+        --자유:#3b82f6;--평등:#22c55e;--참정:#a855f7;--청구:#f97316;--사회:#ef4444;}
+  body{background:linear-gradient(160deg,#0b1020,#121a33);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px;}
+  .wrap{width:100%;max-width:680px;}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 24px;box-shadow:0 18px 50px rgba(0,0,0,.4);}
+  .badge{display:inline-block;font-size:12px;font-weight:700;color:#0b1020;background:var(--gold);padding:4px 12px;border-radius:20px;letter-spacing:.5px;}
+  h1{font-size:30px;margin:14px 0 6px;letter-spacing:-.5px;}
+  h1 .em{color:var(--gold);}
+  .lead{color:var(--sub);font-size:15px;line-height:1.7;margin-bottom:18px;}
+  .rights{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:16px 0 22px;}
+  .rchip{text-align:center;font-size:12.5px;font-weight:700;padding:9px 4px;border-radius:10px;border:1px solid var(--line);color:var(--ink);}
+  .btn{display:block;width:100%;background:var(--gold);color:#0b1020;border:none;font-size:16px;font-weight:800;padding:15px;border-radius:12px;cursor:pointer;transition:.15s;}
+  .btn:hover{filter:brightness(1.07);transform:translateY(-1px);}
+  .meta{margin-top:16px;text-align:center;font-size:12.5px;color:var(--sub);}
+  /* play */
+  .top{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+  .bar{flex:1;height:8px;background:#0e1730;border-radius:6px;overflow:hidden;}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#f0d089);width:0;transition:width .4s;}
+  .score{font-size:13px;font-weight:700;color:var(--gold);white-space:nowrap;}
+  .case-tag{font-size:12px;font-weight:700;color:var(--sub);}
+  .case{font-size:18.5px;line-height:1.65;margin:8px 0 18px;font-weight:500;}
+  .q{font-size:14px;color:var(--sub);margin-bottom:10px;}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .opt{background:#101a30;border:1.5px solid var(--line);color:var(--ink);font-size:15px;font-weight:700;padding:14px;border-radius:12px;cursor:pointer;transition:.15s;}
+  .opt:hover{border-color:var(--gold);}
+  .opt:disabled{cursor:default;opacity:.65;}
+  .opt.right{background:rgba(34,197,94,.18);border-color:#22c55e;color:#bbf7d0;}
+  .opt.wrong{background:rgba(239,68,68,.16);border-color:#ef4444;color:#fdb4b4;}
+  .feed{margin-top:16px;background:#0e1730;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 16px;font-size:14px;line-height:1.7;color:#dbe6ff;display:none;}
+  .feed b{color:var(--gold);}
+  .next{margin-top:14px;display:none;}
+  /* result */
+  .res-grade{font-size:40px;font-weight:800;color:var(--gold);text-align:center;margin:6px 0;}
+  .res-line{text-align:center;color:var(--sub);font-size:15px;line-height:1.7;margin-bottom:16px;}
+  .res-stat{background:#0e1730;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.8;color:#dbe6ff;margin-bottom:18px;}
+  .hide{display:none;}
+  @media(max-width:520px){.opts{grid-template-columns:1fr;}.rights{grid-template-columns:repeat(2,1fr);}h1{font-size:25px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- START -->
+  <div class="panel" id="start">
+    <span class="badge">통합사회2 · Ⅰ. 인권 보장과 헌법</span>
+    <h1>⚖️ 인권 <span class="em">재판관</span></h1>
+    <p class="lead">당신은 인권 재판관입니다. 화면에 올라오는 사례를 읽고 <b>어떤 기본권</b>과 가장 관련이 깊은지 판결하세요. 정답마다 헌법의 근거가 함께 펼쳐집니다.</p>
+    <div class="rights">
+      <div class="rchip" style="border-color:var(--자유)">자유권</div>
+      <div class="rchip" style="border-color:var(--평등)">평등권</div>
+      <div class="rchip" style="border-color:var(--참정)">참정권</div>
+      <div class="rchip" style="border-color:var(--청구)">청구권</div>
+      <div class="rchip" style="border-color:var(--사회)">사회권</div>
+    </div>
+    <button class="btn" onclick="start()">재판 시작하기 ▶</button>
+    <p class="meta">교육 목적 수업 활동용 · 사례는 학습용으로 재구성한 예시입니다(특정 보도·실명 아님).</p>
+  </div>
+
+  <!-- PLAY -->
+  <div class="panel hide" id="play">
+    <div class="top">
+      <span class="case-tag" id="ctag">1 / 7</span>
+      <div class="bar"><i id="barfill"></i></div>
+      <span class="score">⚖️ <span id="score">0</span></span>
+    </div>
+    <div class="case" id="caseText"></div>
+    <div class="q">이 사례와 가장 관련 깊은 기본권은?</div>
+    <div class="opts" id="opts"></div>
+    <div class="feed" id="feed"></div>
+    <button class="btn next" id="nextBtn" onclick="next()">다음 사례 →</button>
+  </div>
+
+  <!-- RESULT -->
+  <div class="panel hide" id="result">
+    <span class="badge">판결 종료</span>
+    <div class="res-grade" id="grade"></div>
+    <div class="res-line" id="resLine"></div>
+    <div class="res-stat" id="resStat"></div>
+    <button class="btn" onclick="location.reload()">↺ 다시 재판하기</button>
+    <p class="meta">정의는 ‘많고 적음’이 아니라 ‘누구의 권리가 어떻게 보장되는가’입니다.</p>
+  </div>
+</div>
+<script>
+const RIGHTS={자유:'자유권',평등:'평등권',참정:'참정권',청구:'청구권',사회:'사회권'};
+const CASES=[
+ {t:'휠체어를 탄 시민이 관공서에 가려 했지만, 입구에 계단만 있어 안으로 들어갈 수 없었다. 안내 직원은 "원래 그렇다"고만 했다.',
+  a:'평등',why:'모두에게 같은 기회를 보장하지 못한 <b>간접 차별</b>입니다. 정당한 편의를 제공하지 않는 것도 평등권 침해가 될 수 있어요.'},
+ {t:'같은 일을 같은 시간 하는데, 어떤 노동자는 ‘출신 국적이 다르다’는 이유만으로 임금을 절반만 받았다.',
+  a:'평등',why:'합리적 이유 없이 출신·신분으로 다르게 대우하면 <b>평등권</b> 침해입니다. 차별은 ‘차이’가 아니라 ‘차이에 대한 부당한 대우’예요.'},
+ {t:'경찰이 영장도 없이 한 시민의 집에 들어가 물건을 뒤졌다.',
+  a:'자유',why:'국가가 함부로 신체·주거를 침해하지 못하게 막는 것이 <b>자유권</b>입니다. 헌법은 압수·수색에 영장주의를 요구해요.'},
+ {t:'시민들이 평화롭게 집회를 열려 했지만, 행정청이 사전 허가를 내주지 않아 막아섰다.',
+  a:'자유',why:'집회의 자유는 <b>자유권</b>입니다. 헌법은 집회에 대한 <b>허가제를 금지</b>합니다(신고제는 가능).'},
+ {t:'억울하게 구속됐던 사람이 재판에서 무죄로 풀려난 뒤, 국가에 그동안의 피해를 보상해 달라고 요구했다.',
+  a:'청구',why:'국가에 일정한 행위를 요구할 수 있는 권리가 <b>청구권</b>입니다. 형사보상청구권·국가배상청구권이 여기에 해당해요.'},
+ {t:'한 공장의 노동자들이 근로조건을 개선하려고 노동조합을 만들고 함께 교섭하려 했다.',
+  a:'사회',why:'인간다운 생활을 위해 국가에 적극적 보장을 요구하는 권리가 <b>사회권</b>입니다. 노동3권(단결·교섭·행동)이 대표적이에요.'},
+ {t:'올해 처음 선거권을 갖게 된 시민이 자신이 사는 지역의 대표를 직접 뽑으러 투표소에 갔다.',
+  a:'참정',why:'국가의 의사 결정에 참여하는 권리가 <b>참정권</b>입니다. 선거권·공무담임권·국민투표권이 여기에 들어가요.'},
+];
+let i=0,score=0;
+function start(){document.getElementById('start').classList.add('hide');document.getElementById('play').classList.remove('hide');render();}
+function render(){
+ const c=CASES[i];
+ document.getElementById('ctag').textContent=(i+1)+' / '+CASES.length;
+ document.getElementById('barfill').style.width=(i/CASES.length*100)+'%';
+ document.getElementById('caseText').textContent=c.t;
+ const op=document.getElementById('opts');op.innerHTML='';
+ document.getElementById('feed').style.display='none';
+ document.getElementById('nextBtn').style.display='none';
+ Object.keys(RIGHTS).forEach(k=>{
+   const b=document.createElement('button');b.className='opt';b.textContent=RIGHTS[k];
+   b.onclick=()=>judge(k,b);op.appendChild(b);
+ });
+}
+function judge(key,btn){
+ const c=CASES[i];const correct=key===c.a;
+ [...document.querySelectorAll('.opt')].forEach(b=>{b.disabled=true;if(b.textContent===RIGHTS[c.a])b.classList.add('right');});
+ if(!correct)btn.classList.add('wrong');else score++;
+ document.getElementById('score').textContent=score;
+ const f=document.getElementById('feed');
+ f.innerHTML=(correct?'✅ <b>정확한 판결!</b> ':'⚖️ <b>정답은 '+RIGHTS[c.a]+'</b> ')+c.why;
+ f.style.display='block';
+ document.getElementById('nextBtn').style.display='block';
+ document.getElementById('nextBtn').textContent=(i<CASES.length-1)?'다음 사례 →':'판결 결과 보기 →';
+}
+function next(){i++;if(i<CASES.length){render();}else{showResult();}}
+function showResult(){
+ document.getElementById('play').classList.add('hide');
+ const r=document.getElementById('result');r.classList.remove('hide');
+ const n=score,total=CASES.length;
+ let grade,line;
+ if(n>=7){grade='대법관';line='5대 기본권을 꿰뚫었습니다. 어떤 사례든 어느 권리가 걸려 있는지 바로 짚어 내는군요.';}
+ else if(n>=5){grade='재판관';line='기본권의 큰 줄기를 잘 잡고 있어요. 헷갈린 사례만 다시 보면 완벽합니다.';}
+ else if(n>=3){grade='배석판사';line='절반은 잡았습니다. 자유권·평등권·청구권의 차이를 한 번 더 정리해 봐요.';}
+ else{grade='실무관';line='괜찮아요, 인권 단원은 반복이 핵심입니다. 한 번 더 재판해 보면 손에 붙습니다.';}
+ document.getElementById('grade').textContent='🏛 '+grade;
+ document.getElementById('resLine').textContent=line;
+ document.getElementById('resStat').innerHTML='판결 정확도 <b style="color:var(--gold)">'+n+' / '+total+'</b><br>오늘 다룬 권리: 자유권·평등권·참정권·청구권·사회권<br>한 줄 정리: <b>차별은 ‘차이’가 아니라 ‘차이에 대한 부당한 대우’</b>이고, 모든 권리는 결국 인간의 존엄에서 나옵니다.';
+ document.getElementById('barfill').style.width='100%';
+}
+</script>
+</body>
+</html>
